@@ -1,0 +1,35 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<div >
+    <div class="background-div">
+    <div class="overlay">
+        <h1>Oogpraktijk gent</h1>
+        <p>
+            Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit, sed do eiusmod tempor <br> incididunt ut labore et dolore
+            magna aliqua. Ut <br>enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea <br> commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse 
+        </p>
+        <div class="buttons">
+            <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
+            <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="actuaBox">
+
+    <h2>Actualiteiten binnen onze praktijk</h2>
+
+
+    @for (int i = 0; i < 3; i++)
+{
+    <ActuaField />
+}
+
+
+</div>
