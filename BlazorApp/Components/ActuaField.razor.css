@@ -7,8 +7,8 @@
    
     top: 0;
     left: 0;
-    width: 85%;
-    height: 100%;
+    width: 100%;
+    height: 12em;
    
     display: flex;
     flex-direction: column;
@@ -18,13 +18,79 @@
 
     color: rgb(22, 44, 104); /* Tekstkleur aanpassen naar wens */
     background-color: rgba(194, 228, 218, 100) ;
-  
-    margin-bottom: 20px;
-    margin-left: 120px;
-    margin-right: 120px;
 
-    padding-left: 100px;
-
+    margin: 20px;
+    margin-right: 10px;
+    padding-left: 10px;
+        
     
     border-radius: 5px;
+    
+
+    overflow-y: auto;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1.5fr 0.5fr; /* 2 columns */
+    grid-template-rows: repeat(3, 1fr); /* 3 rows */
+    gap: 0px; /* Adjust the gap between grid items as needed */
+    /*
+    margin-left: 220px;
+    margin-right: 120px;
+    */
+}
+
+.grid-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.grid-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.grid-hyper{    /* this class puts the hyperlink on the bottom of the cell */
+    grid-column: 1;
+    grid-row: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end; /* Place the hyperlink at the bottom */
+    
+
+}
+
+.grid-image{
+
+    grid-column: 2;
+    grid-row: 1 / 4;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    width: 250px;
+    height: 200px;
+  
+}
+
+
+.field {
+    width: 95%; /* Width for individual grid items */
+    height: auto; /* Let the content determine the height */
+    background-color: rgba(194, 228, 218, 100);
+    color: rgb(22, 44, 104);
+    
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
