@@ -1,0 +1,50 @@
+@page "/behandelingen"
+
+<PageTitle>Index</PageTitle>
+
+<div>
+    <link href="Home.razor.css" rel="stylesheet" />
+    <div class="background-div">
+    <div class="overlay">
+        <h1>Behandelingen</h1>
+
+        <!-- TODO -->
+        <span class="breadcrumbs">
+            <a href="/">Home</a> > Behandelingen
+        </span>
+
+    <div class="container mt-40">
+        <div class="row ">
+            <div class="col-md-4">
+                <BehandelingCard ImageSrc="images/ooglidcorrectie.png" Title="Ooglidcorrectie" OnCardClick="NavigateOoglidcorrectie" />
+            </div>
+            <div class="col-md-4">
+                <BehandelingCard ImageSrc="images/cataractoperatie.png" Title="Cataractoperatie" OnCardClick="NavigateCataractoperatie" />
+            </div>
+            <div class="col-md-4">
+                <BehandelingCard ImageSrc="images/straaloperatie.png" Title="Straaloperatie" OnCardClick="NavigateStraaloperatie" />
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    private void NavigateOoglidcorrectie()
+    {
+        NavigationManager.NavigateTo("/ooglidcorrectie");
+    }
+
+    private void NavigateCataractoperatie()
+    {
+        NavigationManager.NavigateTo("/cataractoperatie");
+    }
+
+    private void NavigateStraaloperatie()
+    {
+        NavigationManager.NavigateTo("/straaloperatie");
+    }
+}
