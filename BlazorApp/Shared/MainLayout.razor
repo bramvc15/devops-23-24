@@ -1,18 +1,21 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
 
 <PageTitle>BlazorApp</PageTitle>
 
-<div class="page">
+<div>
+    <div class="top-row">
+        <NavMenu />
+    </div>
 
     <main>
-        <div class="top-row px-4">
-            Work in progress
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-       
         <div >
-            <Home />
+            @Body     
         </div>
-     
     </main>
+
+    <div>
+        @* hier moet de footer komen !!!!!!!!!!!  *@
+    </div>
+
 </div>

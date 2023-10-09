@@ -1,0 +1,28 @@
+.page-container {
+    background-color: rgba(194, 228, 218, 1); /* Background color of your choice */
+    min-height: 100vh; /* Ensure the container takes at least the full viewport height */
+    display: flex;
+    flex-direction: column;
+
+}
+
+.background {
+  
+    padding: 20px;
+    
+    /* Add other styles for your content as needed */
+}
+
+.title {
+
+    padding-top: 50px;
+    padding-left: 100px;
+}
+
+.breadcrumb {
+    padding-left: 100px ;
+    color: rgb(22, 44, 104);
+}
+
+
+
