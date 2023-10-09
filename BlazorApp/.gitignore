@@ -15,6 +15,9 @@
 *GeneratedMSBuildEditorConfig.editorconfig
 *assets.cache
 
+BlazorApp/obj/Debug/net7.0/BlazorApp.GeneratedMSBuildEditorConfig.editorconfig
+
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
