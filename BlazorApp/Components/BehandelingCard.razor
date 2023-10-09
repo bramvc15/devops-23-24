@@ -1,0 +1,19 @@
+@inherits ComponentBase
+
+<div class="card" @onclick="OnCardClick">
+    <div class="card-body text-center">
+        <img src="@ImageSrc" class="w-25 m-2" alt="Image" />
+        <h5 class="card-title">@Title</h5>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string ImageSrc { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public EventCallback OnCardClick { get; set; }
+}
