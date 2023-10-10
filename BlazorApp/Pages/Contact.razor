@@ -1,0 +1,78 @@
+@page "/Contact"
+
+<PageTitle>Contact</PageTitle>
+
+<body>
+    <div class="page-container">
+        <div class="title-layout">
+            <h1>Contact</h1>
+            <a><u>Home</u> > Contact </a>
+        </div>
+        <div class="container mt-4">
+            <div class="row">
+                <!-- Left Column for Text -->
+                <div class="col-md-6">
+
+                    <h2>Onze gegevens</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet,
+                        consectetur adipiscing elit, sed do eiusmod tempor <br> incididunt ut labore et dolore
+                        magna aliqua. Ut <br>enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea <br> commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    </p>
+                </div>
+
+                <!-- Right Column for Google Maps -->
+                <div class="col-md-6">
+                    <h1 class="mb-4">Stel ons een vraag</h1>
+                    <form action="submit_form.php" method="post">
+                        <!-- Name and First Name -->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" id="box" name="name" placeholder="Naam" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control"id="box"  name="firstName" placeholder="Voornaam" required>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <input type="email" class="form-control"id="box"  name="email" placeholder="email" required>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="form-group">
+                            <input type="date" class="form-control" id="box"  name="dob" placeholder="Geboortedatum" required>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="form-group">
+                            <input type="tel" class="form-control" id="box"  name="phoneNumber"
+                                pattern="[0-9]{10}" placeholder="gsm" required>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="form-group">
+                            <textarea class="form-control" id="box"  name="message" rows="4" placeholder="bericht of vraag" required></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">verstuur</button>
+                        </div>
+                    </form>
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>

@@ -1,3 +1,4 @@
+
 .page-container {
     /*
     background-color: rgba(194, 228, 218, 1); /* Background color of your choice */
@@ -8,18 +9,6 @@
     display: flex;
     flex-direction: column;
 
-}
-
-.background {
-  
-    padding: 20px;
-    
-    /* Add other styles for your content as needed */
-}
-
-.breadcrumb {
-    padding-left: 100px ;
-    color: rgb(22, 44, 104);
 }
 
 
@@ -47,13 +36,8 @@
 }
 
 
+#box{
 
-.overlay h1 {
-    font-size: 40px; /* Grootte van de titel aanpassen naar wens */
-    margin-bottom: 0px;
-}
-
-.overlay p {
-    font-size: 18px; /* Grootte van de tekst aanpassen naar wens */
-    margin-bottom: 0px;
+    border: 2px solid rgb(30, 222, 165);
+    margin: 20px;
 }
