@@ -1,9 +1,8 @@
 @page "/behandelingen"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Behandelingen</PageTitle>
 
-<div>
-    <link href="Home.razor.css" rel="stylesheet" />
+<body>
     <div class="background-div">
     <div class="overlay">
         <h1>Behandelingen</h1>
@@ -28,23 +27,23 @@
     </div>
         </div>
     </div>
-</div>
+</body>
 
 @code {
     [Inject] NavigationManager NavigationManager { get; set; }
-
+    private string currentPage = "/behandelingen";
     private void NavigateOoglidcorrectie()
     {
-        NavigationManager.NavigateTo("/ooglidcorrectie");
+        NavigationManager.NavigateTo(@currentPage + "/ooglidcorrectie");
     }
 
     private void NavigateCataractoperatie()
     {
-        NavigationManager.NavigateTo("/cataractoperatie");
+        NavigationManager.NavigateTo(@currentPage + "/cataractoperatie");
     }
 
     private void NavigateStraaloperatie()
     {
-        NavigationManager.NavigateTo("/straaloperatie");
+        NavigationManager.NavigateTo(@currentPage + "/straaloperatie");
     }
 }
