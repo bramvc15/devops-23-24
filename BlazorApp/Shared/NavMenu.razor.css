@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 12vh;
+    height: 10vh;
     width: 100%;
     background-color: #fff; /* Add your desired background color */
     z-index: 1000; /* Adjust the z-index as needed */
@@ -75,4 +75,25 @@
     border-radius: 10px;
     font-weight: 500;
 }
+
+@media only screen and (max-width: 768px) {
+    .fixed-nav, 
+    .midNav {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .firstNav {
+        display: none;
+    }
+
+    .firstNav,
+    .midNav,
+    .lastNav {
+        width: 100%;
+    }
+
+}
+
+
 
