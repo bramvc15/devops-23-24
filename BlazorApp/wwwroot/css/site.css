@@ -1,15 +1,23 @@
+/* @import url('open-iconic/font/css/open-iconic-bootstrap.min.css'); */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /* font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; */
+    font-family: 'Montserrat', sans-serif;
 }
 
 h1:focus {
     outline: none;
 }
 
+p {
+    margin: 0 !important;
+}
+
 a, .btn-link {
-    color: #0071c1;
+    text-decoration: none;
+
 }
 
 .btn-primary {
