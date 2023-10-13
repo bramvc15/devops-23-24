@@ -20,7 +20,7 @@
 [Fill-in] List of team members responsible for operations:
 
 - Jan Janssens | @janjanssens(githubusername)
-- ...
+-  Jan Janssens 
 - ...
 
 ## Technologies & Packages
