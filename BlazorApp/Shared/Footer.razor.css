@@ -12,12 +12,20 @@
     display: flex;
     justify-content: space-between;
     padding: 10px 20px;
+    align-items: center;
 }
 
 .left-section {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.left-section ul {
+    flex-direction: row;
+    list-style-type: none;
+    align-items: start;
+
 }
 
 .right-section {
