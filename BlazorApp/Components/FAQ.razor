@@ -1,0 +1,39 @@
+<div class="card faq mb-3">
+    <div class="row">
+        @for (int i = 0; i < faq.GetLength(0); i++)
+        {
+            int questionNumber = i;
+            <div class="col-md-4 text-center">
+                <span @onclick="() => displayAnswer(questionNumber)" class="faqBtn">
+                    @faq[i, 0]
+                </span>
+            </div>
+        }
+    </div>
+    @if (displayedAnswer != "")
+    {
+        <div class="faq-content text-center">
+        <hr>
+            @displayedAnswer
+        </div>
+    }
+</div>
+
+
+@code {
+    private bool isCollapsed = false;
+
+    private string displayedAnswer = "";
+
+    [Parameter]
+    public string[,] faq { get; set; }
+
+    private void displayAnswer(int index)
+    {
+        if (displayedAnswer == faq[index, 1]) {
+            displayedAnswer = "";
+        } else {
+            displayedAnswer = faq[index, 1];
+        }
+    }
+}
