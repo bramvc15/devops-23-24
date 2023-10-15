@@ -48,6 +48,11 @@ a, .btn-link {
     color: red;
 }
 
+.nav-menu-container {
+    z-index: 100;
+}
+
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -77,3 +82,4 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
+ 

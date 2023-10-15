@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using BlazorApp.Data;
-
+using Blazored.Modal;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
+using Blazorise.RichTextEdit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services
+    .AddBlazorise( options =>
+    {
+        options.Immediate = true;
+    } )
+    .AddBootstrapProviders()
+    .AddFontAwesomeIcons();
+
+
+builder.Services
+    .AddBlazoriseRichTextEdit( options => {  } );
 
 var app = builder.Build();
 

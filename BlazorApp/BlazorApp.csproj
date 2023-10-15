@@ -10,4 +10,12 @@
     <Folder Include="Pages\Appointments\Components\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Blazored.Modal" Version="7.1.0" />
+    <PackageReference Include="Blazorise.Bootstrap" Version="1.3.1" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.3.1" />
+    <PackageReference Include="Blazorise.RichTextEdit" Version="1.3.1" />
+    <PackageReference Include="TinyMCE.Blazor" Version="1.0.4" />
+  </ItemGroup>
+
 </Project>

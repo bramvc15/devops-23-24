@@ -1,0 +1,148 @@
+@page "/admin/home"
+
+
+<PageTitle>Index</PageTitle>
+<div>
+    <div class="background-div">
+        <div class="overlay">
+            @if (!isEditing)
+            {
+                <div class="buttons">
+                    <Button Color="Color.Primary" Clicked="@ShowModal">Edit</Button>
+                </div>
+            }
+
+            @if (isEditing)
+            {
+                <h1>@title</h1>
+                <p>
+                    @text
+                </p>
+            }
+            else
+            {
+                <h1>@title</h1>
+                <p>
+                    @text
+                </p>
+            }
+
+            <div class="buttons">
+                <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
+                <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
+            </div>
+
+        </div>
+        <Modal @ref="modalRef">
+            <ModalContent Centered>
+                <ModalHeader>
+                    <ModalTitle>header edit</ModalTitle>
+                    <CloseButton />
+                </ModalHeader>
+                <ModalBody>
+                    <Field>
+                        <FieldLabel>Titel</FieldLabel>
+                        <TextEdit Placeholder="Geef titel..." />
+                    </Field>
+                    <Field>
+                        <FieldLabel>Beschrijving</FieldLabel>
+                        <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow"
+                            ContentChanged="@OnContentChanged" PlaceHolder="Type your post here..." ReadOnly="@readOnly"
+                            SubmitOnEnter="false" EnterPressed="@OnSave" ToolbarPosition="Placement.Bottom">
+                            <Editor>...</Editor>
+                            <Toolbar>
+                                <RichTextEditToolbarGroup>
+                                    <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
+                                    <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
+                                    <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
+                                        <RichTextEditToolbarSelectItem Value="small" />
+                                        <RichTextEditToolbarSelectItem Selected />
+                                         <RichTextEditToolbarSelectItem Value="large" />
+                                         <RichTextEditToolbarSelectItem Value="huge">Very Big
+                                         </RichTextEditToolbarSelectItem>
+                                     </RichTextEditToolbarSelect>
+                                     <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
+                                     <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
+                                 </RichTextEditToolbarGroup>
+                                 <!-- Custom toolbar content -->
+                                 <RichTextEditToolbarGroup Float="Float.End">
+                                     <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
+                                         <Icon Name="IconName.InfoCircle" />
+                                     </Button>
+                                     <Button Clicked="@OnSave">
+                                         <Icon Name="IconName.Save" />
+                                     </Button>
+                                 </RichTextEditToolbarGroup>
+                             </Toolbar>
+                         </RichTextEdit>
+                     </Field>
+                 </ModalBody>
+                 <ModalFooter>
+                     <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                     <Button Color="Color.Primary" Clicked="@HideModal">Opslaan</Button>
+                 </ModalFooter>
+             </ModalContent>
+         </Modal>
+
+
+     </div>
+
+ </div>
+
+ <div>
+
+     <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
+
+     <div class="actuaBox">
+         @for (int i = 0; i < 5; i++)
+        {
+            <ActuaField />
+        }
+
+    </div>
+
+</div>
+
+
+
+@code {
+    bool isEditing = false;
+    string title = "Vision Oogcenter Gent";
+    string text = "jfsdlkjfkl";
+
+    private Modal modalRef;
+
+    private Task ShowModal()
+    {
+        return modalRef.Show();
+    }
+
+    private Task HideModal()
+    {
+        return modalRef.Hide();
+    }
+
+
+    @*rich*@
+
+    protected RichTextEdit richTextEditRef;
+    protected bool readOnly;
+    protected string contentAsHtml;
+    protected string contentAsDeltaJson;
+    protected string contentAsText;
+    protected string savedContent;
+
+    public async Task OnContentChanged()
+    {
+        contentAsHtml = await richTextEditRef.GetHtmlAsync();
+        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
+        contentAsText = await richTextEditRef.GetTextAsync();
+    }
+
+    public async Task OnSave()
+    {
+        savedContent = await richTextEditRef.GetHtmlAsync();
+        await richTextEditRef.ClearAsync();
+    }
+
+}
