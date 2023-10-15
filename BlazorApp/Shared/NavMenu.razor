@@ -28,18 +28,22 @@
         </div>
     </div>
     <div class="mobileNav">
-        <div class="toggler" @onclick="ToggleNavMenu">
+        <div class="toggler" @onclick="ToggleNavMenu" style="display: @(collapseNavMenu ? "flex" : "none")">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
         </div>
+        <div class="togglerOff" @onclick="ToggleNavMenuBack" style="display: @(collapseNavMenu ? "none" : "block")">
+            <span class="bar L"></span>
+            <span class="bar R"></span>
+        </div>
         <div class="mobileNavLinks" style="display: @(collapseNavMenu ? "none" : "flex")">
-            <NavLink href="" Match="NavLinkMatch.All"><p class="navText">Home</p></NavLink>
-            <NavLink href="onsTeam"><p class="navText">Ons Team</p></NavLink>
-            <NavLink href="behandelingen"><p class="navText">Behandelingen</p></NavLink>
-            <NavLink href="Locatie"><p class="navText">Locatie</p></NavLink>
-            <NavLink href="Contact"><p class="navText">Contact</p></NavLink>
-            <NavLink href="#"><p class="navText">Maak een afspraak</p></NavLink> @*nog de href aan te passen *@
+            <NavLink href="" Match="NavLinkMatch.All" @onclick="ToggleNavMenuBack"><p class="navText">Home</p></NavLink>
+            <NavLink href="onsTeam" @onclick="ToggleNavMenuBack"><p class="navText">Ons Team</p></NavLink>
+            <NavLink href="behandelingen" @onclick="ToggleNavMenuBack"><p class="navText">Behandelingen</p></NavLink>
+            <NavLink href="Locatie" @onclick="ToggleNavMenuBack"><p class="navText">Locatie</p></NavLink>
+            <NavLink href="Contact" @onclick="ToggleNavMenuBack"><p class="navText">Contact</p></NavLink>
+            <NavLink href="#" @onclick="ToggleNavMenuBack"><p class="navText">Maak een afspraak</p></NavLink> @*nog de href aan te passen *@
         </div>
     </div>
 </nav>
@@ -50,6 +54,11 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void ToggleNavMenuBack()
+    {
+        collapseNavMenu = true;
     }
 }
 
