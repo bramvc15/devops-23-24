@@ -1,0 +1,56 @@
+@page "/registreer"
+@using BlazorApp.Auth
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div>
+        <h3>Registreer</h3>
+
+        @if (registrationSuccess)
+        {
+            <p>Registratie gelukt. U kunt nu inloggen.</p>
+        }
+        else
+        {
+            <form>
+                <div class="form-group">
+                    <label for="username">Naam</label>
+                    <input id="username" class="form-control" @bind="username" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Wachtwoord</label>
+                    <input type="password" id="password" class="form-control" @bind="password" />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" @bind="email" />
+                </div>
+                <div class="form-group">
+                    <label for="license">Licentie</label>
+                    <input id="license" class="form-control" @bind="license" />
+                </div>
+                <button class="btn btn-primary" @onclick="RegisterUser">Registreer</button>
+            </form>
+        }
+    </div>
+</div>
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string email = "";
+    private string license = "";
+    private bool registrationSuccess;
+
+    private void RegisterUser()
+    {
+        bool success = BlitzWareAuthService.AuthService.Register(username, password, email, license);
+        if (success)
+        {
+            registrationSuccess = true;
+            StateHasChanged();
+        }
+    }
+
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+}
