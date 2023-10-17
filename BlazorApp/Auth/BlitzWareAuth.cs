@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using Newtonsoft.Json;
 using static BlazorApp.Auth.BlitzWareAuth.API;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorApp.Auth;
 
@@ -116,6 +117,37 @@ public class BlitzWareAuth
             public string Token { get; set; }
         }
 
+        public class RequestResult
+        {
+            public string message { get; set; }
+            public bool success { get; set; }
+        }
+
+        public class LoginModel
+        {
+            [Required(ErrorMessage = "Username is required.")]
+            [MinLength(length: 2, ErrorMessage = "Username must be at least 2 characters long.")]
+            [MaxLength(length: 50, ErrorMessage = "Username must be at max 50 characters long.")]
+            public string username { get; set; }
+
+            [Required(ErrorMessage = "Password is required.")]
+            [MinLength(length: 6, ErrorMessage = "Password must be at least 6 characters long.")]
+            [MaxLength(length: 50, ErrorMessage = "Password must be at max 50 characters long.")]
+            [DataType(DataType.Password)]
+            public string password { get; set; }
+        }
+        public class RegisterModel : LoginModel
+        {
+            [Required(ErrorMessage = "Email is required.")]
+            [EmailAddress(ErrorMessage = "Email address is not valid.")]
+            public string email { get; set; }
+
+            [Required(ErrorMessage = "Confirm password is required.")]
+            [DataType(DataType.Password)]
+            [Compare("password", ErrorMessage = "Password and confirm password do not match.")]
+            public string confirmPassword { get; set; }
+        }
+
         public API(string apiUrl, string appName, string appSecret, string appVersion)
         {
             ApiUrl = apiUrl;
@@ -218,13 +250,11 @@ public class BlitzWareAuth
                 Environment.Exit(0);
             }
         }
-        public bool Register(string username, string password, string email, string license)
+        public RequestResult Register(string username, string password, string email, string license)
         {
             if (!Initialized)
             {
-                Console.WriteLine("Please initialize your application first!");
-                Thread.Sleep(3000);
-                return false;
+                return new RequestResult { message = "Application has not been initialized.", success = false };
             }
             try
             {
@@ -260,32 +290,26 @@ public class BlitzWareAuth
 
                     string responseContent = response.Content.ReadAsStringAsync().Result;
                     this.userData = JsonConvert.DeserializeObject<UserData>(responseContent);
-                    return true;
+                    return new RequestResult { message = "Registration successful.", success = true };
                 }
                 else
                 {
                     string errorContent = response.Content.ReadAsStringAsync().Result;
                     var errorData = JsonConvert.DeserializeObject<ErrorData>(errorContent);
-                    Console.WriteLine($"{errorData.Code}: {errorData.Message}");
-                    Thread.Sleep(3000);
-                    return false;
+                    return new RequestResult { message = $"{errorData.Code}: {errorData.Message}", success = false };
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-                Thread.Sleep(3000);
-                return false;
+                return new RequestResult { message = $"An error occurred: {ex.Message}", success = false };
             }
         }
 
-        public bool Login(string username, string password, string twoFactorCode)
+        public RequestResult Login(string username, string password, string twoFactorCode)
         {
             if (!Initialized)
             {
-                Console.WriteLine("Please initialize your application first!");
-                Thread.Sleep(3000);
-                return false;
+                return new RequestResult { message = "Application has not been initialized.", success = false };
             }
             try
             {
@@ -320,22 +344,18 @@ public class BlitzWareAuth
 
                     string responseContent = response.Content.ReadAsStringAsync().Result;
                     this.userData = JsonConvert.DeserializeObject<UserData>(responseContent);
-                    return true;
+                    return new RequestResult { message = "Login succesful.", success = true };
                 }
                 else
                 {
                     string errorContent = response.Content.ReadAsStringAsync().Result;
                     var errorData = JsonConvert.DeserializeObject<ErrorData>(errorContent);
-                    Console.WriteLine($"{errorData.Code}: {errorData.Message}");
-                    Thread.Sleep(3000);
-                    return false;
+                    return new RequestResult { message = $"{errorData.Code}: {errorData.Message}", success = false };
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-                Thread.Sleep(3000);
-                return false;
+                return new RequestResult { message = $"An error occurred: {ex.Message}", success = false };
             }
         }
         public bool LoginLicenseOnly(string license)

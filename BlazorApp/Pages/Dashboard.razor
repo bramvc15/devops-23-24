@@ -1,0 +1,25 @@
+@page "/dashboard"
+@using BlazorApp.Auth
+
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6 text-center">
+            @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            {
+                <h3>Welcome @BlitzWareAuthService.AuthService.userData.Username</h3>
+                <p>You are authenticated.</p>
+            }
+            else
+            {
+                <p>You are not authorized to access this page. Please log in.</p>
+                <p><a href="/login">Click here to LOGIN.</a></p>
+            }
+                    
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+}
