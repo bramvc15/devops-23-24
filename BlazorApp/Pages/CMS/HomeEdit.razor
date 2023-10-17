@@ -36,7 +36,7 @@
         <Modal @ref="modalRef">
             <ModalContent Centered>
                 <ModalHeader>
-                    <ModalTitle>header edit</ModalTitle>
+                    <ModalTitle>header wijziging</ModalTitle>
                     <CloseButton />
                 </ModalHeader>
                 <ModalBody>
@@ -92,6 +92,7 @@
  <div>
 
      <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
+      <Button Color="Color.Primary" Clicked="@ShowModal">voeg blog toe</Button>
 
      <div class="actuaBox">
          @for (int i = 0; i < 5; i++)
