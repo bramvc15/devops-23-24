@@ -1,3 +1,9 @@
+@using BlazorApp.Data
+@using Microsoft.AspNetCore.Components
+
+@inject HomeHeaderService homeHeaderService
+
+
 <div>
     <div class="buttons">
         <Button Color="Color.Primary" Clicked="@ShowModal">Edit</Button>
@@ -11,7 +17,7 @@
             <ModalBody>
                 <Field>
                     <FieldLabel>Titel</FieldLabel>
-                    <TextEdit Placeholder="Geef titel..." />
+                    <TextEdit Placeholder="Geef titel..." @bind-Text="title"  />
                 </Field>
                 <Field>
                     <FieldLabel>Beschrijving</FieldLabel>
@@ -21,15 +27,24 @@
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@HideModal">Opslaan</Button>
+                <Button Color="Color.Primary" Clicked="@UpdateHomeHeader">Opslaan</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
+    <p>The value of the title field is: @title</p>
 </div>
 
 @code {
+    HomeHeader? header;
+    string title;
+
+    protected override async Task OnInitializedAsync()
+    {
+        header = await homeHeaderService.GetHomeHeaderAsync();
+        @* newtitle = header.Title; // Set title after fetching header *@
+    }
+
     bool isEditing = false;
-    string title = "Vision Oogcenter Gent";
     string text = "jfsdlkjfkl";
 
     private Modal modalRef;
@@ -44,6 +59,33 @@
         return modalRef.Hide();
     }
 
+    private async Task UpdateHomeHeader()
 
+    {
+        // Update the title of the header
+        header.Title = title;
 
+        // Use Console.WriteLine to print the value to the browser console
+        Console.WriteLine("The value of newtitle is: " + header.Title);
+        // Update the title of the header
+        //header.Title = title;
+        StateHasChanged();
+        // You can also update the `text` property here if needed
+
+        // Use the HomeHeaderService to send a PUT request to update the header
+        bool success = await homeHeaderService.UpdateHomeHeaderAsync(header, title);
+        header = await homeHeaderService.GetHomeHeaderAsync();
+
+        if (success)
+        {
+            // Optionally, you can update the UI or show a success message
+            Console.WriteLine("The password = " + title);
+        }
+        else
+        {
+            // Handle the case where the update fails (e.g., show an error message)
+        }
+
+        await HideModal();
+    }
 }

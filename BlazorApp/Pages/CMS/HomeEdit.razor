@@ -1,5 +1,7 @@
 @page "/admin/home"
 @inherits EditPopUp
+@using BlazorApp.Data
+@inject HomeHeaderService homeHeaderService
 
 <PageTitle>Index</PageTitle>
 <div>
@@ -8,10 +10,9 @@
         <div class="overlay">
             <EditPopUp />
 
-
-            <h1>@title</h1>
+            <h1>@header.Title</h1>
             <p>
-                @text
+                @header.Text
             </p>
 
 
@@ -28,7 +29,7 @@
 <div>
 
     <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
-    <Button Color="Color.Primary" Clicked="@ShowModal">voeg blog toe</Button>
+    @* <Button Color="Color.Primary" Clicked="@ShowModal">voeg blog toe</Button> *@
 
     <div class="actuaBox">
         @for (int i = 0; i < 5; i++)
@@ -43,43 +44,13 @@
 
 
 @code {
-    bool isEditing = false;
-    string title = "Vision Oogcenter Gent";
-    string text = "jfsdlkjfkl";
 
-    private Modal modalRef;
+    HomeHeader? header;
 
-    private Task ShowModal()
+     protected override async Task OnInitializedAsync()
     {
-        return modalRef.Show();
-    }
-
-    private Task HideModal()
-    {
-        return modalRef.Hide();
-    }
-
-
-    @*rich*@
-
-    protected RichTextEdit richTextEditRef;
-    protected bool readOnly;
-    protected string contentAsHtml;
-    protected string contentAsDeltaJson;
-    protected string contentAsText;
-    protected string savedContent;
-
-    public async Task OnContentChanged()
-    {
-        contentAsHtml = await richTextEditRef.GetHtmlAsync();
-        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
-        contentAsText = await richTextEditRef.GetTextAsync();
-    }
-
-    public async Task OnSave()
-    {
-        savedContent = await richTextEditRef.GetHtmlAsync();
-        await richTextEditRef.ClearAsync();
+       header = await homeHeaderService.GetHomeHeaderAsync();
+       Console.WriteLine(header.Title);
     }
 
 }
