@@ -1,22 +1,49 @@
-@* <Modal @ref="modalRef">
-    <ModalContent Centered>
-        <ModalHeader>
-            <ModalTitle>Employee edit</ModalTitle>
-            <CloseButton />
-        </ModalHeader>
-        <ModalBody>
-            <Field>
-                <FieldLabel>Name</FieldLabel>
-                <TextEdit Placeholder="Enter name..." />
-            </Field>
-            <Field>
-                <FieldLabel>Surname</FieldLabel>
-                <TextEdit Placeholder="Enter surname..." />
-            </Field>
-        </ModalBody>
-        <ModalFooter>
-            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
-            <Button Color="Color.Primary" Clicked="@HideModal">Save Changes</Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal> *@
+<div>
+    <div class="buttons">
+        <Button Color="Color.Primary" Clicked="@ShowModal">Edit</Button>
+    </div>
+    <Modal @ref="modalRef">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>header wijziging</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Titel</FieldLabel>
+                    <TextEdit Placeholder="Geef titel..." />
+                </Field>
+                <Field>
+                    <FieldLabel>Beschrijving</FieldLabel>
+                    @* rich *@
+                    <RichTextEditor />
+                </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                <Button Color="Color.Primary" Clicked="@HideModal">Opslaan</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+</div>
+
+@code {
+    bool isEditing = false;
+    string title = "Vision Oogcenter Gent";
+    string text = "jfsdlkjfkl";
+
+    private Modal modalRef;
+
+    private Task ShowModal()
+    {
+        return modalRef.Show();
+    }
+
+    private Task HideModal()
+    {
+        return modalRef.Hide();
+    }
+
+
+
+}
