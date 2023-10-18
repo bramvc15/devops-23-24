@@ -1,13 +1,19 @@
 @using BlazorApp.Data
 @using Microsoft.AspNetCore.Components
-
-@inject HomeHeaderService homeHeaderService
-
+@using System.Text.Json
 
 <div>
     <div class="buttons">
         <Button Color="Color.Primary" Clicked="@ShowModal">Edit</Button>
     </div>
+    <div>
+        @foreach(var h in header){
+            <h1>@h.title</h1>
+            <p>
+                @h.context
+            </p>
+                
+            }</div>
     <Modal @ref="modalRef">
         <ModalContent Centered>
             <ModalHeader>
@@ -17,7 +23,7 @@
             <ModalBody>
                 <Field>
                     <FieldLabel>Titel</FieldLabel>
-                    <TextEdit Placeholder="Geef titel..." @bind-Text="title"  />
+                    <TextEdit Placeholder="Geef titel..." @bind-Text="newtitle" />
                 </Field>
                 <Field>
                     <FieldLabel>Beschrijving</FieldLabel>
@@ -27,25 +33,17 @@
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@UpdateHomeHeader">Opslaan</Button>
+                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
-    <p>The value of the title field is: @title</p>
+    <p>The value of the title field is: @newtitle</p>
 </div>
 
 @code {
-    HomeHeader? header;
-    string title;
 
-    protected override async Task OnInitializedAsync()
-    {
-        header = await homeHeaderService.GetHomeHeaderAsync();
-        @* newtitle = header.Title; // Set title after fetching header *@
-    }
-
-    bool isEditing = false;
-    string text = "jfsdlkjfkl";
+    string newtitle;
+    string context;
 
     private Modal modalRef;
 
@@ -59,33 +57,68 @@
         return modalRef.Hide();
     }
 
-    private async Task UpdateHomeHeader()
-
+    public class HomeH
     {
-        // Update the title of the header
-        header.Title = title;
+        public string title { get; set; }
+        public string context { get; set; }
 
-        // Use Console.WriteLine to print the value to the browser console
-        Console.WriteLine("The value of newtitle is: " + header.Title);
-        // Update the title of the header
-        //header.Title = title;
-        StateHasChanged();
-        // You can also update the `text` property here if needed
+        
 
-        // Use the HomeHeaderService to send a PUT request to update the header
-        bool success = await homeHeaderService.UpdateHomeHeaderAsync(header, title);
-        header = await homeHeaderService.GetHomeHeaderAsync();
+    }
 
-        if (success)
+    string API_URL = "http://localhost:5075/";
+
+    private IEnumerable<HomeH> header = Array.Empty<HomeH>();
+
+    private async Task refreshList()
+    {
+
+        HttpClient httpClient = new HttpClient();
+        HttpResponseMessage response = await httpClient.GetAsync(API_URL + "api/Header/GetContent");
+        httpClient.Dispose();
+        using var responseStream = await response.Content.ReadAsStreamAsync();
+        header = await JsonSerializer.DeserializeAsync<IEnumerable<HomeH>>(responseStream);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await this.refreshList();
+    }
+
+
+    private async Task UpdateTitle()
+    {
+        var updateData = new HomeH { title = newtitle, context=""};
+
+        // Serialize the object to JSON
+        var json = System.Text.Json.JsonSerializer.Serialize(updateData);
+
+        // Create a StringContent object with JSON data
+        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+        // Send the PUT request to update the title
+        HttpClient httpClient = new HttpClient();
+        HttpResponseMessage response = await httpClient.PutAsync(API_URL + "api/Header/putContent", content); // Adjust the URL
+
+        httpClient.Dispose();
+
+         Console.WriteLine(response.IsSuccessStatusCode);
+
+        // Check the response for success
+        if (response.IsSuccessStatusCode)
         {
-            // Optionally, you can update the UI or show a success message
-            Console.WriteLine("The password = " + title);
+            // Successful update
+            Console.WriteLine("fsadfasdf");
+            await refreshList(); // Refresh the list of titles after updating
+            await HideModal();
         }
         else
         {
-            // Handle the case where the update fails (e.g., show an error message)
-        }
+            // Handle the failure
+            // You can display an error message or take appropriate action here
+            Console.WriteLine("it is failing");
 
-        await HideModal();
+        }
     }
+
 }

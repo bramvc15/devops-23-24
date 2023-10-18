@@ -1,18 +1,18 @@
 ﻿@page "/"
+@using System.Text.Json
 
 <PageTitle>Index</PageTitle>
 
 <div >
     <div class="background-div">
     <div class="overlay">
-        <h1>Vision Oogcenter gent</h1>
+
+        @foreach(var h in header){
+        <h1>@h.title</h1>
         <p>
-            Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod tempor <br> incididunt ut labore et dolore
-            magna aliqua. Ut <br>enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea <br> commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse 
+          @h.context
         </p>
+        }
         <div class="buttons">
             <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
             <button class="btn btn-light"   >Contacteer ons <span class="oi oi-envelope-closed"></span></button>
@@ -33,3 +33,35 @@
     </div>
 
 </div>
+
+
+@code {
+
+     public class HomeH
+    {
+        public string title { get; set; }
+        public string context { get; set; }
+
+        
+
+    }
+
+    string API_URL = "http://localhost:5075/";
+
+    private IEnumerable<HomeH> header = Array.Empty<HomeH>();
+
+    private async Task refreshList()
+    {
+
+        HttpClient httpClient = new HttpClient();
+        HttpResponseMessage response = await httpClient.GetAsync(API_URL + "api/Header/GetContent");
+        httpClient.Dispose();
+        using var responseStream = await response.Content.ReadAsStreamAsync();
+        header = await JsonSerializer.DeserializeAsync<IEnumerable<HomeH>>(responseStream);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await this.refreshList();
+    }
+}

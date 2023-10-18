@@ -1,19 +1,22 @@
 @page "/admin/home"
 @inherits EditPopUp
 @using BlazorApp.Data
-@inject HomeHeaderService homeHeaderService
+@using Microsoft.AspNetCore.Components
+@using System.Text.Json
 
 <PageTitle>Index</PageTitle>
 <div>
     <div class="background-div">
 
         <div class="overlay">
-            <EditPopUp />
-
-            <h1>@header.Title</h1>
+            <EditPopUp/>
+            @* @foreach(var h in header){
+            <h1>@h.title</h1>
             <p>
-                @header.Text
+                @h.context
             </p>
+                
+            } *@
 
 
             <div class="buttons">
@@ -45,12 +48,31 @@
 
 @code {
 
-    HomeHeader? header;
-
-     protected override async Task OnInitializedAsync()
-    {
-       header = await homeHeaderService.GetHomeHeaderAsync();
-       Console.WriteLine(header.Title);
+    public class HomeH   {
+        public  string title { get; set; }
+        public  string context { get; set; }
     }
+
+    string API_URL = "http://localhost:5075/";
+
+    private IEnumerable<HomeH> header = Array.Empty<HomeH>();
+
+    private async Task refreshList()
+    {
+
+        HttpClient httpClient = new HttpClient();
+        HttpResponseMessage response = await httpClient.GetAsync(API_URL + "api/Header/GetContent");
+        httpClient.Dispose();
+        using var responseStream = await response.Content.ReadAsStreamAsync();
+        header = await JsonSerializer.DeserializeAsync<IEnumerable<HomeH>>(responseStream);
+            StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        StateHasChanged();
+        await this.refreshList();
+    }
+
 
 }
