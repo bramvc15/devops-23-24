@@ -1,0 +1,12 @@
+.textBubble {
+    width: 100%;
+}
+
+.content {
+    float: left;
+    background-color: rgb(226, 226, 226);
+    margin: 5px;
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-weight: 400;
+}

@@ -1,5 +1,5 @@
 .chatbox-div {
-    width: 325px;
+    width: 375px;
     border-radius: 15px 15px 0px 0px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; 
     background-color: white;
@@ -24,6 +24,7 @@
 .chatbox-content {
     height: 350px;
     display: none;
+    padding: 5px;
 }
 
 .visible {
