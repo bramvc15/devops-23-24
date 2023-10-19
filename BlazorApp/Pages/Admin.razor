@@ -1,7 +1,11 @@
-@page "/dashboard"
+@page "/admin"
 @using BlazorApp.Auth
+@inject NavigationManager NavManager
 
-<div class="container">
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+<div class="admin container">
     <div class="row justify-content-center align-items-center" style="height: 100vh;">
         <div class="col-md-6 text-center">
             @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
@@ -22,4 +26,10 @@
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            NavManager.NavigateTo("/login");
+    }
 }

@@ -3,9 +3,7 @@ using System.Net.Http.Headers;
 using System.Net;
 using System.Text;
 using System.Security.Cryptography;
-using System.Text.Json;
 using Newtonsoft.Json;
-using static BlazorApp.Auth.BlitzWareAuth.API;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlazorApp.Auth;
@@ -21,57 +19,6 @@ public class BlitzWareAuth
             byte[] hashBytes = sha256Hash.ComputeHash(bytes);
             string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
             return hash;
-        }
-        internal static string CalculateFileHash(string filename)
-        {
-            SHA256 sha256 = SHA256.Create();
-            FileStream fileStream = File.OpenRead(filename);
-            byte[] hashBytes = sha256.ComputeHash(fileStream);
-            return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
-        }
-    }
-    private class Utilities
-    {
-        internal static string HWID()
-        {
-            string hwid = string.Empty;
-
-            try
-            {
-                ProcessStartInfo processStartInfo = new()
-                {
-                    FileName = "wmic",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    Arguments = "diskdrive get serialnumber"
-                };
-
-                Process process = new() { StartInfo = processStartInfo };
-                process.Start();
-                string output = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-
-                if (!string.IsNullOrEmpty(output))
-                {
-                    string[] lines = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (lines.Length > 1)
-                    {
-                        hwid = lines[1].Trim().TrimEnd('.');
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                hwid = "Error hwid: " + ex.Message;
-            }
-
-            return hwid;
-        }
-        internal static string IP()
-        {
-            string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
-            return externalIpString;
         }
     }
     public class API
@@ -119,8 +66,8 @@ public class BlitzWareAuth
 
         public class RequestResult
         {
-            public string message { get; set; }
-            public bool success { get; set; }
+            public string Message { get; set; }
+            public bool Success { get; set; }
         }
 
         public class LoginModel
@@ -156,6 +103,7 @@ public class BlitzWareAuth
             AppVersion = appVersion;
             Initialized = false;
         }
+
         public void Initialize()
         {
             if (Initialized)
@@ -205,34 +153,6 @@ public class BlitzWareAuth
 
                     if (appData.FreeMode == 1)
                         Console.WriteLine("Application is in Free Mode!");
-
-                    if (appData.DeveloperMode == 1)
-                    {
-                        Console.WriteLine("Application is in Developer Mode, bypassing integrity and update check!");
-                        File.Create(Environment.CurrentDirectory + "/integrity.txt").Close();
-                        string hash = Security.CalculateFileHash(Process.GetCurrentProcess().MainModule.FileName);
-                        File.WriteAllText(Environment.CurrentDirectory + "/integrity.txt", hash);
-                        Console.WriteLine("Your application's hash has been saved to integrity.txt, please refer to this when your application is ready for release!");
-                    }
-                    else
-                    {
-                        if (appData.Version != AppVersion)
-                        {
-                            Console.WriteLine($"Update {appData.Version} available, redirecting to update!");
-                            Thread.Sleep(3000);
-                            Process.Start(appData.DownloadLink);
-                            Environment.Exit(0);
-                        }
-                        if (appData.IntegrityCheck == 1)
-                        {
-                            if (appData.ProgramHash != Security.CalculateFileHash(Process.GetCurrentProcess().MainModule.FileName))
-                            {
-                                Console.WriteLine("File has been tampered with, couldn't verify integrity!");
-                                Thread.Sleep(3000);
-                                Environment.Exit(0);
-                            }
-                        }
-                    }
                 }
                 else
                 {
@@ -254,7 +174,7 @@ public class BlitzWareAuth
         {
             if (!Initialized)
             {
-                return new RequestResult { message = "Application has not been initialized.", success = false };
+                return new RequestResult { Message = "Application has not been initialized.", Success = false };
             }
             try
             {
@@ -270,9 +190,9 @@ public class BlitzWareAuth
                     password,
                     email,
                     license,
-                    hwid = Utilities.HWID(),
-                    lastIP = Utilities.IP(),
-                    id = appData.Id
+                    hwid = "N/A",
+                    lastIP = "N/A",
+                    id = "N/A"
                 };
                 var content = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync(url, content).Result;
@@ -283,25 +203,23 @@ public class BlitzWareAuth
                     string recalculatedHash = Security.CalculateResponseHash(response.Content.ReadAsStringAsync().Result);
                     if (responseHash != recalculatedHash)
                     {
-                        Console.WriteLine("Possible malicious activity detected!");
-                        Thread.Sleep(3000);
-                        Environment.Exit(0);
-                    }
+						return new RequestResult { Message = "Possible malicious activity detected.", Success = false };
+					}
 
                     string responseContent = response.Content.ReadAsStringAsync().Result;
                     this.userData = JsonConvert.DeserializeObject<UserData>(responseContent);
-                    return new RequestResult { message = "Registration successful.", success = true };
+                    return new RequestResult { Message = "Registration successful.", Success = true };
                 }
                 else
                 {
                     string errorContent = response.Content.ReadAsStringAsync().Result;
                     var errorData = JsonConvert.DeserializeObject<ErrorData>(errorContent);
-                    return new RequestResult { message = $"{errorData.Code}: {errorData.Message}", success = false };
+                    return new RequestResult { Message = $"{errorData.Code}: {errorData.Message}", Success = false };
                 }
             }
             catch (Exception ex)
             {
-                return new RequestResult { message = $"An error occurred: {ex.Message}", success = false };
+                return new RequestResult { Message = $"An error occurred: {ex.Message}", Success = false };
             }
         }
 
@@ -309,7 +227,7 @@ public class BlitzWareAuth
         {
             if (!Initialized)
             {
-                return new RequestResult { message = "Application has not been initialized.", success = false };
+                return new RequestResult { Message = "Application has not been initialized.", Success = false };
             }
             try
             {
@@ -324,8 +242,8 @@ public class BlitzWareAuth
                     username,
                     password,
                     twoFactorCode,
-                    hwid = Utilities.HWID(),
-                    lastIP = Utilities.IP(),
+                    hwid = "N/A",
+                    lastIP = "N/A",
                     appId = appData.Id
                 };
                 var content = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
@@ -337,149 +255,31 @@ public class BlitzWareAuth
                     string recalculatedHash = Security.CalculateResponseHash(response.Content.ReadAsStringAsync().Result);
                     if (responseHash != recalculatedHash)
                     {
-                        Console.WriteLine("Possible malicious activity detected!");
-                        Thread.Sleep(3000);
-                        Environment.Exit(0);
-                    }
+						return new RequestResult { Message = "Possible malicious activity detected.", Success = false };
+					}
 
                     string responseContent = response.Content.ReadAsStringAsync().Result;
                     this.userData = JsonConvert.DeserializeObject<UserData>(responseContent);
-                    return new RequestResult { message = "Login succesful.", success = true };
+                    return new RequestResult { Message = "Login succesful.", Success = true };
                 }
                 else
                 {
                     string errorContent = response.Content.ReadAsStringAsync().Result;
                     var errorData = JsonConvert.DeserializeObject<ErrorData>(errorContent);
-                    return new RequestResult { message = $"{errorData.Code}: {errorData.Message}", success = false };
+                    return new RequestResult { Message = $"{errorData.Code}: {errorData.Message}", Success = false };
                 }
             }
             catch (Exception ex)
             {
-                return new RequestResult { message = $"An error occurred: {ex.Message}", success = false };
-            }
-        }
-        public bool LoginLicenseOnly(string license)
-        {
-            if (!Initialized)
-            {
-                Console.WriteLine("Please initialize your application first!");
-                Thread.Sleep(3000);
-                return false;
-            }
-            try
-            {
-                HttpClient client = new();
-                string url = ApiUrl + "/licenses/login";
-
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
-
-                var requestData = new
-                {
-                    license,
-                    hwid = Utilities.HWID(),
-                    lastIP = Utilities.IP(),
-                    appId = appData.Id
-                };
-                var content = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = client.PostAsync(url, content).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseHash = response.Headers.GetValues("X-Response-Hash").FirstOrDefault();
-                    string recalculatedHash = Security.CalculateResponseHash(response.Content.ReadAsStringAsync().Result);
-                    if (responseHash != recalculatedHash)
-                    {
-                        Console.WriteLine("Possible malicious activity detected!");
-                        Thread.Sleep(3000);
-                        Environment.Exit(0);
-                    }
-
-                    string responseContent = response.Content.ReadAsStringAsync().Result;
-                    userData = JsonConvert.DeserializeObject<UserData>(responseContent);
-                    return true;
-                }
-                else
-                {
-                    string errorContent = response.Content.ReadAsStringAsync().Result;
-                    var errorData = JsonConvert.DeserializeObject<ErrorData>(errorContent);
-                    Console.WriteLine($"{errorData.Code}: {errorData.Message}");
-                    Thread.Sleep(3000);
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-                Thread.Sleep(3000);
-                return false;
+                return new RequestResult { Message = $"An error occurred: {ex.Message}", Success = false };
             }
         }
 
-        public bool Extend(string username, string password, string license)
+        public RequestResult Log(string username, string action)
         {
             if (!Initialized)
             {
-                Console.WriteLine("Please initialize your application first!");
-                Thread.Sleep(3000);
-                return false;
-            }
-            try
-            {
-                HttpClient client = new();
-                string url = ApiUrl + "/users/upgrade";
-
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
-
-                var requestData = new
-                {
-                    username,
-                    password,
-                    license,
-                    hwid = Utilities.HWID(),
-                    appId = appData.Id
-                };
-                var content = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = client.PutAsync(url, content).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseHash = response.Headers.GetValues("X-Response-Hash").FirstOrDefault();
-                    string recalculatedHash = Security.CalculateResponseHash(response.Content.ReadAsStringAsync().Result);
-                    if (responseHash != recalculatedHash)
-                    {
-                        Console.WriteLine("Possible malicious activity detected!");
-                        Thread.Sleep(3000);
-                        Environment.Exit(0);
-                    }
-
-                    string responseContent = response.Content.ReadAsStringAsync().Result;
-                    userData = JsonConvert.DeserializeObject<UserData>(responseContent);
-                    return true;
-                }
-                else
-                {
-                    string errorContent = response.Content.ReadAsStringAsync().Result;
-                    var errorData = JsonConvert.DeserializeObject<ErrorData>(errorContent);
-                    Console.WriteLine($"{errorData.Code}: {errorData.Message}");
-                    Thread.Sleep(3000);
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-                Thread.Sleep(3000);
-                return false;
-            }
-        }
-        public void Log(string username, string action)
-        {
-            if (!Initialized)
-            {
-                Console.WriteLine("Please initialize your application first!");
-                return;
+                return new RequestResult { Message = "Application has not been initialized.", Success = false };
             }
             try
             {
@@ -494,22 +294,26 @@ public class BlitzWareAuth
                 {
                     username,
                     action,
-                    ip = Utilities.IP(),
+                    ip = "N/A",
                     appId = appData.Id
                 };
                 var content = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync(url, content).Result;
 
-                if (!response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
+                {
+                    return new RequestResult { Message = "Log sent succesful.", Success = true };
+                }
+                else
                 {
                     string errorContent = response.Content.ReadAsStringAsync().Result;
                     var errorData = JsonConvert.DeserializeObject<ErrorData>(errorContent);
-                    Console.WriteLine($"{errorData.Code}: {errorData.Message}");
+                    return new RequestResult { Message = $"{errorData.Code}: {errorData.Message}", Success = false };
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                return new RequestResult { Message = $"An error occurred: {ex.Message}", Success = false };
             }
         }
 

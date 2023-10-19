@@ -35,7 +35,7 @@
         {
             if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             {
-                NavManager.NavigateTo("/dashboard");
+                NavManager.NavigateTo("/admin");
             }
         }
     }
@@ -44,15 +44,24 @@
     {
         isDisabled = true;
         BlitzWareAuth.API.RequestResult result = BlitzWareAuthService.AuthService.Login(login.username, login.password, "");
-        if (result.success)
+        if (result.Success)
         {
-            message = result.message;
-            NavManager.NavigateTo("/dashboard");
+            message = result.Message;
+            BlitzWareAuth.API.RequestResult result2 = BlitzWareAuthService.AuthService.Log(BlitzWareAuthService.AuthService.userData.Username, "Logged in");
+            if (result2.Success)
+            {
+                NavManager.NavigateTo("/admin");
+            }
+            else
+            {
+                isDisabled = false;
+                message = result2.Message;
+            }
         }
         else
         {
             isDisabled = false;
-            message = result.message;
+            message = result.Message;
         }
     }
 

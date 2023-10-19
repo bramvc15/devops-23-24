@@ -51,15 +51,15 @@
     {
         isDisabled = true;
         BlitzWareAuth.API.RequestResult result = BlitzWareAuthService.AuthService.Register(reg.username, reg.password, reg.email, "");
-        if (result.success)
+        if (result.Success)
         {
-            message = result.message;
+            message = result.Message;
             login = "Click here to LOGIN.";
         }
         else
         {
             isDisabled = false;
-            message = result.message;
+            message = result.Message;
         }
     }
 

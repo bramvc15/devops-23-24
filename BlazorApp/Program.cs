@@ -28,9 +28,4 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-// Resolve the BlitzWareAuthService from the service provider
-var blitzWareAuthService = app.Services.GetRequiredService<BlitzWareAuthService>();
-// Initialize the BlitzWareAuthService before running the application
-blitzWareAuthService.AuthService.Initialize();
-
 app.Run();
