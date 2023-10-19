@@ -1,0 +1,21 @@
+<div class="chatbox-div">
+    <div class="chatbox-header d-flex" @onclick="() => ToggleChatbox()">
+        &#9679
+        <div class="title">
+            Chat
+        </div>
+    </div>
+    <div class="chatbox-content @(visible ? "visible" : "")">
+
+    </div>
+</div>
+
+
+@code {
+    public bool visible = false;
+
+    void ToggleChatbox()
+    {
+        visible = !visible;
+    }
+}

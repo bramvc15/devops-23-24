@@ -1,0 +1,32 @@
+.chatbox-div {
+    width: 325px;
+    border-radius: 15px 15px 0px 0px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; 
+    background-color: white;
+    position: fixed;
+    bottom: 0px; /* Adjust this value to control the vertical position */
+    right: 10%; /* Adjust this value to control the horizontal position */
+}
+
+.chatbox-header {
+    width: 100%;
+    background: rgb(77, 156, 132);
+    border-radius: 15px 15px 0px 0px;
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+}
+
+.title {
+    padding-left: 10px;
+}
+
+.chatbox-content {
+    height: 350px;
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
