@@ -1,5 +1,5 @@
-﻿<div>
-    <nav class="fixed-nav">
+﻿<nav>
+    <div class="fixed-nav">
         <div class="firstNav">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <img src="images/Vision.png" class="logo" alt="logo" />
@@ -22,25 +22,45 @@
         <div class="lastNav">
             <NavLink class="nav-link" href="#"><p class="lastText">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar-check" viewBox="0 0 16 16">
-                     <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                     <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                    <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
                 </svg>  Maak een afspraak</p></NavLink>
         </div>
-    </nav>
-</div>
-
-
-
-
+    </div>
+    <div class="mobileNav">
+        <div class="toggler" @onclick="ToggleNavMenu" style="display: @(collapseNavMenu ? "flex" : "none")">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <div class="slideDown" style="display: @(collapseNavMenu ? "none" : "block")">
+            <div class="togglerOff" @onclick="ToggleNavMenuBack" style="display: @(collapseNavMenu ? "none" : "block")">
+                <span class="bar L"></span>
+                <span class="bar R"></span>
+            </div>
+            <div class="mobileNavLinks" style="display: @(collapseNavMenu ? "none" : "flex")">
+                <NavLink href="" Match="NavLinkMatch.All" @onclick="ToggleNavMenuBack"><p class="navText">Home</p></NavLink>
+                <NavLink href="onsTeam" @onclick="ToggleNavMenuBack"><p class="navText">Ons Team</p></NavLink>
+                <NavLink href="behandelingen" @onclick="ToggleNavMenuBack"><p class="navText">Behandelingen</p></NavLink>
+                <NavLink href="Locatie" @onclick="ToggleNavMenuBack"><p class="navText">Locatie</p></NavLink>
+                <NavLink href="Contact" @onclick="ToggleNavMenuBack"><p class="navText">Contact</p></NavLink>
+                <NavLink href="#" @onclick="ToggleNavMenuBack"><p class="navText">Maak een afspraak</p></NavLink> @*nog de href aan te passen *@
+            </div>
+        </div>
+    </div>
+</nav>
 
 @code {
     private bool collapseNavMenu = true;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void ToggleNavMenuBack()
+    {
+        collapseNavMenu = true;
     }
 }
 
