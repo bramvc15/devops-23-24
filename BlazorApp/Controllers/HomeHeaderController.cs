@@ -1,5 +1,6 @@
 using BlazorApp.Services;
 using BlazorApp.Models;
+using BlazorApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorApp.Controllers;
@@ -20,5 +21,10 @@ public class HomeHeaderController : ControllerBase
 
         return _service.GetContent();
 
+    }
+
+    public void UpdateContent(int HeaderId, string newTitle)
+    {
+        _service.UpdateHeaderTitle(HeaderId, newTitle);
     }
 }

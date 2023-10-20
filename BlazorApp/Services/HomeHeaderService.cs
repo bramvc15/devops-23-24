@@ -1,7 +1,5 @@
 using BlazorApp.Data;
 using BlazorApp.Models;
-using BlazorApp.Pages;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorApp.Services
 {
@@ -11,18 +9,28 @@ namespace BlazorApp.Services
 
         private readonly DatabaseContext _ctx;
 
-        public HomeHeaderService(DatabaseContext ctx){
+        public HomeHeaderService(DatabaseContext ctx)
+        {
             _ctx = ctx;
         }
 
         public IEnumerable<HomeHeader> GetContent()
         {
-           return _ctx.HomeHeaders.ToList();
+            return _ctx.HomeHeaders.ToList();
         }
 
-        public JsonResult PutContent()
+        public void UpdateHeaderTitle(int headerId, string newTitle)
         {
-            throw new NotImplementedException();
+            var headerToUpdate = _ctx.HomeHeaders.Find(headerId);
+
+
+            if (headerToUpdate is null)
+            {
+                throw new InvalidOperationException("does not exist");
+            }
+
+            headerToUpdate.Title = newTitle;
+            _ctx.SaveChanges();
         }
     }
 

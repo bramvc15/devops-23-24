@@ -2,22 +2,35 @@
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @using System.Text.Json.Serialization;
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inject HomeHeaderService homeHeaderService
 
 <div>
     <div class="buttons">
         <Button Color="Color.Primary" Clicked="@ShowModal">Edit</Button>
     </div>
     <div>
-        <h1>title</h1>
-            <p>
-                context
-            </p>
-        @* @foreach(var h in header){
-            <h1>@h.title</h1>
-            <p>
-                @h.context
-            </p>
-                
+       @* @if (HomObj != null)
+            {
+                @foreach (var h in HomObj)
+                {
+
+                    <h1>@h.Title</h1>
+                    <p>
+                        @h.Context
+                    </p>
+                }
+            }
+            else
+            {
+
+                <h1>title</h1>
+                <p>
+                    context
+                </p>
             } *@
             </div>
     <Modal @ref="modalRef">
@@ -63,6 +76,6 @@
         return modalRef.Hide();
     }
 
-  
+ 
 
 }
