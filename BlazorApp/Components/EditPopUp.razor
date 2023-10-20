@@ -1,19 +1,25 @@
 @using BlazorApp.Data
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
+@using System.Text.Json.Serialization;
 
 <div>
     <div class="buttons">
         <Button Color="Color.Primary" Clicked="@ShowModal">Edit</Button>
     </div>
     <div>
-        @foreach(var h in header){
+        <h1>title</h1>
+            <p>
+                context
+            </p>
+        @* @foreach(var h in header){
             <h1>@h.title</h1>
             <p>
                 @h.context
             </p>
                 
-            }</div>
+            } *@
+            </div>
     <Modal @ref="modalRef">
         <ModalContent Centered>
             <ModalHeader>
@@ -33,7 +39,7 @@
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
+                @* <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button> *@
             </ModalFooter>
         </ModalContent>
     </Modal>
@@ -66,18 +72,20 @@
 
     }
 
-    string API_URL = "http://localhost:5075/";
+    @* string API_URL = "http://localhost:5075/";
 
     private IEnumerable<HomeH> header = Array.Empty<HomeH>();
 
     private async Task refreshList()
     {
-
+ Console.WriteLine("header");
         HttpClient httpClient = new HttpClient();
         HttpResponseMessage response = await httpClient.GetAsync(API_URL + "api/Header/GetContent");
         httpClient.Dispose();
         using var responseStream = await response.Content.ReadAsStreamAsync();
         header = await JsonSerializer.DeserializeAsync<IEnumerable<HomeH>>(responseStream);
+
+       
     }
 
     protected override async Task OnInitializedAsync()
@@ -118,7 +126,7 @@
             // You can display an error message or take appropriate action here
             Console.WriteLine("it is failing");
 
-        }
+        } *@
     }
 
 }

@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using BlazorApp.Data;
-using Blazored.Modal;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using Blazorise.RichTextEdit;
+using Microsoft.EntityFrameworkCore;
+using BlazorApp.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +14,13 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<DoctorService>();
+builder.Services.AddScoped<HomeHeaderService>();
 
-//builder.Services.AddSingleton<HomeHeaderService>();
+builder.Services.AddDbContext<DatabaseContext>( options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+
+ 
 builder.Services
     .AddBlazorise( options =>
     {
@@ -36,10 +41,12 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 
-
+app.CreateDbIfNotExists();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
