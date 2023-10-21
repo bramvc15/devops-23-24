@@ -22,6 +22,11 @@ namespace BlazorApp.Services
             .ToList();
     }
 
+
+     public async Task<IEnumerable<Doctor>> GetAllAsync()
+    {
+        return await _DBContext.Doctors.ToListAsync();
+    }
   
 
     public Doctor Create(Doctor newDoctor)

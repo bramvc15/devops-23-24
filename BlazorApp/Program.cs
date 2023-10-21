@@ -14,11 +14,14 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<DoctorService>();
-builder.Services.AddScoped<HomeHeaderService>();
+builder.Services.AddTransient<DoctorService>();
+builder.Services.AddTransient<HomeHeaderService>();
 
 builder.Services.AddDbContext<DatabaseContext>( options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+    {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
+    }, ServiceLifetime.Transient);
+
 
  
 builder.Services

@@ -7,15 +7,17 @@
 @using BlazorApp.Models
 @using BlazorApp.Controllers
 @inject HomeHeaderService homeHeaderService
+@inject DatabaseContext databaseContext
+
 
 <div>
     <div class="buttons">
         <Button Color="Color.Primary" Clicked="@ShowModal">Edit</Button>
     </div>
     <div>
-       @* @if (HomObj != null)
+       @if (HomObj2 != null)
             {
-                @foreach (var h in HomObj)
+                @foreach (var h in HomObj2)
                 {
 
                     <h1>@h.Title</h1>
@@ -31,7 +33,7 @@
                 <p>
                     context
                 </p>
-            } *@
+            }
             </div>
     <Modal @ref="modalRef">
         <ModalContent Centered>
@@ -42,7 +44,7 @@
             <ModalBody>
                 <Field>
                     <FieldLabel>Titel</FieldLabel>
-                    <TextEdit Placeholder="Geef titel..." @bind-Text="newtitle" />
+                    <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
                 </Field>
                 <Field>
                     <FieldLabel>Beschrijving</FieldLabel>
@@ -52,16 +54,19 @@
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                @* <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button> *@
+                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
-    <p>The value of the title field is: @newtitle</p>
+    <p>The value of the title field is: @newTitle</p>
 </div>
 
 @code {
 
-    string newtitle;
+    HomeHeader header;  // This should be the header you want to update.
+    int headerId;       // Add a field to hold the header ID.
+    string newTitle;
+
     string context;
 
     private Modal modalRef;
@@ -76,6 +81,21 @@
         return modalRef.Hide();
     }
 
+        private void UpdateTitle()
+    {
+        // Update the title and hide the modal.
+        homeHeaderService.UpdateHeaderTitle( newTitle);
+        modalRef.Hide();
+    }
  
+
+    IEnumerable<HomeHeader>? HomObj2;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        HomObj2 = await Task.Run(() => homeHeaderService.GetContent());
+    }
+
 
 }

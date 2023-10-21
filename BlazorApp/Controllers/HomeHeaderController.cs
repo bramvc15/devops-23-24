@@ -2,6 +2,7 @@ using BlazorApp.Services;
 using BlazorApp.Models;
 using BlazorApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using BlazorApp.Pages;
 
 namespace BlazorApp.Controllers;
 
@@ -16,6 +17,15 @@ public class HomeHeaderController : ControllerBase
         _service = service;
     }
 
+    // [HttpGet]
+    // public async  Task<IEnumerable<HomeHeader>> GetContent()
+    // {
+
+    //     return await _service.GetContentAsync();
+
+    // }
+
+    [HttpGet]
     public IEnumerable<HomeHeader> GetContent()
     {
 
@@ -23,8 +33,9 @@ public class HomeHeaderController : ControllerBase
 
     }
 
-    public void UpdateContent(int HeaderId, string newTitle)
+    [HttpPost]
+    public void UpdateContent(string newTitle)
     {
-        _service.UpdateHeaderTitle(HeaderId, newTitle);
+        _service.UpdateHeaderTitle(newTitle);
     }
 }
