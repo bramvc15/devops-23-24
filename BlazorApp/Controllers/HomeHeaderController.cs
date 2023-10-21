@@ -34,8 +34,8 @@ public class HomeHeaderController : ControllerBase
     }
 
     [HttpPost]
-    public void UpdateContent(string newTitle)
+    public void UpdateContent(string newTitle, string content)
     {
-        _service.UpdateHeaderTitle(newTitle);
+        _service.UpdateHeaderTitle(newTitle, content);
     }
 }

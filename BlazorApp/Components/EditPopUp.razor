@@ -10,31 +10,33 @@
 @inject DatabaseContext databaseContext
 
 
+
+
 <div>
     <div class="buttons">
         <Button Color="Color.Primary" Clicked="@ShowModal">Edit</Button>
     </div>
     <div>
-       @if (HomObj2 != null)
-            {
-                @foreach (var h in HomObj2)
-                {
-
-                    <h1>@h.Title</h1>
-                    <p>
-                        @h.Context
-                    </p>
-                }
-            }
-            else
+        @if (HomObj2 != null)
+        {
+            @foreach (var h in HomObj2)
             {
 
-                <h1>title</h1>
-                <p>
-                    context
-                </p>
+                <h1>@h.Title</h1>
+                
+                   @((MarkupString)h.Context)
+            
             }
-            </div>
+        }
+        else
+        {
+
+            <h1>title</h1>
+            <p>
+                context
+            </p>
+        }
+    </div>
     <Modal @ref="modalRef">
         <ModalContent Centered>
             <ModalHeader>
@@ -49,7 +51,7 @@
                 <Field>
                     <FieldLabel>Beschrijving</FieldLabel>
                     @* rich *@
-                    <RichTextEditor />
+                    <RichTextEditor @ref="richTextEditRef" />
                 </Field>
             </ModalBody>
             <ModalFooter>
@@ -59,14 +61,19 @@
         </ModalContent>
     </Modal>
     <p>The value of the title field is: @newTitle</p>
+     @plainTextContent <!-- Plain text content -->
+
 </div>
 
 @code {
 
-    HomeHeader header;  // This should be the header you want to update.
-    int headerId;       // Add a field to hold the header ID.
+    protected RichTextEditor richTextEditRef;
+    protected string content; // Add a field to store the editor content
+    HomeHeader header; // This should be the header you want to update.
+    int headerId; // Add a field to hold the header ID.
     string newTitle;
 
+    string plainTextContent; 
     string context;
 
     private Modal modalRef;
@@ -81,13 +88,20 @@
         return modalRef.Hide();
     }
 
-        private void UpdateTitle()
+    private void UpdateTitle()
     {
+
+        plainTextContent = richTextEditRef.contentAsText;
+        content = richTextEditRef.contentAsHtml; // HTML content
         // Update the title and hide the modal.
-        homeHeaderService.UpdateHeaderTitle( newTitle);
+        homeHeaderService.UpdateHeaderTitle(newTitle, content);
+
+
+         // Plai
+
         modalRef.Hide();
     }
- 
+
 
     IEnumerable<HomeHeader>? HomObj2;
 

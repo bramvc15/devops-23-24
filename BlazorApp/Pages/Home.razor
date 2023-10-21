@@ -6,6 +6,7 @@
 @using BlazorApp.Controllers
 @inject HomeHeaderService homeHeaderService
 @inject DatabaseContext databaseContext
+@using Microsoft.AspNetCore.Components
 
 <PageTitle>Index</PageTitle>
 
@@ -18,9 +19,7 @@
                 {
 
                     <h1>@h.Title</h1>
-                    <p>
-                        @h.Context
-                    </p>
+                 @((MarkupString)h.Context)
                 }
             }
             else

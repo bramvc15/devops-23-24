@@ -9,35 +9,35 @@
             <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
                 <RichTextEditToolbarSelectItem Value="small" />
                 <RichTextEditToolbarSelectItem Selected />
-                 <RichTextEditToolbarSelectItem Value="large" />
-                 <RichTextEditToolbarSelectItem Value="huge">Very Big
-                 </RichTextEditToolbarSelectItem>
-             </RichTextEditToolbarSelect>
-             <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
-             <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
-         </RichTextEditToolbarGroup>
-         <!-- Custom toolbar content -->
-         <RichTextEditToolbarGroup Float="Float.End">
-             <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
-                 <Icon Name="IconName.InfoCircle" />
-             </Button>
-             <Button Clicked="@OnSave">
-                 <Icon Name="IconName.Save" />
-             </Button>
-         </RichTextEditToolbarGroup>
-     </Toolbar>
- </RichTextEdit>
+                <RichTextEditToolbarSelectItem Value="large" />
+                <RichTextEditToolbarSelectItem Value="huge">Very Big
+                </RichTextEditToolbarSelectItem>
+            </RichTextEditToolbarSelect>
+            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
+            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
+        </RichTextEditToolbarGroup>
+        <!-- Custom toolbar content -->
+        <RichTextEditToolbarGroup Float="Float.End">
+            <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
+                <Icon Name="IconName.InfoCircle" />
+            </Button>
+            <Button Clicked="@OnSave">
+                <Icon Name="IconName.Save" />
+            </Button>
+        </RichTextEditToolbarGroup>
+    </Toolbar>
+</RichTextEdit>
 
- @code {
+@code {
 
 
     @*rich*@
 
     protected RichTextEdit richTextEditRef;
     protected bool readOnly;
-    protected string contentAsHtml;
+    public string contentAsHtml;
     protected string contentAsDeltaJson;
-    protected string contentAsText;
+    public string contentAsText;
     protected string savedContent;
 
     public async Task OnContentChanged()
@@ -52,5 +52,14 @@
         savedContent = await richTextEditRef.GetHtmlAsync();
         await richTextEditRef.ClearAsync();
     }
+
+
+
+    public async Task<string> GetContentAsHtmlAsync()
+    {
+        return await richTextEditRef.GetHtmlAsync();
+    }
+
+
 
 }

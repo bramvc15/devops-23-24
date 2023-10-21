@@ -20,11 +20,6 @@ namespace BlazorApp.Services
             return _ctx.HomeHeaders.ToList();
         }
 
-        // public async Task<IEnumerable<HomeHeader>> GetContentAsync()
-        // {
-        //     return await _ctx.HomeHeaders.ToListAsync();
-        // }
-
         public async Task UpdateHeaderTitleAsync(int headerId, string newTitle)
         {
             var headerToUpdate = await _ctx.HomeHeaders.FindAsync(headerId);
@@ -38,7 +33,7 @@ namespace BlazorApp.Services
             await _ctx.SaveChangesAsync();
         }
 
-        public void UpdateHeaderTitle(string newTitle)
+        public void UpdateHeaderTitle(string newTitle, string content)
         {
             var headerToUpdate = _ctx.HomeHeaders.Find(1);
 
@@ -47,32 +42,22 @@ namespace BlazorApp.Services
             {
                 throw new InvalidOperationException("does not exist");
             }
+            if(newTitle != null && content != null){
+                headerToUpdate.Title  = newTitle;
+                headerToUpdate.Context = content;
+            }
 
-            headerToUpdate.Title = newTitle;
+            if(newTitle == null && content != null ){
+                headerToUpdate.Context = content;
+            }
+            
+            if(content == null && newTitle != null){
+                headerToUpdate.Title  = newTitle;
+            }
+
+           // headerToUpdate.Title = newTitle;
             _ctx.SaveChanges();
         }
-
-//         public void UpdateHeaderTitle(HomeHeader header)
-// {
-//     var headerToUpdate = _ctx.HomeHeaders.FirstOrDefault(); // You might want to adjust this logic.
-
-//     if (headerToUpdate is null)
-//     {
-//         throw new InvalidOperationException("Header does not exist");
-//     }
-
-//     if (!string.IsNullOrEmpty(header.Title))
-//     {
-//         headerToUpdate.Title = header.Title;
-//     }
-
-//     if (!string.IsNullOrEmpty(header.Context))
-//     {
-//         headerToUpdate.Context = header.Context;
-//     }
-
-//     _ctx.SaveChanges();
-// }
 
     }
 
