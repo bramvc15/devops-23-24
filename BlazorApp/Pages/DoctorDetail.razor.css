@@ -1,0 +1,36 @@
+﻿body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-height: 30%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+    width: 100%; /* Width spans the full page */
+    text-align: center;
+    margin: 10% 0 10% 0;
+    padding: 0 20% 0 20%;
+    align-items: center;
+}
+    .content-wrapper img {
+        width: 150px; /* Adjust the width as needed */
+        height: 150px; /* Make it the same as the width for a perfect circle */
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+.doctor-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 1rem 0;
+}
