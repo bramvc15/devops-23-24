@@ -5,6 +5,7 @@ using System.Text;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BlazorApp.Auth;
 
@@ -62,6 +63,42 @@ public class BlitzWareAuth
             public string LastIP { get; set; }
             public string HWID { get; set; }
             public string Token { get; set; }
+        }
+
+        public class Employee
+        {
+            [JsonProperty("id")]
+            public string Id { get; set; }
+
+            [JsonProperty("username")]
+            public string Username { get; set; }
+
+            [JsonProperty("email")]
+            public string Email { get; set; }
+
+            [JsonProperty("expiryDate")]
+            public DateTime ExpiryDate { get; set; }
+
+            [JsonProperty("lastLogin")]
+            public DateTime LastLogin { get; set; }
+
+            [JsonProperty("lastIP")]
+            public string LastIP { get; set; }
+
+            [JsonProperty("hwid")]
+            public string Hwid { get; set; }
+
+            [JsonProperty("enabled")]
+            public int Enabled { get; set; }
+
+            [JsonProperty("twoFactorAuth")]
+            public int TwoFactorAuth { get; set; }
+
+            [JsonProperty("userSubId")]
+            public int? UserSubId { get; set; }
+
+            [JsonProperty("userSubLevel")]
+            public int? UserSubLevel { get; set; }
         }
 
         public class RequestResult
@@ -370,6 +407,39 @@ public class BlitzWareAuth
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+
+        public RequestResult getAllUsers()
+        {
+            if (!Initialized)
+            {
+                return new RequestResult { Message = "Application has not been initialized.", Success = false };
+            }
+            try
+            {
+                HttpClient client = new();
+                string url = ApiUrl + $"/users/fromApp/{appData.Id}";
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userData.Token);
+                HttpResponseMessage response = client.GetAsync(url).Result;
+                string outputPath = string.Empty;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = response.Content.ReadAsStringAsync().Result;
+                    List<Employee> employees = JsonConvert.DeserializeObject<List<Employee>>(responseContent);
+                    return new RequestResult { Message = responseContent, Success = true };
+                }
+                else
+                {
+                    string errorContent = response.Content.ReadAsStringAsync().Result;
+                    var errorData = JsonConvert.DeserializeObject<ErrorData>(errorContent);
+                    return new RequestResult { Message = $"{errorData.Code}: {errorData.Message}", Success = false };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new RequestResult { Message = $"An error occurred: {ex.Message}", Success = false };
             }
         }
     }
