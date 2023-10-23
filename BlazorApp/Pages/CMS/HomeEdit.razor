@@ -10,7 +10,7 @@
     <div class="background-div">
 
         <div class="overlay">
-            <EditPopUp/>
+            <EditPopUp />
             <div class="buttons">
                 <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
                 <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
@@ -24,9 +24,14 @@
 <div>
 
     <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
-    @* <Button Color="Color.Primary" Clicked="@ShowModal">voeg blog toe</Button> *@
 
+
+ 
     <div class="actuaBox">
+        <div class="buttons" style="margin-left: 20px;">
+            <Button Color="Color.Primary">voeg blog toe</Button>
+        </div>
+        
         @for (int i = 0; i < 5; i++)
         {
             <ActuaField />
@@ -39,6 +44,8 @@
 
 
 @code {
+
+    
 
 
 }

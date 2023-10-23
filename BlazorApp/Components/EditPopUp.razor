@@ -2,18 +2,15 @@
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @using System.Text.Json.Serialization;
-@using BlazorApp.Data
 @using BlazorApp.Services
 @using BlazorApp.Models
 @using BlazorApp.Controllers
 @inject HomeHeaderService homeHeaderService
 @inject DatabaseContext databaseContext
 
-
-
-
 <div>
     <div class="buttons">
+        //should be able to change
         <Button Color="Color.Primary" Clicked="@ShowModal">Edit</Button>
     </div>
     <div>
@@ -45,6 +42,7 @@
             </ModalHeader>
             <ModalBody>
                 <Field>
+                    
                     <FieldLabel>Titel</FieldLabel>
                     <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
                 </Field>
@@ -67,39 +65,35 @@
 
 @code {
 
-    protected RichTextEditor richTextEditRef;
-    protected string content; // Add a field to store the editor content
-    HomeHeader header; // This should be the header you want to update.
-    int headerId; // Add a field to hold the header ID.
-    string newTitle;
+    protected RichTextEditor? richTextEditRef;
+    protected string? content;
+    HomeHeader? header;
+    int headerId; 
+    string? newTitle;
 
-    string plainTextContent; 
-    string context;
+    string? plainTextContent; 
+    string? context;
 
-    private Modal modalRef;
+    private Modal? modalRef;
 
-    private Task ShowModal()
+    private Task? ShowModal()
     {
-        return modalRef.Show();
+        return modalRef?.Show();
     }
 
-    private Task HideModal()
+    private Task? HideModal()
     {
-        return modalRef.Hide();
+        return modalRef?.Hide();
     }
 
     private void UpdateTitle()
     {
 
-        plainTextContent = richTextEditRef.contentAsText;
-        content = richTextEditRef.contentAsHtml; // HTML content
-        // Update the title and hide the modal.
-        homeHeaderService.UpdateHeaderTitle(newTitle, content);
+        plainTextContent = richTextEditRef?.contentAsText;
+        content = richTextEditRef?.contentAsHtml;
+        homeHeaderService.UpdateHeaderTitle(newTitle , content);
 
-
-         // Plai
-
-        modalRef.Hide();
+        modalRef?.Hide();
     }
 
 
@@ -110,6 +104,4 @@
 
         HomObj2 = await Task.Run(() => homeHeaderService.GetContent());
     }
-
-
 }
