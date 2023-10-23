@@ -1,0 +1,70 @@
+@page "/login"
+@using BlazorApp.Auth
+@inject NavigationManager NavManager
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div>
+        <h3>Login</h3>
+
+        <p>@message</p>
+
+        <EditForm Model="login" OnValidSubmit="LoginUser" style="max-width:500px;">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="mb-2">
+                <InputText class="form-control" @bind-Value="login.username" placeholder="Naam"></InputText>
+            </div>
+            <div class="mb-2">
+                <InputText type="password" class="form-control" @bind-Value="login.password" placeholder="Wachtwoord"></InputText>
+            </div>
+            <div class="mb-2 text-right">
+                <button class="btn btn-secondary" disabled="@isDisabled">Login</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    BlitzWareAuth.API.LoginModel login = new BlitzWareAuth.API.LoginModel();
+    string message = string.Empty;
+    private bool isDisabled = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            {
+                NavManager.NavigateTo("/admin");
+            }
+        }
+    }
+
+    private void LoginUser()
+    {
+        isDisabled = true;
+        BlitzWareAuth.API.RequestResult result = BlitzWareAuthService.AuthService.Login(login.username, login.password, "");
+        if (result.Success)
+        {
+            message = result.Message;
+            BlitzWareAuth.API.RequestResult result2 = BlitzWareAuthService.AuthService.Log(BlitzWareAuthService.AuthService.userData.Username, "Logged in");
+            if (result2.Success)
+            {
+                NavManager.NavigateTo("/admin");
+            }
+            else
+            {
+                isDisabled = false;
+                message = result2.Message;
+            }
+        }
+        else
+        {
+            isDisabled = false;
+            message = result.Message;
+        }
+    }
+
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+}
