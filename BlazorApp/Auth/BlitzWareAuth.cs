@@ -50,6 +50,7 @@ public class BlitzWareAuth
             public string ProgramHash { get; set; }
             public string Version { get; set; }
             public string DownloadLink { get; set; }
+            public int AdminRoleLevel { get; set; }
         }
 
         public UserData userData = new();
@@ -62,6 +63,7 @@ public class BlitzWareAuth
             public string LastLogin { get; set; }
             public string LastIP { get; set; }
             public string HWID { get; set; }
+            public int UserSubLevel { get; set; }
             public string Token { get; set; }
         }
 
