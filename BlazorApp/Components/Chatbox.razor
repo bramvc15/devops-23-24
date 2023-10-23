@@ -6,8 +6,8 @@
         </div>
     </div>
     <div class="chatbox-content @(visible ? "visible" : "")">
-        <BotMessage Message="Welkom! Hoe kan ik u helpen?" />
-        <UserMessage Message="Ik heb een vraag over de website." />
+        <ChatMessage Message="Welkom! Hoe kan ik u helpen?" type="bot" />
+        <ChatMessage type="questions" mockdata="mockdata" />
     </div>
 </div>
 
@@ -19,4 +19,10 @@
     {
         visible = !visible;
     }
+
+    string[,] mockdata = new string[,] {
+        {"Hoe kan ik een afspraak maken?", "U kunt een afspraak maken door te bellen naar 06-12345678 of door een mail te sturen naar" },
+        {"Ik heb een andere vraag", "" }
+    };
+
 }

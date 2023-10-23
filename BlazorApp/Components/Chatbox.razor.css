@@ -24,6 +24,7 @@
 .chatbox-content {
     height: 350px;
     display: none;
+    width: 100%;
     padding: 5px;
 }
 

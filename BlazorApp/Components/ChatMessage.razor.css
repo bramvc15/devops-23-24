@@ -1,0 +1,54 @@
+.textBubble-user {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 8px;
+}
+
+.textBubble-bot {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.content {
+    max-width: fit-content;
+}
+
+.textBubble-bot .content {
+    background-color: rgb(226, 226, 226);
+    margin: 5px;
+    border-radius: 20px;
+    padding: 5px;
+    font-weight: 400;
+    display: inline-block;
+}
+
+.textBubble-user .content {
+    margin: 5px;
+    background-color: rgb(118, 179, 160);
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+    font-weight: 400;
+    display: inline-block;
+    margin-left: auto;
+}
+
+.question {
+    display: inline-block;
+    border-radius: 15px;
+    padding: 5px 13px;
+    margin: 5px;
+    text-align: left;
+    border: solid 1px rgb(118, 179, 160);
+    background-color: rgb(245, 252, 251)
+}
+
+.question:hover {
+    background-color: rgb(203, 219, 214);
+    transition: 100ms ease-in-out;
+    border: solid 1px rgb(255, 255, 255);
+}
+
+.message {
+    margin: 0 8px;
+}
