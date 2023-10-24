@@ -1,0 +1,27 @@
+
+.faq {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #033878;
+}
+
+.faq-content {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.faqBtn:before  { content:"\203A"; margin-right: 7px; }
+
+.faqBtn {
+    cursor: pointer;
+}
+
+
+.card {
+    border-radius: 15px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.selected {
+    font-weight: bold;
+}

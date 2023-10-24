@@ -6,10 +6,13 @@ using Blazorise.RichTextEdit;
 using Microsoft.EntityFrameworkCore;
 using BlazorApp.Services;
 
+using static BlazorApp.Auth.BlitzWareAuth;
+using BlazorApp.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<BlitzWareAuthService>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
