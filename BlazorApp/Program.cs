@@ -16,6 +16,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<DoctorService>();
 builder.Services.AddTransient<HomeHeaderService>();
+builder.Services.AddTransient<BlogService>();
 
 builder.Services.AddDbContext<DatabaseContext>( options => 
     {

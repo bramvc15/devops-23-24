@@ -10,7 +10,7 @@ namespace BlazorApp.Data
         public static void Initialize(DatabaseContext context)
         {
 
-            if (context.Doctors.Any() && context.HomeHeaders.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any())
             {
                 return;
             }
@@ -44,9 +44,30 @@ namespace BlazorApp.Data
 
             };
 
+            var blogs = new Blog[]
+            {
+                new Blog
+                {
+                    Title = "Guillaume",
+                    Text = "Male",
+                    Image = "not a doctor"
+        
+                },
+
+               new Blog
+                {
+                    Title = "Guillaume",
+                    Text = "Male",
+                    Image = "not a doctor"
+        
+                }
+
+            };
+
 
             context.Doctors.AddRange(doctors);
             context.HomeHeaders.Add(header);
+            context.Blogs.AddRange(blogs);
             context.SaveChanges();
 
         }

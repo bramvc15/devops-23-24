@@ -1,9 +1,13 @@
 @page "/admin/home"
 @inherits EditPopUp
 @using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @inject DatabaseContext databaseContext
+@inject BlogService blogService
 
 <PageTitle>Index</PageTitle>
 <div>
@@ -32,9 +36,11 @@
             <Button Color="Color.Primary">voeg blog toe</Button>
         </div>
         
-        @for (int i = 0; i < 5; i++)
+        @if  (BlogObj != null)
         {
-            <ActuaField />
+            foreach(var b in BlogObj){
+                <ActuaField Title=@b.Title Text=@b.Text />
+            }
         }
 
     </div>
@@ -45,6 +51,11 @@
 
 @code {
 
+    IEnumerable<Blog>? BlogObj;
+    protected override async Task OnInitializedAsync()
+    {
+        BlogObj = await Task.Run(() => blogService.GetContent());
+    }
     
 
 

@@ -7,6 +7,7 @@
 @inject HomeHeaderService homeHeaderService
 @inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
+@inject BlogService blogService
 
 <PageTitle>Index</PageTitle>
 
@@ -43,9 +44,11 @@
     <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
 
     <div class="actuaBox">
-        @for (int i = 0; i < 5; i++)
+        @if  (BlogObj != null)
         {
-            <ActuaField />
+            foreach(var b in BlogObj){
+                <ActuaField Title=@b.Title Text=@b.Text />
+            }
         }
     </div>
 
@@ -56,11 +59,15 @@
 
 
     IEnumerable<HomeHeader>? HomObj;
-
+            IEnumerable<Blog>? BlogObj;
     protected override async Task OnInitializedAsync()
     {
 
         HomObj = await Task.Run(() => homeHeaderService.GetContent());
+        BlogObj = await Task.Run(() => blogService.GetContent());
     }
+
+
+
 
 }
