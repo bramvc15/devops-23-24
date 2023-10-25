@@ -1,73 +1,62 @@
-﻿@page "/"
-@using System.Text.Json
+@page "/admin/home"
+@inherits EditPopUp
 @using BlazorApp.Data
 @using BlazorApp.Services
 @using BlazorApp.Models
 @using BlazorApp.Controllers
-@inject HomeHeaderService homeHeaderService
-@inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
+@using System.Text.Json
+@inject DatabaseContext databaseContext
 @inject BlogService blogService
 
 <PageTitle>Index</PageTitle>
-
 <div>
     <div class="background-div">
+
         <div class="overlay">
-            @if (HomObj != null)
-            {
-                @foreach (var h in HomObj)
-                {
-
-                    <h1>@h.Title</h1>
-                 @((MarkupString)h.Context)
-                }
-            }
-            else
-            {
-
-                <h1>title</h1>
-                <p>
-                    context
-                </p>
-            }
+            <EditPopUp />
             <div class="buttons">
                 <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
                 <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
             </div>
+
         </div>
     </div>
+
 </div>
 
 <div>
 
     <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
 
+
+ 
     <div class="actuaBox">
+        <div class="buttons" style="margin-left: 20px;">
+            <Button Color="Color.Primary">voeg blog toe</Button>
+        </div>
+        
         @if  (BlogObj != null)
         {
             foreach(var b in BlogObj){
                 <ActuaField Title=@b.Title Text=@b.Text />
             }
         }
+
     </div>
 
 </div>
 
 
+
 @code {
 
-
-    IEnumerable<HomeHeader>? HomObj;
-            IEnumerable<Blog>? BlogObj;
+    IEnumerable<Blog>? BlogObj;
     protected override async Task OnInitializedAsync()
     {
-
-        HomObj = await Task.Run(() => homeHeaderService.GetContent());
         BlogObj = await Task.Run(() => blogService.GetContent());
     }
-
-
+    
 
 
 }

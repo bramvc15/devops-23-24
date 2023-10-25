@@ -5,8 +5,8 @@
     <div class="card-body text-center">
         <img src="@ImageSrc" class="w-50 m-2 rounded" alt="Image" />
         <h5 class="card-title">@Name</h5>
-        <p> Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod tempor
+        <p> 
+            @Specialization
         </p>
 
         <button class=" btn btn-primary" >lees meer </button>
@@ -21,6 +21,9 @@
 
     [Parameter]
     public string Name { get; set; }
+
+    [Parameter]
+    public string Specialization { get; set;}
 
     [Parameter]
     public EventCallback OnCardClick { get; set; }
