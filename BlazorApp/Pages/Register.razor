@@ -11,7 +11,7 @@
 
         <EditForm Model="reg" OnValidSubmit="RegisterUser" style="max-width:500px;">
             <DataAnnotationsValidator />
-            <ValidationSummary />
+            <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
             <div class="mb-2">
                 <InputText class="form-control" @bind-Value="reg.username" placeholder="Naam"></InputText>
             </div>
