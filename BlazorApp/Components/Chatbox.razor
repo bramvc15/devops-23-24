@@ -10,7 +10,11 @@
         <ChatMessage type="questions" mockdata="questions" QuestionClicked="HandleQuestionClicked" />
         @foreach (var message in chatMessages)
         {
-            <ChatMessage Message="@message.Message" type="@message.type" mockdata="@message.mockdata" QuestionClicked="HandleQuestionClicked" />
+            if(message.Message != null) {
+            <ChatMessage Message="@message.Message" type="@message.type" mockdata="@message.mockdata" QuestionClicked="HandleQuestionClicked" /> 
+            } else  {
+            <ChatMessage type="@message.type" mockdata="@message.mockdata" QuestionClicked="HandleQuestionClicked" />
+            }
         }
     </div>
 </div>
