@@ -6,23 +6,44 @@
         </div>
     </div>
     <div class="chatbox-content @(visible ? "visible" : "")">
-        <ChatMessage Message="Welkom! Hoe kan ik u helpen?" type="bot" />
-        <ChatMessage type="questions" mockdata="mockdata" />
+        <ChatMessage Message="Welkom" type="bot" />
+        <ChatMessage type="questions" mockdata="questions" QuestionClicked="HandleQuestionClicked" />
+        @foreach (var message in chatMessages)
+        {
+            <ChatMessage Message="@message.Message" type="@message.type" mockdata="@message.mockdata" QuestionClicked="HandleQuestionClicked" />
+        }
     </div>
 </div>
 
 
 @code {
     public bool visible = false;
+    private List<ChatMessage> chatMessages = new List<ChatMessage>();
 
     void ToggleChatbox()
     {
         visible = !visible;
     }
 
-    string[,] mockdata = new string[,] {
-        {"Hoe kan ik een afspraak maken?", "U kunt een afspraak maken door te bellen naar 06-12345678 of door een mail te sturen naar" },
-        {"Ik heb een andere vraag", "" }
-    };
+    List<FAQItem> questions = FAQData.GetFAQs();
 
+    private async void HandleQuestionClicked(string answer)
+    {
+        await botResponse(answer);
+        await botResponse("Heb je nog andere vragen?");
+        await userResponse();
+    }
+
+    private async Task botResponse(string answer)
+    {
+        await Task.Delay(1500);
+        chatMessages.Add(new ChatMessage { Message = answer, type = "bot" });
+        StateHasChanged();
+    }
+
+    private async Task userResponse()
+    {
+        chatMessages.Add(new ChatMessage { Message = null,  type = "questions", mockdata=questions });
+        StateHasChanged();
+    }
 }

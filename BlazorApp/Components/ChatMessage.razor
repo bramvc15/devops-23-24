@@ -1,16 +1,20 @@
 <div class="textBubble-@(type == "bot" ? "bot" : "user")">
-    <div class="content d-flex flex-column">
-        @if (mockdata == null)
+    <div>
+    <div class="content">
+        @if (mockdata == null || visible)
         {
             <span class="message">
                 @Message
             </span>
         } else {
-            @for (int i = 0; i < mockdata.GetLength(0); i++)
+            @foreach(var item in mockdata)
             {
-                <button class="question">@mockdata[i, 0]</button>
+                <button class="question" @onclick="() => displayQuestion(item)">
+                    @item.Question
+                </button>
             }
         }
+    </div>
     </div>
 </div>
 
@@ -22,5 +26,20 @@
     public string type { get; set; }
 
     [Parameter]
-    public string[,] mockdata { get; set; }
+    public List<FAQItem> mockdata { get; set; }
+
+    public bool visible = false;
+
+    private bool isCollapsed = false;
+
+    [Parameter]
+    public EventCallback<string> QuestionClicked { get; set; }
+
+    public async Task displayQuestion(FAQItem item) {
+        Console.WriteLine(item.Question);
+        Message = item.Question;
+        visible = true;
+        await QuestionClicked.InvokeAsync(item.Answer);
+        StateHasChanged();
+    }
 }
