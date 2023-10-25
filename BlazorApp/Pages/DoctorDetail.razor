@@ -1,4 +1,7 @@
 ﻿@page "/DoctorDetail"
+<head>
+    <script src="DoctorDetail.razor.js"></script>
+</head>
 
 <div class="content-wrapper">
     <div class="info-wrapper">
@@ -7,10 +10,30 @@
     <div class="doctor-info">
         <h2>Doctor Information</h2>
         <ul>
-            <li><strong>Name:</strong> Dr. John Doe</li>
-            <li><strong>Specialty:</strong> Cardiologist</li>
-            <li><strong>Education:</strong> Medical School XYZ</li>
-            <li><strong>Experience:</strong> 10 years</li>
+            <li>Name: Dr. John Doe</li>
+            <li>Specialty: Ophthalmologist</li>
+            <li>
+                
+                <FAQ faq="@faq" />
+            </li>
         </ul>
     </div>
 </div>
+
+@code {
+    [Parameter]
+    public string naam { get; set; }
+
+    private MarkupString behandelingDescription = new MarkupString("<p> Et aute sit ullamco et cupidatat velit cillum non voluptate consectetur voluptate incididunt. Exercitation commodo reprehenderit veniam non occaecat adipisicing laborum veniam veniam ea commodo duis anim reprehenderit. Deserunt elit Lorem ullamco dolor commodo do do. Culpa consequat aliqua ea pariatur sunt reprehenderit. Ad exercitation est proident occaecat labore commodo nulla fugiat duis tempor. Excepteur excepteur amet ea sunt in cupidatat sint dolore. Culpa veniam sint esse elit deserunt aliquip qui. </p> <p> Sit nulla irure incididunt do. Esse fugiat consequat officia enim consectetur. Excepteur culpa voluptate aliquip ullamco. Pariatur commodo sit elit labore consequat dolor exercitation. Aliquip exercitation dolore velit cupidatat ea magna commodo consequat elit. Incididunt eiusmod incididunt tempor aliquip deserunt laborum occaecat officia eiusmod est pariatur nulla aliqua voluptate. </p> <h4>Subtitel</h4> <p> Duis incididunt veniam nulla tempor anim laboris minim aute voluptate mollit dolore eiusmod. Minim culpa consequat eiusmod laborum. Sit ad et nostrud exercitation cupidatat. Incididunt irure ea voluptate voluptate eiusmod deserunt quis est sint ex. Officia aliqua sit est pariatur ullamco nulla exercitation nostrud in deserunt sint amet minim mollit. </p>");
+
+    private string imagePath = "";
+
+    protected override void OnInitialized()
+    {
+        imagePath = "images/" + @naam + ".png";
+    }
+
+    string[,] faq = new string[,] {
+        {"Biografie", "Sint nisi ex sunt officia ex pariatur. Dolor amet in exercitation laboris duis pariatur minim labore ex aliqua. Proident Lorem ex ipsum tempor occaecat elit ut cupidatat aliquip sit dolore qui cillum cupidatat."},
+    };
+}

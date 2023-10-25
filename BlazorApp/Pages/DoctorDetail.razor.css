@@ -14,18 +14,31 @@
     border-radius: 10px;
     max-height: 30%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
-    width: 100%; /* Width spans the full page */
-    text-align: center;
+    width: 100%;
     margin: 10% 0 10% 0;
     padding: 0 20% 0 20%;
     align-items: center;
+    text-decoration:none;
+    
+    
 }
-    .content-wrapper img {
-        width: 150px; /* Adjust the width as needed */
-        height: 150px; /* Make it the same as the width for a perfect circle */
-        border-radius: 50%;
-        object-fit: cover;
-    }
+.doctor-info{
+    margin-left:2rem;
+}
+.doctor-info li {
+    list-style: none;
+    width:100%;
+}
+.content-wrapper img {
+    width: 150px;
+    height: 150px; 
+    border-radius: 50%;
+    object-fit: cover;
+}
+.text-center {
+    text-align: center !important;
+}
+
 
 .doctor-image {
     width: 150px;
@@ -34,3 +47,7 @@
     object-fit: cover;
     margin: 1rem 0;
 }
+#biography {
+    display: none;
+}
+
