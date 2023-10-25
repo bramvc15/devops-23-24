@@ -1,3 +1,6 @@
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+
 <div class="chatbox-div">
     <div class="chatbox-header d-flex" @onclick="() => ToggleChatbox()">
         &#9679
@@ -6,7 +9,7 @@
         </div>
     </div>
     <div class="chatbox-content @(visible ? "visible" : "")">
-        <ChatMessage Message="Welkom" type="bot" />
+        <ChatMessage Message="Welkom, hoe kan ik u helpen?" type="bot" />
         <ChatMessage type="questions" mockdata="questions" QuestionClicked="HandleQuestionClicked" />
         @foreach (var message in chatMessages)
         {
@@ -17,7 +20,14 @@
             }
         }
     </div>
+    <script>
+        function scrollToBottom() {
+            var objDiv = document.getElementsByClassName("chatbox-content")[0];
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+    </script>
 </div>
+
 
 
 @code {
@@ -31,11 +41,11 @@
 
     List<FAQItem> questions = FAQData.GetFAQs();
 
-    private async void HandleQuestionClicked(string answer)
+    private async void HandleQuestionClicked(FAQItem item)
     {
-        await botResponse(answer);
-        await botResponse("Heb je nog andere vragen?");
-        await userResponse();
+        await botResponse(item.Answer);
+        await botResponse("Heb je verder nog vragen?");
+        await showQuestions();
     }
 
     private async Task botResponse(string answer)
@@ -43,11 +53,14 @@
         await Task.Delay(1500);
         chatMessages.Add(new ChatMessage { Message = answer, type = "bot" });
         StateHasChanged();
+        JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
-    private async Task userResponse()
+    private async Task showQuestions()
     {
+        await Task.Delay(500);
         chatMessages.Add(new ChatMessage { Message = null,  type = "questions", mockdata=questions });
         StateHasChanged();
+        JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 }

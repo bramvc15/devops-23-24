@@ -17,19 +17,19 @@ public class FAQData
             {
                 id = 1,
                 Question = "Hoe plan ik een afspraak?",
-                Answer = "Enim quis magna occaecat consequat elit anim eu aliqua fugiat."
+                Answer = "In de rechterbovenhoek van de website kan je op de knop 'Maak een afspraak' klikken. Daarna kan je een datum en tijdslot kiezen voor je afspraak."
             },
             new FAQItem
             {
                 id = 2,
                 Question = "Wat is het adres van jullie vestiging?",
-                Answer = "Enim ad reprehenderit reprehenderit reprehenderit aute pariatur reprehenderit cupidatat voluptate labore culpa."
+                Answer = "Onze vestiging is gelegen op de Antwerpsesteenweg 1022, 9040 Gent."
             },
             new FAQItem
             {
                 id = 3,
                 Question = "Wat zijn de openingsuren?",
-                Answer = "Nulla occaecat ad exercitation reprehenderit."
+                Answer = "Wij zijn open van maandag tot vrijdag van 9u tot 18u."
             },
         };
     }
