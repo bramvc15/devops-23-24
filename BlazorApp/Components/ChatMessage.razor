@@ -36,7 +36,6 @@
     public EventCallback<FAQItem> QuestionClicked { get; set; }
 
     public async Task displayQuestion(FAQItem item) {
-        Console.WriteLine(item.Question);
         Message = item.Question;
         visible = true;
         await QuestionClicked.InvokeAsync(item);

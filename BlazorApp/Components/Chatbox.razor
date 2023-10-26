@@ -40,10 +40,16 @@
     }
 
     List<FAQItem> questions = FAQData.GetFAQs();
-
     private async void HandleQuestionClicked(FAQItem item)
     {
         await botResponse(item.Answer);
+        questions.Remove(item);
+
+        if(questions.Count < 1)
+        {
+            questions = FAQData.GetFAQs();
+        }
+
         await botResponse("Heb je verder nog vragen?");
         await showQuestions();
     }
