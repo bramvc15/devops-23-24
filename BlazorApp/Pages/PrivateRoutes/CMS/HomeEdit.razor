@@ -1,5 +1,5 @@
 @page "/admin/cms/home"
-@inherits EditPopUp
+@inherits EditHeaderPopUp
 @using BlazorApp.Data
 @using BlazorApp.Services
 @using BlazorApp.Models
@@ -25,7 +25,7 @@
         <div class="background-div">
 
             <div class="overlay">
-                <EditPopUp />
+                <EditHeaderPopUp />
                 <div class="buttons">
                     <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
                     <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
@@ -44,14 +44,14 @@
 
         <div class="actuaBox">
             <div class="buttons" style="margin-left: 20px;">
-                <Button Color="Color.Primary">voeg blog toe</Button>
+                <AddBlogPopUp />
             </div>
 
             @if (BlogObj != null)
             {
                 foreach (var b in BlogObj)
                 {
-                    <ActuaField Title=@b.Title Text=@b.Text />
+                    <ActuaField Title=@b.Title Text=@b.Text Image=@b.Image />
                 }
             }
 
