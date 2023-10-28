@@ -5,12 +5,12 @@
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="devops-23-24-net-g07" expanded="True">
-            <Node name="BlazorApp" expanded="True">
+          <Node name="devops-23-24-net-g07">
+            <Node name="BlazorApp">
+              <Node name="Data" expanded="True">
+                <Node name="Extensions.cs" selected="True" />
+              </Node>
               <Node name="Pages" expanded="True" />
-              <Node name="Properties" expanded="True" />
-              <Node name="Services" expanded="True" />
-              <Node name="Shared" expanded="True" />
             </Node>
           </Node>
         </State>
