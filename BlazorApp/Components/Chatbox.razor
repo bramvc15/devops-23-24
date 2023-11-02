@@ -51,6 +51,13 @@
         Console.WriteLine(ChatBotObj);
     }
 
+    protected async Task getFollowUpQuestions(ChatBotQuestion question)
+    {
+        IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
+
+        showQuestions(followUpObj);
+    }
+
     void ToggleChatbox()
     {
         visible = !visible;
@@ -60,15 +67,14 @@
     private async void HandleQuestionClicked(ChatBotQuestion question)
     {
         await botResponse(question.Answer);
-        //questions.Remove(item);
 
-        //if(questions.Count < 1)
-        //{
-        //    questions = FAQData.GetFAQs();
-        //}
-        
-        await botResponse("Heb je verder nog vragen?");
-        await showQuestions();
+        if(question.FollowUpQuestion != null)
+        {
+            await getFollowUpQuestions(question);
+        } else {
+            await botResponse("Heb je verder nog vragen?");
+            await showQuestions(ChatBotObj);
+        }
     }
 
     private async Task botResponse(string answer)
@@ -79,10 +85,10 @@
         JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
-    private async Task showQuestions()
+    private async Task showQuestions(IEnumerable<ChatBotQuestion>? obj)
     {
         await Task.Delay(500);
-        chatMessages.Add(new ChatMessage { Message = null,  type = "questions", ChatBotObj=ChatBotObj });
+        chatMessages.Add(new ChatMessage { Message = null,  type = "questions", ChatBotObj=obj });
         StateHasChanged();
         JSRuntime.InvokeVoidAsync("scrollToBottom");
     }

@@ -68,14 +68,30 @@ namespace BlazorApp.Data
             {
                 new ChatBotQuestion
                 {
-                    Question = "Hoe plan ik een afspraak?",
-                    Answer = "In de rechterbovenhoek van de website kan je op de knop 'Maak een afspraak' klikken. Daarna kan je een datum en tijdslot kiezen voor je afspraak.",
+                    Question = "Alles goed vandaag?",
+                    Answer = "Zeker met u?",
+                    FollowUpQuestion = 2,
                 },
                 new ChatBotQuestion
                 {
-                    Question = "Hoe kan ik mijn afspraak annuleren?",
-                    Answer = "In de bevestigingsmail van je afspraak kan je op de knop 'Afspraak annuleren' klikken. Daarna kan je je afspraak annuleren.",
-                }
+                    FollowUpID = 2,
+                    Question = "Zeer goed",
+                    Answer = "Top!",
+                },
+                new ChatBotQuestion
+                {
+                    FollowUpID = 2,
+                    Question = "Nee",
+                    Answer = "Oei!",
+                },
+
+
+                new ChatBotQuestion
+                {
+                    Question = "Hoe maak ik een afspraak?",
+                    Answer = "U kan een afspraak door rechtsboven op de knop 'Maak een afspraak' te klikken.",
+                },
+                
             };
 
 

@@ -30,6 +30,8 @@
     color: white;
     font-weight: 400;
     float: right;
+    display: flex;
+    flex-direction: column;
 }
 
 .question {
