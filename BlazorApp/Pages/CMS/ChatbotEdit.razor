@@ -1,0 +1,145 @@
+@page "/chatbot"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+@using System.Text.Json
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inject DatabaseContext databaseContext
+@using Microsoft.AspNetCore.Components
+@inject ChatbotService ChatbotService
+@using System;
+@using System.Collections.Generic;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+
+<PageTitle>Index</PageTitle>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/alyssaxuu/flowy/flowy.min.css"> 
+
+<div class="content">
+    <div class="create-flowy block">Grab me</div>
+    <div id="canvas">
+    </div>
+</div>
+
+
+<script>
+    window.initializeFlowy = function (jsonData) {
+        var spacing_x = 40;
+        var spacing_y = 40;
+
+        flowy(document.getElementById("canvas"), onGrab, onRelease, onSnap, onRearrange, spacing_x, spacing_y);
+
+        // Parse the JSON data
+        var data = JSON.parse(jsonData);
+        console.log(data);
+        // Load the data into Flowy
+        flowy.import(data);
+
+        function onGrab(block) {
+            // When the user grabs a block
+        }
+
+        function onRelease() {
+            // When the user releases a block
+        }
+
+        function onSnap(block, first, parent) {
+            return true;
+        }
+
+        function onRearrange(block, parent) {
+            // When a block is rearranged
+        }
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/gh/alyssaxuu/flowy/flowy.min.js"></script>
+
+
+@code {
+
+    IEnumerable<ChatBotQuestion>? ChatBotObj;
+
+    JArray json = new JArray();
+
+    
+    bool initialized = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !initialized)
+        {
+            await constructFlowchartJSON();
+            initialized = true;
+        }
+    }
+
+    protected async Task constructFlowchartJSON()
+    {
+        
+        ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
+
+
+        var json = new JObject();
+        json["html"] = "";
+        
+        var blockArr = new JArray();
+        json["blockarr"] = blockArr;
+
+        var blocks = new JArray();
+        json["blocks"] = blocks;
+
+        foreach (var item in ChatBotObj)
+        {
+
+            /* 
+            DATA STRUCTURE: 
+
+            {
+                "html": "",
+                "blockarr": [],
+                "blocks": [
+                    {
+                        "id": 1,
+                        "parent": 0,
+                        "data": [
+                            {
+                            "name": "blockid",
+                            "value": "1"
+                            }
+                        ],
+                        "attr": [
+                            {
+                            "id": "block-id",
+                            "class": "block-class"
+                            }
+                        ]
+                    }
+                ]
+            }
+            */
+
+
+            if(item.FollowUpID == null) {
+                var block = new JObject();
+                block["id"] = item.FollowUpQuestion;
+                block["parent"] = 0;
+
+                blocks.Add(block);
+            } else {
+
+            }
+        }
+        Console.WriteLine(json.ToString());
+        await JSRuntime.InvokeVoidAsync("initializeFlowy", json.ToString());
+        
+    }
+}

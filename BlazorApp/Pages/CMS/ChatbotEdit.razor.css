@@ -1,0 +1,17 @@
+.content {
+    height: 100vh;
+    background-color: green;
+    padding-top: 100px;
+}
+
+.block {
+    padding: 20px;
+    background-color: rgb(194, 194, 194);
+    border-radius: 15px;
+}
+
+.canvas {
+    height: 100%;
+    width: 100%;
+    background-color: red;
+}
