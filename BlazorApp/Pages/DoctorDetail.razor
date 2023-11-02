@@ -1,22 +1,24 @@
 ﻿@page "/DoctorDetail"
-<head>
-    <script src="DoctorDetail.razor.js"></script>
-</head>
 
-<div class="content-wrapper">
-    <div class="info-wrapper">
-        <img src="images/schermer.jpg" alt="Doctor Image" class="doctor-image" />
-    </div>
-    <div class="doctor-info">
-        <h2>Doctor Information</h2>
-        <ul>
-            <li>Name: Dr. John Doe</li>
-            <li>Specialty: Ophthalmologist</li>
-            <li>
+<div class="content-container">
+    
+    <div class="content-wrapper">
+        <div class="info-Img-wrapper">
+            <img src="images/schermer.jpg" alt="Doctor Image" class="doctor-image" />
+        </div>
+        <div class="doctor-info">
+            <h2>Dokter informatie</h2>
+            <ul>
+                <li>Naam: Dr. John Doe</li>
+                <li>Specialisatie: Ophthalmologist</li>
                 
+            </ul>
+            <div id="biography">
+
                 <FAQ faq="@faq" />
-            </li>
-        </ul>
+
+            </div>
+        </div>
     </div>
 </div>
 

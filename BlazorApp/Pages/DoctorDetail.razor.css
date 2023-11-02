@@ -1,44 +1,29 @@
-﻿body {
+﻿.content-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
+    padding: 20px;
+    background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(9, 244, 138, 0.36) 100%);
 }
 
 .content-wrapper {
-    display: flex;
-    flex-direction: row;
     background-color: #fff;
-    padding: 20px;
     border-radius: 10px;
-    max-height: 30%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
     width: 100%;
-    margin: 10% 0 10% 0;
-    padding: 0 20% 0 20%;
+    max-width: 800px; /* Adjust the max-width as per your design */
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    text-decoration:none;
-    
-    
-}
-.doctor-info{
-    margin-left:2rem;
-}
-.doctor-info li {
-    list-style: none;
-    width:100%;
-}
-.content-wrapper img {
-    width: 150px;
-    height: 150px; 
-    border-radius: 50%;
-    object-fit: cover;
-}
-.text-center {
-    text-align: center !important;
+    padding: 20px;
 }
 
+.info-Img-wrapper {
+    width: 100%;
+    text-align: center;
+}
 
 .doctor-image {
     width: 150px;
@@ -47,7 +32,68 @@
     object-fit: cover;
     margin: 1rem 0;
 }
-#biography {
-    display: none;
+
+.doctor-info {
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
 }
 
+.doctor-info h2 {
+    font-size: 24px; /* Adjust font size as needed */
+}
+
+.doctor-info ul {
+    padding: 0;
+}
+
+.doctor-info li {
+    list-style-type: none;
+    margin: 0.5rem 0;
+}
+
+#biography {
+    margin-top: 20px;
+}
+
+    #biography.active {
+        display: block; /* Display the biography when it has the "active" class */
+        margin-top: 10px;
+    }
+
+    #biography h3 {
+        font-size: 20px; /* Adjust font size as needed */
+    }
+
+    #biography p {
+        font-size: 16px; /* Adjust font size as needed */
+        line-height: 1.5;
+    }
+
+/* Media Query for responsiveness */
+@media (max-width: 768px) {
+    #biography h3 {
+        font-size: 18px;
+    }
+
+    #biography p {
+        font-size: 14px;
+    }
+}
+
+
+/* Media Query for responsiveness */
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 10px;
+    }
+
+    .doctor-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    .doctor-info h2 {
+        font-size: 20px;
+    }
+}
