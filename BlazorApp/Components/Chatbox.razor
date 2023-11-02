@@ -1,5 +1,13 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
+@using System.Text.Json
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inject DatabaseContext databaseContext
+@using Microsoft.AspNetCore.Components
+@inject ChatbotService ChatbotService
 
 <div class="chatbox-div">
     <div class="chatbox-header d-flex" @onclick="() => ToggleChatbox()">
@@ -10,13 +18,13 @@
     </div>
     <div class="chatbox-content @(visible ? "visible" : "")">
         <ChatMessage Message="Welkom, hoe kan ik u helpen?" type="bot" />
-        <ChatMessage type="questions" mockdata="questions" QuestionClicked="HandleQuestionClicked" />
+        <ChatMessage type="questions" ChatBotObj="ChatBotObj" QuestionClicked="HandleQuestionClicked" />
         @foreach (var message in chatMessages)
         {
             if(message.Message != null) {
-            <ChatMessage Message="@message.Message" type="@message.type" mockdata="@message.mockdata" QuestionClicked="HandleQuestionClicked" /> 
+            <ChatMessage Message="@message.Message" type="@message.type" ChatBotObj="@message.ChatBotObj" QuestionClicked="HandleQuestionClicked" /> 
             } else  {
-            <ChatMessage type="@message.type" mockdata="@message.mockdata" QuestionClicked="HandleQuestionClicked" />
+            <ChatMessage type="@message.type" ChatBotObj="@message.ChatBotObj" QuestionClicked="HandleQuestionClicked" />
             }
         }
     </div>
@@ -34,22 +42,31 @@
     public bool visible = false;
     private List<ChatMessage> chatMessages = new List<ChatMessage>();
 
+
+    IEnumerable<ChatBotQuestion>? ChatBotObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
+        Console.WriteLine(ChatBotObj);
+    }
+
     void ToggleChatbox()
     {
         visible = !visible;
     }
 
     List<FAQItem> questions = FAQData.GetFAQs();
-    private async void HandleQuestionClicked(FAQItem item)
+    private async void HandleQuestionClicked(ChatBotQuestion question)
     {
-        await botResponse(item.Answer);
-        questions.Remove(item);
+        await botResponse(question.Answer);
+        //questions.Remove(item);
 
-        if(questions.Count < 1)
-        {
-            questions = FAQData.GetFAQs();
-        }
-
+        //if(questions.Count < 1)
+        //{
+        //    questions = FAQData.GetFAQs();
+        //}
+        
         await botResponse("Heb je verder nog vragen?");
         await showQuestions();
     }
@@ -65,7 +82,7 @@
     private async Task showQuestions()
     {
         await Task.Delay(500);
-        chatMessages.Add(new ChatMessage { Message = null,  type = "questions", mockdata=questions });
+        chatMessages.Add(new ChatMessage { Message = null,  type = "questions", ChatBotObj=ChatBotObj });
         StateHasChanged();
         JSRuntime.InvokeVoidAsync("scrollToBottom");
     }

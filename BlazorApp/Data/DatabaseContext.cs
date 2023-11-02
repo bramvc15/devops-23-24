@@ -15,6 +15,8 @@ namespace BlazorApp.Data
         public DbSet<HomeHeader> HomeHeaders => Set<HomeHeader>();
 
         public DbSet<Blog> Blogs => Set<Blog>();
+
+        public DbSet<ChatBotQuestion> ChatBotQuestions => Set<ChatBotQuestion>();
         
 
     }

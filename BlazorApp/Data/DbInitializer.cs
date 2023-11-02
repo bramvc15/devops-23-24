@@ -10,7 +10,7 @@ namespace BlazorApp.Data
         public static void Initialize(DatabaseContext context)
         {
 
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.ChatBotQuestions.Any())
             {
                 return;
             }
@@ -64,10 +64,25 @@ namespace BlazorApp.Data
 
             };
 
+            var chatbotQuestions = new ChatBotQuestion[] 
+            {
+                new ChatBotQuestion
+                {
+                    Question = "Hoe plan ik een afspraak?",
+                    Answer = "In de rechterbovenhoek van de website kan je op de knop 'Maak een afspraak' klikken. Daarna kan je een datum en tijdslot kiezen voor je afspraak.",
+                },
+                new ChatBotQuestion
+                {
+                    Question = "Hoe kan ik mijn afspraak annuleren?",
+                    Answer = "In de bevestigingsmail van je afspraak kan je op de knop 'Afspraak annuleren' klikken. Daarna kan je je afspraak annuleren.",
+                }
+            };
+
 
             context.Doctors.AddRange(doctors);
             context.HomeHeaders.Add(header);
             context.Blogs.AddRange(blogs);
+            context.ChatBotQuestions.AddRange(chatbotQuestions);
             context.SaveChanges();
 
         }
