@@ -1,8 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorApp.Auth;
+@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 
 <PageTitle>BlazorApp</PageTitle>
-
 <div>
         <NavMenu />
 
@@ -19,3 +19,14 @@
     </div>
 
 </div>
+
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!BlitzWareAuthService.AuthService.Initialized)
+            BlitzWareAuthService.AuthService.Initialize();
+    }
+}
