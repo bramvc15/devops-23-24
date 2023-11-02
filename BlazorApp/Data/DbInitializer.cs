@@ -70,20 +70,20 @@ namespace BlazorApp.Data
                 {
                     Question = "Alles goed vandaag?",
                     Answer = "Zeker met u?",
-                    FollowUpQuestion = 2,
+                    FollowUpQuestion = 1,
                 },
-                new ChatBotQuestion
-                {
-                    FollowUpID = 2,
-                    Question = "Zeer goed",
-                    Answer = "Top!",
-                },
-                new ChatBotQuestion
-                {
-                    FollowUpID = 2,
-                    Question = "Nee",
-                    Answer = "Oei!",
-                },
+                    new ChatBotQuestion
+                    {
+                        FollowUpID = 1,
+                        Question = "Zeer goed",
+                        Answer = "Top!",
+                    },
+                    new ChatBotQuestion
+                    {
+                        FollowUpID = 1,
+                        Question = "Nee",
+                        Answer = "Oei!",
+                    },
 
 
                 new ChatBotQuestion
@@ -91,7 +91,46 @@ namespace BlazorApp.Data
                     Question = "Hoe maak ik een afspraak?",
                     Answer = "U kan een afspraak door rechtsboven op de knop 'Maak een afspraak' te klikken.",
                 },
+
                 
+                new ChatBotQuestion
+                {
+                    Question = "Hoeveel kost een behandeling?",
+                    Answer = "In welke behandeling bent u geïnteresseerd?",
+                    FollowUpQuestion = 2,
+                },
+                    new ChatBotQuestion
+                    {
+                        FollowUpID = 2,
+                        Question = "Ooglidcorrectie",
+                        Answer = "Over welk soort ooglidcorrectie gaat het?",
+                        FollowUpQuestion = 3,
+                    },
+                        new ChatBotQuestion
+                        {
+                            FollowUpID = 3,
+                            Question = "Bovenooglidcorrectie",
+                            Answer = "Een bovenooglidcorrectie kost 1250 euro.",
+                        },
+                        new ChatBotQuestion
+                        {
+                            FollowUpID = 3,
+                            Question = "Onderooglidcorrectie",
+                            Answer = "Een onderooglidcorrectie kost 1000 euro.",
+                        },               
+                    new ChatBotQuestion
+                    {
+                        FollowUpID = 2,
+                        Question = "Cataractoperatie",
+                        Answer = "Een cataractoperatie kost tussen de 800 en 1500 euro.",
+                    },
+                    new ChatBotQuestion
+                    {
+                        FollowUpID = 2,
+                        Question = "Straaloperatie",
+                        Answer = "Een straaloperatie kost tussen de 1250 en 2000 euro.",
+                    },
+                    
             };
 
 

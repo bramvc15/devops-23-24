@@ -68,6 +68,13 @@
     {
         await botResponse(question.Answer);
 
+        ChatBotObj = ChatBotObj.Where(x => x != question);
+
+        if(ChatBotObj.Count() == 0)
+        {
+            await OnInitializedAsync();
+        }
+
         if(question.FollowUpQuestion != null)
         {
             await getFollowUpQuestions(question);
