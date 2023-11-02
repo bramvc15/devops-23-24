@@ -63,7 +63,6 @@
         visible = !visible;
     }
 
-    List<FAQItem> questions = FAQData.GetFAQs();
     private async void HandleQuestionClicked(ChatBotQuestion question)
     {
         await botResponse(question.Answer);
