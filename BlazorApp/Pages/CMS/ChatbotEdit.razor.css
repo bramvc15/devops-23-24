@@ -17,3 +17,12 @@
     background: rgb(77, 156, 132);
     color: white;
 }
+
+.btn:hover {
+    background: rgb(74, 134, 116);
+    color: white;
+}
+
+h1 {
+    color: rgb(22, 44, 104);
+}

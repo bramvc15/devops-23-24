@@ -34,3 +34,6 @@
     display: block;
 }
 
+.gear:hover {
+    color: rgb(231, 231, 231);
+}

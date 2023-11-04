@@ -10,12 +10,15 @@
 @inject ChatbotService ChatbotService
 
 <div class="card @(collapsed ? "" : "border border-dark")">
-    <div class="card-header" id="headingOne" @onclick=this.Collapse>
+    <div class="card-header d-flex justify-content-between" id="headingOne" @onclick=this.Collapse>
     <h5 class="mb-0">
         <button class="btn" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
         @question.Question
         </button>
     </h5>
+        <button type="button" class="close mx-2" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     @if(!collapsed) {
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">

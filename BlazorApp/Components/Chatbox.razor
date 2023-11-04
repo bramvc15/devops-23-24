@@ -8,12 +8,18 @@
 @inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
 @inject ChatbotService ChatbotService
+@inject NavigationManager NavigationManager
 
 <div class="chatbox-div">
-    <div class="chatbox-header d-flex" @onclick="() => ToggleChatbox()">
-        &#9679
-        <div class="title">
-            Chat
+    <div class="chatbox-header d-flex justify-content-between" @onclick="() => ToggleChatbox()">
+        <div class="d-flex">
+            &#9679
+            <div class="title">
+                Chat
+            </div>
+        </div>
+        <div class="gear" @onclick="NavigateToSettingsPage">
+        ⛭
         </div>
     </div>
     <div class="chatbox-content @(visible ? "visible" : "")">
@@ -96,5 +102,10 @@
         chatMessages.Add(new ChatMessage { Message = null,  type = "questions", ChatBotObj=obj });
         StateHasChanged();
         JSRuntime.InvokeVoidAsync("scrollToBottom");
+    }
+
+    private void NavigateToSettingsPage()
+    {
+        NavigationManager.NavigateTo("/chatbot");
     }
 }
