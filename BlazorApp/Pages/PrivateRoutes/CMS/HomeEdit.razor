@@ -46,15 +46,29 @@
             <div class="buttons" style="margin-left: 20px;">
                 <AddBlogPopUp />
             </div>
-
-            @if (BlogObj != null)
+            @if (BlogObj.blogs != null)
             {
-                foreach (var b in BlogObj)
+                foreach (var b in BlogObj.blogs)
                 {
                     <ActuaField Title=@b.Title Text=@b.Text Image=@b.Image />
                 }
             }
-
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" @onclick="(() => ChangePage(currentPage - 1))">Vorige</a>
+                    </li>
+                    @for (int i = 1; i <= BlogObj.totalPages; i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link" @onclick="(() => ChangePage(i))">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled" : "")">
+                        <a class="page-link" @onclick="(() => ChangePage(currentPage + 1))">Volgende</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
     </div>
@@ -74,12 +88,25 @@ else
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    (IEnumerable<Blog> blogs, int totalPages) BlogObj;
+    int currentPage = 1;
 
-    IEnumerable<Blog>? BlogObj;
     protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        BlogObj = await Task.Run(() => blogService.GetContent());
+        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+    }
+
+    private async Task ChangePage(int page)
+    {
+        if (page < 1 || page > BlogObj.totalPages)
+        {
+            return;
+        }
+
+        currentPage = page;
+        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+        StateHasChanged();
     }
 }

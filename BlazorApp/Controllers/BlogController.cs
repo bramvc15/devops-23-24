@@ -18,7 +18,7 @@ public class BlogController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Blog> GetContent()
+    public (IEnumerable<Blog>, int totalPages) GetContent()
     {
 
         return _service.GetContent();

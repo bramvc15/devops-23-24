@@ -44,30 +44,54 @@
     <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
 
     <div class="actuaBox">
-        @if  (BlogObj != null)
+        @if (BlogObj.blogs != null)
         {
-            foreach(var b in BlogObj){
+            foreach (var b in BlogObj.blogs)
+            {
                 <ActuaField Title=@b.Title Text=@b.Text Image=@b.Image />
             }
         }
+        <nav>
+            <ul class="pagination">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" @onclick="(() => ChangePage(currentPage - 1))">Vorige</a>
+                </li>
+                @for (int i = 1; i <= BlogObj.totalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" @onclick="(() => ChangePage(i))">@i</a>
+                    </li>
+                }
+                <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled" : "")">
+                    <a class="page-link" @onclick="(() => ChangePage(currentPage + 1))">Volgende</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
 </div>
 
 
 @code {
-
-
     IEnumerable<HomeHeader>? HomObj;
-            IEnumerable<Blog>? BlogObj;
+    (IEnumerable<Blog> blogs, int totalPages) BlogObj;
+    int currentPage = 1;
+
     protected override async Task OnInitializedAsync()
     {
-
         HomObj = await Task.Run(() => homeHeaderService.GetContent());
-        BlogObj = await Task.Run(() => blogService.GetContent());
+        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
     }
 
+    private async Task ChangePage(int page)
+    {
+        if (page < 1 || page > BlogObj.totalPages)
+        {
+            return;
+        }
 
-
-
+        currentPage = page;
+        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+        StateHasChanged();
+    }
 }
