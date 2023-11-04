@@ -9,10 +9,10 @@
 @using Microsoft.AspNetCore.Components
 @inject ChatbotService ChatbotService
 
-<div class="card">
-    <div class="card-header" id="headingOne">
+<div class="card @(collapsed ? "" : "border border-dark")">
+    <div class="card-header" id="headingOne" @onclick=this.Collapse>
     <h5 class="mb-0">
-        <button class="btn btn-link" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" @onclick=this.Collapse>
+        <button class="btn" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
         @question.Question
         </button>
     </h5>
@@ -20,20 +20,21 @@
     @if(!collapsed) {
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
         <div class="card-body">
+            <h5>Antwoord</h5> 
             @question.Answer
         </div>
         <div class="container">
-            @if (followUpQuestions != null)
+            @if (followUpQuestions.Count() > 0)
             {
+                <h5>Follow up keuzeopties:</h5>
                 foreach (var followUpQuestion in followUpQuestions)
                 {
                     <ChatbotAccordion question=followUpQuestion/>
                 }
             }
-            </div>
-            
-        <button class="btn btn-success" @onclick="() => AddFollowUpQuestion()">Voeg vraag toe</button>
+            <ChatbotPopup parentQuestion=question text="Voeg keuzeoptie toe"/>
         </div>
+    </div>
     }
 </div>
 
