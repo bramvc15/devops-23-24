@@ -48,7 +48,6 @@
     protected override async Task OnInitializedAsync()
     {
         ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
-        Console.WriteLine(ChatBotObj);
     }
 
     protected async Task getFollowUpQuestions(ChatBotQuestion question)

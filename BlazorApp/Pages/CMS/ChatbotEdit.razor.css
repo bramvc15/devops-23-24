@@ -1,17 +1,19 @@
+* {
+    background: rgb(194,228,218);
+}
+
 .content {
     height: 100vh;
-    background-color: green;
+    background: rgb(194,228,218);
+}
+
+.container {
     padding-top: 100px;
+    max-height: 100vh;
+    overflow: scroll;
 }
 
-.block {
-    padding: 20px;
-    background-color: rgb(194, 194, 194);
-    border-radius: 15px;
-}
-
-.canvas {
-    height: 100%;
-    width: 100%;
-    background-color: red;
+.btn {
+    background: rgb(77, 156, 132);
+    color: white;
 }
