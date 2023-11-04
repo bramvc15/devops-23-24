@@ -1,0 +1,68 @@
+@page "/registreer"
+@using BlazorApp.Auth
+@inject NavigationManager NavManager
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div>
+        <h3>Registreer</h3>
+
+        <p>@message</p>
+        <p><a href="/login">@login</a></p>
+
+        <EditForm Model="reg" OnValidSubmit="RegisterUser" style="max-width:500px;">
+            <DataAnnotationsValidator />
+            <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
+            <div class="mb-2">
+                <InputText class="form-control" @bind-Value="reg.username" placeholder="Naam"></InputText>
+            </div>
+            <div class="mb-2">
+                <InputText class="form-control" @bind-Value="reg.email" placeholder="Email"></InputText>
+            </div>
+            <div class="mb-2">
+                <InputText type="password" class="form-control" @bind-Value="reg.password" placeholder="Wachtwoord"></InputText>
+            </div>
+            <div class="mb-2">
+                <InputText type="password" class="form-control" @bind-Value="reg.confirmPassword" placeholder="Bevestig wachtwoord"></InputText>
+            </div>
+            <div class="mb-2 text-right">
+                <button class="btn btn-secondary" disabled="@isDisabled">Registreer</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    BlitzWareAuth.API.RegisterModel reg = new BlitzWareAuth.API.RegisterModel();
+    string message = string.Empty, login = string.Empty;
+    private bool isDisabled = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            {
+                NavManager.NavigateTo("/dashboard");
+            }
+        }
+    }
+
+    private void RegisterUser()
+    {
+        isDisabled = true;
+        BlitzWareAuth.API.RequestResult result = BlitzWareAuthService.AuthService.Register(reg.username, reg.password, reg.email, "");
+        if (result.Success)
+        {
+            message = result.Message;
+            login = "Click here to LOGIN.";
+        }
+        else
+        {
+            isDisabled = false;
+            message = result.Message;
+        }
+    }
+
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+}

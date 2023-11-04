@@ -1,10 +1,23 @@
 <div >
     <div class="field grid-container" >
 
-        <h2 class="grid-title">blogpost 1</h2>
-        <p class="grid-text">bhkjhkjhjkhjkhkj jhfjdkfhaskjfdjk jhfdsjkf hjksdfh jksdf fdh jkfhdsjkfhjkhjkhjkhhjhjhhkhkhjkhjkhjkhjkhjkhjkhjkhhjhjkhjkhjkhjk</p>
-        <a class="grid-hyper" href="ActuaDetail">lees verder</a>
-        <img class="grid-image" src='https://th.bing.com/th?id=OIF.84YMKflpQxANDKR%2bxXWPSA&pid=ImgDet&rs=1'>
+        <h2 class="grid-title">@Title</h2>
+        <p class="grid-text">@((MarkupString)@Text)</p>
+        <a class="grid-hyper">lees verder</a>
+        <img class="grid-image" src=@Image>
     </div>
 
 </div>
+
+
+ @code {
+
+        [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public string Image { get; set;}
+ }

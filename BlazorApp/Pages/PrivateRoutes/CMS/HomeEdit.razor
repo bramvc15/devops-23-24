@@ -1,0 +1,85 @@
+@page "/admin/cms/home"
+@inherits EditHeaderPopUp
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@using Microsoft.AspNetCore.Components
+@using System.Text.Json
+@inject DatabaseContext databaseContext
+@inject BlogService blogService
+@using BlazorApp.Auth
+@inject NavigationManager NavManager
+@using Newtonsoft.Json;
+
+<PageTitle>Index</PageTitle>
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
+                 BlitzWareAuthService.AuthService.appData.AdminRoleLevel
+                 ==
+                 BlitzWareAuthService.AuthService.userData.UserSubLevel)
+{
+    <div>
+        <div class="background-div">
+
+            <div class="overlay">
+                <EditHeaderPopUp />
+                <div class="buttons">
+                    <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
+                    <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+
+        <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
+
+
+
+        <div class="actuaBox">
+            <div class="buttons" style="margin-left: 20px;">
+                <AddBlogPopUp />
+            </div>
+
+            @if (BlogObj != null)
+            {
+                foreach (var b in BlogObj)
+                {
+                    <ActuaField Title=@b.Title Text=@b.Text Image=@b.Image />
+                }
+            }
+
+        </div>
+
+    </div>
+} 
+else
+{
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6">
+            <p>You are not allowed to access this page!</p>
+        </div>
+    </div>
+}
+
+
+
+
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+
+    IEnumerable<Blog>? BlogObj;
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            NavManager.NavigateTo("/login");
+        BlogObj = await Task.Run(() => blogService.GetContent());
+    }
+}

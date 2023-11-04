@@ -1,35 +1,73 @@
 ﻿@page "/"
+@using System.Text.Json
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inject HomeHeaderService homeHeaderService
+@inject DatabaseContext databaseContext
+@using Microsoft.AspNetCore.Components
+@inject BlogService blogService
 
 <PageTitle>Index</PageTitle>
 
-<div >
+<div>
     <div class="background-div">
-    <div class="overlay">
-        <h1>Vision Oogcenter gent</h1>
-        <p>
-            Lorem ipcsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod tempor <br> incididunt ut labore et dolore
-            magna aliqua. Ut <br>enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea <br> commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse 
-        </p>
-        <div class="buttons">
-            <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
-            <button class="btn btn-light"   >Contacteer ons <span class="oi oi-envelope-closed"></span></button>
-        </div>
+        <div class="overlay">
+            @if (HomObj != null)
+            {
+                @foreach (var h in HomObj)
+                {
+
+                    <h1>@h.Title</h1>
+                 @((MarkupString)h.Context)
+                }
+            }
+            else
+            {
+
+                <h1>title</h1>
+                <p>
+                    context
+                </p>
+            }
+            <div class="buttons">
+                <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
+                <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
+            </div>
         </div>
     </div>
 </div>
 
-<div >
+<div>
 
     <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
 
     <div class="actuaBox">
-        @for (int i = 0; i < 5; i++)
+        @if  (BlogObj != null)
         {
-        <ActuaField />
+            foreach(var b in BlogObj){
+                <ActuaField Title=@b.Title Text=@b.Text Image=@b.Image />
+            }
         }
     </div>
 
 </div>
+
+
+@code {
+
+
+    IEnumerable<HomeHeader>? HomObj;
+            IEnumerable<Blog>? BlogObj;
+    protected override async Task OnInitializedAsync()
+    {
+
+        HomObj = await Task.Run(() => homeHeaderService.GetContent());
+        BlogObj = await Task.Run(() => blogService.GetContent());
+    }
+
+
+
+
+}
