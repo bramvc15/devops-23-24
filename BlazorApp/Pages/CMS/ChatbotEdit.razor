@@ -23,21 +23,62 @@
             }
         }
         </div> 
-        <button class="btn">Voeg vraag toe</button>
+        <button class="btn" @onclick="ShowModal">Voeg vraag toe</button>
     </div>
-</div>
+    <Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Vraag toevoegen</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                
+                <FieldLabel>Vraag</FieldLabel>
+                <TextEdit Placeholder="Vraag die de bezoeker aanklikt" @bind-Text="question" />
+            </Field>
+            <Field>
+                <FieldLabel>Antwoord</FieldLabel>
+                <TextEdit Placeholder="Antwoord die de chatbot geeft" @bind-Text="answer" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" >Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@addQuestion">Voeg toe</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
 
+</div>
 @code {
     IEnumerable<ChatBotQuestion>? ChatBotObj;
     private bool collapsed = true;
 
+    string? question;
+    string? answer;
+
+    private Modal? modalRef;
     protected override async Task OnInitializedAsync()
     {
         ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
+    }
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
     }
 
     void Collapse()
     {
         collapsed = !collapsed;
     }
+
+    void addQuestion() {
+        ChatBotQuestion question = new ChatBotQuestion();
+        question.Question = this.question;
+        question.Answer = this.answer;
+        ChatbotService.AddQuestion(question);
+        modalRef?.Hide();
+    }
+    
 }
