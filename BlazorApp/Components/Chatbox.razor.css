@@ -1,7 +1,7 @@
 .chatbox-div {
-    width: 375px;
+    width: 450px;
     border-radius: 15px 15px 0px 0px;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
     background-color: white;
     position: fixed;
     bottom: 0px; /* Adjust this value to control the vertical position */
@@ -15,6 +15,7 @@
     padding: 10px 15px;
     color: white;
     cursor: pointer;
+    font-size: 18px;
 }
 
 .title {
@@ -22,7 +23,7 @@
 }
 
 .chatbox-content {
-    height: 350px;
+    height: 400px;
     display: none;
     width: 100%;
     padding: 5px;
@@ -34,6 +35,6 @@
     display: block;
 }
 
-.gear:hover {
+.gear:hover, .restart:hover {
     color: rgb(231, 231, 231);
 }

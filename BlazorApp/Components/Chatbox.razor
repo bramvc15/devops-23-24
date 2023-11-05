@@ -13,18 +13,24 @@
 <div class="chatbox-div">
     <div class="chatbox-header d-flex justify-content-between" @onclick="() => ToggleChatbox()">
         <div class="d-flex">
-            &#9679
+            🗨
             <div class="title">
                 Chat
             </div>
         </div>
-        <div class="gear" @onclick="NavigateToSettingsPage">
-        ⛭
+        <div class="d-flex">
+            @if (restartable)
+            {
+                <div class="restart" @onclick="clearChat" @onclick:stopPropagation="true">
+                    ↻
+                </div>
+            }
+            <div class="gear ml-3" @onclick="NavigateToSettingsPage" @onclick:stopPropagation="true">
+            ⛭
+            </div>
         </div>
     </div>
     <div class="chatbox-content @(visible ? "visible" : "")">
-        <ChatMessage Message="Welkom, hoe kan ik u helpen?" type="bot" />
-        <ChatMessage type="questions" ChatBotObj="ChatBotObj" QuestionClicked="HandleQuestionClicked" />
         @foreach (var message in chatMessages)
         {
             if(message.Message != null) {
@@ -46,12 +52,19 @@
 
 @code {
     public bool visible = false;
+    public bool restartable = false;
     private List<ChatMessage> chatMessages = new List<ChatMessage>();
 
 
     IEnumerable<ChatBotQuestion>? ChatBotObj;
 
     protected override async Task OnInitializedAsync()
+    {
+        await getChatBotObj();
+        startChat();
+    }
+
+    private async Task getChatBotObj()
     {
         ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
     }
@@ -68,8 +81,28 @@
         visible = !visible;
     }
 
+    private async Task clearChat()
+    {
+        while(chatMessages.Last().type != "questions")
+        {
+            await Task.Delay(100);
+        }
+
+        startChat();
+    }
+
+    private async void startChat()
+    {
+        await getChatBotObj();
+        chatMessages.Clear();
+        chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", type = "bot" });
+        StateHasChanged();
+        showQuestions(ChatBotObj);
+    }
+
     private async void HandleQuestionClicked(ChatBotQuestion question)
     {
+        restartable = false;
         await botResponse(question.Answer);
 
         ChatBotObj = ChatBotObj.Where(x => x != question);
@@ -90,7 +123,7 @@
 
     private async Task botResponse(string answer)
     {
-        await Task.Delay(1500);
+        await Task.Delay(1200);
         chatMessages.Add(new ChatMessage { Message = answer, type = "bot" });
         StateHasChanged();
         JSRuntime.InvokeVoidAsync("scrollToBottom");
@@ -98,8 +131,9 @@
 
     private async Task showQuestions(IEnumerable<ChatBotQuestion>? obj)
     {
-        await Task.Delay(500);
+        await Task.Delay(350);
         chatMessages.Add(new ChatMessage { Message = null,  type = "questions", ChatBotObj=obj });
+        restartable = true;
         StateHasChanged();
         JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
