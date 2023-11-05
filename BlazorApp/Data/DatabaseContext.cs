@@ -17,7 +17,5 @@ namespace BlazorApp.Data
         public DbSet<Blog> Blogs => Set<Blog>();
 
         public DbSet<ChatBotQuestion> ChatBotQuestions => Set<ChatBotQuestion>();
-        
-
     }
 }

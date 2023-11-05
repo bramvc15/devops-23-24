@@ -17,13 +17,13 @@ namespace BlazorApp.Services
 
         public IEnumerable<ChatBotQuestion> GetContent()
         {
-            return _ctx.ChatBotQuestions.Where(question => question.FollowUpID == null).ToList();
+            return _ctx.ChatBotQuestions.Include(question => question.FollowUpQuestions).ToList();
         }
 
-        public IEnumerable<ChatBotQuestion> GetFollowUpQuestions(int? followUpID)
-        {
-            return _ctx.ChatBotQuestions.Where(question => question.FollowUpID == followUpID).ToList();
-        }
+        // public IEnumerable<ChatBotQuestion> GetFollowUpQuestions(int? followUpID)
+        // {
+        //     return _ctx.ChatBotQuestions.Where(question => question.FollowUpID == followUpID).ToList();
+        // }
         
         public void AddQuestion(ChatBotQuestion question)
         {
@@ -33,19 +33,9 @@ namespace BlazorApp.Services
 
         public void AddFollowUpQuestion(ChatBotQuestion parentQuestion, ChatBotQuestion question)
         {
-            var dbParentQuestion = _ctx.ChatBotQuestions.Find(parentQuestion.Id);
-            var followUpID = dbParentQuestion.FollowUpQuestion;
-            
-            if(followUpID == null)
-            {
-                followUpID = GetNextFollowUpQuestionID();
-                dbParentQuestion.FollowUpQuestion = followUpID;
-            }
-
-            question.FollowUpID = followUpID;
-
-            _ctx.ChatBotQuestions.Add(question);
-            _ctx.SaveChanges();
+            question.IsFollowUp = true;
+            parentQuestion.FollowUpQuestions.Add(question);
+            EditQuestion(parentQuestion);
         }
 
         public void EditQuestion(ChatBotQuestion question)
@@ -56,32 +46,22 @@ namespace BlazorApp.Services
 
         public void DeleteQuestion(ChatBotQuestion question)
         {
-            recursiveDeleteFollowUpQuestions(question);
+            recursiveDelete(question);
             _ctx.ChatBotQuestions.Remove(question);
             _ctx.SaveChanges();
+            
         }
 
-        public void recursiveDeleteFollowUpQuestions(ChatBotQuestion question)
+        public void recursiveDelete(ChatBotQuestion question)
         {
-            if(question.FollowUpQuestion == null)
+            if (question.FollowUpQuestions != null)
             {
-                return;
+                foreach (ChatBotQuestion followUpQuestion in question.FollowUpQuestions)
+                {
+                    recursiveDelete(followUpQuestion);
+                    _ctx.ChatBotQuestions.Remove(followUpQuestion);
+                }
             }
-
-            var followUpQuestions = _ctx.ChatBotQuestions.Where(q => q.FollowUpID == question.FollowUpQuestion).ToList();
-
-            foreach(var followUpQuestion in followUpQuestions)
-            {
-                recursiveDeleteFollowUpQuestions(followUpQuestion);
-                _ctx.ChatBotQuestions.Remove(followUpQuestion);
-            }
-        }
-
-        public int GetNextFollowUpQuestionID()
-        {
-            int maxFollowUpID = _ctx.ChatBotQuestions.Max(question => question.FollowUpID) ?? 0;
-            int nextFollowUpID = maxFollowUpID + 1;
-            return nextFollowUpID;
         }
     }
 

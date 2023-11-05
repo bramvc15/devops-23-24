@@ -36,8 +36,8 @@
     protected override async Task OnInitializedAsync()
     {
         ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
+        ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
     }
-
 
     void Collapse()
     {

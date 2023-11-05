@@ -27,7 +27,7 @@
             @question.Answer
         </div>
         <div class="container">
-            @if (followUpQuestions.Count() > 0)
+            @if (followUpQuestions != null && followUpQuestions.Count() > 0)
             {
                 <h5>Follow up keuzeopties:</h5>
                 foreach (var followUpQuestion in followUpQuestions)
@@ -51,18 +51,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        followUpQuestions = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
-        followUpQuestions = followUpQuestions.Where(x => x.FollowUpID != null);
-    }
-
-    void AddFollowUpQuestion()
-    {
-        ChatBotQuestion question = new ChatBotQuestion();
-        question.Question = "Vraag";
-        question.Answer = "Antwoord";
-
-
-        ChatbotService.AddFollowUpQuestion(this.question, question);
+        followUpQuestions = question.FollowUpQuestions;
     }
 
     void DeleteQuestion()

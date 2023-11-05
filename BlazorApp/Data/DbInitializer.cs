@@ -68,68 +68,50 @@ namespace BlazorApp.Data
             {
                 new ChatBotQuestion
                 {
-                    Question = "Alles goed vandaag?",
-                    Answer = "Zeker met u?",
-                    FollowUpQuestion = 1,
-                },
-                    new ChatBotQuestion
-                    {
-                        FollowUpID = 1,
-                        Question = "Zeer goed",
-                        Answer = "Top!",
-                    },
-                    new ChatBotQuestion
-                    {
-                        FollowUpID = 1,
-                        Question = "Nee",
-                        Answer = "Oei!",
-                    },
-
-
-                new ChatBotQuestion
-                {
-                    Question = "Hoe maak ik een afspraak?",
-                    Answer = "U kan een afspraak door rechtsboven op de knop 'Maak een afspraak' te klikken.",
-                },
-
-                
-                new ChatBotQuestion
-                {
                     Question = "Hoeveel kost een behandeling?",
                     Answer = "In welke behandeling bent u geïnteresseerd?",
-                    FollowUpQuestion = 2,
-                },
-                    new ChatBotQuestion
+                    FollowUpQuestions = new List<ChatBotQuestion>
                     {
-                        FollowUpID = 2,
-                        Question = "Ooglidcorrectie",
-                        Answer = "Over welk soort ooglidcorrectie gaat het?",
-                        FollowUpQuestion = 3,
-                    },
                         new ChatBotQuestion
                         {
-                            FollowUpID = 3,
-                            Question = "Bovenooglidcorrectie",
-                            Answer = "Een bovenooglidcorrectie kost 1250 euro.",
+                            IsFollowUp = true,
+                            Question = "Ooglidcorrectie",
+                            Answer = "Over welk soort ooglidcorrectie gaat het?",
+                            FollowUpQuestions = new List<ChatBotQuestion>
+                            {
+                                new ChatBotQuestion
+                                {
+                                    IsFollowUp = true,
+                                    Question = "Bovenooglidcorrectie",
+                                    Answer = "Een bovenooglidcorrectie kost 1250 euro.",
+                                },
+                                new ChatBotQuestion
+                                {
+                                    IsFollowUp = true,
+                                    Question = "Onderooglidcorrectie",
+                                    Answer = "Een onderooglidcorrectie kost 1000 euro.",
+                                },
+                            }
                         },
                         new ChatBotQuestion
                         {
-                            FollowUpID = 3,
-                            Question = "Onderooglidcorrectie",
-                            Answer = "Een onderooglidcorrectie kost 1000 euro.",
-                        },               
-                    new ChatBotQuestion
-                    {
-                        FollowUpID = 2,
-                        Question = "Cataractoperatie",
-                        Answer = "Een cataractoperatie kost tussen de 800 en 1500 euro.",
-                    },
-                    new ChatBotQuestion
-                    {
-                        FollowUpID = 2,
-                        Question = "Straaloperatie",
-                        Answer = "Een straaloperatie kost tussen de 1250 en 2000 euro.",
-                    },
+                            IsFollowUp = true,
+                            Question = "Cataractoperatie",
+                            Answer = "Een cataractoperatie kost tussen de 800 en 1500 euro.",
+                        },
+                        new ChatBotQuestion
+                        {
+                            IsFollowUp = true,
+                            Question = "Straaloperatie",
+                            Answer = "Een straaloperatie kost tussen de 1250 en 2000 euro.",
+                        },
+                    }
+                },
+                new ChatBotQuestion
+                {
+                    Question = "Waar zijn jullie gelegen?",
+                    Answer = "Onze vestiging is gelegen in 9040 Gent, op de Antwerpsesteenweg 1022.",
+                },
                     
             };
 

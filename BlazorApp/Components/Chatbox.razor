@@ -74,12 +74,13 @@
     private async Task getChatBotObj()
     {
         ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
+        ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
     }
 
     protected async Task getFollowUpQuestions(ChatBotQuestion question)
     {
-        IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
-
+        //IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
+        List<ChatBotQuestion>? followUpObj = question.FollowUpQuestions;
         showQuestions(followUpObj);
     }
 
@@ -114,7 +115,7 @@
 
         ChatBotObj = ChatBotObj.Where(x => x != question);
 
-        if(question.FollowUpQuestion != null)
+        if(question.FollowUpQuestions == null || question.FollowUpQuestions.Count() > 0)
         {
             await getFollowUpQuestions(question);
         } else {
