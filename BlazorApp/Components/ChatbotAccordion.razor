@@ -16,7 +16,7 @@
         @question.Question
         </button>
     </h5>
-        <button type="button" class="close mx-2" aria-label="Close">
+        <button type="button" class="close mx-2" aria-label="Close" @onclick="DeleteQuestion">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -63,6 +63,11 @@
 
 
         ChatbotService.AddFollowUpQuestion(this.question, question);
+    }
+
+    void DeleteQuestion()
+    {
+        ChatbotService.DeleteQuestion(question);
     }
 
     void Collapse()

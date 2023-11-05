@@ -54,6 +54,29 @@ namespace BlazorApp.Services
             _ctx.SaveChanges();
         }
 
+        public void DeleteQuestion(ChatBotQuestion question)
+        {
+            recursiveDeleteFollowUpQuestions(question);
+            _ctx.ChatBotQuestions.Remove(question);
+            _ctx.SaveChanges();
+        }
+
+        public void recursiveDeleteFollowUpQuestions(ChatBotQuestion question)
+        {
+            if(question.FollowUpQuestion == null)
+            {
+                return;
+            }
+
+            var followUpQuestions = _ctx.ChatBotQuestions.Where(q => q.FollowUpID == question.FollowUpQuestion).ToList();
+
+            foreach(var followUpQuestion in followUpQuestions)
+            {
+                recursiveDeleteFollowUpQuestions(followUpQuestion);
+                _ctx.ChatBotQuestions.Remove(followUpQuestion);
+            }
+        }
+
         public int GetNextFollowUpQuestionID()
         {
             int maxFollowUpID = _ctx.ChatBotQuestions.Max(question => question.FollowUpID) ?? 0;

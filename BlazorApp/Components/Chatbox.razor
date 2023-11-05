@@ -10,7 +10,7 @@
 @inject ChatbotService ChatbotService
 @inject NavigationManager NavigationManager
 
-<div class="chatbox-div">
+<div class="chatbox-div @(visible ? "visible" : "")">
     <div class="chatbox-header d-flex justify-content-between" @onclick="() => ToggleChatbox()">
         <div class="d-flex">
             🗨
