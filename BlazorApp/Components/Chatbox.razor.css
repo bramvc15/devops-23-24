@@ -6,6 +6,7 @@
     position: fixed;
     bottom: 0px; /* Adjust this value to control the vertical position */
     right: 10%; /* Adjust this value to control the horizontal position */
+    background-color: rgb(253, 253, 253);
 }
 
 .chatbox-header {
@@ -16,6 +17,13 @@
     color: white;
     cursor: pointer;
     font-size: 18px;
+    border: 1px solid rgb(71, 145, 122);
+    transition: all 150ms ease;
+}
+
+.chatbox-header:hover {
+    background: rgb(71, 145, 122);
+    border: 1px solid rgb(77, 156, 132);
 }
 
 .title {

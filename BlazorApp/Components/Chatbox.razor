@@ -39,11 +39,17 @@
             <ChatMessage type="@message.type" ChatBotObj="@message.ChatBotObj" QuestionClicked="HandleQuestionClicked" />
             }
         }
+        @if(typing) {
+            <ChatMessage type="bot" Image="images/typingAnimation.gif" />
+        }
     </div>
     <script>
         function scrollToBottom() {
             var objDiv = document.getElementsByClassName("chatbox-content")[0];
-            objDiv.scrollTop = objDiv.scrollHeight;
+            objDiv.scrollTo({
+                top: objDiv.scrollHeight,
+                behavior: 'smooth'
+            });
         }
     </script>
 </div>
@@ -53,6 +59,7 @@
 @code {
     public bool visible = false;
     public bool restartable = false;
+    public bool typing = false;
     private List<ChatMessage> chatMessages = new List<ChatMessage>();
 
 
@@ -122,9 +129,20 @@
         }
     }
 
+    private async Task typingDelay()
+    {
+        await Task.Delay(100);
+        typing = true;
+        StateHasChanged();
+        await Task.Delay(980);
+        typing = false;
+        StateHasChanged();
+        JSRuntime.InvokeVoidAsync("scrollToBottom");
+    }
+
     private async Task botResponse(string answer)
     {
-        await Task.Delay(980);
+        await typingDelay();
         chatMessages.Add(new ChatMessage { Message = answer, type = "bot" });
         StateHasChanged();
         JSRuntime.InvokeVoidAsync("scrollToBottom");

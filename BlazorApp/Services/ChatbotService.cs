@@ -31,7 +31,6 @@ namespace BlazorApp.Services
             _ctx.SaveChanges();
         }
 
-        // add follow up question
         public void AddFollowUpQuestion(ChatBotQuestion parentQuestion, ChatBotQuestion question)
         {
             var dbParentQuestion = _ctx.ChatBotQuestions.Find(parentQuestion.Id);

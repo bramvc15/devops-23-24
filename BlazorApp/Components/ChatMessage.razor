@@ -16,6 +16,9 @@
             <span class="message">
                 @Message
             </span>
+            if(Image != null) {
+                <img src="@Image" />
+            }
         } else {
             @foreach(var question in ChatBotObj)
             {
@@ -35,8 +38,12 @@
     [Parameter]
     public string type { get; set; }
 
+    [Parameter]
+    public string? Image { get; set; }
+
     [Parameter]	
     public IEnumerable<ChatBotQuestion>? ChatBotObj { get; set; }
+    
 
     public bool visible = false;
 
