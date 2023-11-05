@@ -107,23 +107,24 @@
 
         ChatBotObj = ChatBotObj.Where(x => x != question);
 
-        if(ChatBotObj.Count() == 0)
-        {
-            await OnInitializedAsync();
-        }
-
         if(question.FollowUpQuestion != null)
         {
             await getFollowUpQuestions(question);
         } else {
             await botResponse("Hebt u verder nog vragen?");
+
+            if(ChatBotObj.Count() == 0)
+            {
+                await getChatBotObj();
+            }
+
             await showQuestions(ChatBotObj);
         }
     }
 
     private async Task botResponse(string answer)
     {
-        await Task.Delay(1200);
+        await Task.Delay(980);
         chatMessages.Add(new ChatMessage { Message = answer, type = "bot" });
         StateHasChanged();
         JSRuntime.InvokeVoidAsync("scrollToBottom");
@@ -131,7 +132,7 @@
 
     private async Task showQuestions(IEnumerable<ChatBotQuestion>? obj)
     {
-        await Task.Delay(350);
+        await Task.Delay(450);
         chatMessages.Add(new ChatMessage { Message = null,  type = "questions", ChatBotObj=obj });
         restartable = true;
         StateHasChanged();
