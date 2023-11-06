@@ -10,7 +10,7 @@ namespace BlazorApp.Data
         public static void Initialize(DatabaseContext context)
         {
 
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any())
             {
                 return;
             }
@@ -44,6 +44,20 @@ namespace BlazorApp.Data
 
             };
 
+             var location = new LocationM
+            {
+
+                Context = "Ergens in GENT, best via de E40 binnen rijden"
+
+            };
+
+               var contact = new ContactM
+            {
+
+                Context = "wij zijn mensen en geen ALiens ookal zijn we oogartsen"
+
+            };
+
             var blogs = new Blog[]
             {
                 new Blog
@@ -67,7 +81,9 @@ namespace BlazorApp.Data
 
             context.Doctors.AddRange(doctors);
             context.HomeHeaders.Add(header);
+            context.Locations.Add(location);
             context.Blogs.AddRange(blogs);
+            context.Contacts.Add(contact);
             context.SaveChanges();
 
         }

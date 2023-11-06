@@ -20,6 +20,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddTransient<DoctorService>();
 builder.Services.AddTransient<HomeHeaderService>();
 builder.Services.AddTransient<BlogService>();
+builder.Services.AddTransient<LocationService>();
+builder.Services.AddTransient<ContactService>();
 
 builder.Services.AddDbContext<DatabaseContext>( options => 
     {

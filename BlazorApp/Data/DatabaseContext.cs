@@ -1,4 +1,5 @@
 using BlazorApp.Models;
+using BlazorApp.Pages;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp.Data
@@ -16,6 +17,9 @@ namespace BlazorApp.Data
 
         public DbSet<Blog> Blogs => Set<Blog>();
         
+        public DbSet<LocationM> Locations => Set<LocationM>();
+
+        public DbSet<ContactM> Contacts => Set<ContactM>();
 
     }
 }
