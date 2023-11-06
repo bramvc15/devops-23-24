@@ -1,21 +1,32 @@
-@page "/Locatie"
-@inject LocationService locationService
+@page "/admin/cms/location"
+@using BlazorApp.Auth
 @using BlazorApp.Data
 @using BlazorApp.Services
 @using BlazorApp.Models
 @using BlazorApp.Controllers
+@using BlazorApp.Components.Modals
+@inject NavigationManager NavManager
+@inject LocationService locationService
 <PageTitle>Locatie</PageTitle>
-
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
+                 BlitzWareAuthService.AuthService.appData.AdminRoleLevel
+                 ==
+                 BlitzWareAuthService.AuthService.userData.UserSubLevel)
+{
 <div class="page-container">
     <div class="title-layout">
         <h1>Locatie</h1>
         <a ><u>Home</u> > Locaties </a>
     </div>
 <div class="container mt-4">
+    <ModalPopUp/>
         <div class="row">
             <!-- Left Column for Text -->
             <div class="col-md-6">
-                         @if (LocObj != null)
+                 @if (LocObj != null)
         {
             @foreach (var h in LocObj)
             {
@@ -41,14 +52,18 @@
     </div>
     
 </div>
+}
 
-
-@code{
-
-     IEnumerable<LocationM>? LocObj;
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    
+    IEnumerable<LocationM>? LocObj;
     
       protected override async Task OnInitializedAsync()
     {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            NavManager.NavigateTo("/login");
         LocObj = await Task.Run(() => locationService.GetContent());
     }
 

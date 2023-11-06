@@ -1,24 +1,42 @@
-@page "/Contact"
-@inject ContactService contactService
+@page "/admin/cms/contact"
+@using BlazorApp.Auth
 @using BlazorApp.Data
 @using BlazorApp.Services
 @using BlazorApp.Models
 @using BlazorApp.Controllers
+@using BlazorApp.Components.Modals
+@inject NavigationManager NavManager
+@inject ContactService contactService
+
+
 <PageTitle>Contact</PageTitle>
-
-
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
+                 BlitzWareAuthService.AuthService.appData.AdminRoleLevel
+                 ==
+                 BlitzWareAuthService.AuthService.userData.UserSubLevel)
+{
     <div class="page-container">
+        <ModalPopUp/>
         <div class="title-layout">
+           
             <h1>Contact</h1>
             <a><u>Home</u> > Contact </a>
+            
         </div>
+        
         <div class="container mt-4">
+ <ContactModal/>
+            
             <div class="row">
+                
                 <!-- Left Column for Text -->
                 <div class="col-md-6">
 
                     <h2>Onze gegevens</h2>
-                     @if (ConObj != null)
+                           @if (ConObj != null)
         {
             @foreach (var h in ConObj)
             {
@@ -88,13 +106,17 @@
         </div>
 
     </div>
-
-@code{
-
-     IEnumerable<ContactM>? ConObj;
+}
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    
+    IEnumerable<ContactM>? ConObj;
     
       protected override async Task OnInitializedAsync()
     {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            NavManager.NavigateTo("/login");
         ConObj = await Task.Run(() => contactService.GetContent());
     }
 
