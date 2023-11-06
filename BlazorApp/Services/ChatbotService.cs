@@ -34,6 +34,9 @@ namespace BlazorApp.Services
         public void AddFollowUpQuestion(ChatBotQuestion parentQuestion, ChatBotQuestion question)
         {
             question.IsFollowUp = true;
+
+            if(parentQuestion.FollowUpQuestions == null) parentQuestion.FollowUpQuestions = new List<ChatBotQuestion>();
+
             parentQuestion.FollowUpQuestions.Add(question);
             EditQuestion(parentQuestion);
         }
@@ -49,7 +52,12 @@ namespace BlazorApp.Services
             recursiveDelete(question);
             _ctx.ChatBotQuestions.Remove(question);
             _ctx.SaveChanges();
-            
+        }
+
+        public void DeleteById(int id)
+        {
+            ChatBotQuestion question = _ctx.ChatBotQuestions.Find(id);
+            DeleteQuestion(question);
         }
 
         public void recursiveDelete(ChatBotQuestion question)

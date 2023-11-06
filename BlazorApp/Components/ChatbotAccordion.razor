@@ -16,7 +16,7 @@
         @question.Question
         </button>
     </h5>
-        <button type="button" class="close mx-2" aria-label="Close" @onclick="DeleteQuestion" @onclick:stopPropagation="true">
+        <button type="button" class="close mx-2" aria-label="Close" @onclick="() => DeleteQuestion()" @onclick:stopPropagation="true">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -32,10 +32,10 @@
                 <h5>Follow up keuzeopties:</h5>
                 foreach (var followUpQuestion in followUpQuestions)
                 {
-                    <ChatbotAccordion question=followUpQuestion/>
+                    <ChatbotAccordion question=followUpQuestion onDelete=OnDelete/>
                 }
             }
-            <ChatbotPopup parentQuestion=question text="Voeg keuzeoptie toe"/>
+            <ChatbotPopup parentQuestion=question text="Voeg keuzeoptie toe" refresh=refresh/>
         </div>
     </div>
     }
@@ -48,7 +48,7 @@
     public ChatBotQuestion question { get; set; }
 
     [Parameter]
-    public EventCallback onDelete { get; set; }
+    public EventCallback<ChatBotQuestion> onDelete { get; set; }
 
     IEnumerable<ChatBotQuestion>? followUpQuestions;
 
@@ -57,15 +57,27 @@
         followUpQuestions = question.FollowUpQuestions;
     }
 
-    private async Task OnDelete()
+    private async Task OnDelete(ChatBotQuestion question)
     {
-        await onDelete.InvokeAsync();
+        Console.WriteLine("question: " + question.Question);
+        onDelete.InvokeAsync(question);
+        if(followUpQuestions.Contains(question))
+        {
+            followUpQuestions = followUpQuestions.Where(x => x != question);
+            Console.WriteLine("Follow up question deleted: " + question.Question);
+        }
+    }
+
+    protected async Task refresh()
+    {
+        await OnInitializedAsync();
+        StateHasChanged();
     }
 
     void DeleteQuestion()
     {
-        ChatbotService.DeleteQuestion(question);
-        OnDelete();
+        OnDelete(question);
+        ChatbotService.DeleteById(question.Id);
     }
 
     void Collapse()

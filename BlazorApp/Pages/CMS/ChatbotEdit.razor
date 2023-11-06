@@ -45,8 +45,9 @@
         StateHasChanged();
     }
 
-    protected async Task onDelete() {
-        await refresh();
+    protected async Task onDelete(ChatBotQuestion question) {
+        ChatBotObj = ChatBotObj.Where(x => x.Id != question.Id);
+        StateHasChanged();
     }
 
     void Collapse()
