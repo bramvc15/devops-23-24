@@ -20,6 +20,10 @@ namespace BlazorApp.Services
             return _ctx.Blogs.ToList();
         }
 
+        public Blog? GetBlogById(int id)
+        {
+            return _ctx.Blogs.Find(id);
+        }
         // public async Task UpdateBlogAsync(int headerId, string newTitle)
         // {
         //     var blogToUpdate = await _ctx.Blogs.FindAsync(Id);

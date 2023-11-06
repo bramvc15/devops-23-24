@@ -1,57 +1,37 @@
-﻿@page "/ActuaDetail"
+﻿@page "/ActuaDetail/{BlogId:int}"
+
+@using BlazorApp.Models
+@using BlazorApp.Services
+@inject BlogService blogService
 
 <body>
 	<div class="bodyWrapper">
-	<div class="Wrapper">
-		<div class="actuaContainer">
-		<div class="ActuaImg">
-			<img class="grid-image" src='https://th.bing.com/th?id=OIF.84YMKflpQxANDKR%2bxXWPSA&pid=ImgDet&rs=1'>
-			
-			
+		<div class="Wrapper">
+			<div class="actuaContainer">
+				@if (BlogPost != null)
+				{
+					<div class="ActuaImg">
+						<img class="grid-image" src=@BlogPost.Image>
+					</div>
+
+					<div class="ActuaText">
+						<p>
+							@BlogPost.Text
+						</p>
+					</div>
+				}
+			</div>
 		</div>
-		<div class="ActuaText">
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rhoncus lacus id tortor accumsan,
-					vel posuere sapien varius. Vestibulum sapien mauris, sollicitudin eget iaculis id, aliquet ornare
-					leo. Proin condimentum sollicitudin eleifend. Nunc imperdiet tortor nibh, sed malesuada sem pharetra
-					at. Fusce id mi non leo sodales dictum. Aliquam malesuada pulvinar eros, in pretium lorem mollis id.
-					Donec aliquet convallis dictum. Curabitur vel turpis tempor, faucibus sem vel, egestas enim.
-					Ut ut massa eleifend, posuere turpis non, scelerisque sem. Etiam volutpat tortor sapien, non
-					maximus turpis pulvinar ac.
-
-					Morbi consequat velit pharetra efficitur sodales. Duis gravida ante nec arcu ultrices porta.
-					Aenean tincidunt elit ligula, a fringilla purus aliquam eu. Donec elementum et ligula id elementum.
-					Aenean congue est sapien, id ultricies odio egestas in. Curabitur et nunc feugiat, feugiat orci id,
-					tincidunt lacus. Praesent dignissim, nunc nec pharetra fermentum, elit urna vestibulum lorem,
-					et eleifend nisi urna et justo. Vestibulum scelerisque neque et felis tincidunt hendrerit.
-					Cras gravida cursus ornare. Aenean elementum at diam tempus mattis. Praesent commodo felis a
-					diam semper rhoncus. Maecenas a erat urna. In feugiat vitae urna a mollis. Vestibulum cursus orci velit,
-					quis congue erat venenatis aliquam. Sed rutrum metus magna, feugiat semper lectus lacinia nec.
-
-					Suspendisse quis tellus dui. Nunc vel ullamcorper leo.
-					Donec ullamcorper urna at nisl faucibus accumsan. Nam efficitur nec purus
-					nec pellentesque. Donec vulputate eget nulla feugiat ornare. Fusce at ipsum neque.
-					Quisque auctor tempor pulvinar. Donec dictum quam ac arcu sollicitudin, eget blandit
-					metus tincidunt. Pellentesque blandit convallis vestibulum. Ut lectus massa, iaculis in
-					aliquet non, finibus quis metus. Fusce rhoncus diam quis magna tristique rutrum.
-					Nullam sagittis lacinia diam, nec ullamcorper leo finibus eget.
-
-					Vestibulum nec pharetra purus, vel scelerisque tortor. Phasellus neque nunc,
-					lobortis eu molestie quis, mollis at sapien. Vestibulum purus purus, porttitor vitae eros a,
-					ultrices dapibus sem. Cras ac mollis odio, non bibendum dolor. Pellentesque est nulla, lobortis
-					sed lorem quis, volutpat accumsan tortor. Suspendisse auctor tincidunt tortor vitae lacinia. Nulla facilisi.
-
-					Nam tincidunt gravida sapien, id vulputate sem aliquam eget. Pellentesque nibh arcu,
-					ultricies ac ipsum quis, elementum egestas quam. In aliquam non ante eget dapibus.
-					Aliquam in commodo lectus. Etiam aliquet venenatis bibendum. Maecenas consequat turpis nec
-					mi lacinia suscipit. Vestibulum ut rutrum leo. Donec ut dolor non urna dignissim condimentum.
-					Proin non diam facilisis, accumsan felis et, facilisis lacus. Aliquam erat volutpat.
-				</p>
-		</div>
-		</div>
-	</div>
 	</div>
 </body>
-@code {
 
+@code {
+	[Parameter] public int BlogId { get; set; }
+	Blog? BlogPost;
+
+	protected override async Task OnInitializedAsync()
+	{
+
+		BlogPost = await Task.Run(() => blogService.GetBlogById(BlogId));
+	}
 }

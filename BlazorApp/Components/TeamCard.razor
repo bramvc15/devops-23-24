@@ -1,20 +1,16 @@
 @inherits ComponentBase
 
-
-<div class="card mb-3" @onclick="OnCardClick">
+<div class="card mb-3"> <!-- Set a fixed width for the card -->
     <div class="card-body text-center">
         <img src="@ImageSrc" class="w-50 m-2 rounded" alt="Image" />
         <h5 class="card-title">@Name</h5>
-        <p> 
+        <p>
             @Specialization
         </p>
 
-        <a href="/DoctorDetail" class="btn btn-primary">lees meer</a>
-
-        
+        <a href="/DoctorDetail/@DoctorId" class="btn btn-primary custom-button">lees meer</a>
     </div>
 </div>
-
 
 @code {
     [Parameter]
@@ -24,7 +20,10 @@
     public string Name { get; set; }
 
     [Parameter]
-    public string Specialization { get; set;}
+    public string Specialization { get; set; }
+
+    [Parameter]
+    public int DoctorId { get; set; }
 
     [Parameter]
     public EventCallback OnCardClick { get; set; }

@@ -20,7 +20,7 @@
                 {
 
                     <h1>@h.Title</h1>
-                 @((MarkupString)h.Context)
+                    @((MarkupString)h.Context)
                 }
             }
             else
@@ -44,11 +44,15 @@
     <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
 
     <div class="actuaBox">
-        @if  (BlogObj != null)
+
+        @if (BlogObj != null)
         {
-            foreach(var b in BlogObj){
-                <ActuaField Title=@b.Title Text=@b.Text Image=@b.Image />
+            for (int i = 0; i < 3; i++) { }
+            foreach (var blog in BlogObj)
+            {
+                <ActuaField Title=@blog.Title Text=@blog.Text Image=@blog.Image Id=@blog.Id />
             }
+        }
         }
     </div>
 
@@ -59,7 +63,7 @@
 
 
     IEnumerable<HomeHeader>? HomObj;
-            IEnumerable<Blog>? BlogObj;
+    IEnumerable<Blog>? BlogObj;
     protected override async Task OnInitializedAsync()
     {
 
