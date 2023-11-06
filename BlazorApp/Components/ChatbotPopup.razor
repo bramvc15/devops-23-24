@@ -45,6 +45,12 @@
     [Parameter]
     public ChatBotQuestion? parentQuestion { get; set; }
 
+    [Parameter]
+    public EventCallback refresh { get; set; }
+
+    public void handleRefresh() {
+        refresh.InvokeAsync();
+    }
 
     void addQuestion() {
         ChatBotQuestion question = new ChatBotQuestion();
@@ -58,6 +64,10 @@
         }
         
         modalRef?.Hide();
+        question = null;
+        answer = null;
+
+        handleRefresh();
     }
 
     private Task? ShowModal()

@@ -16,7 +16,7 @@
         @question.Question
         </button>
     </h5>
-        <button type="button" class="close mx-2" aria-label="Close" @onclick="DeleteQuestion">
+        <button type="button" class="close mx-2" aria-label="Close" @onclick="DeleteQuestion" @onclick:stopPropagation="true">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -47,6 +47,9 @@
     [Parameter]
     public ChatBotQuestion question { get; set; }
 
+    [Parameter]
+    public EventCallback onDelete { get; set; }
+
     IEnumerable<ChatBotQuestion>? followUpQuestions;
 
     protected override async Task OnInitializedAsync()
@@ -54,9 +57,15 @@
         followUpQuestions = question.FollowUpQuestions;
     }
 
+    private async Task OnDelete()
+    {
+        await onDelete.InvokeAsync();
+    }
+
     void DeleteQuestion()
     {
         ChatbotService.DeleteQuestion(question);
+        OnDelete();
     }
 
     void Collapse()

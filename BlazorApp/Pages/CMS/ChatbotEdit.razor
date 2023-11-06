@@ -20,11 +20,11 @@
         {
             foreach (var question in ChatBotObj)
             {
-                  <ChatbotAccordion question=question/>
+                  <ChatbotAccordion question=question onDelete="onDelete"/>
             }
         }
         </div> 
-        <ChatbotPopup text="Voeg vraag toe" />
+        <ChatbotPopup text="Voeg vraag toe" refresh=refresh />
         <button class="btn btn-primary" @onclick="OnInitializedAsync">Refresh</button>
     </div>
 
@@ -37,6 +37,16 @@
     {
         ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
         ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
+    }
+
+    protected async Task refresh()
+    {
+        await OnInitializedAsync();
+        StateHasChanged();
+    }
+
+    protected async Task onDelete() {
+        await refresh();
     }
 
     void Collapse()

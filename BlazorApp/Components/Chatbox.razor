@@ -40,7 +40,7 @@
             }
         }
         @if(typing) {
-            <ChatMessage type="bot" Image="images/typingAnimation.gif" />
+            <ChatMessage type="bot" Image="images/typingAnimation.gif"  />
         }
     </div>
     <script>
@@ -73,8 +73,12 @@
 
     private async Task getChatBotObj()
     {
-        ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
-        ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
+        try {
+            ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
+            ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
+        } catch(Exception e) {
+            Console.WriteLine(e.Message);
+        }
     }
 
     protected async Task getFollowUpQuestions(ChatBotQuestion question)
@@ -101,6 +105,7 @@
 
     private async void startChat()
     {
+        restartable = false;
         await getChatBotObj();
         chatMessages.Clear();
         chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", type = "bot" });
@@ -119,8 +124,8 @@
         {
             await getFollowUpQuestions(question);
         } else {
+            
             await botResponse("Hebt u verder nog vragen?");
-
             if(ChatBotObj.Count() == 0)
             {
                 await getChatBotObj();
@@ -128,17 +133,18 @@
 
             await showQuestions(ChatBotObj);
         }
+        
+        JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
     private async Task typingDelay()
     {
-        await Task.Delay(100);
+        await Task.Delay(250);
         typing = true;
         StateHasChanged();
         await Task.Delay(980);
         typing = false;
         StateHasChanged();
-        JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
     private async Task botResponse(string answer)
@@ -153,7 +159,10 @@
     {
         await Task.Delay(450);
         chatMessages.Add(new ChatMessage { Message = null,  type = "questions", ChatBotObj=obj });
-        restartable = true;
+        if(chatMessages.Count() > 4)
+        { 
+            restartable = true;
+        }
         StateHasChanged();
         JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
