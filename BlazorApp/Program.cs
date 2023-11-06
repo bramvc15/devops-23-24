@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<BlitzWareAuthService>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
+builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<DoctorService>();
 builder.Services.AddTransient<HomeHeaderService>();
@@ -53,7 +53,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
+app.MapControllers();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
