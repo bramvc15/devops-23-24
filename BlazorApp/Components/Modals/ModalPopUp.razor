@@ -1,0 +1,80 @@
+@using BlazorApp.Data
+@using Microsoft.AspNetCore.Components
+@using System.Text.Json
+@using System.Text.Json.Serialization;
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inject LocationService locationService
+@inject DatabaseContext databaseContext
+
+<div>
+    <div class="buttons">
+        <Button Color="Color.Primary" Clicked="@ShowModal">Wijzig</Button>
+    </div>
+    
+       
+    <Modal @ref="modalRef">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>Locatie wijziging</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Beschrijving</FieldLabel>
+                    @* rich *@
+                    <RichTextEditor @ref="richTextEditRef" />
+                </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+
+</div>
+
+@code {
+
+    protected RichTextEditor? richTextEditRef;
+    protected string? content;
+    LocationM? header;
+    int headerId; 
+    string? newTitle;
+
+    string? plainTextContent; 
+    string? context;
+
+    private Modal? modalRef;
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private void UpdateTitle()
+    {
+
+        plainTextContent = richTextEditRef?.contentAsText;
+        content = richTextEditRef?.contentAsHtml;
+        locationService.UpdateLocationText(content);
+
+        modalRef?.Hide();
+    }
+
+
+    IEnumerable<LocationM>? LocObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LocObj = await Task.Run(() => locationService.GetContent());
+    }
+}

@@ -1,0 +1,123 @@
+@page "/admin/cms/contact"
+@using BlazorApp.Auth
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@using BlazorApp.Components.Modals
+@inject NavigationManager NavManager
+@inject ContactService contactService
+
+
+<PageTitle>Contact</PageTitle>
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
+                 BlitzWareAuthService.AuthService.appData.AdminRoleLevel
+                 ==
+                 BlitzWareAuthService.AuthService.userData.UserSubLevel)
+{
+    <div class="page-container">
+        <ModalPopUp/>
+        <div class="title-layout">
+           
+            <h1>Contact</h1>
+            <a><u>Home</u> > Contact </a>
+            
+        </div>
+        
+        <div class="container mt-4">
+ <ContactModal/>
+            
+            <div class="row">
+                
+                <!-- Left Column for Text -->
+                <div class="col-md-6">
+
+                    <h2>Onze gegevens</h2>
+                           @if (ConObj != null)
+        {
+            @foreach (var h in ConObj)
+            {
+
+            
+                
+                   @((MarkupString)h.Context)
+            
+            }
+        }
+        else
+        {
+
+            <h1>ERROR</h1>
+        }
+                </div>
+
+                <!-- Right Column for Google Maps -->
+                <div class="col-md-6">
+                    <h1 class="mb-4">Stel ons een vraag</h1>
+                    <form action="submit_form.php" method="post">
+                        <!-- Name and First Name -->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" id="box" name="name" placeholder="Naam" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control"id="box"  name="firstName" placeholder="Voornaam" required>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <input type="email" class="form-control"id="box"  name="email" placeholder="email" required>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="form-group">
+                            <input type="date" class="form-control" id="box"  name="dob" placeholder="Geboortedatum" required>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="form-group">
+                            <input type="tel" class="form-control" id="box"  name="phoneNumber"
+                                pattern="[0-9]{10}" placeholder="gsm" required>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="form-group">
+                            <textarea class="form-control" id="box"  name="message" rows="4" placeholder="bericht of vraag" required></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">verstuur</button>
+                        </div>
+                    </form>
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    
+    IEnumerable<ContactM>? ConObj;
+    
+      protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            NavManager.NavigateTo("/login");
+        ConObj = await Task.Run(() => contactService.GetContent());
+    }
+
+}
