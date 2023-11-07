@@ -1,0 +1,46 @@
+﻿@page "/DoctorDetail/{DoctorId:int}"
+@using BlazorApp.Models
+@using BlazorApp.Services
+@inject DoctorService doctorService
+<div class="content-container">
+
+    <div class="content-wrapper">
+        @if (Doctor != null)
+        {
+            <div class="info-Img-wrapper">
+                <img src=@Doctor.Image alt="Doctor Image" class="doctor-image" />
+            </div>
+
+
+
+            <div class="doctor-info">
+                <h2>Dokter informatie</h2>
+                <ul>
+                    <li>Naam: @Doctor.Name</li>
+                    <li>Specialisatie: @Doctor.Specialization</li>
+
+                </ul>
+                <div id="biography">
+                    <h3>Over @Doctor.Name</h3>
+                    <p>@Doctor.InfoOver</p>
+                    <h3>Opleiding en Training</h3>
+                    <p>@Doctor.InfoOpleiding</p>
+                    <h3>Publicaties en Erkenningen</h3>
+                    <p>@Doctor.InfoPublicaties</p>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int DoctorId { get; set; }
+    Doctor? Doctor;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Doctor = await Task.Run(() => doctorService.GetDoctorById(DoctorId));
+    }
+}

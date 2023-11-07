@@ -16,10 +16,10 @@
     <div class="container mt-4">
         <div class="row ">
             @* <div class="col-md-6 col-lg-4">
-                <TeamCard ImageSrc="images/schermer.jpg" Name="Dokter 2" />
+            <TeamCard ImageSrc="images/schermer.jpg" Name="Dokter 2" />
             </div>
             <div class="col-md-6 col-lg-4">
-                <TeamCard ImageSrc="images/schermer.jpg" Name="Dokter 3" />
+            <TeamCard ImageSrc="images/schermer.jpg" Name="Dokter 3" />
             </div> *@
             @if (DocObj != null)
             {
@@ -29,7 +29,7 @@
                     <div class="col-md-6 col-lg-4">
                         @if (doc != null)
                         {
-                            <TeamCard ImageSrc="images/schermer.jpg" Name=@doc.Name Specialization="@doc.Specialization" />
+                            <TeamCard ImageSrc=@doc.Image Name=@doc.Name Specialization="@doc.Specialization" DoctorId=@doc.Id />
                         }
                     </div>
                 }

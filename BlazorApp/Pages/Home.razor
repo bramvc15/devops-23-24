@@ -20,7 +20,7 @@
                 {
 
                     <h1>@h.Title</h1>
-                 @((MarkupString)h.Context)
+                    <p>@((MarkupString)h.Context)</p>
                 }
             }
             else
@@ -32,8 +32,9 @@
                 </p>
             }
             <div class="buttons">
-                <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
-                <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
+                <button class="custom-button btn-custom">Maak een afspraak <span class="oi oi-calendar"></span></button>
+                <button class="custom-button btn-custom">Contacteer ons <span
+                        class="oi oi-envelope-closed"></span></button>
             </div>
         </div>
     </div>
@@ -41,7 +42,7 @@
 
 <div>
 
-    <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
+
 
     <div class="actuaBox">
         @if (BlogObj.blogs != null)

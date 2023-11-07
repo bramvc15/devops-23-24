@@ -39,36 +39,36 @@
                 <!-- Right Column for Google Maps -->
                 <div class="col-md-6">
                     <h1 class="mb-4">Stel ons een vraag</h1>
-                    <form action="submit_form.php" method="post">
+                    <form action="submit_form.php" method="post" onsubmit="SubmitForm(); return false;">
                         <!-- Name and First Name -->
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="box" name="name" placeholder="Naam" required>
+                                <input type="text" class="form-control" id="box" name="name" placeholder="Naam" required @ref="nameInput">
                             </div>
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control"id="box"  name="firstName" placeholder="Voornaam" required>
+                                <input type="text" class="form-control" id="box" name="firstName" placeholder="Voornaam" required @ref="firstNameInput">
                             </div>
                         </div>
 
                         <!-- Email -->
                         <div class="form-group">
-                            <input type="email" class="form-control"id="box"  name="email" placeholder="email" required>
+                            <input type="email" class="form-control"id="box"  name="email" placeholder="email" required @ref="emailInput">
                         </div>
 
                         <!-- Date of Birth -->
                         <div class="form-group">
-                            <input type="date" class="form-control" id="box"  name="dob" placeholder="Geboortedatum" required>
+                            <input type="date" class="form-control" id="box"  name="dob" placeholder="Geboortedatum" required @ref="dateInput">
                         </div>
 
                         <!-- Phone Number -->
                         <div class="form-group">
                             <input type="tel" class="form-control" id="box"  name="phoneNumber"
-                                pattern="[0-9]{10}" placeholder="gsm" required>
+                                pattern="[0-9]{10}" placeholder="gsm" required @ref="telInput">
                         </div>
 
                         <!-- Message -->
                         <div class="form-group">
-                            <textarea class="form-control" id="box"  name="message" rows="4" placeholder="bericht of vraag" required></textarea>
+                            <textarea class="form-control" id="box"  name="message" rows="4" placeholder="bericht of vraag" required @ref="msgInput"></textarea>
                         </div>
 
                         <!-- Submit Button -->
@@ -89,7 +89,17 @@
 
     </div>
 
-@code{
+
+@code {
+    @using System.Net
+    @using System.Net.Mail
+
+    private ElementReference nameInput;
+    private ElementReference firstNameInput;
+    private ElementReference emailInput;
+    private ElementReference dateInput;
+    private ElementReference telInput;
+    private ElementReference msgInput;
 
      IEnumerable<ContactM>? ConObj;
     
@@ -98,4 +108,39 @@
         ConObj = await Task.Run(() => contactService.GetContent());
     }
 
+    // Create references for other form fields as needed
+
+    // Define a method to handle the form submission
+    private void SubmitForm()
+    {
+        // Get the values from the form fields
+        var name = nameInput;
+        var firstName = firstNameInput;
+        var email = emailInput.ToString;
+        // Get values from other form fields as needed
+        using (SmtpClient smtpClient = new SmtpClient("your-smtp-server.com"))
+        {
+            smtpClient.Port = 587;
+            smtpClient.Credentials = new NetworkCredential("your-username", "your-password");
+            smtpClient.EnableSsl = true;
+
+            using (MailMessage mailMessage = new MailMessage("from-email@example.com", "recipient@example.com"))
+            {
+                mailMessage.Subject = "Contact Form Submission";
+                //mailMessage.Body = email;
+
+                try
+                {
+                    smtpClient.Send(mailMessage);
+                    Console.WriteLine("Email sent successfully.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+        }
+        // Now you can use these values as needed, such as sending them in an email
+    }
 }
+
