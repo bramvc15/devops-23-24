@@ -12,15 +12,10 @@ namespace BlazorApp.Data
         }
 
         public DbSet<Doctor> Doctors => Set<Doctor>();
-
         public DbSet<HomeHeader> HomeHeaders => Set<HomeHeader>();
-
         public DbSet<Blog> Blogs => Set<Blog>();
-
-        
         public DbSet<LocationM> Locations => Set<LocationM>();
-
         public DbSet<ContactM> Contacts => Set<ContactM>();
-
+        public DbSet<Treatment> Treatments => Set<Treatment>();
     }
 }
