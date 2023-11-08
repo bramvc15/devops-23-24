@@ -8,6 +8,7 @@
 @inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
 @inject ChatbotService ChatbotService
+@using BlazorApp.Components.Modals
 
 <div class="card @(collapsed ? "" : "border border-dark")">
     <div class="card-header d-flex justify-content-between" id="headingOne" @onclick=this.Collapse>
