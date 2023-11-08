@@ -35,6 +35,11 @@ a, .btn-link {
     padding-top: 1.1rem;
 }
 
+.active {
+    /* color: #D4E8E4; */
+    color: #033878 !important;
+}
+
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
 }
