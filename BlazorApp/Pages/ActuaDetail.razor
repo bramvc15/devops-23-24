@@ -1,0 +1,37 @@
+﻿@page "/ActuaDetail/{BlogId:int}"
+
+@using BlazorApp.Models
+@using BlazorApp.Services
+@inject BlogService blogService
+
+<body>
+	<div class="bodyWrapper">
+		<div class="Wrapper">
+			<div class="actuaContainer">
+				@if (BlogPost != null)
+				{
+					<div class="ActuaImg">
+						<img class="grid-image" src=@BlogPost.Image>
+					</div>
+
+					<div class="ActuaText">
+						<p>
+							@BlogPost.Text
+						</p>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</body>
+
+@code {
+	[Parameter] public int BlogId { get; set; }
+	Blog? BlogPost;
+
+	protected override async Task OnInitializedAsync()
+	{
+
+		BlogPost = await Task.Run(() => blogService.GetBlogById(BlogId));
+	}
+}

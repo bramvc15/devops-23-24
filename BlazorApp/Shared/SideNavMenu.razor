@@ -1,7 +1,30 @@
 ﻿<div class="sidebar">
-	<a class="sidebar-item" href="/admin"><p>Admin</p> <i class="fa fa-fw fa-home"></i></a>
-	<a class="sidebar-item" href="/admin/employees"><p>Artsen</p> <i class="fa fa-fw fa-wrench"></i></a>
-	<a class="sidebar-item" href="/admin/clients"><p>Clients</p> <i class="fa fa-fw fa-user"></i></a>
-	<a class="sidebar-item" href="/admin/cms"><p>CMS</p> <i class="fa fa-fw fa-envelope"></i></a>
-	<a class="sidebar-item" href="/admin/chatbot"><p>Chatbot</p> <i class="fa fa-fw fa-comments"></i></a>
+    <a class="sidebar-item" href="/admin"><p>Admin</p> <i class="fa fa-fw fa-home"></i></a>
+    <a class="sidebar-item" href="/admin/employees"><p>Artsen</p> <i class="fa fa-fw fa-wrench"></i></a>
+    <a class="sidebar-item" href="/admin/clients"><p>Clients</p> <i class="fa fa-fw fa-user"></i></a>
+
+    <div class="sidebar-item" @onclick="ToggleCMS">
+        <p>CMS</p><i class="fa fa-fw fa-envelope"></i>
+    </div>
+    <ul class="sub-items @cmsItemStyle">
+        <li><a href="/admin/cms/home">Home</a></li>
+        <li><a href="/admin/cms/location">location</a></li>
+        <li><a href="/admin/cms/contact">contact</a></li>
+    </ul>
+    @* <div class="sub-items @cmsItemStyle">
+        <a href="/admin/cms/page1">Page 1</a>
+        <a href="/admin/cms/page2">Page 2</a>
+        <a href="/admin/cms/page3">Page 3</a>
+    </div> *@
 </div>
+
+@code {
+    private bool isCMSExpanded = false;
+
+    private string cmsItemStyle => isCMSExpanded ? "open" : "closed";
+
+    private void ToggleCMS()
+    {
+        isCMSExpanded = !isCMSExpanded;
+    }
+}

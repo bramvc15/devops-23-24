@@ -15,11 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<BlitzWareAuthService>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
+builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<DoctorService>();
 builder.Services.AddTransient<HomeHeaderService>();
 builder.Services.AddTransient<BlogService>();
+builder.Services.AddTransient<LocationService>();
+builder.Services.AddTransient<ContactService>();
 builder.Services.AddTransient<ChatbotService>();
 
 builder.Services.AddDbContext<DatabaseContext>( options => 
@@ -54,7 +56,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
+app.MapControllers();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

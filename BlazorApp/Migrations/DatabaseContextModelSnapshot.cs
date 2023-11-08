@@ -43,6 +43,22 @@ namespace BlazorApp.Migrations
                     b.ToTable("Blogs");
                 });
 
+            modelBuilder.Entity("BlazorApp.Models.ContactM", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Context")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contacts");
+                });
+
             modelBuilder.Entity("BlazorApp.Models.Doctor", b =>
                 {
                     b.Property<int>("Id")
@@ -85,6 +101,22 @@ namespace BlazorApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HomeHeaders");
+                });
+
+            modelBuilder.Entity("BlazorApp.Models.LocationM", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Context")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlazorApp.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class DoctorController : ControllerBase
 {
     DoctorService _service;
@@ -16,6 +16,7 @@ public class DoctorController : ControllerBase
     }
 
     [HttpGet]
+    [Route("getDoctors")]
     public IEnumerable<Doctor> GetAll()
     {
         return _service.GetAll();

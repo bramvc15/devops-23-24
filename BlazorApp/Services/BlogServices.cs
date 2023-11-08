@@ -15,11 +15,24 @@ namespace BlazorApp.Services
             _ctx = ctx;
         }
 
-        public IEnumerable<Blog> GetContent()
+        public (IEnumerable<Blog> blogs, int totalPages) GetContent(int page = 1, int pageSize = 5)
         {
-            return _ctx.Blogs.ToList();
+            var totalCount = _ctx.Blogs.Count();
+            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+            var blogsPerPage = _ctx.Blogs
+                .OrderByDescending(blog => blog.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return (blogsPerPage, totalPages);
+            //return _ctx.Blogs.OrderByDescending(blog => blog.Id).ToList();
         }
 
+        public Blog? GetBlogById(int id)
+        {
+            return _ctx.Blogs.Find(id);
+        }
         // public async Task UpdateBlogAsync(int headerId, string newTitle)
         // {
         //     var blogToUpdate = await _ctx.Blogs.FindAsync(Id);

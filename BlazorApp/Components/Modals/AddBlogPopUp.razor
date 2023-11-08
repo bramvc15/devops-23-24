@@ -5,51 +5,32 @@
 @using BlazorApp.Services
 @using BlazorApp.Models
 @using BlazorApp.Controllers
-@inject HomeHeaderService homeHeaderService
+@inject BlogService blogService
 @inject DatabaseContext databaseContext
 
 <div>
     <div class="buttons">
-        //should be able to change
-        <Button Color="Color.Primary" Clicked="@ShowModal">Edit</Button>
-    </div>
-    <div>
-        @if (HomObj2 != null)
-        {
-            @foreach (var h in HomObj2)
-            {
-
-                <h1>@h.Title</h1>
-                
-                   @((MarkupString)h.Context)
-            
-            }
-        }
-        else
-        {
-
-            <h1>title</h1>
-            <p>
-                context
-            </p>
-        }
+        <Button Color="Color.Primary" Clicked="@ShowModal">Voeg blog toe</Button>
     </div>
     <Modal @ref="modalRef">
         <ModalContent Centered>
             <ModalHeader>
-                <ModalTitle>header wijziging</ModalTitle>
+                <ModalTitle>Blog toevoegen</ModalTitle>
                 <CloseButton />
             </ModalHeader>
             <ModalBody>
                 <Field>
-                    
                     <FieldLabel>Titel</FieldLabel>
                     <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
                 </Field>
                 <Field>
-                    <FieldLabel>Beschrijving</FieldLabel>
+                    <FieldLabel>Text</FieldLabel>
                     @* rich *@
                     <RichTextEditor @ref="richTextEditRef" />
+                </Field>
+                <Field>
+                    <FieldLabel>Image</FieldLabel>
+                    <TextEdit Placeholder="Geef image link..." @bind-Text="newImage" />
                 </Field>
             </ModalBody>
             <ModalFooter>
@@ -67,12 +48,9 @@
 
     protected RichTextEditor? richTextEditRef;
     protected string? content;
-    HomeHeader? header;
-    int headerId; 
     string? newTitle;
-
+    string? newImage;
     string? plainTextContent; 
-    string? context;
 
     private Modal? modalRef;
 
@@ -91,7 +69,7 @@
 
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
-        homeHeaderService.UpdateHeaderTitle(newTitle , content);
+        blogService.AddBlog(newTitle, content, newImage);
 
         modalRef?.Hide();
     }
@@ -101,7 +79,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-
-        HomObj2 = await Task.Run(() => homeHeaderService.GetContent());
+        
     }
 }
