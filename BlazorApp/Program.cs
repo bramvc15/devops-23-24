@@ -22,6 +22,7 @@ builder.Services.AddTransient<HomeHeaderService>();
 builder.Services.AddTransient<BlogService>();
 builder.Services.AddTransient<LocationService>();
 builder.Services.AddTransient<ContactService>();
+builder.Services.AddTransient<TreatmentService>();
 
 builder.Services.AddDbContext<DatabaseContext>( options => 
     {

@@ -1,0 +1,203 @@
+.buttons {
+    margin-top: 20px;
+
+}
+
+.background-container {
+    position: absolute;
+    width: 100%;
+    height: 500px;
+    
+}
+
+.background-image {
+    width: 100%;
+    height:500px;
+}
+
+.overlay {
+
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(194,228,218);
+    background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(9,246,140,0) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    justify-content: space-between;
+    align-items: left;
+    text-align: left;
+    color: rgb(22, 44, 104); 
+    padding: 120px;
+    padding-top: 100px;
+    margin-bottom: 200px;
+
+  
+}
+
+.overlay h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.overlay p {
+    font-size: 18px; 
+    margin-bottom: 40px;
+}
+
+.buttons {
+    margin-top: 20px;
+
+}
+
+.btn {
+    margin: 5px;
+}
+.background-div {
+    width: 100%; 
+    height: 500px; 
+    background-image: url('https://images.unsplash.com/photo-1581584731241-c134a1afe9a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+    background-size: cover; 
+    background-position: center;
+    margin-bottom: 50px;
+}
+
+
+.actuaTitle{
+    margin-bottom: 40px;
+    margin-left: 120px;
+}
+
+.actuaBox {
+
+   
+    top: 0;
+    left: 0;
+    width: 1000px;
+    height: 500px;
+   
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+    color: rgb(22, 44, 104);
+    background-color: rgb(237, 237, 237);
+    margin-bottom: 100px;
+    margin-left: 120px;
+    margin-right: 220px;
+    
+
+    border-radius: 10px;
+
+
+    overflow-y: auto;
+
+}
+.actuaBox::-webkit-scrollbar {
+    display: none;
+  }
+  
+
+@media screen and (max-width: 768px) {
+    .background-div {
+        height: 500px; 
+    }
+    
+    .overlay {
+        padding: 40px;
+        margin-bottom: 100px; 
+    }
+
+    .buttons{
+        margin-top: 10px;
+    }
+}
+
+
+/*
+
+.background-div {
+    width: 100%;
+    height: 500px;
+    background-image: url('https://images.unsplash.com/photo-1581584731241-c134a1afe9a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(41deg, rgba(194, 228, 218, 1) 0%, rgba(167, 222, 195, 1) 52%, rgba(9, 246, 140, 0) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    padding: 20px;
+}
+
+.overlay h1 {
+    font-size: 2rem;
+    margin: 10px 0;
+}
+
+.overlay p {
+    font-size: 1.2rem;
+    margin: 20px 0;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.btn {
+    margin: 5px;
+}
+
+.actuaTitle {
+    margin-bottom: 40px;
+    margin-left: 20px;
+}
+
+.actuaBox {
+    width: 100%;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 0 20px;
+    overflow-y: auto;
+    height: 300px; 
+    border: 1px solid #ddd;
+}
+
+.actuaBox::-webkit-scrollbar {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .background-div {
+        height: 400px;
+    }
+
+    .overlay {
+        padding: 20px;
+        margin-bottom: 50px;
+    }
+}
+*/
