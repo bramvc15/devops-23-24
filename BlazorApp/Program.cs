@@ -25,6 +25,7 @@ builder.Services.AddTransient<ContactService>();
 builder.Services.AddTransient<TreatmentService>();
 builder.Services.AddTransient<ChatbotService>();
 
+
 builder.Services.AddDbContext<DatabaseContext>( options => 
     {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
