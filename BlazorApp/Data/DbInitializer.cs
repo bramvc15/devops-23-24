@@ -89,6 +89,61 @@ namespace BlazorApp.Data
 
             };
 
+            var chatbotQuestions = new ChatBotQuestion[] 
+            {
+                new ChatBotQuestion
+                {
+                    Question = "Hoeveel kost een behandeling?",
+                    Answer = "In welke behandeling bent u geïnteresseerd?",
+                    FollowUpQuestions = new List<ChatBotQuestion>
+                    {
+                        new ChatBotQuestion
+                        {
+                            IsFollowUp = true,
+                            Question = "Ooglidcorrectie",
+                            Answer = "Over welk soort ooglidcorrectie gaat het?",
+                            FollowUpQuestions = new List<ChatBotQuestion>
+                            {
+                                new ChatBotQuestion
+                                {
+                                    IsFollowUp = true,
+                                    Question = "Bovenooglidcorrectie",
+                                    Answer = "Een bovenooglidcorrectie kost 1250 euro.",
+                                },
+                                new ChatBotQuestion
+                                {
+                                    IsFollowUp = true,
+                                    Question = "Onderooglidcorrectie",
+                                    Answer = "Een onderooglidcorrectie kost 1000 euro.",
+                                },
+                            }
+                        },
+                        new ChatBotQuestion
+                        {
+                            IsFollowUp = true,
+                            Question = "Cataractoperatie",
+                            Answer = "Een cataractoperatie kost tussen de 800 en 1500 euro.",
+                        },
+                        new ChatBotQuestion
+                        {
+                            IsFollowUp = true,
+                            Question = "Straaloperatie",
+                            Answer = "Een straaloperatie kost tussen de 1250 en 2000 euro.",
+                        },
+                    }
+                },
+                new ChatBotQuestion
+                {
+                    Question = "Waar is de vestiging gelegen?",
+                    Answer = "Onze vestiging is gelegen in 9040 Gent, op de Antwerpsesteenweg 1022.",
+                },
+                new ChatBotQuestion
+                {
+                    Question = "Hoe maak ik een afspraak?",
+                    Answer = "Rechtsbovenaan de pagina kan u op de knop 'Maak een afspraak' klikken. U wordt dan doorverwezen naar een pagina waar u een afspraak kan maken.",
+                },
+            };
+                    
             var treatments = new Treatment[]
             {
                 new Treatment
@@ -120,6 +175,8 @@ namespace BlazorApp.Data
             context.Blogs.AddRange(blogs);
             context.Contacts.Add(contact);
             context.Treatments.AddRange(treatments);
+            context.ChatBotQuestions.AddRange(chatbotQuestions);
+          
             context.SaveChanges();
 
         }

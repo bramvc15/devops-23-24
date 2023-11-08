@@ -1,0 +1,28 @@
+* {
+    background: rgb(194,228,218);
+}
+
+.content {
+    height: 100vh;
+    background: rgb(194,228,218);
+}
+
+.container {
+    margin-top: 100px;
+    height: 800px;
+    overflow: scroll;
+}
+
+.btn {
+    background: rgb(77, 156, 132);
+    color: white;
+}
+
+.btn:hover {
+    background: rgb(74, 134, 116);
+    color: white;
+}
+
+h1 {
+    color: rgb(22, 44, 104);
+}

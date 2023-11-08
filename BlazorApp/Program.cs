@@ -23,6 +23,8 @@ builder.Services.AddTransient<BlogService>();
 builder.Services.AddTransient<LocationService>();
 builder.Services.AddTransient<ContactService>();
 builder.Services.AddTransient<TreatmentService>();
+builder.Services.AddTransient<ChatbotService>();
+
 
 builder.Services.AddDbContext<DatabaseContext>( options => 
     {

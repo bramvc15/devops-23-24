@@ -1,0 +1,66 @@
+.chatbox-div {
+    border-radius: 15px 15px 0px 0px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    background-color: white;
+    position: fixed;
+    bottom: 0px; /* Adjust this value to control the vertical position */
+    right: 10%; /* Adjust this value to control the horizontal position */
+    background-color: rgb(253, 253, 253);
+}
+
+.chatbox-div .visible {
+    width: 450px;
+}
+
+.chatbox-div:not(.visible) {
+    width: 450px;
+}
+
+@media only screen and (max-width: 600px) {
+    .chatbox-div:not(.visible) {
+        width: 200px;
+    }
+
+    .chatbox-div .visible {
+        width: 300px;
+    }
+} 
+
+
+.chatbox-header {
+    width: 100%;
+    background: rgb(77, 156, 132);
+    border-radius: 15px 15px 0px 0px;
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    border: 1px solid rgb(71, 145, 122);
+    transition: background 150ms ease;
+}
+
+.chatbox-header:hover {
+    background: rgb(71, 145, 122);
+    border: 1px solid rgb(77, 156, 132);
+}
+
+.title {
+    padding-left: 10px;
+}
+
+.chatbox-content {
+    height: 400px;
+    display: none;
+    width: 100%;
+    padding: 5px;
+    overflow-y:auto;
+    padding-bottom: 60px;
+}
+
+.visible {
+    display: block;
+}
+
+.gear:hover, .restart:hover {
+    color: rgb(231, 231, 231);
+}
