@@ -109,8 +109,13 @@ namespace BlazorApp.Data
                 },
                 new ChatBotQuestion
                 {
-                    Question = "Waar zijn jullie gelegen?",
+                    Question = "Waar is de vestiging gelegen?",
                     Answer = "Onze vestiging is gelegen in 9040 Gent, op de Antwerpsesteenweg 1022.",
+                },
+                new ChatBotQuestion
+                {
+                    Question = "Hoe maak ik een afspraak?",
+                    Answer = "Rechtsbovenaan de pagina kan u op de knop 'Maak een afspraak' klikken. U wordt dan doorverwezen naar een pagina waar u een afspraak kan maken.",
                 },
                     
             };

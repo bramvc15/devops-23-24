@@ -53,6 +53,9 @@
     }
 
     void addQuestion() {
+        if(this.question == null || this.answer == null || this.question == "" || this.answer == "") {
+            return;
+        }
         ChatBotQuestion question = new ChatBotQuestion();
         question.Question = this.question;
         question.Answer = this.answer;
@@ -64,8 +67,8 @@
         }
         
         modalRef?.Hide();
-        question = null;
-        answer = null;
+        this.question = null;
+        this.answer = null;
 
         handleRefresh();
     }

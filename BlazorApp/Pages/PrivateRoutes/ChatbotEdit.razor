@@ -1,4 +1,4 @@
-@page "/chatbot"
+@page "/admin/chatbot"
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 @using System.Text.Json
@@ -9,11 +9,16 @@
 @inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
 @inject ChatbotService ChatbotService
+@using BlazorApp.Auth
+@inject NavigationManager NavManager
 
 <PageTitle>Index</PageTitle>
 
+<SideNavMenu />
 <div class="content"> 
     <div class="container">
+        @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+        {
         <h1>Chatbot vragen</h1>
         <div id="accordion">
         @if (ChatBotObj != null)
@@ -26,17 +31,30 @@
         </div> 
         <ChatbotPopup text="Voeg vraag toe" refresh=refresh />
         <button class="btn btn-primary" @onclick="OnInitializedAsync">Refresh</button>
+        } else {
+                <p>You are not authorized to access this page. Please log in.</p>
+                <p><a href="/login">Click here to LOGIN.</a></p>
+        }
     </div>
 
 </div>
 @code {
+
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+
     IEnumerable<ChatBotQuestion>? ChatBotObj;
     private bool collapsed = true;
 
     protected override async Task OnInitializedAsync()
     {
-        ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
-        ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            NavManager.NavigateTo("/login");
+        else
+        {
+            ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
+            ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
+        }
     }
 
     protected async Task refresh()

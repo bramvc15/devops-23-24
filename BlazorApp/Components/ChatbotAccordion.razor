@@ -16,9 +16,11 @@
         @question.Question
         </button>
     </h5>
+    @if(followUpQuestions == null || followUpQuestions.Count() == 0) {
         <button type="button" class="close mx-2" aria-label="Close" @onclick="() => DeleteQuestion()" @onclick:stopPropagation="true">
             <span aria-hidden="true">&times;</span>
         </button>
+    }
     </div>
     @if(!collapsed) {
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
@@ -59,12 +61,10 @@
 
     private async Task OnDelete(ChatBotQuestion question)
     {
-        Console.WriteLine("question: " + question.Question);
         onDelete.InvokeAsync(question);
         if(followUpQuestions.Contains(question))
         {
             followUpQuestions = followUpQuestions.Where(x => x != question);
-            Console.WriteLine("Follow up question deleted: " + question.Question);
         }
     }
 
