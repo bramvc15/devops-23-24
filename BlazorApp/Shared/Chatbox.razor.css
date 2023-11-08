@@ -55,7 +55,6 @@
     padding: 5px;
     overflow-y:auto;
     padding-bottom: 60px;
-    user-select: none;
 }
 
 .visible {
