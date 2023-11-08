@@ -92,7 +92,7 @@
         display: flex;
         background-color: transparent;
         width: 100%;
-        height: fit-content;
+        height: 40%;
         z-index: 1;
         position: absolute;
     }
@@ -122,12 +122,12 @@
     }
 
     .mobileNavLinks {
-        height: 30vh;
         width: 100%;
         flex-direction: column;
         justify-content: space-evenly;
         text-align: center;
-        background-color: #8d8d8d;
+        background-color: #93C5BB;
+        border-radius: 0 0 25px 25px;
     }
 
     .navText {
@@ -143,6 +143,7 @@
         width: fit-content;
         margin-left: 10px;
         margin-top: 10px;
+        right: 0;
     }
 
     .togglerOff:hover {
@@ -161,8 +162,11 @@
     }
 
     .slideDown {
+        height: 100%;
         width: 100%;
         animation: slideDown .3s ease-in-out;
+        background-color: #93C5BB;
+        border-radius: 0 0 20px 20px;
     }
 
     @keyframes slideDown {
