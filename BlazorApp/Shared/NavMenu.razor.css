@@ -52,7 +52,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
 
+.midNavItem:hover {
+    text-decoration: none !important;
 }
 
 .navText {
@@ -72,8 +75,8 @@
 }
 
 .navText:hover {
-    color: #97b2ad;
-    font-weight: 500;
+    color: #033878;
+    text-decoration: none !important;
 }
 
 .mobileNav {
