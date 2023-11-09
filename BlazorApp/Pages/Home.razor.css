@@ -2,12 +2,16 @@
     position: absolute;
     width: 100%;
     height: 500px;
-    
+
 }
 
 .background-image {
     width: 100%;
-    height:500px;
+    height: 500px;
+}
+
+.background-div {
+    margin-top: 2rem;
 }
 
 .overlay {
@@ -17,29 +21,66 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgb(194,228,218);
-    background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(9,246,140,0) 100%);
+    background: rgb(194, 228, 218);
+    background: linear-gradient(41deg, rgba(194, 228, 218, 1) 0%, rgba(167, 222, 195, 1) 52%, rgba(9, 246, 140, 0) 100%);
     display: flex;
     flex-direction: column;
     justify-content: left;
     justify-content: space-between;
     align-items: left;
     text-align: left;
-    color: rgb(22, 44, 104); /* Tekstkleur aanpassen naar wens */
+    color: rgb(22, 44, 104);
+    /* Tekstkleur aanpassen naar wens */
     padding: 120px;
     padding-top: 100px;
     margin-bottom: 200px;
 
-  
+
 }
 
+.overlay p {
+    width: 75%;
+}
+
+/* Custom button style */
+/* Custom button style with matching colors */
+/* Custom button style with matching background color and a darker text color */
+.custom-button {
+    background-color: #f5f5f5;
+    /* Matched background color from the gradient */
+    color: rgb(3, 56, 120);
+    /* Darker text color for visibility */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.oi {
+    margin-left: 0.3rem;
+}
+
+/* Apply the custom style to the buttons with the "custom-button" class */
+.btn-custom {
+    margin: 5px;
+}
+
+
+
 .overlay h1 {
-    font-size: 40px; /* Grootte van de titel aanpassen naar wens */
+    font-size: 40px;
+    /* Grootte van de titel aanpassen naar wens */
     margin-bottom: 20px;
 }
 
 .overlay p {
-    font-size: 18px; /* Grootte van de tekst aanpassen naar wens */
+    font-size: 18px;
+    /* Grootte van de tekst aanpassen naar wens */
     margin-bottom: 40px;
 }
 
@@ -51,64 +92,79 @@
 .btn {
     margin: 5px;
 }
+
 .background-div {
-    width: 100%; /* Set the width of your div */
-    height: 500px; /* Set the height of your div */
-    background-image: url('https://images.unsplash.com/photo-1581584731241-c134a1afe9a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'); /* Replace 'path-to-your-image.jpg' with the actual path to your image */
-    background-size: cover; /* Adjust the background size as needed */
-    background-position: center; /* Center the background image */
+    width: 100%;
+    /* Set the width of your div */
+    height: 500px;
+    /* Set the height of your div */
+    background-image: url('https://images.unsplash.com/photo-1581584731241-c134a1afe9a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+    /* Replace 'path-to-your-image.jpg' with the actual path to your image */
+    background-size: cover;
+    /* Adjust the background size as needed */
+    background-position: center;
+    /* Center the background image */
     margin-bottom: 50px;
 }
 
 
-.actuaTitle{
-    margin-bottom: 40px;
-    margin-left: 120px;
+.actuaTitle {
+    text-align: center;
 }
 
 .actuaBox {
-
-   
-    top: 0;
-    left: 0;
-    width: 1000px;
-    height: 500px;
-   
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: left;
-    text-align: left;
-    color: rgb(22, 44, 104); /* Tekstkleur aanpassen naar wens */
-    background-color: rgb(237, 237, 237);
-    /*margin-bottom: 200px;*/
-    margin-left: 120px;
-    margin-right: 220px;
-    
-
+    width: 100%;
+    max-width: 1000px;
+    /* Set a maximum width for the content */
+    padding: 20px;
+    /* Added padding for spacing inside the box */
+    background-color: #f5f5f5;
+    /* Custom background color */
     border-radius: 10px;
-
-   /* border: 1px solid black;*/
-
+    margin: 0 auto;
+    /* Center the box horizontally */
     overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Added a subtle box shadow */
+    margin-bottom: 2rem;
 
+    /* Hidden scrollbars */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
 }
+
+/* Hide scrollbars */
 .actuaBox::-webkit-scrollbar {
-    display: none;
-  }
-  
+    width: 8px;
+}
+
+.actuaBox::-webkit-scrollbar-thumb {
+    background-color: rgba(22, 48, 168, 0.6);
+    /* Custom scrollbar thumb color */
+    border-radius: 8px;
+    /* Rounded scrollbar thumb */
+}
+
+/* Add smooth scrolling on hover for non-touch devices */
+.actuaBox:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(22, 48, 168, 0.9);
+}
+
 
 @media screen and (max-width: 768px) {
     .background-div {
-        height: 500px; /* Adjust the height for smaller screens */
-    }
-    
-    .overlay {
-        padding: 40px; /* Adjust the padding for smaller screens */
-        margin-bottom: 100px; /* Adjust the margin for smaller screens */
+        height: 500px;
+        /* Adjust the height for smaller screens */
     }
 
-    .buttons{
+    .overlay {
+        padding: 40px;
+        /* Adjust the padding for smaller screens */
+        margin-bottom: 100px;
+        /* Adjust the margin for smaller screens */
+    }
+
+    .buttons {
         margin-top: 10px;
     }
 }

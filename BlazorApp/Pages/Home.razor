@@ -1,35 +1,98 @@
 ﻿@page "/"
+@using System.Text.Json
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inject HomeHeaderService homeHeaderService
+@inject DatabaseContext databaseContext
+@using Microsoft.AspNetCore.Components
+@inject BlogService blogService
 
 <PageTitle>Index</PageTitle>
 
-<div >
+<div>
     <div class="background-div">
-    <div class="overlay">
-        <h1>Vision Oogcenter gent</h1>
-        <p>
-            Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod tempor <br> incididunt ut labore et dolore
-            magna aliqua. Ut <br>enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea <br> commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse 
-        </p>
-        <div class="buttons">
-            <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
-            <button class="btn btn-light"   >Contacteer ons <span class="oi oi-envelope-closed"></span></button>
-        </div>
+        <div class="overlay">
+            @if (HomObj != null)
+            {
+                @foreach (var h in HomObj)
+                {
+
+                    <h1>@h.Title</h1>
+                    <p>@((MarkupString)h.Context)</p>
+                }
+            }
+            else
+            {
+
+                <h1>title</h1>
+                <p>
+                    context
+                </p>
+            }
+            <div class="buttons">
+                <button class="custom-button btn-custom">Maak een afspraak <span class="oi oi-calendar"></span></button>
+                <button class="custom-button btn-custom">Contacteer ons <span
+                        class="oi oi-envelope-closed"></span></button>
+            </div>
         </div>
     </div>
 </div>
 
-<div >
+<div>
 
-    <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
+
 
     <div class="actuaBox">
-        @for (int i = 0; i < 5; i++)
+        @if (BlogObj.blogs != null)
         {
-        <ActuaField />
+            foreach (var b in BlogObj.blogs)
+            {
+                <ActuaField Title=@b.Title Text=@b.Text Image=@b.Image />
+            }
         }
+        <nav>
+            <ul class="pagination">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" @onclick="(() => ChangePage(currentPage - 1))">Vorige</a>
+                </li>
+                @for (int i = 1; i <= BlogObj.totalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" @onclick="(() => ChangePage(i))">@i</a>
+                    </li>
+                }
+                <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled" : "")">
+                    <a class="page-link" @onclick="(() => ChangePage(currentPage + 1))">Volgende</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
 </div>
+
+
+@code {
+    IEnumerable<HomeHeader>? HomObj;
+    (IEnumerable<Blog> blogs, int totalPages) BlogObj;
+    int currentPage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        HomObj = await Task.Run(() => homeHeaderService.GetContent());
+        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+    }
+
+    private async Task ChangePage(int page)
+    {
+        if (page < 1 || page > BlogObj.totalPages)
+        {
+            return;
+        }
+
+        currentPage = page;
+        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+        StateHasChanged();
+    }
+}

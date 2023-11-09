@@ -1,0 +1,80 @@
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@inject BlogService blogService
+@inject DatabaseContext databaseContext
+
+<div>
+    <div class="buttons">
+        <Button Color="Color.Primary" Clicked="@ShowModal">Voeg blog toe</Button>
+    </div>
+    <Modal @ref="modalRef">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>Blog toevoegen</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Titel</FieldLabel>
+                    <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
+                </Field>
+                <Field>
+                    <FieldLabel>Text</FieldLabel>
+                    @* rich *@
+                    <RichTextEditor @ref="richTextEditRef" />
+                </Field>
+                <Field>
+                    <FieldLabel>Image</FieldLabel>
+                    <TextEdit Placeholder="Geef image link..." @bind-Text="newImage" />
+                </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+    <p>The value of the title field is: @newTitle</p>
+     @plainTextContent <!-- Plain text content -->
+
+</div>
+
+@code {
+
+    protected RichTextEditor? richTextEditRef;
+    protected string? content;
+    string? newTitle;
+    string? newImage;
+    string? plainTextContent; 
+
+    private Modal? modalRef;
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private void UpdateTitle()
+    {
+
+        plainTextContent = richTextEditRef?.contentAsText;
+        content = richTextEditRef?.contentAsHtml;
+        blogService.AddBlog(newTitle, content, newImage);
+
+        modalRef?.Hide();
+    }
+
+
+    IEnumerable<HomeHeader>? HomObj2;
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+    }
+}

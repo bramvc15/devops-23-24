@@ -1,0 +1,48 @@
+@page "/behandelingen"
+@using BlazorApp.Models
+@using BlazorApp.Services
+@inject TreatmentService treatmentService
+
+<PageTitle>Behandelingen</PageTitle>
+
+<body>
+    <div class="background-div">
+        <div class="overlay">
+            <h1>Behandelingen</h1>
+            <span class="breadcrumbs">
+                <a href="/"><u>Home</u></a> > Behandelingen
+            </span>
+
+            <div class="container mt-40">
+                <div class="row ">
+                    @if (TreatmentObj != null)
+                    {
+                        foreach (var treatment in TreatmentObj)
+                        {
+                            <div class="col-md-4 d-flex flex-fill">
+                                <TreatmentCard ImageSrc=@treatment.Image Title=@treatment.Name OnCardClick="@( () => NavigateDetailTreatment(treatment.Name.ToLower()) )" />
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+@code {
+    [Inject] NavigationManager NavigationManager { get; set; }
+    private string currentPage = "/behandelingen";
+    private void NavigateDetailTreatment(string page)
+    {
+        NavigationManager.NavigateTo(@currentPage + $"/{page}");
+    }
+
+    IEnumerable<Treatment> TreatmentObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        TreatmentObj = await Task.Run(() => treatmentService.GetContent());
+    }
+
+}

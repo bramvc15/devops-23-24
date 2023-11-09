@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 12vh;
+    height: 10vh;
     width: 100%;
     background-color: #fff; /* Add your desired background color */
     z-index: 1000; /* Adjust the z-index as needed */
@@ -52,12 +52,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
 
+.midNavItem:hover {
+    text-decoration: none !important;
 }
 
 .navText {
-    color: #033878;
+    color: inherit;
     font-size: 1.2rem;
+    padding: .5rem 1rem !important;
 }
 
 .lastText {
@@ -71,8 +75,107 @@
 }
 
 .navText:hover {
-    color: #97b2ad;
-    border-radius: 10px;
-    font-weight: 500;
+    color: #033878;
+    text-decoration: none !important;
 }
+
+.mobileNav {
+    display: none;
+}
+
+@media (max-width: 1050px) {
+    .fixed-nav {
+        display: none;
+    }
+
+    .mobileNav {
+        display: flex;
+        background-color: transparent;
+        width: 100%;
+        height: 40%;
+        z-index: 1;
+        position: absolute;
+    }
+
+    .bar {
+        display: block;
+        height: 6px;
+        width: 35px;
+        background-color: azure;
+        border-radius: 10px;   
+    }
+
+    .toggler {
+        height: 40px;
+        width: fit-content;
+        margin-left: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        margin-right: 20px;
+        margin-top: 20px;
+    }
+
+    .toggler:hover {
+        cursor: pointer;
+    }
+
+    .mobileNavLinks {
+        width: 100%;
+        flex-direction: column;
+        justify-content: space-evenly;
+        text-align: center;
+        background-color: #93C5BB;
+        border-radius: 0 0 25px 25px;
+    }
+
+    .navText {
+        color: azure;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .togglerOff {
+        position: absolute;
+        z-index: 1;
+        height: 30px;
+        width: fit-content;
+        margin-left: 10px;
+        margin-top: 10px;
+        right: 0;
+    }
+
+    .togglerOff:hover {
+        cursor: pointer;
+    }
+
+    .L {
+        transform: rotate(45deg);
+        transform-origin: left;
+    }
+
+    .R {
+        transform: rotate(-45deg);
+        transform-origin: left;
+        margin-top: 19px;
+    }
+
+    .slideDown {
+        height: 100%;
+        width: 100%;
+        animation: slideDown .3s ease-in-out;
+        background-color: #93C5BB;
+        border-radius: 0 0 20px 20px;
+    }
+
+    @keyframes slideDown {
+        0% { opacity: 0; -webkit-transform: translateY(-100%); }   
+      100% { opacity: 1; -webkit-transform: translateY(0); }
+  }
+
+
+}
+
+
 

@@ -1,0 +1,40 @@
+
+
+.footer-container {
+
+    background: rgb(13, 197, 142);
+
+}
+
+.footer {
+    background-color:#93C5BB;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items: center;
+}
+
+.left-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.left-section ul {
+    flex-direction: row;
+    list-style-type: none;
+    align-items: start;
+
+}
+
+.right-section {
+    display: flex;
+    align-items: center;
+}
+
+.right-section a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}

@@ -1,0 +1,113 @@
+@page "/admin/cms/home"
+@inherits EditHeaderPopUp
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@using BlazorApp.Components.Modals
+@using Microsoft.AspNetCore.Components
+@using System.Text.Json
+@inject DatabaseContext databaseContext
+@inject BlogService blogService
+@using BlazorApp.Auth
+@inject NavigationManager NavManager
+@using Newtonsoft.Json;
+
+<PageTitle>Index</PageTitle>
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
+                 BlitzWareAuthService.AuthService.appData.AdminRoleLevel
+                 ==
+                 BlitzWareAuthService.AuthService.userData.UserSubLevel)
+{
+    <div>
+        <div class="background-div">
+
+            <div class="overlay">
+                <EditHeaderPopUp />
+                <div class="buttons">
+                    <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
+                    <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+
+        <h2 class="actuaTitle">Actualiteiten binnen onze praktijk</h2>
+
+
+
+        <div class="actuaBox">
+            <div class="buttons" style="margin-left: 20px;">
+                <AddBlogPopUp />
+            </div>
+            @if (BlogObj.blogs != null)
+            {
+                foreach (var b in BlogObj.blogs)
+                {
+                    <ActuaField Title=@b.Title Text=@b.Text Image=@b.Image />
+                }
+            }
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" @onclick="(() => ChangePage(currentPage - 1))">Vorige</a>
+                    </li>
+                    @for (int i = 1; i <= BlogObj.totalPages; i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link" @onclick="(() => ChangePage(i))">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled" : "")">
+                        <a class="page-link" @onclick="(() => ChangePage(currentPage + 1))">Volgende</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+} 
+else
+{
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6">
+            <p>You are not allowed to access this page!</p>
+        </div>
+    </div>
+}
+
+
+
+
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    (IEnumerable<Blog> blogs, int totalPages) BlogObj;
+    int currentPage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            NavManager.NavigateTo("/login");
+        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+    }
+
+    private async Task ChangePage(int page)
+    {
+        if (page < 1 || page > BlogObj.totalPages)
+        {
+            return;
+        }
+
+        currentPage = page;
+        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+        StateHasChanged();
+    }
+}

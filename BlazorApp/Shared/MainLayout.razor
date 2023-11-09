@@ -1,21 +1,32 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorApp.Auth;
+@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 
 <PageTitle>BlazorApp</PageTitle>
-
 <div>
-    <div class="top-row">
         <NavMenu />
-    </div>
 
     <main>
         <div >
            @Body
+           <Chatbox />
         </div>
     </main>
 
     <div>
         @* hier moet de footer komen !!!!!!!!!!!  *@
+        <Footer />
     </div>
 
 </div>
+
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!BlitzWareAuthService.AuthService.Initialized)
+            BlitzWareAuthService.AuthService.Initialize();
+    }
+}

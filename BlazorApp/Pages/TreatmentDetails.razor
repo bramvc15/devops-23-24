@@ -1,0 +1,60 @@
+@page "/behandelingen/{naam}"
+@using BlazorApp.Models
+@using BlazorApp.Services
+@inject TreatmentService treatmentService
+
+<PageTitle>Behandeling Details</PageTitle>
+
+<div class="background-div">
+    <div class="overlay">
+
+        @if (TreatmentObj != null)
+        {
+            <h1 class="text-capitalize">@TreatmentObj.Name</h1>
+
+            <span class="breadcrumbs text-capitalize">
+                <a href="/"><u>Home</u></a> > <a href="/behandelingen"><u>Behandelingen</u></a> > @TreatmentObj.Name
+            </span>
+
+            <div class="behandelingContent">
+                <div class="container-fluid p-0 m-0">
+                    <div class="row d-flex align-items-stretch mb-4 g-2">
+                        <div class="col-md-10">
+                            <div class="card h-100 px-4">
+                                <div class="card-body p-3 pt-4">
+                                    <h2 class="card-title mb-3">Over de @TreatmentObj.Name</h2>
+                                    @((MarkupString)@TreatmentObj.Description)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card h-100 d-flex justify-content-center align-items-center">
+                                <img src="@TreatmentObj.Image" class="h-20 behandelingImage" alt="Surgery Image">
+                            </div>
+                        </div>
+                    </div>
+                    <FAQ faq="@faq" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string naam { get; set; }
+
+    string[,] faq = new string[,] {
+    {"Kom ik in aanmerking?", "Sint nisi ex sunt officia ex pariatur. Dolor amet in exercitation laboris duis pariatur minim labore ex aliqua. Proident Lorem ex ipsum tempor occaecat elit ut cupidatat aliquip sit dolore qui cillum cupidatat."},
+    {"Hoe plan ik een afspraak?", "Aliqua amet aute est fugiat id dolore amet. Ut ea occaecat commodo cillum ad officia. Enim laboris eu est Lorem magna. Ex in nostrud id ullamco consequat elit pariatur amet mollit est. Esse consectetur elit excepteur magna in eu quis. Dolor aliqua nisi id voluptate velit eu fugiat excepteur sint. Enim fugiat fugiat qui aliquip ea velit et laboris."},
+    {"Wat zijn de tarieven?", "Lorem elit amet ea proident enim eiusmod tempor esse est commodo. Cillum anim aliqua sunt tempor eu excepteur. Elit officia do veniam culpa reprehenderit velit et fugiat fugiat tempor anim do. Elit esse deserunt fugiat anim magna aliquip incididunt non. Esse Lorem nisi tempor Lorem excepteur cupidatat aliqua. Qui sit ut excepteur exercitation. Esse officia officia exercitation tempor duis sint duis."}
+    };
+    
+    Treatment TreatmentObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        TreatmentObj = await Task.Run(() => treatmentService.GetContentByName(naam));
+    }
+}
