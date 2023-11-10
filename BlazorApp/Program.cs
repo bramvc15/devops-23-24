@@ -11,7 +11,7 @@ using BlazorApp.Auth;
 using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.ConfigureKestrel(options => options.Listen(System.Net.IPAddress.Parse("192.168.100.101"), 5046));
 // Add services to the container.
 builder.Services.AddSingleton<BlitzWareAuthService>();
 builder.Services.AddRazorPages();
