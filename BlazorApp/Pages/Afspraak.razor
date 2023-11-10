@@ -1,0 +1,64 @@
+@page "/afspraak"
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inherits ComponentBase
+
+<PageTitle>Afspraak maken</PageTitle>
+<div class="main-container">
+    <div class="title-layout">
+        <h1>Afspraak maken</h1>
+        <a><u>Home</u> > Afspraak maken </a>
+    </div>
+    <div class="treatments" style="display: @(showTreatment ? "none" : "block")">
+        <div class="headerBox">
+            <p class="header">1. Waarvoor wilt u een afspraak maken?</p>
+        </div>
+        <div class="background-div">
+            <div class="overlay">
+                <div class="container mt-40">
+                    <div class="row ">
+                        <div class="col-md-4 d-flex flex-fill">
+                            <TreatmentCard ImageSrc="images/ooglidcorrectie.png" Title="Ooglidcorrectie" OnCardClick="Ooglidcorrectie" />
+                        </div>
+                        <div class="col-md-4 d-flex flex-fill">
+                            <TreatmentCard ImageSrc="images/cataractoperatie.png" Title="Cataractoperatie" OnCardClick="Cataractoperatie" />
+                        </div>
+                        <div class="col-md-4 d-flex flex-fill">
+                            <TreatmentCard ImageSrc="images/straaloperatie.png" Title="Straaloperatie" OnCardClick="Straaloperatie" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+   private string treatment = "";
+   private bool showTreatment = true;
+    private void Ooglidcorrectie()
+    {
+        treatment = "Ooglidcorrectie";
+        showTreatment = !showTreatment;
+    }
+    private void Cataractoperatie()
+    {
+        treatment = "Cataractoperatie";
+        showTreatment = !showTreatment;
+    }
+    private void Straaloperatie()
+    {
+        treatment = "Straaloperatie";
+        showTreatment = !showTreatment;
+    }
+
+
+}
+
+
+
+
+
