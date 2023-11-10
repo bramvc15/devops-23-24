@@ -4,6 +4,7 @@
 @using BlazorApp.Models
 @using BlazorApp.Controllers
 @inherits ComponentBase
+@inject DoctorService doctorService
 
 <PageTitle>Afspraak maken</PageTitle>
 <div class="main-container">
@@ -11,7 +12,7 @@
         <h1>Afspraak maken</h1>
         <a><u>Home</u> > Afspraak maken </a>
     </div>
-    <div class="treatments" style="display: @(showTreatment ? "none" : "block")">
+    <div class="treatments" style="display: @(showTreatment ? "block" : "none")">
         <div class="headerBox">
             <p class="header">1. Waarvoor wilt u een afspraak maken?</p>
         </div>
@@ -33,28 +34,59 @@
             </div>
         </div>
     </div>
+    <div class="doctors" style="display: @(showDoctors ? "block" : "none")">
+        <div class="headerBox">
+            <p class="header">2. Bij wie wens je een afspraak te maken?</p>
+        </div>
+        <div class="doctorbox">
+         @if (DocObj != null)
+            {
+                @foreach (var doc in DocObj)
+                {  
+                        @if (doc != null)
+                        {
+                            <div class="center">
+                                <DoctorCard ImageSrc=@doc.Image Name=@doc.Name Specialization="@doc.Specialization"/>
+                            </div>                        
+                        }
+                }
+            }
+            else
+            {
+                <p>DocObj is null.</p>
+            }
+        </div>
+    </div>
 </div>
 
-
 @code {
-   private string treatment = "";
-   private bool showTreatment = true;
+    private string treatment = "";
+    private int doctorId = 0;
+    private bool showTreatment = true;
+    private bool showDoctors = false;
     private void Ooglidcorrectie()
     {
         treatment = "Ooglidcorrectie";
         showTreatment = !showTreatment;
+        showDoctors = !showDoctors;
     }
     private void Cataractoperatie()
     {
         treatment = "Cataractoperatie";
         showTreatment = !showTreatment;
+        showDoctors = !showDoctors;
     }
     private void Straaloperatie()
     {
         treatment = "Straaloperatie";
         showTreatment = !showTreatment;
+        showDoctors = !showDoctors;
     }
-
+    IEnumerable<Doctor>? DocObj;
+    protected override async Task OnInitializedAsync()
+    {
+        DocObj = await Task.Run(() => doctorService.GetAll());
+    }
 
 }
 
