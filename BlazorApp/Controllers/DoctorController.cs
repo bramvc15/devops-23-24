@@ -22,6 +22,12 @@ public class DoctorController : ControllerBase
         return _service.GetAll();
     }
 
+    [HttpGet("id")]
+    [Route("getDoctorById")]
+    public Doctor GetDoctorbyId(int id){
+        return _service.GetDoctorById(id);
+    }
+
     // [HttpGet("{id}")]
     // public ActionResult<Pizza> GetById(int id)
     // {
