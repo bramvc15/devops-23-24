@@ -46,7 +46,9 @@
                         @if (doc != null)
                         {
                             <div class="center">
-                                <DoctorCard ImageSrc=@doc.Image Name=@doc.Name Specialization="@doc.Specialization"/>
+                                <button @onclick="(e) => chooseDoc(doc)">
+                                    <DoctorCard ImageSrc=@doc.Image Name=@doc.Name Specialization=@doc.Specialization/>
+                                </button>
                             </div>                        
                         }
                 }
@@ -86,6 +88,11 @@
     protected override async Task OnInitializedAsync()
     {
         DocObj = await Task.Run(() => doctorService.GetAll());
+    }
+
+    void chooseDoc(Doctor doc) {
+        doctorId = doc.Id;
+        showDoctors = !showDoctors;
     }
 
 }
