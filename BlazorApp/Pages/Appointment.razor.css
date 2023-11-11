@@ -32,4 +32,22 @@
     font-weight: 600;
     padding-bottom: 2%;
 }
-*/
+
+.doctorbox {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3fr 3fr 3fr 3fr;
+    padding-left: 120px;
+    padding-right: 120px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+}
