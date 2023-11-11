@@ -59,6 +59,21 @@
             }
         </div>
     </div>
+    <div class="afspraak-plannen" style="display: @(showAfspraak ? "block" : "none")">
+        <div class="headerBox">
+            <p class="header">3. Kies een tijdslot</p>
+        </div>
+        <div class="afspraakbox">
+            <div class="temp">
+                <button class="butTemp" @onclick=chooseTime>temp</button>
+            </div>
+        </div>
+    </div>
+    <div class="contact-info" style="display: @(showContact ? "block" : "none")">
+        <div class="headerBox">
+            <p class="header">4. Vul uw contactgegevens in</p>
+        </div>
+    </div>
 </div>
 
 @code {
@@ -66,6 +81,8 @@
     private int doctorId = 0;
     private bool showTreatment = true;
     private bool showDoctors = false;
+    private bool showAfspraak = false;
+    private bool showContact = false;
     private void Ooglidcorrectie()
     {
         treatment = "Ooglidcorrectie";
@@ -89,11 +106,18 @@
     {
         DocObj = await Task.Run(() => doctorService.GetAll());
     }
-
-    void chooseDoc(Doctor doc) {
+    private void chooseDoc(Doctor doc) {
         doctorId = doc.Id;
         showDoctors = !showDoctors;
+        showAfspraak = !showAfspraak;
     }
+    private void chooseTime()
+    {
+        showAfspraak = !showAfspraak;
+        showContact = !showContact;
+    }
+
+
 
 }
 
