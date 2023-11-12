@@ -126,6 +126,28 @@ button {
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
+.succes {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+    color: #033878;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.bck {
+    background-color: #033878;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.bck:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    text-decoration: none;
+}
 
 
 

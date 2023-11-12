@@ -115,6 +115,10 @@
             </div>
         </EditForm>
     </div>
+    <div class="succes" style="display: @(showSucces ? "flex" : "none")">
+        <p>Afspraak is succesvol gemaakt!</p>
+        <a href="" class="bck">Ga terug</a>
+    </div>
 </div>
 
 @code {
@@ -124,6 +128,7 @@
     private bool showDoctors = false;
     private bool showAfspraak = false;
     private bool showContact = false;
+    private bool showSucces = false;
     private void Ooglidcorrectie()
     {
         treatment = "Ooglidcorrectie";
@@ -161,7 +166,8 @@
 
     private async Task SubmitClientData()
     {
-        @* temp *@
+        showContact = !showContact;
+        showSucces = !showSucces;
         Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.birthDate);
     }
 }
