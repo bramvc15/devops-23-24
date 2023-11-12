@@ -5,6 +5,7 @@
 @using BlazorApp.Controllers
 @inherits ComponentBase
 @inject DoctorService doctorService
+@using Microsoft.AspNetCore.Components.Forms
 
 <PageTitle>Afspraak maken</PageTitle>
 <div class="main-container">
@@ -73,22 +74,41 @@
         <div class="headerBox">
             <p class="header">4. Vul uw contactgegevens in</p>
         </div>
-        <div class="contactbox">
-
-
-            <label class='formLabel'>Naam</label>
-            <div class='inputContainer'>  
-                @* user icon *@   
-                <input class='formInput' type='text' placeholder='John Doe' />
+        <EditForm Model="@clientData" OnValidSubmit="@SubmitClientData">
+            <div class="contactbox">
+                <div class="formbox">
+                    <div class="coll">
+                        <div class="la">
+                            <label class='formLabel' for="Name">Naam</label>
+                        </div>
+                        <div class='formInput'>  
+                            <InputText id="Name" @bind-Value="clientData.Name" type='text' placeholder='John Doe'/>
+                        </div>
+                        <div class="la">
+                            <label class='formLabel' for="Email">E-mail</label>
+                        </div>
+                        <div class='formInput'>
+                            <InputText id="Email" @bind-Value="clientData.Email" type='text' placeholder='john@mail.com'/>
+                        </div>
+                    </div>
+                    <div class="coll">
+                        <div class="la">
+                            <label class='formLabel' for="Phone">Telefoon</label>
+                        </div>
+                        <div class='formInput'>
+                            <InputText id="Phone" @bind-Value="clientData.Phone" type='text' placeholder='+32 89 67 92 32'/>
+                        </div>
+                        <div class="la">
+                            <label class='formLabel' for="birthDate">Geboortedatum</label>
+                        </div>
+                        <div class='formInput'>
+                            <InputDate id="birthDate" @bind-Value="clientData.birthDate"/>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="submitBtn">Verzenden</button>
             </div>
-            <label class='formLabel'>E-mail</label>
-            <div class='inputContainer'>
-                @* mail icon *@
-                <input class='formInput' type='text' placeholder='john@mail.com'/>
-            </div>
-
-            
-        </div>
+        </EditForm>
     </div>
 </div>
 
@@ -132,6 +152,13 @@
         showAfspraak = !showAfspraak;
         showContact = !showContact;
     }
+    private ClientData clientData = new ClientData();
+
+    private async Task SubmitClientData()
+    {
+        Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.birthDate);
+    }
+
 
 }
 

@@ -84,25 +84,50 @@ button {
     margin-left: 120px;
 }
 
+.formbox {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 100px;
+    height: 75%;
+    width: 620px;
+}
+
+.coll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.la {
+    text-align: left;
+    width: 100%;
+}
+
 .formLabel {
     font-size: 25px;
     color: #033878;
     margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: left;
 }
 
-.formInput {
-    width: 320px;
-    height: 45px;
-    padding-left: 12px;
-    color: #033878;
-    margin-bottom: 10px;
-    background-color: aliceblue;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+.submitBtn {
+    background-color: rgb(22, 44, 104);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
     border: none;
+    margin-top: 20px;
 }
 
-.formInput:focus {
-    border: none;
-    outline: none;
+.submitBtn:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
+
+
+
+
+
 
