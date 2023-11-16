@@ -1,7 +1,11 @@
 @page "/Locatie"
-
+@inject LocationService locationService
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
 <PageTitle>Locatie</PageTitle>
-<body>
+
 <div class="page-container">
     <div class="title-layout">
         <h1>Locatie</h1>
@@ -11,13 +15,22 @@
         <div class="row">
             <!-- Left Column for Text -->
             <div class="col-md-6">
-                <p>
-                    Lorem ipsum dolor sit amet,
-                    consectetur adipiscing elit, sed do eiusmod tempor <br> incididunt ut labore et dolore
-                    magna aliqua. Ut <br>enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea <br> commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse
-                </p>
+                         @if (LocObj != null)
+        {
+            @foreach (var h in LocObj)
+            {
+
+            
+                
+                   @((MarkupString)h.Context)
+            
+            }
+        }
+        else
+        {
+
+            <h1>ERROR</h1>
+        }
             </div>
 
             <!-- Right Column for Google Maps -->
@@ -28,6 +41,15 @@
     </div>
     
 </div>
-</body>
 
 
+@code{
+
+     IEnumerable<LocationM>? LocObj;
+    
+      protected override async Task OnInitializedAsync()
+    {
+        LocObj = await Task.Run(() => locationService.GetContent());
+    }
+
+}

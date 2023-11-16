@@ -1,0 +1,12 @@
+#headingOne {
+    padding: 4px;
+    cursor: pointer;
+}
+
+#headingOne:hover {
+    background-color: rgb(233, 233, 233);
+}
+
+.card {
+    margin: 2px;
+}

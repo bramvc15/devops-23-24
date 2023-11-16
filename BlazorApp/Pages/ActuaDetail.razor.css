@@ -1,0 +1,95 @@
+﻿/* Reset some default browser styles */
+
+/* Style the overall page layout */
+.bodyWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #D4E8E4, #D4E8E4);
+    margin: 0;
+}
+
+.Wrapper {
+    margin-top: 7rem;
+    margin-bottom: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 80%;
+    text-align: center;
+}
+
+h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.actuaContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.exitActuaDetail {
+    text-align: left;
+    width: 100%;
+
+}
+
+.ActuaImg img {
+    max-width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.ActuaImg img:hover {
+    transform: scale(1.05);
+}
+
+.backArrow {
+    width: 25px;
+    height: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.ActuaText {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ActuaText p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.imageText {
+    padding: 0 20px 20px;
+}
+
+/* Add a subtle border to the container */
+.actuaContainer {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+
+    margin: 20px;
+}
+
+/* Add a smooth transition to the container's border */
+.actuaContainer:hover {
+    border-color: #A3C8C1;
+}
+
+/* Media query for screens smaller than 600px */
+@media (max-width: 600px) {
+    .Wrapper {
+        width: 95%;
+        /* Adjust the width for smaller screens */
+    }
+}

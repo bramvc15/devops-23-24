@@ -1,0 +1,104 @@
+@using BlazorApp.Data
+@using Microsoft.AspNetCore.Components
+@using System.Text.Json
+@using System.Text.Json.Serialization;
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inject HomeHeaderService homeHeaderService
+@inject DatabaseContext databaseContext
+
+<div>
+    <div class="buttons">
+        <Button Color="Color.Primary" Clicked="@ShowModal">Wijzig</Button>
+    </div>
+    <div>
+        @if (HomObj2 != null)
+        {
+            @foreach (var h in HomObj2)
+            {
+
+                <h1>@h.Title</h1>
+                
+                   @((MarkupString)h.Context)
+            
+            }
+        }
+        else
+        {
+
+            <h1>title</h1>
+            <p>
+                context
+            </p>
+        }
+    </div>
+    <Modal @ref="modalRef">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>Header wijziging</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Titel</FieldLabel>
+                    <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
+                </Field>
+                <Field>
+                    <FieldLabel>Beschrijving</FieldLabel>
+                    @* rich *@
+                    <RichTextEditor @ref="richTextEditRef" />
+                </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+    <p>The value of the title field is: @newTitle</p>
+     @plainTextContent <!-- Plain text content -->
+
+</div>
+
+@code {
+
+    protected RichTextEditor? richTextEditRef;
+    protected string? content;
+    HomeHeader? header;
+    int headerId; 
+    string? newTitle;
+
+    string? plainTextContent; 
+    string? context;
+
+    private Modal? modalRef;
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private void UpdateTitle()
+    {
+
+        plainTextContent = richTextEditRef?.contentAsText;
+        content = richTextEditRef?.contentAsHtml;
+        homeHeaderService.UpdateHeaderTitle(newTitle , content);
+
+        modalRef?.Hide();
+    }
+
+
+    IEnumerable<HomeHeader>? HomObj2;
+
+    protected override async Task OnInitializedAsync()
+    {
+        HomObj2 = await Task.Run(() => homeHeaderService.GetContent());
+    }
+}

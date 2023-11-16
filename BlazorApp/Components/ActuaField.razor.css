@@ -1,40 +1,43 @@
-
 .text {
     color: red;
 }
 
 .field {
-   
+
     top: 0;
     left: 0;
     width: 100%;
     height: 12em;
-   
+
     display: flex;
     flex-direction: column;
     justify-content: left;
     align-items: left;
     text-align: left;
 
-    color: rgb(22, 44, 104); /* Tekstkleur aanpassen naar wens */
-    background-color: rgba(194, 228, 218, 100) ;
+    color: rgb(22, 44, 104);
+    /* Tekstkleur aanpassen naar wens */
+    background-color: rgba(194, 228, 218, 100);
 
     margin: 20px;
     margin-right: 10px;
     padding-left: 10px;
-        
-    
+
+
     border-radius: 5px;
-    
+
 
     overflow-y: auto;
 }
 
 .grid-container {
     display: grid;
-    grid-template-columns: 1.5fr 0.5fr; /* 2 columns */
-    grid-template-rows: repeat(3, 1fr); /* 3 rows */
-    gap: 0px; /* Adjust the gap between grid items as needed */
+    grid-template-columns: 1.5fr 0.5fr;
+    /* 2 columns */
+    grid-template-rows: repeat(3, 1fr);
+    /* 3 rows */
+    gap: 0px;
+    /* Adjust the gap between grid items as needed */
     /*
     margin-left: 220px;
     margin-right: 120px;
@@ -59,38 +62,50 @@
     grid-row: 2;
 }
 
-.grid-hyper{    /* this class puts the hyperlink on the bottom of the cell */
+.grid-hyper {
+    /* this class puts the hyperlink on the bottom of the cell */
     grid-column: 1;
     grid-row: 3;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-end; /* Place the hyperlink at the bottom */
-    
+    justify-content: flex-end;
+    /* Place the hyperlink at the bottom */
+
 
 }
 
-.grid-image{
+.field h2 {
+    width: 90%;
+}
+
+
+
+.grid-image {
 
     grid-column: 2;
-    grid-row: 1 / 4;
+    grid-row: 1/ 4;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-end;
+    margin-top: 4rem;
+
     width: 250px;
     height: 200px;
-  
+    object-fit: cover;
+    margin-right: 1rem;
 }
 
 
 .field {
-    width: 95%; /* Width for individual grid items */
-    height: auto; /* Let the content determine the height */
+    width: 95%;
+    /* Width for individual grid items */
+    height: auto;
+    /* Let the content determine the height */
     background-color: rgba(194, 228, 218, 100);
     color: rgb(22, 44, 104);
-    
+
     border-radius: 5px;
     overflow-y: auto;
 }
-

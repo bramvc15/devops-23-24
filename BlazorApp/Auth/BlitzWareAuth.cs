@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using static System.Net.Mime.MediaTypeNames;
+using Blazored.LocalStorage;
 
 namespace BlazorApp.Auth;
 
@@ -50,6 +51,7 @@ public class BlitzWareAuth
             public string ProgramHash { get; set; }
             public string Version { get; set; }
             public string DownloadLink { get; set; }
+            public int AdminRoleLevel { get; set; }
         }
 
         public UserData userData = new();
@@ -62,6 +64,7 @@ public class BlitzWareAuth
             public string LastLogin { get; set; }
             public string LastIP { get; set; }
             public string HWID { get; set; }
+            public int UserSubLevel { get; set; }
             public string Token { get; set; }
         }
 

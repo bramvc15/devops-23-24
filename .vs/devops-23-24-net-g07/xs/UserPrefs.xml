@@ -1,0 +1,33 @@
+﻿<Properties StartupConfiguration="{A5C20423-668D-421D-B66E-72B8A7B0F139}|http">
+  <MonoDevelop.Ide.Workbench ActiveDocument="BlazorApp/Auth/BlitzWareAuth.cs">
+    <Files>
+      <File FileName="BlazorApp/Pages/PrivateRoutes/Admin.razor" Line="10" Column="23" />
+      <File FileName="BlazorApp/Auth/BlitzWareAuth.cs" Line="8" Column="4" />
+      <File FileName="BlazorApp/Pages/Login.razor" Line="73" Column="1" />
+      <File FileName="BlazorApp/Auth/BlitzWareAuthService.cs" Line="20" Column="77" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="devops-23-24-net-g07">
+            <Node name="BlazorApp">
+              <Node name="Auth" expanded="True">
+                <Node name="BlitzWareAuth.cs" selected="True" />
+              </Node>
+              <Node name="Data" expanded="True" />
+              <Node name="Pages" expanded="True" />
+              <Node name="Services" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.BlazorApp PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
