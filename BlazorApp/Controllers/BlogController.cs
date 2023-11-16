@@ -20,7 +20,6 @@ public class BlogController : ControllerBase
     [HttpGet]
     public (IEnumerable<Blog>, int totalPages) GetContent()
     {
-
         return _service.GetContent();
 
     }

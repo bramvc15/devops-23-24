@@ -1,6 +1,7 @@
 @page "/login"
 @using BlazorApp.Auth
 @inject NavigationManager NavManager
+@inject ILocalStorageService _localstorage;
 
 <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
     <div>
@@ -46,6 +47,7 @@
         BlitzWareAuth.API.RequestResult result = BlitzWareAuthService.AuthService.Login(login.username, login.password, "");
         if (result.Success)
         {
+            _localstorage.SetItemAsStringAsync("authToken", BlitzWareAuthService.AuthService.userData.Token);
             message = result.Message;
             BlitzWareAuth.API.RequestResult result2 = BlitzWareAuthService.AuthService.Log(BlitzWareAuthService.AuthService.userData.Username, "Logged in");
             if (result2.Success)

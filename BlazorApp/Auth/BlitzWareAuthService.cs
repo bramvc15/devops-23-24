@@ -14,10 +14,10 @@ namespace BlazorApp.Auth
         public BlitzWareAuthService()
         {
             AuthService = new API(
-                apiUrl: config.GetValue<string>("blitzware:ApiBaseUrl"),
-                appName: config.GetValue<string>("blitzware:AppName"),
-                appSecret: config.GetValue<string>("blitzware:AppSecret"),
-                appVersion: config.GetValue<string>("blitzware:AppVersion")
+                apiUrl: config.GetValue<string>("blitzware:ApiBaseUrl")!,
+                appName: config.GetValue<string>("blitzware:AppName")!,
+                appSecret: config.GetValue<string>("blitzware:AppSecret")!,
+                appVersion: config.GetValue<string>("blitzware:AppVersion")!
             );
         }
     }

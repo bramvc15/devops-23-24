@@ -37,5 +37,12 @@
 
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/TinyMCE.Blazor/tinymce-blazor.js"></script>
+    <script>function scrollToBottom() {
+            var objDiv = document.getElementsByClassName("chatbox-content")[0];
+            objDiv.scrollTo({
+                top: objDiv.scrollHeight,
+                behavior: 'smooth'
+            });
+        }</script>
 </body>
 </html>
