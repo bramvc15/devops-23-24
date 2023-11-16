@@ -8,6 +8,7 @@ using BlazorApp.Services;
 
 using static BlazorApp.Auth.BlitzWareAuth;
 using BlazorApp.Auth;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.Services.AddTransient<LocationService>();
 builder.Services.AddTransient<ContactService>();
 builder.Services.AddTransient<TreatmentService>();
 builder.Services.AddTransient<ChatbotService>();
+builder.Services.AddBlazoredLocalStorage();
 
 
 builder.Services.AddDbContext<DatabaseContext>( options => 
@@ -57,6 +59,9 @@ app.CreateDbIfNotExists();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.MapControllers();
 

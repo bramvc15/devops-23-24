@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using static System.Net.Mime.MediaTypeNames;
+using Blazored.LocalStorage;
 
 namespace BlazorApp.Auth;
 
