@@ -8,9 +8,10 @@ using BlazorApp.Services;
 
 using static BlazorApp.Auth.BlitzWareAuth;
 using BlazorApp.Auth;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.ConfigureKestrel(options => options.Listen(System.Net.IPAddress.Parse("192.168.100.101"), 5046));
 // Add services to the container.
 builder.Services.AddSingleton<BlitzWareAuthService>();
 builder.Services.AddRazorPages();
@@ -27,26 +28,26 @@ builder.Services.AddTransient<ChatbotService>();
 builder.Services.AddTransient<AppointmentTimeSlotService>();
 builder.Services.AddTransient<PatientService>();
 builder.Services.AddTransient<ScheduleTimeSlotService>();
+builder.Services.AddBlazoredLocalStorage();
 
-
-builder.Services.AddDbContext<DatabaseContext>( options => 
+builder.Services.AddDbContext<DatabaseContext>(options =>
     {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
     }, ServiceLifetime.Transient);
 
 
- 
+
 builder.Services
-    .AddBlazorise( options =>
+    .AddBlazorise(options =>
     {
         options.Immediate = true;
-    } )
+    })
     .AddBootstrapProviders()
     .AddFontAwesomeIcons();
 
 
 builder.Services
-    .AddBlazoriseRichTextEdit( options => {  } );
+    .AddBlazoriseRichTextEdit(options => { });
 
 var app = builder.Build();
 
@@ -60,6 +61,9 @@ app.CreateDbIfNotExists();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.MapControllers();
 

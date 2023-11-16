@@ -15,9 +15,9 @@ namespace BlazorApp.Services
             _ctx = ctx;
         }
 
-        public IEnumerable<ChatBotQuestion> GetContent()
+        public async Task<IEnumerable<ChatBotQuestion>> GetContent()
         {
-            return _ctx.ChatBotQuestions.Include(question => question.FollowUpQuestions).ToList();
+            return await _ctx.ChatBotQuestions.Include(question => question.FollowUpQuestions).ToListAsync();
         }
 
         // public IEnumerable<ChatBotQuestion> GetFollowUpQuestions(int? followUpID)

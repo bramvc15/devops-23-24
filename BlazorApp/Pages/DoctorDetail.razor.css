@@ -8,6 +8,18 @@
     background: linear-gradient(41deg, rgba(194, 228, 218, 1) 0%, rgba(167, 222, 195, 1) 52%, rgba(9, 244, 138, 0.36) 100%);
 }
 
+.imageBackWrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.backArrow {
+    width: 25px;
+    height: auto;
+
+}
+
 .content-wrapper {
     background-color: #fff;
     border-radius: 10px;

@@ -47,15 +47,6 @@
             <ChatMessage type="bot" Image="images/typingAnimation.gif"  />
         }
     </div>
-    <script>
-        function scrollToBottom() {
-            var objDiv = document.getElementsByClassName("chatbox-content")[0];
-            objDiv.scrollTo({
-                top: objDiv.scrollHeight,
-                behavior: 'smooth'
-            });
-        }
-    </script>
 </div>
 
 
@@ -67,20 +58,20 @@
     private List<ChatMessage> chatMessages = new List<ChatMessage>();
 
     [Inject]
-    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    private BlitzWareAuthService BlitzWareAuthService { get; set; } = default!;
 
     IEnumerable<ChatBotQuestion>? ChatBotObj;
 
     protected override async Task OnInitializedAsync()
     {
         await getChatBotObj();
-        startChat();
+        await startChat();
     }
 
     private async Task getChatBotObj()
     {
         try {
-            ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
+            ChatBotObj = await ChatbotService.GetContent();
             ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
         } catch(Exception e) {
             Console.WriteLine(e.Message);
@@ -91,7 +82,7 @@
     {
         //IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
         List<ChatBotQuestion>? followUpObj = question.FollowUpQuestions;
-        showQuestions(followUpObj);
+        await showQuestions(followUpObj);
     }
 
     void ToggleChatbox()
@@ -106,20 +97,20 @@
             await Task.Delay(100);
         }
 
-        startChat();
+        await startChat();
     }
 
-    private async void startChat()
+    private async Task startChat()
     {
         restartable = false;
         await getChatBotObj();
         chatMessages.Clear();
         chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", type = "bot" });
-        StateHasChanged();
-        showQuestions(ChatBotObj);
+        StateHasChanged(); // Maybe deleting?
+        await showQuestions(ChatBotObj);
     }
 
-    private async void HandleQuestionClicked(ChatBotQuestion question)
+    private async Task HandleQuestionClicked(ChatBotQuestion question)
     {
         restartable = false;
         await botResponse(question.Answer);
@@ -140,7 +131,7 @@
             await showQuestions(ChatBotObj);
         }
         
-        JSRuntime.InvokeVoidAsync("scrollToBottom");
+        await JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
     private async Task typingDelay()
@@ -158,7 +149,7 @@
         await typingDelay();
         chatMessages.Add(new ChatMessage { Message = answer, type = "bot" });
         StateHasChanged();
-        JSRuntime.InvokeVoidAsync("scrollToBottom");
+        await JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
     private async Task showQuestions(IEnumerable<ChatBotQuestion>? obj)
@@ -170,7 +161,8 @@
             restartable = true;
         }
         StateHasChanged();
-        JSRuntime.InvokeVoidAsync("scrollToBottom");
+        // do no call this but
+        // await JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
     private void NavigateToSettingsPage()
