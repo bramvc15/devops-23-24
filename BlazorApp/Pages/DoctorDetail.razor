@@ -7,8 +7,17 @@
     <div class="content-wrapper">
         @if (Doctor != null)
         {
-            <div class="info-Img-wrapper">
-                <img src=@Doctor.Image alt="Doctor Image" class="doctor-image" />
+            <div class="imageBackWrapper">
+                <div class="exitDoctorDetail">
+                    <NavLink class="backArrownav" href="/onsTeam">
+                        <p class="lastText">
+                            <img src="images/BackArrow.png" class="backArrow" alt="icon" />
+                        </p>
+                    </NavLink>
+                </div>
+                <div class="info-Img-wrapper">
+                    <img src=@Doctor.Image alt="Doctor Image" class="doctor-image" />
+                </div>
             </div>
 
 
