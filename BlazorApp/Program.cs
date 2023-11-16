@@ -10,7 +10,7 @@ using static BlazorApp.Auth.BlitzWareAuth;
 using BlazorApp.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.ConfigureKestrel(options => options.Listen(System.Net.IPAddress.Parse("192.168.100.101"), 5046));
+builder.WebHost.ConfigureKestrel(options => options.Listen(System.Net.IPAddress.Parse("172.18.138.195"), 5046));
 // Add services to the container.
 builder.Services.AddSingleton<BlitzWareAuthService>();
 builder.Services.AddRazorPages();

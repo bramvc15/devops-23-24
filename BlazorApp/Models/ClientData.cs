@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-namespace BlazorApp.Data
+namespace BlazorApp.Models
 {
     public class ClientData
     {
