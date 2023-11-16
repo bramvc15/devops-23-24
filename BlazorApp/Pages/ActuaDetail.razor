@@ -6,18 +6,29 @@
 
 <body>
 	<div class="bodyWrapper">
+
 		<div class="Wrapper">
+
 			<div class="actuaContainer">
+				<div class="exitActuaDetail">
+					<NavLink class="backArrownav" href="/">
+						<p class="lastText">
+							<img src="images/BackArrow.png" class="backArrow" alt="icon" />
+						</p>
+					</NavLink>
+				</div>
 				@if (BlogPost != null)
 				{
-					<div class="ActuaImg">
-						<img class="grid-image" src=@BlogPost.Image>
-					</div>
+					<div class="imageText">
+						<div class="ActuaImg">
+							<img class="grid-image" src=@BlogPost.Image>
+						</div>
 
-					<div class="ActuaText">
-						<p>
-							@BlogPost.Text
-						</p>
+						<div class="ActuaText">
+							<p>
+								@BlogPost.Text
+							</p>
+						</div>
 					</div>
 				}
 			</div>
