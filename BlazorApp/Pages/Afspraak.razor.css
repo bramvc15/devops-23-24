@@ -1,0 +1,155 @@
+.main-container {
+    height: 90vh;
+    width: 100%;
+    background-color: #D4E8E4;
+}
+
+.title-layout {
+
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+    color: rgb(22, 44, 104); /* Tekstkleur aanpassen naar wens */
+    padding-top: 100px;
+    padding-left: 120px;
+}
+
+.headerBox {
+    padding-left: 120px;
+    color: rgb(22, 44, 104);
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-bottom: 2%;
+}
+
+.doctorbox {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3fr 3fr 3fr 3fr;
+    padding-left: 120px;
+    padding-right: 120px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+}
+
+.afspraakbox {
+    width: 100%;
+    height: 40vh;
+    padding-left: 120px;
+    padding-right: 120px;
+}
+
+/* TEMPP */
+
+.temp {
+    border: dotted black 4px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.butTemp {
+    background-color: rgb(22, 44, 104);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+}
+
+/* END TEMPPP */
+
+.contactbox {
+    width: 85%;
+    height: 45vh;
+    margin-left: 120px;
+}
+
+.formbox {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 100px;
+    height: 75%;
+    width: 620px;
+}
+
+.coll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.la {
+    text-align: left;
+    width: 100%;
+}
+
+.formLabel {
+    font-size: 25px;
+    color: #033878;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.submitBtn {
+    background-color: rgb(22, 44, 104);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    margin-top: 20px;
+}
+
+.submitBtn:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.succes {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+    color: #033878;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.bck {
+    background-color: #033878;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.bck:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    text-decoration: none;
+}
+
+
+
+
+
