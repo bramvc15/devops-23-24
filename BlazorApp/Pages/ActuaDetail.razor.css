@@ -61,6 +61,14 @@ h3 {
   margin-left: 0.5rem;
 }
 
+.backArrow {
+    width: 25px;
+    height: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+}
+
 .ActuaText {
   background-color: #fff;
   border-radius: 10px;
