@@ -25,6 +25,7 @@
     width: 160px;
     border-radius: 50%;
     padding-top: 2%;
+    object-fit: cover;
 }
 
 .Dname {
