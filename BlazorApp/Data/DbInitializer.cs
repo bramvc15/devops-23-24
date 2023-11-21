@@ -207,8 +207,7 @@ namespace BlazorApp.Data
                     PatientId = patients[1].Id,
                     Location = "Gent",
                     DoctorId = doctors[0].Id,
-                    Reason = "Cataractoperatie",
-                    Note = ""
+                    Reason = "Cataractoperatie"
                 }
             };
 
