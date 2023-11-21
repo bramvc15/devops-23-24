@@ -10,7 +10,7 @@ namespace BlazorApp.Data
         public static void Initialize(DatabaseContext context)
         {
 
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any() && context.ChatBotQuestions.Any() && context.Appointment.Any() && context.TimeSlot.Any() && context.Patients.Any())
             {
                 return;
             }
@@ -168,6 +168,140 @@ namespace BlazorApp.Data
                 },
             };
 
+            var patients = new Patient[]
+            {
+                new Patient 
+                {
+                    Name = "John",
+                    Gender = Gender.Male,
+                    DateOfBirth = new DateTime(1990, 1, 1),
+                    BloodGroup = BloodGroup.AMinus,
+                    PhoneNumber = "0477777777",
+                    Email = "john@mail.com"
+                },
+
+                new Patient 
+                {
+                    Name = "Ella",
+                    Gender = Gender.Female,
+                    DateOfBirth = new DateTime(1991, 1, 1),
+                    BloodGroup = BloodGroup.OPlus,
+                    PhoneNumber = "0488888888",
+                    Email = "ella@mail.com"
+                }
+            };
+
+            var appointments = new Appointment[]
+            {
+                new Appointment
+                {
+                    PatientId = patients[0].Id,
+                    Location = "Gent",
+                    DoctorId = doctors[0].Id,
+                    Reason = "Ooglidcorrectie vragen",
+                    Note = "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren."
+                },
+
+                new Appointment
+                {
+                    PatientId = patients[1].Id,
+                    Location = "Gent",
+                    DoctorId = doctors[0].Id,
+                    Reason = "Cataractoperatie",
+                    Note = ""
+                }
+            };
+
+            var timeSlots = new TimeSlot[]
+            {
+                new TimeSlot
+                {
+                    DoctorId = doctors[0].Id,
+                    AppointmentType = AppointmentType.Consulatie,
+                    Date = new DateTime(),
+                    AppointmentId = appointments[0].Id,
+                    IsAvailable = false
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = doctors[1].Id,
+                    AppointmentType = AppointmentType.Operatie,
+                    Date = new DateTime(),
+                    IsAvailable = true
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = doctors[0].Id,
+                    AppointmentType = AppointmentType.Consulatie,
+                    Date = new DateTime(),
+                    AppointmentId = appointments[1].Id,
+                    IsAvailable = false
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = doctors[1].Id,
+                    AppointmentType = AppointmentType.Operatie,
+                    Date = new DateTime(),
+                    IsAvailable = true
+                },
+                
+                new TimeSlot
+                {
+                    DoctorId = doctors[0].Id,
+                    AppointmentType = AppointmentType.Consulatie,
+                    Date = new DateTime(),
+                    IsAvailable = true
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = doctors[1].Id,
+                    AppointmentType = AppointmentType.Operatie,
+                    Date = new DateTime(),
+                    AppointmentId = appointments[1].Id,
+                    IsAvailable = false
+                },
+                
+                new TimeSlot
+                {
+                    DoctorId = doctors[0].Id,
+                    AppointmentType = AppointmentType.Consulatie,
+                    Date = new DateTime(),
+                    AppointmentId = appointments[0].Id,
+                    IsAvailable = false
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = doctors[1].Id,
+                    AppointmentType = AppointmentType.Operatie,
+                    Date = new DateTime(),
+                    AppointmentId = appointments[1].Id,
+                    IsAvailable = false
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = doctors[0].Id,
+                    AppointmentType = AppointmentType.Consulatie,
+                    Date = new DateTime(),
+                    IsAvailable = true
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = doctors[1].Id,
+                    AppointmentType = AppointmentType.Operatie,
+                    Date = new DateTime(),
+                    AppointmentId = appointments[0].Id,
+                    IsAvailable = false
+                },
+            };
+
+
 
             context.Doctors.AddRange(doctors);
             context.HomeHeaders.Add(header);
@@ -176,6 +310,9 @@ namespace BlazorApp.Data
             context.Contacts.Add(contact);
             context.Treatments.AddRange(treatments);
             context.ChatBotQuestions.AddRange(chatbotQuestions);
+            context.Patients.AddRange(patients);
+            context.Appointment.AddRange(appointments);
+            context.TimeSlot.AddRange(timeSlots);
           
             context.SaveChanges();
 

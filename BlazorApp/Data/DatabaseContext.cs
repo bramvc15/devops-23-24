@@ -10,7 +10,6 @@ namespace BlazorApp.Data
         {
 
         }
-        public DbSet<AppointmentTimeSlot> AppointmentTimeSlots => Set<AppointmentTimeSlot>();
         public DbSet<Blog> Blogs => Set<Blog>();
         public DbSet<ChatBotQuestion> ChatBotQuestions => Set<ChatBotQuestion>();
         public DbSet<ContactM> Contacts => Set<ContactM>();
@@ -18,7 +17,8 @@ namespace BlazorApp.Data
         public DbSet<HomeHeader> HomeHeaders => Set<HomeHeader>();
         public DbSet<LocationM> Locations => Set<LocationM>();
         public DbSet<Patient> Patients => Set<Patient>();
-        public DbSet<ScheduleTimeSlot> ScheduleTimeSlots => Set<ScheduleTimeSlot>();
         public DbSet<Treatment> Treatments => Set<Treatment>();
+        public DbSet<Appointment> Appointment => Set<Appointment>();
+        public DbSet<TimeSlot> TimeSlot => Set<TimeSlot>();
     }
 }
