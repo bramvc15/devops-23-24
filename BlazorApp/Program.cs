@@ -26,7 +26,7 @@ builder.Services.AddTransient<ContactService>();
 builder.Services.AddTransient<TreatmentService>();
 builder.Services.AddTransient<ChatbotService>();
 builder.Services.AddTransient<PatientService>();
-builder.Services.AddTransient<AppointmentService>();
+builder.Services.AddTransient<ScheduleTimeSlotService>();
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
