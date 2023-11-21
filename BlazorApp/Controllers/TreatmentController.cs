@@ -23,6 +23,7 @@ public class TreatmentController : ControllerBase
         return await _service.GetContent();
     }
 
+    // moet dit niet HttpPut ??
     [HttpPost]
     public async Task UpdateTreatment(int id, string newName, string newDescription, string newImage)
     {
