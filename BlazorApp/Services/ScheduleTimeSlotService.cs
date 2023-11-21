@@ -23,11 +23,10 @@ namespace BlazorApp.Services
             return await _ctx.ScheduleTimeSlots.FindAsync(id);
         }
 
-        public async Task<ScheduleTimeSlot> AddScheduleTimeSlot(int Id, int DoctorId, AppointmentType AppointmentType, DateTime DateTime, int Duration)
+        public async Task<ScheduleTimeSlot> AddScheduleTimeSlot(int DoctorId, AppointmentType AppointmentType, DateTime DateTime, int Duration)
         {
             var NewScheduleTimeSlot = new ScheduleTimeSlot
             {
-                Id = Id,
                 DoctorId = DoctorId,
                 AppointmentType = AppointmentType,
                 DateTime = DateTime,
