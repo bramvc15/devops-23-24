@@ -10,7 +10,7 @@ namespace BlazorApp.Data
         public static void Initialize(DatabaseContext context)
         {
 
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any() && context.ChatBotQuestions.Any() && context.Appointments.Any() && context.TimeSlots.Any() && context.Patients.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any() && context.ChatBotQuestions.Any() && context.Appointments.Any() && context.TimeSlots.Any() && context.Patients.Any() && context.ScheduleTimeSlots.Any())
             {
                 return;
             }
@@ -215,7 +215,7 @@ namespace BlazorApp.Data
             {
                 new TimeSlot
                 {
-                    DoctorId = 1,
+                    DoctorId = 0,
                     AppointmentType = AppointmentType.Consulatie,
                     Date = new DateTime(),
                     AppointmentId = 1,
@@ -224,7 +224,7 @@ namespace BlazorApp.Data
 
                 new TimeSlot
                 {
-                    DoctorId = 2,
+                    DoctorId = 1,
                     AppointmentType = AppointmentType.Operatie,
                     Date = new DateTime(),
                     IsAvailable = true
@@ -232,7 +232,7 @@ namespace BlazorApp.Data
 
                 new TimeSlot
                 {
-                    DoctorId = 1,
+                    DoctorId = 0,
                     AppointmentType = AppointmentType.Consulatie,
                     Date = new DateTime(),
                     AppointmentId = 2,
@@ -241,7 +241,7 @@ namespace BlazorApp.Data
 
                 new TimeSlot
                 {
-                    DoctorId = 2,
+                    DoctorId = 1,
                     AppointmentType = AppointmentType.Operatie,
                     Date = new DateTime(),
                     IsAvailable = true
@@ -300,6 +300,42 @@ namespace BlazorApp.Data
                 },
             };
 
+            var scheduleTimeSlots = new ScheduleTimeSlot[]
+            {
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DateTime = new DateTime(),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 1,
+                    AppointmentType = AppointmentType.Operatie,
+                    DateTime = new DateTime(),
+                    Duration = 60
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DateTime = new DateTime(),
+                    Duration = 60
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 1,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DateTime = new DateTime(),
+                    Duration = 60
+                },
+            };
+        
+
 
 
             context.Doctors.AddRange(doctors);
@@ -312,7 +348,8 @@ namespace BlazorApp.Data
             context.Patients.AddRange(patients);
             context.Appointments.AddRange(appointments);
             context.TimeSlots.AddRange(timeSlots);
-
+            context.ScheduleTimeSlots.AddRange(scheduleTimeSlots);
+          
             context.SaveChanges();
 
         }

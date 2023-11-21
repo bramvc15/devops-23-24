@@ -21,5 +21,6 @@ namespace BlazorApp.Data
         public DbSet<Treatment> Treatments => Set<Treatment>();
         public DbSet<Appointment> Appointments => Set<Appointment>();
         public DbSet<TimeSlot> TimeSlots => Set<TimeSlot>();
+        public DbSet<ScheduleTimeSlot> ScheduleTimeSlots => Set<ScheduleTimeSlot>();
     }
 }
