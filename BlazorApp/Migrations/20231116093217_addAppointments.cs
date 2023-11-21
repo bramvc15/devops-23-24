@@ -14,7 +14,7 @@ namespace BlazorApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    
+
                     PatientId = table.Column<int>(type: "int", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DoctorId = table.Column<int>(type: "int", nullable: false),
@@ -24,13 +24,13 @@ namespace BlazorApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
-                    
+
                     table.ForeignKey(
                         name: "FK_Appointments_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
                         principalColumn: "Id");
-                    
+
                     table.ForeignKey(
                         name: "FK_Appointments_Doctors_DoctorId",
                         column: x => x.DoctorId,

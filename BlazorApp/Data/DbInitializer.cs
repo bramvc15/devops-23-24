@@ -10,7 +10,7 @@ namespace BlazorApp.Data
         public static void Initialize(DatabaseContext context)
         {
 
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any() && context.ChatBotQuestions.Any() && context.Appointment.Any() && context.TimeSlot.Any() && context.Patients.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any() && context.ChatBotQuestions.Any() && context.Appointments.Any() && context.TimeSlots.Any() && context.Patients.Any())
             {
                 return;
             }
@@ -89,7 +89,7 @@ namespace BlazorApp.Data
 
             };
 
-            var chatbotQuestions = new ChatBotQuestion[] 
+            var chatbotQuestions = new ChatBotQuestion[]
             {
                 new ChatBotQuestion
                 {
@@ -143,7 +143,7 @@ namespace BlazorApp.Data
                     Answer = "Rechtsbovenaan de pagina kan u op de knop 'Maak een afspraak' klikken. U wordt dan doorverwezen naar een pagina waar u een afspraak kan maken.",
                 },
             };
-                    
+
             var treatments = new Treatment[]
             {
                 new Treatment
@@ -170,7 +170,7 @@ namespace BlazorApp.Data
 
             var patients = new Patient[]
             {
-                new Patient 
+                new Patient
                 {
                     Name = "John",
                     Gender = Gender.Male,
@@ -180,7 +180,7 @@ namespace BlazorApp.Data
                     Email = "john@mail.com"
                 },
 
-                new Patient 
+                new Patient
                 {
                     Name = "Ella",
                     Gender = Gender.Female,
@@ -195,18 +195,18 @@ namespace BlazorApp.Data
             {
                 new Appointment
                 {
-                    PatientId = patients[0].Id,
+                    PatientId = 1,
                     Location = "Gent",
-                    DoctorId = doctors[0].Id,
+                    DoctorId = 1,
                     Reason = "Ooglidcorrectie vragen",
                     Note = "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren."
                 },
 
                 new Appointment
                 {
-                    PatientId = patients[1].Id,
+                    PatientId = 2,
                     Location = "Gent",
-                    DoctorId = doctors[0].Id,
+                    DoctorId = 1,
                     Reason = "Cataractoperatie"
                 }
             };
@@ -215,16 +215,16 @@ namespace BlazorApp.Data
             {
                 new TimeSlot
                 {
-                    DoctorId = doctors[0].Id,
+                    DoctorId = 1,
                     AppointmentType = AppointmentType.Consulatie,
                     Date = new DateTime(),
-                    AppointmentId = appointments[0].Id,
+                    AppointmentId = 1,
                     IsAvailable = false
                 },
 
                 new TimeSlot
                 {
-                    DoctorId = doctors[1].Id,
+                    DoctorId = 2,
                     AppointmentType = AppointmentType.Operatie,
                     Date = new DateTime(),
                     IsAvailable = true
@@ -232,59 +232,24 @@ namespace BlazorApp.Data
 
                 new TimeSlot
                 {
-                    DoctorId = doctors[0].Id,
+                    DoctorId = 1,
                     AppointmentType = AppointmentType.Consulatie,
                     Date = new DateTime(),
-                    AppointmentId = appointments[1].Id,
+                    AppointmentId = 2,
                     IsAvailable = false
                 },
 
                 new TimeSlot
                 {
-                    DoctorId = doctors[1].Id,
+                    DoctorId = 2,
                     AppointmentType = AppointmentType.Operatie,
                     Date = new DateTime(),
                     IsAvailable = true
                 },
-                
-                new TimeSlot
-                {
-                    DoctorId = doctors[0].Id,
-                    AppointmentType = AppointmentType.Consulatie,
-                    Date = new DateTime(),
-                    IsAvailable = true
-                },
 
                 new TimeSlot
                 {
-                    DoctorId = doctors[1].Id,
-                    AppointmentType = AppointmentType.Operatie,
-                    Date = new DateTime(),
-                    AppointmentId = appointments[1].Id,
-                    IsAvailable = false
-                },
-                
-                new TimeSlot
-                {
-                    DoctorId = doctors[0].Id,
-                    AppointmentType = AppointmentType.Consulatie,
-                    Date = new DateTime(),
-                    AppointmentId = appointments[0].Id,
-                    IsAvailable = false
-                },
-
-                new TimeSlot
-                {
-                    DoctorId = doctors[1].Id,
-                    AppointmentType = AppointmentType.Operatie,
-                    Date = new DateTime(),
-                    AppointmentId = appointments[1].Id,
-                    IsAvailable = false
-                },
-
-                new TimeSlot
-                {
-                    DoctorId = doctors[0].Id,
+                    DoctorId = 1,
                     AppointmentType = AppointmentType.Consulatie,
                     Date = new DateTime(),
                     IsAvailable = true
@@ -292,10 +257,45 @@ namespace BlazorApp.Data
 
                 new TimeSlot
                 {
-                    DoctorId = doctors[1].Id,
+                    DoctorId = 2,
                     AppointmentType = AppointmentType.Operatie,
                     Date = new DateTime(),
-                    AppointmentId = appointments[0].Id,
+                    AppointmentId = 1,
+                    IsAvailable = false
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = 1,
+                    AppointmentType = AppointmentType.Consulatie,
+                    Date = new DateTime(),
+                    AppointmentId = 1,
+                    IsAvailable = false
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = 2,
+                    AppointmentType = AppointmentType.Operatie,
+                    Date = new DateTime(),
+                    AppointmentId = 1,
+                    IsAvailable = false
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = 1,
+                    AppointmentType = AppointmentType.Consulatie,
+                    Date = new DateTime(),
+                    IsAvailable = true
+                },
+
+                new TimeSlot
+                {
+                    DoctorId = 2,
+                    AppointmentType = AppointmentType.Operatie,
+                    Date = new DateTime(),
+                    AppointmentId = 1,
                     IsAvailable = false
                 },
             };
@@ -310,9 +310,9 @@ namespace BlazorApp.Data
             context.Treatments.AddRange(treatments);
             context.ChatBotQuestions.AddRange(chatbotQuestions);
             context.Patients.AddRange(patients);
-            context.Appointment.AddRange(appointments);
-            context.TimeSlot.AddRange(timeSlots);
-          
+            context.Appointments.AddRange(appointments);
+            context.TimeSlots.AddRange(timeSlots);
+
             context.SaveChanges();
 
         }

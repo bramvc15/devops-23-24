@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp.Data
 {
-    public class DatabaseContext : DbContext{
+    public class DatabaseContext : DbContext
+    {
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -18,7 +19,7 @@ namespace BlazorApp.Data
         public DbSet<LocationM> Locations => Set<LocationM>();
         public DbSet<Patient> Patients => Set<Patient>();
         public DbSet<Treatment> Treatments => Set<Treatment>();
-        public DbSet<Appointment> Appointment => Set<Appointment>();
-        public DbSet<TimeSlot> TimeSlot => Set<TimeSlot>();
+        public DbSet<Appointment> Appointments => Set<Appointment>();
+        public DbSet<TimeSlot> TimeSlots => Set<TimeSlot>();
     }
 }
