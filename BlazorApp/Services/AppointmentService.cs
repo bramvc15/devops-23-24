@@ -116,18 +116,16 @@ namespace BlazorApp.Services
             _ctx.SaveChanges();
         }
 
-        public async Task<Appointment> DeleteAppointmentById(int id)
+        public void DeleteAppointmentById(int id)
         {
-            var appointmentToDelete = await _ctx.Appointments.FindAsync(id);
+            var appointmentToDelete = _ctx.Appointments.Find(id);
 
             if (appointmentToDelete != null)
             {
                 _ctx.Appointments.Remove(appointmentToDelete);
-                await _ctx.SaveChangesAsync();
+                _ctx.SaveChanges();
             }
             else throw new InvalidOperationException($"The appointment with id '{id}' does not exist");
-
-            return appointmentToDelete;
         }
     }
 }
