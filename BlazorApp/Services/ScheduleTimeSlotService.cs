@@ -18,13 +18,43 @@ namespace BlazorApp.Services
             return await _ctx.ScheduleTimeSlots.ToListAsync();
         }
 
-        public async Task<ScheduleTimeSlot> GetScheduleTimeSlot(int id)
+        public async Task<ScheduleTimeSlot> GetScheduleTimeSlotById(int id)
         {
             return await _ctx.ScheduleTimeSlots.FindAsync(id);
         }
 
+        public async Task<List<ScheduleTimeSlot>> GetScheduleTimeSlotsByDoctorId(int DoctorId)
+        {
+            return await _ctx.ScheduleTimeSlots.Where(x => x.DoctorId == DoctorId).ToListAsync();
+        }
+
         public async Task<ScheduleTimeSlot> AddScheduleTimeSlot(int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
         {
+            // check if new ScheduleTimeSlot doesn't have any conflicts with existing ScheduleTimeSlots
+            var ScheduleTimeSlots = await _ctx.ScheduleTimeSlots.Where(x => x.DoctorId == DoctorId).ToListAsync();
+            foreach (var ScheduleTimeSlot in ScheduleTimeSlots)
+            {
+                if (ScheduleTimeSlot.DayOfWeek == DayOfWeek)
+                {
+                    // StartTime in minutes
+                    var ScheduleTimeSlotStart = (ScheduleTimeSlot.DateTime.Hour * 60) + ScheduleTimeSlot.DateTime.Minute;
+                    // EndTime in minutes
+                    var ScheduleTimeSlotEnd = (ScheduleTimeSlot.DateTime.Hour * 60) + ScheduleTimeSlot.DateTime.Minute + ScheduleTimeSlot.Duration;
+
+                    // Check if StartTime of ScheduleTimeSlot is in the same time interval
+                    if ((DateTime.Hour * 60 + DateTime.Minute) >= ScheduleTimeSlotStart && (DateTime.Hour * 60 + DateTime.Minute) <= ScheduleTimeSlotEnd)
+                    {
+                        throw new InvalidOperationException("ScheduleTimeSlot is in the same time interval as an existing ScheduleTimeSlot");
+                    }
+
+                    // Check if EndTime of ScheduleTimeSlot is in the same time interval
+                    if ((DateTime.Hour * 60 + DateTime.Minute + Duration) >= ScheduleTimeSlotStart && (DateTime.Hour * 60 + DateTime.Minute + Duration) <= ScheduleTimeSlotEnd)
+                    {
+                        throw new InvalidOperationException("ScheduleTimeSlot is in the same time interval as an existing ScheduleTimeSlot");
+                    }
+                }
+            }
+
             var NewScheduleTimeSlot = new ScheduleTimeSlot
             {
                 DoctorId = DoctorId,
