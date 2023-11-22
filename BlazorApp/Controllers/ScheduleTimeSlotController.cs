@@ -33,16 +33,16 @@ public class ScheduleTimeSlotController : ControllerBase
 
     [HttpPost]
     [Route("addScheduleTimeSlot")]
-    public void AddScheduleTimeSlot(int DoctorId, AppointmentType AppointmentType, DateTime DateTime, int Duration)
+    public void AddScheduleTimeSlot(int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
     {
-        _service.AddScheduleTimeSlot(DoctorId, AppointmentType, DateTime, Duration);
+        _service.AddScheduleTimeSlot(DoctorId, AppointmentType, DayOfWeek, DateTime, Duration);
     }
 
     [HttpPut]
     [Route("updateScheduleTimeSlot")]
-    public void UpdateScheduleTimeSlot(int Id, int DoctorId, AppointmentType AppointmentType, DateTime DateTime, int Duration)
+    public void UpdateScheduleTimeSlot(int Id, int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
     {
-        _service.UpdateScheduleTimeSlot(Id, DoctorId, AppointmentType, DateTime, Duration);
+        _service.UpdateScheduleTimeSlot(Id, DoctorId, AppointmentType, DayOfWeek, DateTime, Duration);
     }
 
     [HttpDelete]

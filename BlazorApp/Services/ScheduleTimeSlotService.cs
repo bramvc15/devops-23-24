@@ -23,12 +23,13 @@ namespace BlazorApp.Services
             return await _ctx.ScheduleTimeSlots.FindAsync(id);
         }
 
-        public async Task<ScheduleTimeSlot> AddScheduleTimeSlot(int DoctorId, AppointmentType AppointmentType, DateTime DateTime, int Duration)
+        public async Task<ScheduleTimeSlot> AddScheduleTimeSlot(int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
         {
             var NewScheduleTimeSlot = new ScheduleTimeSlot
             {
                 DoctorId = DoctorId,
                 AppointmentType = AppointmentType,
+                DayOfWeek = DayOfWeek,
                 DateTime = DateTime,
                 Duration = Duration
             };
@@ -38,13 +39,14 @@ namespace BlazorApp.Services
             return NewScheduleTimeSlot;
         }
 
-        public async Task<ScheduleTimeSlot> UpdateScheduleTimeSlot(int Id, int DoctorId, AppointmentType AppointmentType, DateTime DateTime, int Duration)
+        public async Task<ScheduleTimeSlot> UpdateScheduleTimeSlot(int Id, int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
         {
             var UpdatedScheduleTimeSlot = new ScheduleTimeSlot
             {
                 Id = Id,
                 DoctorId = DoctorId,
                 AppointmentType = AppointmentType,
+                DayOfWeek = DayOfWeek,
                 DateTime = DateTime,
                 Duration = Duration
             };
