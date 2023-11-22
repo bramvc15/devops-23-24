@@ -24,21 +24,21 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getAppointmentById/{id}")]
+    [Route("{id}")]
     public Task<Appointment> GetAppointmentById(int id)
     {
         return _service.GetAppointmentById(id);
     }
 
     [HttpGet]
-    [Route("getAppointmentsByDoctorId/{doctorId}")]
+    [Route("byDoctorId/{doctorId}")]
     public Task<IEnumerable<Appointment>> GetAppointmentsByDoctorId(int doctorId)
     {
         return _service.GetAppointmentsByDoctorId(doctorId);
     }
 
     [HttpGet]
-    [Route("getAppointmentsByPatientId/{patientId}")]
+    [Route("byPatientId/{patientId}")]
     public Task<IEnumerable<Appointment>> GetAppointmentsByPatientId(int patientId)
     {
         return _service.GetAppointmentsByPatientId(patientId);
@@ -58,8 +58,9 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpDelete]
+    [Route("{id}")]
     public void DeleteAppointmentById(int id)
     {
-        _ = _service.DeleteAppointmentById(id);
+        _service.DeleteAppointmentById(id);
     }
 }
