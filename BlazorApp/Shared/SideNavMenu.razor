@@ -4,11 +4,11 @@
     <a class="sidebar-item" href="/admin/clients" data-test-id="sidebar-clients"><p>Clients</p> <i class="fa fa-fw fa-user"></i></a>
     <a class="sidebar-item" href="/admin/chatbot" data-test-id="sidebar-chatbot"><p>Chatbox</p> <i class="fa fa-fw fa-comments"></i></a>
 
-    <div class="sidebar-item" @onclick="ToggleCMS">
+    <div class="sidebar-item" @onclick="ToggleCMS" data-test-id="sidebar-cms">
         <p>CMS</p><i class="fa fa-fw fa-envelope"></i>
     </div>
     <ul class="sub-items @cmsItemStyle">
-        <li><a href="/admin/cms/home">Home</a></li>
+        <li><a href="/admin/cms/home" data-test-id="sidebar-cms-home">Home</a></li>
         <li><a href="/admin/cms/location">Location</a></li>
         <li><a href="/admin/cms/contact">Contact</a></li>
         <li><a href="/admin/cms/behandelingen">Behandelingen</a></li>

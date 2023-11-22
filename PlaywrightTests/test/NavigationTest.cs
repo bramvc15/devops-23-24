@@ -7,7 +7,7 @@ namespace PlaywrightTests;
 [TestFixture]
 public class NavigationTest : PageTest
 {
-
+    // debug: $env:PWDEBUG=0
     // run tests command: dotnet test --settings .runsettings
 
     public static string baseUrl;

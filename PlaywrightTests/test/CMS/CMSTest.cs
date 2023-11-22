@@ -1,0 +1,52 @@
+using Microsoft.Playwright.NUnit;
+using Microsoft.Playwright;
+using NUnit.Framework;
+
+namespace PlaywrightTests;
+
+[Parallelizable(ParallelScope.Self)]
+[TestFixture]
+public class CMSTest : PageTest
+{
+
+    public static string baseUrl;
+
+    [OneTimeSetUp]
+    public void Init()
+    {
+        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+    }
+    
+    [SetUp]
+    public async Task SetUp()
+    {
+        await Page.GotoAsync($"{baseUrl}/admin");
+        
+        bool loggedOut = await Page.IsVisibleAsync("data-test-id=login-username");
+
+        if (loggedOut)
+        {
+            await LogIn();
+        }
+        
+    }
+
+    [Test]
+    public async Task CMSHome_ShowsHome() 
+    {
+        await Page.ClickAsync("data-test-id=sidebar-cms");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Page.ClickAsync("data-test-id=sidebar-cms-home");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        Assert.AreEqual($"{baseUrl}/admin/cms/home", Page.Url);
+        Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=edit-header-popup"));
+    }
+
+    public async Task LogIn() {
+        await Page.GotoAsync($"{baseUrl}/login");
+        await Page.FillAsync("data-test-id=login-username", "admin1");
+        await Page.FillAsync("data-test-id=login-password", "admin123");
+        await Page.ClickAsync("data-test-id=login-button");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+    }
+}
