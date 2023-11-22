@@ -1,0 +1,159 @@
+@page "/admin/scheduler"
+@using BlazorApp.Auth
+@using BlazorApp.Models
+@using BlazorApp.Services
+@inject NavigationManager NavManager
+@inject ScheduleTimeSlotService ScheduleTimeSlotService
+
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+<div class="admin container">
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6 text-center">
+            @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            {
+                <h1>Scheduler</h1>
+                <p>Here you can view and edit your schedule.</p>
+                <Table>
+                    <tr>
+                        <th>Monday</th>
+                        <tbody>
+                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in MondayList)
+                        {
+                            <li>TimeSlot</li>
+                            <li>@ScheduleTimeSlot.AppointmentType</li>
+                            <li>@ScheduleTimeSlot.DateTime</li>
+                            <li>@ScheduleTimeSlot.Duration minutes</li>
+                        }
+                        </tbody>
+                        <th>Tuesday</th>
+                        <tbody>
+                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in TuesdayList)
+                        {
+                            <li>TimeSlot</li>
+                            <li>@ScheduleTimeSlot.AppointmentType</li>
+                            <li>@ScheduleTimeSlot.DateTime</li>
+                            <li>@ScheduleTimeSlot.Duration minutes</li>
+                        }
+                        </tbody>
+                        <th>Wednesday</th>
+                        <tbody>
+                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in WednesdayList)
+                        {
+                            <li>TimeSlot</li>
+                            <li>@ScheduleTimeSlot.AppointmentType</li>
+                            <li>@ScheduleTimeSlot.DateTime</li>
+                            <li>@ScheduleTimeSlot.Duration minutes</li>
+                        }
+                        </tbody>
+                        <th>Thursday</th>
+                        <tbody>
+                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in ThursdayList)
+                        {
+                            <li>TimeSlot</li>
+                            <li>@ScheduleTimeSlot.AppointmentType</li>
+                            <li>@ScheduleTimeSlot.DateTime</li>
+                            <li>@ScheduleTimeSlot.Duration minutes</li>
+                        }
+                        </tbody>
+                        <th>Friday</th>
+                        <tbody>
+                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in FridayList)
+                        {
+                            <li>TimeSlot</li>
+                            <li>@ScheduleTimeSlot.AppointmentType</li>
+                            <li>@ScheduleTimeSlot.DateTime</li>
+                            <li>@ScheduleTimeSlot.Duration minutes</li>
+                        }
+                        </tbody>
+                        <th>Saturday</th>
+                        <tbody>
+                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in SaturdayList)
+                        {
+                            <li>TimeSlot</li>
+                            <li>@ScheduleTimeSlot.AppointmentType</li>
+                            <li>@ScheduleTimeSlot.DateTime</li>
+                            <li>@ScheduleTimeSlot.Duration minutes</li>
+                        }
+                        </tbody>
+                        <th>Sunday</th>
+                        <tbody>
+                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in SundayList)
+                        {
+                            <li>TimeSlot</li>
+                            <li>@ScheduleTimeSlot.AppointmentType</li>
+                            <li>@ScheduleTimeSlot.DateTime</li>
+                            <li>@ScheduleTimeSlot.Duration minutes</li>
+                        }
+                        </tbody>
+                    </tr>
+                </Table>
+            }
+            else
+            {
+                <p>You are not authorized to access this page. Please log in.</p>
+                <p><a href="/login">Click here to LOGIN.</a></p>
+            }
+                    
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    IEnumerable<ScheduleTimeSlot> ListOfScheduleTimeSlots;
+    List<ScheduleTimeSlot> MondayList = new List<ScheduleTimeSlot>();
+    List<ScheduleTimeSlot> TuesdayList = new List<ScheduleTimeSlot>();
+    List<ScheduleTimeSlot> WednesdayList = new List<ScheduleTimeSlot>();
+    List<ScheduleTimeSlot> ThursdayList = new List<ScheduleTimeSlot>();
+    List<ScheduleTimeSlot> FridayList = new List<ScheduleTimeSlot>();
+    List<ScheduleTimeSlot> SaturdayList = new List<ScheduleTimeSlot>();
+    List<ScheduleTimeSlot> SundayList = new List<ScheduleTimeSlot>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+        {
+            NavManager.NavigateTo("/login");
+        }
+
+        ListOfScheduleTimeSlots = await ScheduleTimeSlotService.GetScheduleTimeSlotsByDoctorId(0);
+
+        if(ListOfScheduleTimeSlots != null)
+        {
+           Console.WriteLine("ListOfScheduleTimeSlots is not null");
+        }
+
+        // Add each time slot to the appropriate list
+        foreach (ScheduleTimeSlot scheduleTimeSlot in ListOfScheduleTimeSlots)
+        {
+            switch (scheduleTimeSlot.DayOfWeek)
+            {
+                case "Monday":
+                    MondayList.Add(scheduleTimeSlot);
+                    break;
+                case "Tuesday":
+                    TuesdayList.Add(scheduleTimeSlot);
+                    break;
+                case "Wednesday":
+                    WednesdayList.Add(scheduleTimeSlot);
+                    break;
+                case "Thursday":
+                    ThursdayList.Add(scheduleTimeSlot);
+                    break;
+                case "Friday":
+                    FridayList.Add(scheduleTimeSlot);
+                    break;
+                case "Saturday":
+                    SaturdayList.Add(scheduleTimeSlot);
+                    break;
+                case "Sunday":
+                    SundayList.Add(scheduleTimeSlot);
+                    break;
+            }
+        }
+
+    }
+}

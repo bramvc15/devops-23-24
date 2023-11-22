@@ -31,6 +31,13 @@ public class ScheduleTimeSlotController : ControllerBase
         return _service.GetScheduleTimeSlotById(Id);
     }
 
+    [HttpGet]
+    [Route("getScheduleTimeSlotsByDoctorId/{DoctorId}")]
+    public Task<List<ScheduleTimeSlot>> GetScheduleTimeSlotsByDoctorId(int DoctorId)
+    {
+        return _service.GetScheduleTimeSlotsByDoctorId(DoctorId);
+    }
+
     [HttpPost]
     [Route("addScheduleTimeSlot")]
     public void AddScheduleTimeSlot(int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
