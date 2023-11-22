@@ -15,80 +15,52 @@
             {
                 <h1>Scheduler</h1>
                 <p>Here you can view and edit your schedule.</p>
-                <Table>
-                    <tr>
-                        <th>Monday</th>
-                        <tbody>
-                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in MondayList)
-                        {
-                            <li>TimeSlot</li>
-                            <li>@ScheduleTimeSlot.AppointmentType</li>
-                            <li>@ScheduleTimeSlot.DateTime</li>
-                            <li>@ScheduleTimeSlot.Duration minutes</li>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                            <th>Saturday</th>
+                            <th>Sunday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var listsByDay = new Dictionary<string, List<ScheduleTimeSlot>>
+                            {
+                                { "Monday", MondayList },
+                                { "Tuesday", TuesdayList },
+                                { "Wednesday", WednesdayList },
+                                { "Thursday", ThursdayList },
+                                { "Friday", FridayList },
+                                { "Saturday", SaturdayList },
+                                { "Sunday", SundayList }
+                            };
+
+                            int maxCount = listsByDay.Values.Max(list => list.Count);
+
+                            for (int i = 0; i < maxCount; i++)
+                            {
+                                <tr>
+                                    @foreach (var day in listsByDay.Keys)
+                                    {
+                                        var list = listsByDay[day];
+                                        var endTime = i < list.Count ? list[i].DateTime : DateTime.Now;
+                                        <td>
+                                            @(i < list.Count ? list[i].AppointmentType : "")
+                                            @(i < list.Count ? $"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}" : "")
+                                            <br/>
+                                            @(i < list.Count ? $"{list[i].Duration} minutes" : "")
+                                        </td>
+                                    }
+                                </tr>
+                            }
                         }
-                        </tbody>
-                        <th>Tuesday</th>
-                        <tbody>
-                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in TuesdayList)
-                        {
-                            <li>TimeSlot</li>
-                            <li>@ScheduleTimeSlot.AppointmentType</li>
-                            <li>@ScheduleTimeSlot.DateTime</li>
-                            <li>@ScheduleTimeSlot.Duration minutes</li>
-                        }
-                        </tbody>
-                        <th>Wednesday</th>
-                        <tbody>
-                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in WednesdayList)
-                        {
-                            <li>TimeSlot</li>
-                            <li>@ScheduleTimeSlot.AppointmentType</li>
-                            <li>@ScheduleTimeSlot.DateTime</li>
-                            <li>@ScheduleTimeSlot.Duration minutes</li>
-                        }
-                        </tbody>
-                        <th>Thursday</th>
-                        <tbody>
-                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in ThursdayList)
-                        {
-                            <li>TimeSlot</li>
-                            <li>@ScheduleTimeSlot.AppointmentType</li>
-                            <li>@ScheduleTimeSlot.DateTime</li>
-                            <li>@ScheduleTimeSlot.Duration minutes</li>
-                        }
-                        </tbody>
-                        <th>Friday</th>
-                        <tbody>
-                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in FridayList)
-                        {
-                            <li>TimeSlot</li>
-                            <li>@ScheduleTimeSlot.AppointmentType</li>
-                            <li>@ScheduleTimeSlot.DateTime</li>
-                            <li>@ScheduleTimeSlot.Duration minutes</li>
-                        }
-                        </tbody>
-                        <th>Saturday</th>
-                        <tbody>
-                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in SaturdayList)
-                        {
-                            <li>TimeSlot</li>
-                            <li>@ScheduleTimeSlot.AppointmentType</li>
-                            <li>@ScheduleTimeSlot.DateTime</li>
-                            <li>@ScheduleTimeSlot.Duration minutes</li>
-                        }
-                        </tbody>
-                        <th>Sunday</th>
-                        <tbody>
-                        @foreach (ScheduleTimeSlot ScheduleTimeSlot in SundayList)
-                        {
-                            <li>TimeSlot</li>
-                            <li>@ScheduleTimeSlot.AppointmentType</li>
-                            <li>@ScheduleTimeSlot.DateTime</li>
-                            <li>@ScheduleTimeSlot.Duration minutes</li>
-                        }
-                        </tbody>
-                    </tr>
-                </Table>
+                    </tbody>
+                </table>
             }
             else
             {

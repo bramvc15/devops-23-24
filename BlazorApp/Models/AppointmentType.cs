@@ -3,7 +3,7 @@ namespace BlazorApp.Models;
 
 public enum AppointmentType
 {
-    Consulatie = 15,
+    Consultatie = 15,
     Operatie = 60
 }
 
