@@ -59,42 +59,61 @@ namespace BlazorApp.Services
             return appointmantsOfPatient;
         }
 
-        public async Task<Appointment> UpdateAppointmentById(int id, int doctorId, string reason, string note)
+        public async Task<Appointment> CreateAppointment(Appointment appointment)
         {
-/*            var appointment = new Appointment
+            if (appointment == null)
             {
-                Id = id,
-                DoctorId = doctorId,
-                Reason = reason,
-                Note = note
+                throw new InvalidOperationException($"The appointment is null");
+            }
+            if (appointment.PatientId == null)
+            {
+                throw new InvalidOperationException($"The patient id is null");
+            }
+            if (appointment.Location == null || string.IsNullOrWhiteSpace(appointment.Location))
+            {
+                throw new InvalidOperationException($"The location is null or empty");
+            }
+            if (appointment.DoctorId == null)
+            {
+                throw new InvalidOperationException($"The doctor id is null");
+            }
+            if (appointment.Reason == null || string.IsNullOrWhiteSpace(appointment.Reason))
+            {
+                throw new InvalidOperationException($"The reason is null or empty");
+            }
+
+            var newAppointment = new Appointment
+            {
+                PatientId = appointment.PatientId,
+                Location = appointment.Location,
+                DoctorId = appointment.DoctorId,
+                Reason = appointment.Reason,
+                Note = appointment.Note
             };
 
-            _ctx.Appointments.Update(appointment);
+            _ctx.Appointments.Add(newAppointment);
             await _ctx.SaveChangesAsync();
-            return appointment;*/
+            return newAppointment;
+        }
 
+        public void UpdateAppointmentById(int id, Appointment appointment)
+        {
+            if (appointment == null)
+            {
+                throw new InvalidOperationException($"The appointment is null");
+            }
 
-
-            var appOld = await _ctx.Appointments.FindAsync(id);
-
-            if (appOld == null)
+            var existingAppointment = _ctx.Appointments.Find(id);
+            if (existingAppointment == null)
             {
                 throw new InvalidOperationException($"There is no appointment with id '{id}'");
             }
 
-            var appointment = new Appointment
-            {
-                Id = appOld.Id,
-                PatientId = appOld.PatientId,
-                Location = appOld.Location,
-                DoctorId = doctorId,
-                Reason = reason,
-                Note = note
-            };
+            existingAppointment.DoctorId = appointment.DoctorId;
+            existingAppointment.Reason = appointment.Reason;
+            existingAppointment.Note = appointment.Note;
 
-            _ctx.Appointments.Update(appointment);
-            await _ctx.SaveChangesAsync();
-            return appointment;
+            _ctx.SaveChanges();
         }
 
         public async Task<Appointment> DeleteAppointmentById(int id)

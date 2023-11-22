@@ -44,10 +44,17 @@ public class AppointmentController : ControllerBase
         return _service.GetAppointmentsByPatientId(patientId);
     }
 
-    [HttpPut]
-    public void UpdateAppointmentById(int id, int doctorId, string reason, string note)
+    [HttpPost]
+    public void CreateAppointment([FromBody] Appointment appointment)
     {
-        _ = _service.UpdateAppointmentById(id, doctorId, reason, note);
+        _ = _service.CreateAppointment(appointment);
+    }
+
+    [HttpPut]
+    [Route("{id}")]
+    public void UpdateAppointmentById(int id, [FromBody] Appointment appointment)
+    {
+        _service.UpdateAppointmentById(id, appointment);
     }
 
     [HttpDelete]
