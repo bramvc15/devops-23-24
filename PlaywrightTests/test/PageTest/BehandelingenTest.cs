@@ -9,12 +9,19 @@ namespace PlaywrightTests;
 public class BehandelingenTest : PageTest
 {
 
-    string _baseUrl = "http://192.168.0.123:5046";
+    public static string baseUrl;
+
+    [OneTimeSetUp]
+    public void Init()
+    {
+        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+    }
 
     [SetUp]
     public async Task SetUp()
     {
-        await Page.GotoAsync($"{_baseUrl}/behandelingen");
+        await Page.GotoAsync($"{baseUrl}/behandelingen");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
     }
 
     [Test]
@@ -22,7 +29,7 @@ public class BehandelingenTest : PageTest
     {
         await Page.ClickAsync("data-test-id=treatmentcard-behandeling-button");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        Assert.AreEqual($"{_baseUrl}/behandelingen/ooglidcorrectie", Page.Url);
+        Assert.AreEqual($"{baseUrl}/behandelingen/ooglidcorrectie", Page.Url);
     }
 
     [Test]

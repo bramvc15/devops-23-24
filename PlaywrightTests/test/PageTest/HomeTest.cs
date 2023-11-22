@@ -8,32 +8,37 @@ namespace PlaywrightTests;
 public class HomeTest : PageTest
 {
 
-    string _baseUrl = "http://192.168.0.123:5046";
+    public static string baseUrl;
 
+    [OneTimeSetUp]
+    public void Init()
+    {
+        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+    }
     [SetUp]
     public async Task SetUp()
     {
-        await Page.GotoAsync(_baseUrl);
+        await Page.GotoAsync(baseUrl);
     }
 
     [Test]
     public async Task Home_MaakAfspraakButtonRedirectsToMaakAfspraakPage()
     {
         await Page.ClickAsync("data-test-id=home-maakafspraak-button");
-        Assert.AreEqual($"{_baseUrl}/Afspraak", Page.Url);
+        Assert.AreEqual($"{baseUrl}/Afspraak", Page.Url);
     }
 
     [Test]
     public async Task Home_ContacteerOnsButtonRedirectsToContactPage()
     {
         await Page.ClickAsync("data-test-id=home-contacteerons-button");
-        Assert.AreEqual($"{_baseUrl}/Contact", Page.Url);
+        Assert.AreEqual($"{baseUrl}/Contact", Page.Url);
     }
 
     [Test]
     public async Task Home_BlogPostLeesVerderRedirectsToActuaDetailPage()
     {
         await Page.ClickAsync("data-test-id=actuafield-leesverder-button");
-        Assert.IsTrue(Page.Url.Contains($"{_baseUrl}/ActuaDetail/"));
+        Assert.IsTrue(Page.Url.Contains($"{baseUrl}/ActuaDetail/"));
     }
 }
