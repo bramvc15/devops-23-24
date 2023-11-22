@@ -4,7 +4,7 @@
         {
             int questionNumber = i;
             <div class="col-md-4 text-center @(selectedQuestionNr == questionNumber ? "selected" : "")">
-                <span @onclick="() => displayAnswer(questionNumber)" class="faqBtn">
+                <span data-test-id="faq-item" @onclick="() => displayAnswer(questionNumber)" class="faqBtn">
                     @faq[i, 0]
                 </span>
             </div>
@@ -12,7 +12,7 @@
     </div>
     @if (displayedAnswer != "")
     {
-        <div class="faq-content text-center">
+        <div class="faq-content text-center" data-test-id="faq-content">
         <hr>
             @displayedAnswer
         </div>

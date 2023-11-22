@@ -43,4 +43,15 @@ public class NavigationTest : PageTest
         await Page.GotoAsync($"{_baseUrl}/admin");
         Assert.AreEqual($"{_baseUrl}/login", Page.Url);
     }
+
+    [Test]
+    public async Task LoggedIn_AdminRedirectsToAdminPage()
+    {
+        await Page.GotoAsync($"{_baseUrl}/login");
+        await Page.GetByPlaceholder("Naam").FillAsync("admin1");
+        await Page.GetByPlaceholder("Wachtwoord").FillAsync("admin1");
+        await Page.ClickAsync("button:has-text(\"Login\")");
+        await Page.GotoAsync($"{_baseUrl}/admin");
+        Assert.AreEqual($"{_baseUrl}/admin", Page.Url);
+    }
 }
