@@ -11,14 +11,14 @@
         <div class="col-md-6">
             @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             {
-                <h3>Welcome @BlitzWareAuthService.AuthService.userData.Username</h3>
+                <h3 data-test-id="employees-title">Welcome @BlitzWareAuthService.AuthService.userData.Username</h3>
                 <p>List of all employees:</p>
                 @if (employees != null && employees.Any())
                 {
                     <div class="row">
                         @foreach (var employee in employees)
                         {
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-4 mb-3" data-test-id="employees-card">
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">@employee.Username</h5>
