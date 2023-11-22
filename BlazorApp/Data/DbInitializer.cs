@@ -216,7 +216,7 @@ namespace BlazorApp.Data
                 new TimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     Date = new DateTime(),
                     AppointmentId = 1,
                     IsAvailable = false
@@ -233,7 +233,7 @@ namespace BlazorApp.Data
                 new TimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     Date = new DateTime(),
                     AppointmentId = 2,
                     IsAvailable = false
@@ -250,7 +250,7 @@ namespace BlazorApp.Data
                 new TimeSlot
                 {
                     DoctorId = 1,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     Date = new DateTime(),
                     IsAvailable = true
                 },
@@ -267,7 +267,7 @@ namespace BlazorApp.Data
                 new TimeSlot
                 {
                     DoctorId = 1,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     Date = new DateTime(),
                     AppointmentId = 1,
                     IsAvailable = false
@@ -285,7 +285,7 @@ namespace BlazorApp.Data
                 new TimeSlot
                 {
                     DoctorId = 1,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     Date = new DateTime(),
                     IsAvailable = true
                 },
@@ -305,7 +305,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Monday",
                     DateTime = new DateTime(1, 1, 1, 8, 0, 0),
                     Duration = 30
@@ -323,7 +323,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Monday",
                     DateTime = new DateTime(1, 1, 1, 9, 20, 0),
                     Duration = 30
@@ -332,7 +332,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Monday",
                     DateTime = new DateTime(1, 1, 1, 10, 0, 0),
                     Duration = 30
@@ -341,7 +341,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Tuesday",
                     DateTime = new DateTime(1, 1, 1, 8, 0, 0),
                     Duration = 30
@@ -359,7 +359,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Tuesday",
                     DateTime = new DateTime(1, 1, 1, 9, 20, 0),
                     Duration = 30
@@ -368,7 +368,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Tuesday",
                     DateTime = new DateTime(1, 1, 1, 10, 0, 0),
                     Duration = 30
@@ -377,7 +377,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Wednesday",
                     DateTime = new DateTime(1, 1, 1, 8, 0, 0),
                     Duration = 30
@@ -395,7 +395,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Wednesday",
                     DateTime = new DateTime(1, 1, 1, 9, 20, 0),
                     Duration = 30
@@ -404,7 +404,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Wednesday",
                     DateTime = new DateTime(1, 1, 1, 10, 0, 0),
                     Duration = 30
@@ -413,7 +413,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Thursday",
                     DateTime = new DateTime(1, 1, 1, 8, 0, 0),
                     Duration = 30
@@ -431,7 +431,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Thursday",
                     DateTime = new DateTime(1, 1, 1, 9, 20, 0),
                     Duration = 30
@@ -440,7 +440,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Thursday",
                     DateTime = new DateTime(1, 1, 1, 10, 0, 0),
                     Duration = 30
@@ -449,7 +449,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Friday",
                     DateTime = new DateTime(1, 1, 1, 8, 0, 0),
                     Duration = 30
@@ -467,7 +467,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Friday",
                     DateTime = new DateTime(1, 1, 1, 9, 20, 0),
                     Duration = 30
@@ -476,7 +476,7 @@ namespace BlazorApp.Data
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
-                    AppointmentType = AppointmentType.Consulatie,
+                    AppointmentType = AppointmentType.Consultatie,
                     DayOfWeek = "Friday",
                     DateTime = new DateTime(1, 1, 1, 10, 0, 0),
                     Duration = 30
