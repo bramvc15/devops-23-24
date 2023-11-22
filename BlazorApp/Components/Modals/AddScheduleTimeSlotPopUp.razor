@@ -1,0 +1,77 @@
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@inject BlogService blogService
+@inject DatabaseContext databaseContext
+
+<div>
+    <div class="buttons">
+        <Button Color="Color.Primary" Clicked="@ShowModal">Voeg tijdslot toe</Button>
+    </div>
+    <Modal @ref="modalRef">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>Tijdslot toevoegen</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Afspraak type</FieldLabel>
+                    <Select TValue="int" @bind-SelectedValue="@selectedAppointmentType">
+                        <SelectItem Value="15">@AppointmentType.Consultatie</SelectItem>
+                        <SelectItem Value="60">@AppointmentType.Operatie</SelectItem>
+                    </Select>
+                </Field>
+                <Field>
+                    <FieldLabel>Dag van de week</FieldLabel>
+                    <Select TValue="int" @bind-SelectedValue="@selectedDayOfWeek">
+                        <SelectItem Value="1">Maandag</SelectItem>
+                        <SelectItem Value="2">Dinsdag</SelectItem>
+                        <SelectItem Value="3">Woensdag</SelectItem>
+                        <SelectItem Value="4">Donderdag</SelectItem>
+                        <SelectItem Value="5">Vrijdag</SelectItem>
+                        <SelectItem Value="6">Zaterdag</SelectItem>
+                        <SelectItem Value="7">Zondag</SelectItem>
+                    </Select>
+                    @* <TextEdit Placeholder="Geef een dag..." @bind-Text="newDayOfWeek" /> *@
+                </Field>
+                <Field>
+                    <FieldLabel>Start uur</FieldLabel>
+                    <TimePicker @ref="@timePickerStart" TValue="TimeSpan?" />
+                </Field>
+                <Field>
+                    <FieldLabel>Eind uur</FieldLabel>
+                    <TimePicker @ref="@timePickerEnd" TValue="TimeSpan?" />
+                </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                <Button Color="Color.Primary" Clicked="@CreateScheduleTimeSlot">Creeër</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+</div>
+
+@code {
+    TimePicker<TimeSpan?> timePickerStart;
+    TimePicker<TimeSpan?> timePickerEnd;
+    int selectedAppointmentType;
+    int selectedDayOfWeek;
+
+    private Modal? modalRef;
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private void CreateScheduleTimeSlot()
+    {
+        modalRef?.Hide();
+    }
+}
