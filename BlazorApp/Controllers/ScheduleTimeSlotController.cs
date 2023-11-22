@@ -25,10 +25,10 @@ public class ScheduleTimeSlotController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getScheduleTimeSlot/{id}")]
-    public Task<ScheduleTimeSlot> GetScheduleTimeSlot(int Id)
+    [Route("getScheduleTimeSlotById/{id}")]
+    public Task<ScheduleTimeSlot> GetScheduleTimeSlotById(int Id)
     {
-        return _service.GetScheduleTimeSlot(Id);
+        return _service.GetScheduleTimeSlotById(Id);
     }
 
     [HttpPost]
