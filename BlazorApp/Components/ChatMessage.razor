@@ -8,7 +8,7 @@
 @inject ChatbotService ChatbotService
 
 
-<div class="textBubble-@(type == "bot" ? "bot" : "user")">
+<div class="textBubble-@(type == "bot" ? "bot" : "user")" data-test-id="chatbox-message">
     <div>
     <div class="content">
         @if (ChatBotObj == null || visible)
@@ -22,7 +22,7 @@
         } else {
             @foreach(var question in ChatBotObj)
             {
-                <button class="question" @onclick="() => displayQuestion(question)">
+                <button class="question" @onclick="() => displayQuestion(question)" data-test-id="chatbox-question">
                     @question.Question
                 </button>
             }
