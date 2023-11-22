@@ -306,38 +306,183 @@ namespace BlazorApp.Data
                 {
                     DoctorId = 0,
                     AppointmentType = AppointmentType.Consulatie,
-                    DateTime = new DateTime(),
+                    DayOfWeek = "Monday",
+                    DateTime = new DateTime(1, 1, 1, 8, 0, 0),
                     Duration = 30
                 },
 
                 new ScheduleTimeSlot
                 {
-                    DoctorId = 1,
+                    DoctorId = 0,
                     AppointmentType = AppointmentType.Operatie,
-                    DateTime = new DateTime(),
-                    Duration = 60
+                    DayOfWeek = "Monday",
+                    DateTime = new DateTime(1, 1, 1, 8, 40, 0),
+                    Duration = 30
                 },
 
                 new ScheduleTimeSlot
                 {
                     DoctorId = 0,
                     AppointmentType = AppointmentType.Consulatie,
-                    DateTime = new DateTime(),
-                    Duration = 60
+                    DayOfWeek = "Monday",
+                    DateTime = new DateTime(1, 1, 1, 9, 20, 0),
+                    Duration = 30
                 },
 
                 new ScheduleTimeSlot
                 {
-                    DoctorId = 1,
+                    DoctorId = 0,
                     AppointmentType = AppointmentType.Consulatie,
-                    DateTime = new DateTime(),
-                    Duration = 60
+                    DayOfWeek = "Monday",
+                    DateTime = new DateTime(1, 1, 1, 10, 0, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Tuesday",
+                    DateTime = new DateTime(1, 1, 1, 8, 0, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Operatie,
+                    DayOfWeek = "Tuesday",
+                    DateTime = new DateTime(1, 1, 1, 8, 40, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Tuesday",
+                    DateTime = new DateTime(1, 1, 1, 9, 20, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Tuesday",
+                    DateTime = new DateTime(1, 1, 1, 10, 0, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Wednesday",
+                    DateTime = new DateTime(1, 1, 1, 8, 0, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Operatie,
+                    DayOfWeek = "Wednesday",
+                    DateTime = new DateTime(1, 1, 1, 8, 40, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Wednesday",
+                    DateTime = new DateTime(1, 1, 1, 9, 20, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Wednesday",
+                    DateTime = new DateTime(1, 1, 1, 10, 0, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Thursday",
+                    DateTime = new DateTime(1, 1, 1, 8, 0, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Operatie,
+                    DayOfWeek = "Thursday",
+                    DateTime = new DateTime(1, 1, 1, 8, 40, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Thursday",
+                    DateTime = new DateTime(1, 1, 1, 9, 20, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Thursday",
+                    DateTime = new DateTime(1, 1, 1, 10, 0, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Friday",
+                    DateTime = new DateTime(1, 1, 1, 8, 0, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Operatie,
+                    DayOfWeek = "Friday",
+                    DateTime = new DateTime(1, 1, 1, 8, 40, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Friday",
+                    DateTime = new DateTime(1, 1, 1, 9, 20, 0),
+                    Duration = 30
+                },
+
+                new ScheduleTimeSlot
+                {
+                    DoctorId = 0,
+                    AppointmentType = AppointmentType.Consulatie,
+                    DayOfWeek = "Friday",
+                    DateTime = new DateTime(1, 1, 1, 10, 0, 0),
+                    Duration = 30
                 },
             };
         
-
-
-
             context.Doctors.AddRange(doctors);
             context.HomeHeaders.Add(header);
             context.Locations.Add(location);
