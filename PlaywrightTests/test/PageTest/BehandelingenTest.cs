@@ -1,6 +1,7 @@
 using Microsoft.Playwright.NUnit;
 using Microsoft.Playwright;
 using NUnit.Framework;
+using Shouldly;
 
 namespace PlaywrightTests;
 
@@ -22,6 +23,13 @@ public class BehandelingenTest : PageTest
     {
         await Page.GotoAsync($"{baseUrl}/behandelingen");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+    }
+
+    [Test]
+    public async Task Behandelingen_Show_Behandelingen_OnLoad() {
+        Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=treatmentcard-treatment-title"));
+        var blogpostTitle = await Page.TextContentAsync("data-test-id=treatmentcard-treatment-title");
+        blogpostTitle.ShouldNotBeEmpty();
     }
 
     [Test]

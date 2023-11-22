@@ -1,5 +1,6 @@
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
+using Shouldly;
 
 namespace PlaywrightTests;
 
@@ -15,10 +16,18 @@ public class HomeTest : PageTest
     {
         baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
     }
+
     [SetUp]
     public async Task SetUp()
     {
         await Page.GotoAsync(baseUrl);
+    }
+
+    [Test]
+    public async Task Home_Show_BlogPosts_OnLoad() {
+        Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=actuafield-blogpost-title"));
+        var blogpostTitle = await Page.TextContentAsync("data-test-id=actuafield-blogpost-title");
+        blogpostTitle.ShouldNotBeEmpty();
     }
 
     [Test]

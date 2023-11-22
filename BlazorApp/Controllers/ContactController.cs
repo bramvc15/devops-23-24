@@ -7,7 +7,7 @@ using BlazorApp.Pages;
 namespace BlazorApp.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class ContactController : ControllerBase
 {
    ContactService _service;

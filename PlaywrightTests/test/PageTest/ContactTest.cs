@@ -8,37 +8,29 @@ namespace PlaywrightTests;
 [TestFixture]
 public class ContactTest : PageTest
 {
+    public static string baseUrl;
 
-    string _baseUrl = "http://192.168.0.123:5046";
+    [OneTimeSetUp]
+    public void Init()
+    {
+        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+    }
+    
+    [SetUp]
+    public async Task SetUp()
+    {
+        await Page.GotoAsync($"{baseUrl}/Contact");
+    }
 
-    // [SetUp]
-    // public async Task SetUp()
-    // {
-    //     await Page.GotoAsync($"{_baseUrl}/Contact");
-    // }
-
-    // [Test]
-    // public async Task Behandelingen_OoglidCorrectieRedirectsToTreatmentDetailPage()
-    // {
-    //     await Page.ClickAsync("data-test-id=treatmentcard-behandeling-button");
-    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-    //     Assert.AreEqual($"{_baseUrl}/behandelingen/ooglidcorrectie", Page.Url);
-    // }
-
-    // [Test]
-    // public async Task Behandelingen_NoFAQItemSelectedNoFAQAnswerVisible()
-    // {
-    //     await Page.ClickAsync("data-test-id=treatmentcard-behandeling-button");
-    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-    //     Assert.IsFalse(await Page.IsVisibleAsync("data-test-id=faq-content"));
-    // }
-
-    // [Test]
-    // public async Task Behandelingen_ClickFAQQuestionFAQAnswerVisible()
-    // {
-    //     await Page.ClickAsync("data-test-id=treatmentcard-behandeling-button");
-    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-    //     await Page.ClickAsync("data-test-id=faq-item");
-    //     Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=faq-content"));
-    // }
+    [Test]
+    public async Task ContactForm_SendsEmail() {
+        await Page.FillAsync("data-test-id=contact-name", "TestNaam");
+        await Page.FillAsync("data-test-id=contact-firstname", "TestFirstName");
+        await Page.FillAsync("data-test-id=contact-email", "test@email.com");
+        await Page.FillAsync("data-test-id=contact-date", "22/11/2023");
+        await Page.FillAsync("data-test-id=contact-phone", "0414251470");
+        await Page.FillAsync("data-test-id=contact-message", "TestMessage");
+        await Page.ClickAsync("data-test-id=contact-submit-button");
+        Assert.AreEqual($"{baseUrl}/submit_form.php", Page.Url);
+    }
 }

@@ -43,37 +43,37 @@
                         <!-- Name and First Name -->
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="box" name="name" placeholder="Naam" required @ref="nameInput">
+                                <input type="text" class="form-control" id="box" name="name" placeholder="Naam" required @ref="nameInput" data-test-id="contact-name">
                             </div>
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="box" name="firstName" placeholder="Voornaam" required @ref="firstNameInput">
+                                <input type="text" class="form-control" id="box" name="firstName" placeholder="Voornaam" required @ref="firstNameInput" data-test-id="contact-firstname">
                             </div>
                         </div>
 
                         <!-- Email -->
                         <div class="form-group">
-                            <input type="email" class="form-control"id="box"  name="email" placeholder="email" required @ref="emailInput">
+                            <input type="email" class="form-control"id="box"  name="email" placeholder="email" required @ref="emailInput" data-test-id="contact-email">
                         </div>
 
                         <!-- Date of Birth -->
                         <div class="form-group">
-                            <input type="date" class="form-control" id="box"  name="dob" placeholder="Geboortedatum" required @ref="dateInput">
+                            <input type="date" class="form-control" id="box"  name="dob" placeholder="Geboortedatum" required @ref="dateInput" data-test-id="contact-date">
                         </div>
 
                         <!-- Phone Number -->
                         <div class="form-group">
                             <input type="tel" class="form-control" id="box"  name="phoneNumber"
-                                pattern="[0-9]{10}" placeholder="gsm" required @ref="telInput">
+                                pattern="[0-9]{10}" placeholder="gsm" required @ref="telInput" data-test-id="contact-phone">
                         </div>
 
                         <!-- Message -->
                         <div class="form-group">
-                            <textarea class="form-control" id="box"  name="message" rows="4" placeholder="bericht of vraag" required @ref="msgInput"></textarea>
+                            <textarea class="form-control" id="box"  name="message" rows="4" placeholder="bericht of vraag" required @ref="msgInput" data-test-id="contact-message"></textarea>
                         </div>
 
                         <!-- Submit Button -->
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">verstuur</button>
+                            <button type="submit" class="btn btn-primary" data-test-id="contact-submit-button">verstuur</button>
                         </div>
                     </form>
 

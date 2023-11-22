@@ -1,6 +1,7 @@
 using Microsoft.Playwright.NUnit;
 using Microsoft.Playwright;
 using NUnit.Framework;
+using Shouldly;
 
 namespace PlaywrightTests;
 
@@ -21,6 +22,13 @@ public class OnsTeamTest : PageTest
     public async Task SetUp()
     {
         await Page.GotoAsync($"{baseUrl}/onsTeam");
+    }
+
+    [Test]
+    public async Task OnsTeam_Show_Doctors_OnLoad() {
+        Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=onsteam-doctor-name"));
+        var doctorName = await Page.TextContentAsync("data-test-id=onsteam-doctor-name");
+        doctorName.ShouldNotBeEmpty();
     }
 
     [Test]
