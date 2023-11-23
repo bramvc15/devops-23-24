@@ -1,7 +1,7 @@
 @using BlazorApp.Data
 @using BlazorApp.Services
 @using BlazorApp.Models
-@inject BlogService blogService
+@inject ScheduleTimeSlotService scheduleTimeSlotService
 @inject DatabaseContext databaseContext
 
 <div>
@@ -14,49 +14,62 @@
                 <ModalTitle>Tijdslot toevoegen</ModalTitle>
                 <CloseButton />
             </ModalHeader>
-            <ModalBody>
-                <Field>
-                    <FieldLabel>Afspraak type</FieldLabel>
-                    <Select TValue="int" @bind-SelectedValue="@selectedAppointmentType">
-                        <SelectItem Value="15">@AppointmentType.Consultatie</SelectItem>
-                        <SelectItem Value="60">@AppointmentType.Operatie</SelectItem>
-                    </Select>
-                </Field>
-                <Field>
-                    <FieldLabel>Dag van de week</FieldLabel>
-                    <Select TValue="int" @bind-SelectedValue="@selectedDayOfWeek">
-                        <SelectItem Value="1">Maandag</SelectItem>
-                        <SelectItem Value="2">Dinsdag</SelectItem>
-                        <SelectItem Value="3">Woensdag</SelectItem>
-                        <SelectItem Value="4">Donderdag</SelectItem>
-                        <SelectItem Value="5">Vrijdag</SelectItem>
-                        <SelectItem Value="6">Zaterdag</SelectItem>
-                        <SelectItem Value="7">Zondag</SelectItem>
-                    </Select>
-                    @* <TextEdit Placeholder="Geef een dag..." @bind-Text="newDayOfWeek" /> *@
-                </Field>
-                <Field>
-                    <FieldLabel>Start uur</FieldLabel>
-                    <TimePicker @ref="@timePickerStart" TValue="TimeSpan?" />
-                </Field>
-                <Field>
-                    <FieldLabel>Eind uur</FieldLabel>
-                    <TimePicker @ref="@timePickerEnd" TValue="TimeSpan?" />
-                </Field>
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@CreateScheduleTimeSlot">Creeër</Button>
-            </ModalFooter>
+            <Validations @ref="validations" Mode="ValidationMode.Auto">
+                <ModalBody>
+                    <Validation Validator="ValidateAppointmentType">
+                        <Field>
+                            <FieldLabel>Afspraak type</FieldLabel>
+                            <Select TValue="int" @bind-SelectedValue="@selectedAppointmentType">
+                                <SelectItem Value="0">-- Maak een keuze --</SelectItem>
+                                <SelectItem Value="15">@AppointmentType.Consultatie</SelectItem>
+                                <SelectItem Value="60">@AppointmentType.Operatie</SelectItem>
+                            </Select>
+                        </Field>
+                    </Validation>
+                    <Validation Validator="ValidateDayOfWeek">
+                        <Field>
+                            <FieldLabel>Dag van de week</FieldLabel>
+                            <Select TValue="int" @bind-SelectedValue="@selectedDayOfWeek">
+                                <SelectItem Value="0">-- Maak een keuze --</SelectItem>
+                                <SelectItem Value="1">Maandag</SelectItem>
+                                <SelectItem Value="2">Dinsdag</SelectItem>
+                                <SelectItem Value="3">Woensdag</SelectItem>
+                                <SelectItem Value="4">Donderdag</SelectItem>
+                                <SelectItem Value="5">Vrijdag</SelectItem>
+                                <SelectItem Value="6">Zaterdag</SelectItem>
+                                <SelectItem Value="7">Zondag</SelectItem>
+                            </Select>
+                        </Field>
+                    </Validation>
+                    <Validation Validator="ValidateStartEndTime">
+                        <Field>
+                            <FieldLabel>Start uur</FieldLabel>
+                            <TimeEdit TValue="TimeSpan?" @bind-Time="@selectedStartTime" />
+                        </Field>
+                        <Field>
+                            <FieldLabel>Eind uur</FieldLabel>
+                            <TimeEdit TValue="TimeSpan?" @bind-Time="@selectedEndTime" />
+                        </Field>
+                        <h6 style="color:red">@errorMessage</h6>
+                    </Validation>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                    <Button Color="Color.Primary" Clicked="@CreateScheduleTimeSlot">Maak</Button>
+                </ModalFooter>
+            </Validations>
         </ModalContent>
     </Modal>
 </div>
 
 @code {
-    TimePicker<TimeSpan?> timePickerStart;
-    TimePicker<TimeSpan?> timePickerEnd;
-    int selectedAppointmentType;
-    int selectedDayOfWeek;
+    private Validations validations;
+    private string errorMessage = string.Empty;
+
+    private TimeSpan? selectedStartTime = new TimeSpan(12, 0, 0);
+    private TimeSpan? selectedEndTime = new TimeSpan(12, 0, 0);
+    private int selectedAppointmentType;
+    private int selectedDayOfWeek;
 
     private Modal? modalRef;
 
@@ -70,8 +83,70 @@
         return modalRef?.Hide();
     }
 
-    private void CreateScheduleTimeSlot()
+    void ValidateAppointmentType(ValidatorEventArgs e)
     {
-        modalRef?.Hide();
+        if (selectedAppointmentType == 0)
+            e.Status = ValidationStatus.Error;
+        else
+            e.Status = ValidationStatus.Success;
+    }
+
+    void ValidateDayOfWeek(ValidatorEventArgs e)
+    {
+        if (selectedDayOfWeek == 0)
+            e.Status = ValidationStatus.Error;
+        else
+            e.Status = ValidationStatus.Success;
+    }
+
+    void ValidateStartEndTime(ValidatorEventArgs e)
+    {
+        if (selectedEndTime < selectedStartTime)
+        {
+            e.Status = ValidationStatus.Error;
+            errorMessage = "Het eind uur kan niet voor het begin uur liggen!";
+        }
+        else if (selectedEndTime == selectedStartTime)
+        {
+            e.Status = ValidationStatus.Error;
+            errorMessage = "Het eind uur kan niet gelijk zijn aan het begin uur!";
+        }
+        else
+        {
+            e.Status = ValidationStatus.Success;
+            errorMessage = string.Empty;
+        }
+    }
+
+    private async Task CreateScheduleTimeSlot()
+    {
+        if (await validations.ValidateAll())
+        {
+            var appointmentType = selectedAppointmentType == 15 ? AppointmentType.Consultatie : AppointmentType.Operatie;
+
+            var dayOfWeek = string.Empty;
+            if (selectedDayOfWeek == 1)
+                dayOfWeek = "Monday";
+            else if (selectedDayOfWeek == 2)
+                dayOfWeek = "Tuesday";
+            else if (selectedDayOfWeek == 3)
+                dayOfWeek = "Wednesday";
+            else if (selectedDayOfWeek == 4)
+                dayOfWeek = "Thursday";
+            else if (selectedDayOfWeek == 5)
+                dayOfWeek = "Friday";
+            else if (selectedDayOfWeek == 6)
+                dayOfWeek = "Saturday";
+            else
+                dayOfWeek = "Sunday";
+
+            DateTime dateTime = DateTime.MinValue + (selectedStartTime ?? TimeSpan.Zero);
+
+            var duration = selectedEndTime!.Value - selectedStartTime!.Value;
+            int durationInMinutes = (int)duration.TotalMinutes;
+
+            await scheduleTimeSlotService.AddScheduleTimeSlot(0, appointmentType, dayOfWeek, dateTime, durationInMinutes);
+            modalRef?.Hide();
+        }
     }
 }
