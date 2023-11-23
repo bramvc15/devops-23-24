@@ -42,6 +42,8 @@ builder.Services.AddScoped<PatientService>();
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSyncfusionBlazor();
+builder.Services.AddTransient<TimeSlotService>();
+builder.Services.AddTransient<ScheduleTimeSlotService>();
 
 builder.Services
     .AddBlazorise(options =>
