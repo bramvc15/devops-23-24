@@ -2,6 +2,8 @@
 @using BlazorApp.Services
 @using BlazorApp.Models
 @using BlazorApp.Controllers
+@using BlazorApp.Auth
+@using BlazorApp.Components.Modals
 @inject TimeSlotService timeSlotService
 @inject DatabaseContext databaseContext
 
@@ -23,42 +25,25 @@
 </div>
 
 <style>
-    .control-wrapper {
-        max-width: 300px;
-        margin: 0 auto;
-        padding: 20px 0px 10px;
+    .e-calendar .e-content .e-cell.has-time-slot span.e-day,
+    .e-calendar .e-content .e-cell.no-time-slot span.e-day {
+        background-color: #28a745;
+        border-radius: 50%; 
+        border: 2px solid #000; 
+        display: inline-block; 
     }
 
-    .example-label {
-        font-size: 14px;
-        margin: 0;
+    .e-calendar .e-content .e-cell.has-time-slot span.e-day {
+        background-color: #28a745; 
     }
 
-    .display-date {
-        max-width: 300px;
-        margin: 0 auto;
-        padding: 10px 0px 10px;
+    .e-calendar .e-content .e-cell.no-time-slot span.e-day {
+        background-color: #dc3545; 
     }
 
-    .e-calendar .e-content .e-cell.personal-appointment span.e-day,
-    .e-calendar .e-content td:hover.e-cell.personal-appointment span.e-day,
-    .e-calendar .e-content td.e-selected.e-focused-date.e-cell.personal-appointment span.e-day {
-        color: #28a745;
-        font-weight: 800;
-    }
-
-    .e-calendar .e-content .e-cell.official-appointment span.e-day,
-    .e-calendar .e-content td:hover.e-cell.official-appointment span.e-day,
-    .e-calendar .e-content td.e-selected.e-focused-date.e-cell.official-appointment span.e-day {
-        color: #dc3545;
-        font-weight: 800;
-    }
-
-    .e-calendar .e-content td.e-selected.e-focused-date.e-cell.personal-appointment span.e-day,
-    .e-calendar .e-content td.e-selected.e-focused-date.e-cell.official-appointment span.e-day {
-        background-color: rgb(255 255 0 / 90%);
-    }
 </style>
+
+
 
 
 
@@ -66,17 +51,12 @@
     [Parameter]
     public EventCallback<DateTime> OnDateChosen { get; set; }
 
+    [Parameter]
+    public IEnumerable<TimeSlot> TimeSlotObj { get; set; }
+
     public DateTime? SelectedDate { get; set; } = DateTime.Now;
     public string SelectedValue { get; set; } = DateTime.Now.ToString("M/d/yyyy");
     public DateTime? CurrentDate { get; set; } = DateTime.Now;
-
-
-    IEnumerable<Appointment>? AppObj;
-
-    protected override async Task OnInitializedAsync()
-    {
-        AppObj = await timeSlotService.GetContent());
-    }
 
     private async Task ChooseDate(DateTime date)
     {
@@ -86,24 +66,28 @@
 
     public void CustomDates(RenderDayCellEventArgs args)
     {
-        var CurrentMonth = AppObj.Value.Month;
-        if (args.Date.Month == CurrentMonth && (args.Date.Day == 7 || args.Date.Day == 14 || args.Date.Day == 24 || args.Date.Day == 29))
+        if (args == null || args.Date == null || TimeSlotObj == null)
         {
-            args.CellData.ClassList += " personal-appointment";
-            if (args.Date.Day == CurrentDate.Value.Day)
-            {
-                this.SelectedValue = this.SelectedDate?.ToString("M/d/yyyy") + " (Personal appointment)";
-            }
+            // Handle or log the null case
+            return;
         }
-        if (args.Date.Month == CurrentMonth && (args.Date.Day == 3 || args.Date.Day == 11 || args.Date.Day == 17 || args.Date.Day == 22))
+
+        var currentDate = args.Date.Date;
+
+        // Check if there is any time slot for the current date
+        bool hasTimeSlot = TimeSlotObj.Any(timeSlot =>
+            timeSlot.Date?.Date == currentDate.Date);
+
+        if (hasTimeSlot)
         {
-            args.CellData.ClassList += " official-appointment";
-            if (args.Date.Day == CurrentDate.Value.Day)
-            {
-                this.SelectedValue = this.SelectedDate?.ToString("M/d/yyyy") + " (Official appointment)";
-            }
+            args.CellData.ClassList += " has-time-slot"; // Apply a CSS class for dates with a TimeSlot
+        }
+        else
+        {
+            args.CellData.ClassList += " no-time-slot"; // Apply a different CSS class for dates without a TimeSlot
         }
     }
+
     
 
 }

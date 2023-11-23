@@ -214,90 +214,91 @@ namespace BlazorApp.Data
             var timeSlots = new TimeSlot[]
             {
                 new TimeSlot
-                {
-                    DoctorId = 0,
-                    AppointmentType = AppointmentType.Consultatie,
-                    Date = new DateTime(),
-                    AppointmentId = 1,
-                    IsAvailable = false
-                },
+            {
+                DoctorId = 0,
+                AppointmentType = AppointmentType.Consultatie,
+                Date = new DateTime(2023, 11, 23),
+                AppointmentId = 1,
+                IsAvailable = false
+            },
 
-                new TimeSlot
-                {
-                    DoctorId = 1,
-                    AppointmentType = AppointmentType.Operatie,
-                    Date = new DateTime(),
-                    IsAvailable = true
-                },
+            new TimeSlot
+            {
+                DoctorId = 1,
+                AppointmentType = AppointmentType.Operatie,
+                Date = new DateTime(2023, 11, 24),
+                IsAvailable = true
+            },
 
-                new TimeSlot
-                {
-                    DoctorId = 0,
-                    AppointmentType = AppointmentType.Consultatie,
-                    Date = new DateTime(),
-                    AppointmentId = 2,
-                    IsAvailable = false
-                },
+            new TimeSlot
+            {
+                DoctorId = 0,
+                AppointmentType = AppointmentType.Consultatie,
+                Date = new DateTime(2023, 11, 25),
+                AppointmentId = 2,
+                IsAvailable = false
+            },
 
-                new TimeSlot
-                {
-                    DoctorId = 1,
-                    AppointmentType = AppointmentType.Operatie,
-                    Date = new DateTime(),
-                    IsAvailable = true
-                },
+            new TimeSlot
+            {
+                DoctorId = 1,
+                AppointmentType = AppointmentType.Operatie,
+                Date = new DateTime(2023, 11, 22),
+                IsAvailable = true
+            },
 
-                new TimeSlot
-                {
-                    DoctorId = 1,
-                    AppointmentType = AppointmentType.Consultatie,
-                    Date = new DateTime(),
-                    IsAvailable = true
-                },
+            new TimeSlot
+            {
+                DoctorId = 1,
+                AppointmentType = AppointmentType.Consultatie,
+                Date = new DateTime(2023, 11, 22),
+                IsAvailable = true
+            },
 
-                new TimeSlot
-                {
-                    DoctorId = 2,
-                    AppointmentType = AppointmentType.Operatie,
-                    Date = new DateTime(),
-                    AppointmentId = 1,
-                    IsAvailable = false
-                },
+            new TimeSlot
+            {
+                DoctorId = 2,
+                AppointmentType = AppointmentType.Operatie,
+                Date = new DateTime(2023, 11, 23),
+                AppointmentId = 1,
+                IsAvailable = false
+            },
 
-                new TimeSlot
-                {
-                    DoctorId = 1,
-                    AppointmentType = AppointmentType.Consultatie,
-                    Date = new DateTime(),
-                    AppointmentId = 1,
-                    IsAvailable = false
-                },
+            new TimeSlot
+            {
+                DoctorId = 1,
+                AppointmentType = AppointmentType.Consultatie,
+                Date = new DateTime(2023, 11, 23),
+                AppointmentId = 1,
+                IsAvailable = false
+            },
 
-                new TimeSlot
-                {
-                    DoctorId = 2,
-                    AppointmentType = AppointmentType.Operatie,
-                    Date = new DateTime(),
-                    AppointmentId = 1,
-                    IsAvailable = false
-                },
+            new TimeSlot
+            {
+                DoctorId = 2,
+                AppointmentType = AppointmentType.Operatie,
+                Date = new DateTime(2023, 11, 23),
+                AppointmentId = 1,
+                IsAvailable = false
+            },
 
-                new TimeSlot
-                {
-                    DoctorId = 1,
-                    AppointmentType = AppointmentType.Consultatie,
-                    Date = new DateTime(),
-                    IsAvailable = true
-                },
+            new TimeSlot
+            {
+                DoctorId = 1,
+                AppointmentType = AppointmentType.Consultatie,
+                Date = new DateTime(2023, 11, 23),
+                IsAvailable = true
+            },
 
-                new TimeSlot
-                {
-                    DoctorId = 2,
-                    AppointmentType = AppointmentType.Operatie,
-                    Date = new DateTime(),
-                    AppointmentId = 1,
-                    IsAvailable = false
-                },
+            new TimeSlot
+            {
+                DoctorId = 2,
+                AppointmentType = AppointmentType.Operatie,
+                Date = new DateTime(2023, 11, 23),
+                AppointmentId = 1,
+                IsAvailable = false
+            },
+
             };
 
             var scheduleTimeSlots = new ScheduleTimeSlot[]

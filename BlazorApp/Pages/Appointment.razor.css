@@ -2,8 +2,10 @@
     height: 90vh;
     width: 100%;
     background-color: #D4E8E4;
+    align-content:center;
+    display:flex;
 }
-
+/*
 .title-layout {
 
     position: relative;
@@ -16,7 +18,7 @@
     justify-content: left;
     align-items: left;
     text-align: left;
-    color: rgb(22, 44, 104); /* Tekstkleur aanpassen naar wens */
+    color: rgb(22, 44, 104); 
     padding-top: 100px;
     padding-left: 120px;
 }
@@ -55,7 +57,7 @@ button {
     padding-right: 120px;
 }
 
-/* TEMPP */
+
 
 .temp {
     border: dotted black 4px;
@@ -76,7 +78,7 @@ button {
     border: none;
 }
 
-/* END TEMPPP */
+
 
 .contactbox {
     width: 85%;
@@ -148,7 +150,7 @@ button {
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     text-decoration: none;
 }
-
+*/
 
 
 
