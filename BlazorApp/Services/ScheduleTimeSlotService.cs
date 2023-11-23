@@ -42,15 +42,15 @@ namespace BlazorApp.Services
                     var ScheduleTimeSlotEnd = (ScheduleTimeSlot.DateTime.Hour * 60) + ScheduleTimeSlot.DateTime.Minute + ScheduleTimeSlot.Duration;
 
                     // Check if StartTime of ScheduleTimeSlot is in the same time interval
-                    if ((DateTime.Hour * 60 + DateTime.Minute) >= ScheduleTimeSlotStart && (DateTime.Hour * 60 + DateTime.Minute) <= ScheduleTimeSlotEnd)
+                    if ((DateTime.Hour * 60 + DateTime.Minute) > ScheduleTimeSlotStart && (DateTime.Hour * 60 + DateTime.Minute) < ScheduleTimeSlotEnd)
                     {
-                        throw new InvalidOperationException("ScheduleTimeSlot is in the same time interval as an existing ScheduleTimeSlot");
+                        throw new InvalidOperationException("Gepland tijdslot valt in hetzelfde tijdsinterval als een bestaand gepland tijdslot 1");
                     }
 
                     // Check if EndTime of ScheduleTimeSlot is in the same time interval
-                    if ((DateTime.Hour * 60 + DateTime.Minute + Duration) >= ScheduleTimeSlotStart && (DateTime.Hour * 60 + DateTime.Minute + Duration) <= ScheduleTimeSlotEnd)
+                    if ((DateTime.Hour * 60 + DateTime.Minute + Duration) > ScheduleTimeSlotStart && (DateTime.Hour * 60 + DateTime.Minute + Duration) < ScheduleTimeSlotEnd)
                     {
-                        throw new InvalidOperationException("ScheduleTimeSlot is in the same time interval as an existing ScheduleTimeSlot");
+                        throw new InvalidOperationException("Gepland tijdslot valt in hetzelfde tijdsinterval als een bestaand gepland tijdslot 2");
                     }
                 }
             }
