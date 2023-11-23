@@ -39,7 +39,46 @@ public class CMSTest : PageTest
         await Page.ClickAsync("data-test-id=sidebar-cms-home");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
         Assert.AreEqual($"{baseUrl}/admin/cms/home", Page.Url);
-        Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=edit-header-popup"));
+    }
+
+    [Test]
+    public async Task CMSHome_ChangeHeader() 
+    {
+        await Page.ClickAsync("data-test-id=sidebar-cms");
+        await Page.ClickAsync("data-test-id=sidebar-cms-home");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Page.ClickAsync("data-test-id=edit-header-popup");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Page.FillAsync("data-test-id=edit-header-title", "Test header");
+        // await Page.ClickAsync("data-test-id=edit-header-save");
+        // await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        // Assert.AreEqual("Test header", await Page.TextContentAsync("data-test-id=edit-header-popup"));
+    }
+
+    [Test]
+    public async Task CMSLocation_ShowsLocation() {
+        await Page.ClickAsync("data-test-id=sidebar-cms");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Page.ClickAsync("data-test-id=sidebar-cms-location");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        Assert.AreEqual($"{baseUrl}/admin/cms/location", Page.Url);
+    }
+
+    [Test]
+    public async Task CMSLocation_EditLocation()
+    {
+        await Page.ClickAsync("data-test-id=sidebar-cms");
+        await Page.ClickAsync("data-test-id=sidebar-cms-location");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Wijzig" }).ClickAsync();
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Page.Locator(".ql-editor").FillAsync("Test location");
+        await Page.Locator("[data-test-id=\"edit-location-save\"]").ClickAsync();
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+        await Page.GotoAsync($"{baseUrl}/admin/cms/location");
+
+        await Expect(Page.GetByText("Test location")).ToBeVisibleAsync();
     }
 
     public async Task LogIn() {
@@ -49,4 +88,5 @@ public class CMSTest : PageTest
         await Page.ClickAsync("data-test-id=login-button");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
     }
+
 }

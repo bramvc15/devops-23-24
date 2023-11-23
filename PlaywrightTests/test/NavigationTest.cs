@@ -9,7 +9,7 @@ public class NavigationTest : PageTest
 {
     // debug: $env:PWDEBUG=0
     // run tests command: dotnet test --settings .runsettings
-
+    // bin/Debug/net6.0/playwright.ps1 codegen 192.168.0.123:5046  
     public static string baseUrl;
 
     [OneTimeSetUp]
