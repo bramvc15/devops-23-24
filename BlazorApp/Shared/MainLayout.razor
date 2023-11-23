@@ -9,7 +9,10 @@
     <main>
         <div >
            @Body
-           <Chatbox />
+           @if(!NavigationManager.Uri.Contains("admin") && !NavigationManager.Uri.Contains("login"))
+           {
+               <Chatbox />
+           }
         </div>
     </main>
 
