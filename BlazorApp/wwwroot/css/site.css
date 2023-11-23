@@ -57,6 +57,10 @@ a, .btn-link {
     z-index: 100;
 }
 
+.admin-container {
+    margin-top: 10vh !important;
+}
+
 
 #blazor-error-ui {
     background: lightyellow;
