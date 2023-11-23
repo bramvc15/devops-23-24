@@ -1,0 +1,60 @@
+﻿@using BlazorApp.Services
+@using BlazorApp.Models
+
+
+<div class="headerBox">
+    <p class="header">4. Vul uw contactgegevens in</p>
+</div>
+<EditForm Model="@clientData" OnValidSubmit="@SubmitClientData">
+    <DataAnnotationsValidator />
+    <div class="contactbox">
+        <div class="formbox">
+            <div class="coll">
+                <div class="la">
+                    <label class='formLabel' for="Name">Naam</label>
+                </div>
+                <div class='formInput'>
+                    <InputText id="Name" @bind-Value="clientData.Name" type='text' placeholder='John Doe' />
+                    <ValidationMessage For="@(() => clientData.Name)" />
+                </div>
+                <div class="la">
+                    <label class='formLabel' for="Email">E-mail</label>
+                </div>
+                <div class='formInput'>
+                    <InputText id="Email" @bind-Value="clientData.Email" type='text' placeholder='john@mail.com' />
+                    <ValidationMessage For="@(() => clientData.Email)" />
+                </div>
+            </div>
+            <div class="coll">
+                <div class="la">
+                    <label class='formLabel' for="Phone">Telefoon</label>
+                </div>
+                <div class='formInput'>
+                    <InputText id="Phone" @bind-Value="clientData.Phone" type='text' placeholder='0489432312' />
+                    <ValidationMessage For="@(() => clientData.Phone)" />
+                </div>
+                <div class="la">
+                    <label class='formLabel' for="birthDate">Geboortedatum</label>
+                </div>
+                <div class='formInput'>
+                    <InputDate id="birthDate" @bind-Value="clientData.birthDate" />
+                    <ValidationMessage For="@(() => clientData.birthDate)" />
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="submitBtn">Verzenden</button>
+    </div>
+</EditForm>
+@code {
+    [Parameter]
+    public EventCallback<ClientData> OnContactSubmitted { get; set; }
+
+    private ClientData clientData = new ClientData();
+    
+
+    private async Task SubmitClientData()
+    {
+        OnContactSubmitted.InvokeAsync(clientData);
+        Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.birthDate);
+    }
+}

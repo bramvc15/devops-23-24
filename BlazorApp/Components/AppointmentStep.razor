@@ -1,0 +1,23 @@
+﻿<!-- TreatmentStep.razor -->
+
+<button @onclick="() => ChooseDate(DateTime.Now)">Choose Time</button>
+
+<div class="headerBox">
+    <p class="header">3. Kies een tijdslot</p>
+</div>
+<div class="afspraakbox">
+    <div class="temp">
+        <button class="butTemp" @onclick="() => ChooseDate(DateTime.Now)">temp</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<DateTime> OnDateChosen { get; set; }
+
+    private async Task ChooseDate(DateTime date)
+    {
+        // Simulate choosing a time
+        await OnDateChosen.InvokeAsync(date);
+    }
+}
