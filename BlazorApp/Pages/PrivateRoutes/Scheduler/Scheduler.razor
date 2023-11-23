@@ -10,67 +10,81 @@
     <SideNavMenu />
 </div>
 <div class="admin container">
-    <div class="row justify-content-center align-items-center" style="height: 100vh;">
-        <div class="col-md-6 text-center">
-            @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-            {
-                <h1>Scheduler</h1>
-                <p>Here you can view and edit your schedule.</p>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Monday</th>
-                            <th>Tuesday</th>
-                            <th>Wednesday</th>
-                            <th>Thursday</th>
-                            <th>Friday</th>
-                            <th>Saturday</th>
-                            <th>Sunday</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            var listsByDay = new Dictionary<string, List<ScheduleTimeSlot>>
-                            {
-                                { "Monday", MondayList },
-                                { "Tuesday", TuesdayList },
-                                { "Wednesday", WednesdayList },
-                                { "Thursday", ThursdayList },
-                                { "Friday", FridayList },
-                                { "Saturday", SaturdayList },
-                                { "Sunday", SundayList }
-                            };
+    <div>
+        @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+        {
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <h1>Scheduler</h1>
+            <p>Here you can view and edit your schedule.</p>
+            <AddScheduleTimeSlotPopUp />
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Saturday</th>
+                        <th>Sunday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var listsByDay = new Dictionary<string, List<ScheduleTimeSlot>>
+                        {
+                            { "Monday", MondayList },
+                            { "Tuesday", TuesdayList },
+                            { "Wednesday", WednesdayList },
+                            { "Thursday", ThursdayList },
+                            { "Friday", FridayList },
+                            { "Saturday", SaturdayList },
+                            { "Sunday", SundayList }
+                        };
 
-                            int maxCount = listsByDay.Values.Max(list => list.Count);
+                        int maxCount = listsByDay.Values.Max(list => list.Count);
 
-                            for (int i = 0; i < maxCount; i++)
-                            {
-                                <tr>
-                                    @foreach (var day in listsByDay.Keys)
-                                    {
-                                        var list = listsByDay[day];
-                                        var endTime = i < list.Count ? list[i].DateTime : DateTime.Now;
-                                        <td>
-                                            @(i < list.Count ? list[i].AppointmentType : "")
-                                            @(i < list.Count ? $"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}" : "")
-                                            <br/>
-                                            @(i < list.Count ? $"{list[i].Duration} minutes" : "")
-                                        </td>
-                                    }
-                                </tr>
-                            }
+                        for (int i = 0; i < maxCount; i++)
+                        {
+                            <tr>
+                                @foreach (var day in listsByDay.Keys)
+                                {
+                                    var list = listsByDay[day];
+                                    <td>
+                                        @if (i < list.Count)
+                                        {
+                                            var endTime = list[i].DateTime;
+                                            <div>
+                                                <p>@list[i].AppointmentType</p>
+                                                <p>@($"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}")</p>
+                                                <p>@($"{list[i].Duration} minutes")</p>
+                                                <br />
+                                                <Button Color="Color.Primary" @onclick="() => EditScheduleTimeSlot(list[i].Id)">
+                                                    <Icon Name="IconName.Edit" />
+                                                </Button>
+                                                <Button Color="Color.Danger" @onclick="() => DeleteScheduleTimeSlot(list[i].Id)">
+                                                    <Icon Name="IconName.Delete" />
+                                                </Button>
+                                            </div>
+                                        }
+
+                                    </td>
+                                }
+                            </tr>
                         }
-                    </tbody>
-                </table>
-                <AddScheduleTimeSlotPopUp />
-            }
-            else
-            {
-                <p>You are not authorized to access this page. Please log in.</p>
-                <p><a href="/login">Click here to LOGIN.</a></p>
-            }
-                    
-        </div>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>You are not authorized to access this page. Please log in.</p>
+            <p><a href="/login">Click here to LOGIN.</a></p>
+        }
     </div>
 </div>
 
@@ -86,9 +100,14 @@
     private List<ScheduleTimeSlot> SaturdayList = new List<ScheduleTimeSlot>();
     private List<ScheduleTimeSlot> SundayList = new List<ScheduleTimeSlot>();
 
-    private void AddScheduleTimeSlot()
+    private async Task EditScheduleTimeSlot(int id)
     {
-        
+        Console.WriteLine($"Edit button clicked for ScheduleTimeSlot with Id: {id}");
+    }
+
+    private async Task DeleteScheduleTimeSlot(int id)
+    {
+        Console.WriteLine($"Delete button clicked for ScheduleTimeSlot with Id: {id}");
     }
 
     protected override async Task OnInitializedAsync()
@@ -99,11 +118,6 @@
         }
 
         ListOfScheduleTimeSlots = await ScheduleTimeSlotService.GetScheduleTimeSlotsByDoctorId(0);
-
-        if(ListOfScheduleTimeSlots != null)
-        {
-           Console.WriteLine("ListOfScheduleTimeSlots is not null");
-        }
 
         // Add each time slot to the appropriate list
         foreach (ScheduleTimeSlot scheduleTimeSlot in ListOfScheduleTimeSlots)
