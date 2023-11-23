@@ -31,15 +31,15 @@ public class CMSTest : PageTest
         
     }
 
-    // [Test]
-    // public async Task CMSHome_ShowsHome() 
-    // {
-    //     await Page.ClickAsync("data-test-id=sidebar-cms");
-    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-    //     await Page.ClickAsync("data-test-id=sidebar-cms-home");
-    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-    //     Assert.AreEqual($"{baseUrl}/admin/cms/home", Page.Url);
-    // }
+    [Test]
+    public async Task CMSHome_ShowsHome() 
+    {
+        await Page.ClickAsync("data-test-id=sidebar-cms");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Page.ClickAsync("data-test-id=sidebar-cms-home");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        Assert.AreEqual($"{baseUrl}/admin/cms/home", Page.Url);
+    }
 
     // [Test]
     // public async Task CMSHome_ChangeHeader() 
