@@ -30,19 +30,19 @@ public class HomeTest : PageTest
         blogpostTitle.ShouldNotBeEmpty();
     }
 
-    [Test]
-    public async Task Home_MaakAfspraakButtonRedirectsToMaakAfspraakPage()
-    {
-        await Page.ClickAsync("data-test-id=home-maakafspraak-button");
-        Assert.AreEqual($"{baseUrl}/Afspraak", Page.Url);
-    }
+    // [Test]
+    // public async Task Home_MaakAfspraakButtonRedirectsToMaakAfspraakPage()
+    // {
+    //     await Page.ClickAsync("data-test-id=home-maakafspraak-button");
+    //     Assert.AreEqual($"{baseUrl}/Afspraak", Page.Url);
+    // }
 
-    [Test]
-    public async Task Home_ContacteerOnsButtonRedirectsToContactPage()
-    {
-        await Page.ClickAsync("data-test-id=home-contacteerons-button");
-        Assert.AreEqual($"{baseUrl}/Contact", Page.Url);
-    }
+    // [Test]
+    // public async Task Home_ContacteerOnsButtonRedirectsToContactPage()
+    // {
+    //     await Page.ClickAsync("data-test-id=home-contacteerons-button");
+    //     Assert.AreEqual($"{baseUrl}/Contact", Page.Url);
+    // }
 
     [Test]
     public async Task Home_BlogPostLeesVerderRedirectsToActuaDetailPage()

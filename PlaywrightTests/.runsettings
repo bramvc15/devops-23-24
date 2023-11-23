@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
   <TestRunParameters>
-    <Parameter name="WebAppUrl" value="http://192.168.0.123:5046" />
+    <Parameter name="WebAppUrl" value="http://172.18.170.222:5046" />
   </TestRunParameters>
   <Playwright>
     <BrowserName>chromium</BrowserName>

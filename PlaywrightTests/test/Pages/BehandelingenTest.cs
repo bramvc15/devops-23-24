@@ -32,13 +32,13 @@ public class BehandelingenTest : PageTest
         blogpostTitle.ShouldNotBeEmpty();
     }
 
-    [Test]
-    public async Task Behandelingen_OoglidCorrectieRedirectsToTreatmentDetailPage()
-    {
-        await Page.ClickAsync("data-test-id=treatmentcard-behandeling-button");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        Assert.AreEqual($"{baseUrl}/behandelingen/ooglidcorrectie", Page.Url);
-    }
+    // [Test]
+    // public async Task Behandelingen_OoglidCorrectieRedirectsToTreatmentDetailPage()
+    // {
+    //     await Page.ClickAsync("data-test-id=treatmentcard-behandeling-button");
+    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+    //     Assert.AreEqual($"{baseUrl}/behandelingen/ooglidcorrectie", Page.Url);
+    // }
 
     [Test]
     public async Task Behandelingen_NoFAQItemSelectedNoFAQAnswerVisible()

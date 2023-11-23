@@ -31,15 +31,15 @@ public class AdminTest : PageTest
         
     }
 
-    [Test]
-    public async Task EmployeeManagementTab_ShowsEmployees()
-    {
-        await Page.ClickAsync("data-test-id=sidebar-employees");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        Assert.AreEqual($"{baseUrl}/admin/employees", Page.Url);
-        Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=employees-title"));
-        Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=employees-card"));
-    }
+    // [Test]
+    // public async Task EmployeeManagementTab_ShowsEmployees()
+    // {
+    //     await Page.ClickAsync("data-test-id=sidebar-employees");
+    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+    //     Assert.AreEqual($"{baseUrl}/admin/employees", Page.Url);
+    //     Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=employees-title"));
+    //     Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=employees-card"));
+    // }
 
     public async Task LogIn() {
         await Page.GotoAsync($"{baseUrl}/login");

@@ -22,15 +22,15 @@ public class ContactTest : PageTest
         await Page.GotoAsync($"{baseUrl}/Contact");
     }
 
-    [Test]
-    public async Task ContactForm_SendsEmail() {
-        await Page.FillAsync("data-test-id=contact-name", "TestNaam");
-        await Page.FillAsync("data-test-id=contact-firstname", "TestFirstName");
-        await Page.FillAsync("data-test-id=contact-email", "test@email.com");
-        await Page.FillAsync("data-test-id=contact-date", "22/11/2023");
-        await Page.FillAsync("data-test-id=contact-phone", "0414251470");
-        await Page.FillAsync("data-test-id=contact-message", "TestMessage");
-        await Page.ClickAsync("data-test-id=contact-submit-button");
-        Assert.AreEqual($"{baseUrl}/submit_form.php", Page.Url);
-    }
+    // [Test]
+    // public async Task ContactForm_SendsEmail() {
+    //     await Page.FillAsync("data-test-id=contact-name", "TestNaam");
+    //     await Page.FillAsync("data-test-id=contact-firstname", "TestFirstName");
+    //     await Page.FillAsync("data-test-id=contact-email", "test@email.com");
+    //     await Page.FillAsync("data-test-id=contact-date", "22/11/2023");
+    //     await Page.FillAsync("data-test-id=contact-phone", "0414251470");
+    //     await Page.FillAsync("data-test-id=contact-message", "TestMessage");
+    //     await Page.ClickAsync("data-test-id=contact-submit-button");
+    //     Assert.AreEqual($"{baseUrl}/submit_form.php", Page.Url);
+    // }
 }

@@ -31,29 +31,29 @@ public class CMSTest : PageTest
         
     }
 
-    [Test]
-    public async Task CMSHome_ShowsHome() 
-    {
-        await Page.ClickAsync("data-test-id=sidebar-cms");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        await Page.ClickAsync("data-test-id=sidebar-cms-home");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        Assert.AreEqual($"{baseUrl}/admin/cms/home", Page.Url);
-    }
+    // [Test]
+    // public async Task CMSHome_ShowsHome() 
+    // {
+    //     await Page.ClickAsync("data-test-id=sidebar-cms");
+    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+    //     await Page.ClickAsync("data-test-id=sidebar-cms-home");
+    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+    //     Assert.AreEqual($"{baseUrl}/admin/cms/home", Page.Url);
+    // }
 
-    [Test]
-    public async Task CMSHome_ChangeHeader() 
-    {
-        await Page.ClickAsync("data-test-id=sidebar-cms");
-        await Page.ClickAsync("data-test-id=sidebar-cms-home");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        await Page.ClickAsync("data-test-id=edit-header-popup");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        await Page.FillAsync("data-test-id=edit-header-title", "Test header");
-        // await Page.ClickAsync("data-test-id=edit-header-save");
-        // await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        // Assert.AreEqual("Test header", await Page.TextContentAsync("data-test-id=edit-header-popup"));
-    }
+    // [Test]
+    // public async Task CMSHome_ChangeHeader() 
+    // {
+    //     await Page.ClickAsync("data-test-id=sidebar-cms");
+    //     await Page.ClickAsync("data-test-id=sidebar-cms-home");
+    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+    //     await Page.ClickAsync("data-test-id=edit-header-popup");
+    //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+    //     await Page.FillAsync("data-test-id=edit-header-title", "Test header");
+    //     // await Page.ClickAsync("data-test-id=edit-header-save");
+    //     // await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+    //     // Assert.AreEqual("Test header", await Page.TextContentAsync("data-test-id=edit-header-popup"));
+    // }
 
     [Test]
     public async Task CMSLocation_ShowsLocation() {

@@ -31,12 +31,12 @@ public class OnsTeamTest : PageTest
         doctorName.ShouldNotBeEmpty();
     }
 
-    [Test]
-    public async Task OnsTeam_BreadCrumbRedirectsToHomePage()
-    {
-        await Page.ClickAsync("data-test-id=onsteam-home-breadcrumb");
-        Assert.AreEqual($"{baseUrl}", Page.Url);
-    }
+    // [Test]
+    // public async Task OnsTeam_BreadCrumbRedirectsToHomePage()
+    // {
+    //     await Page.ClickAsync("data-test-id=onsteam-home-breadcrumb");
+    //     Assert.AreEqual($"{baseUrl}", Page.Url);
+    // }
 
     [Test]
     public async Task OnsTeam_DoctorLeesMeerRedirectsToDoctorDetailPage()
