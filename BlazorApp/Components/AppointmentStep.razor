@@ -1,4 +1,9 @@
-﻿<!-- TreatmentStep.razor -->
+﻿@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inject TimeSlotService timeSlotService
+@inject DatabaseContext databaseContext
 
 <button @onclick="() => ChooseDate(DateTime.Now)">Choose Time</button>
 
@@ -7,17 +12,99 @@
 </div>
 <div class="afspraakbox">
     <div class="temp">
+        <SfCalendar TValue="DateTime?" @bind-Value="@SelectedDate">
+            <CalendarEvents TValue="DateTime?" OnRenderDayCell="CustomDates"></CalendarEvents>
+        </SfCalendar>
         <button class="butTemp" @onclick="() => ChooseDate(DateTime.Now)">temp</button>
     </div>
+    <div class="display-date">
+        <span class="example-label">Selected date is: <b>@SelectedValue</b></span>
+    </div>
 </div>
+
+<style>
+    .control-wrapper {
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 20px 0px 10px;
+    }
+
+    .example-label {
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .display-date {
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 10px 0px 10px;
+    }
+
+    .e-calendar .e-content .e-cell.personal-appointment span.e-day,
+    .e-calendar .e-content td:hover.e-cell.personal-appointment span.e-day,
+    .e-calendar .e-content td.e-selected.e-focused-date.e-cell.personal-appointment span.e-day {
+        color: #28a745;
+        font-weight: 800;
+    }
+
+    .e-calendar .e-content .e-cell.official-appointment span.e-day,
+    .e-calendar .e-content td:hover.e-cell.official-appointment span.e-day,
+    .e-calendar .e-content td.e-selected.e-focused-date.e-cell.official-appointment span.e-day {
+        color: #dc3545;
+        font-weight: 800;
+    }
+
+    .e-calendar .e-content td.e-selected.e-focused-date.e-cell.personal-appointment span.e-day,
+    .e-calendar .e-content td.e-selected.e-focused-date.e-cell.official-appointment span.e-day {
+        background-color: rgb(255 255 0 / 90%);
+    }
+</style>
+
+
 
 @code {
     [Parameter]
     public EventCallback<DateTime> OnDateChosen { get; set; }
+
+    public DateTime? SelectedDate { get; set; } = DateTime.Now;
+    public string SelectedValue { get; set; } = DateTime.Now.ToString("M/d/yyyy");
+    public DateTime? CurrentDate { get; set; } = DateTime.Now;
+
+
+    IEnumerable<Appointment>? AppObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppObj = await timeSlotService.GetContent());
+    }
 
     private async Task ChooseDate(DateTime date)
     {
         // Simulate choosing a time
         await OnDateChosen.InvokeAsync(date);
     }
+
+    public void CustomDates(RenderDayCellEventArgs args)
+    {
+        var CurrentMonth = AppObj.Value.Month;
+        if (args.Date.Month == CurrentMonth && (args.Date.Day == 7 || args.Date.Day == 14 || args.Date.Day == 24 || args.Date.Day == 29))
+        {
+            args.CellData.ClassList += " personal-appointment";
+            if (args.Date.Day == CurrentDate.Value.Day)
+            {
+                this.SelectedValue = this.SelectedDate?.ToString("M/d/yyyy") + " (Personal appointment)";
+            }
+        }
+        if (args.Date.Month == CurrentMonth && (args.Date.Day == 3 || args.Date.Day == 11 || args.Date.Day == 17 || args.Date.Day == 22))
+        {
+            args.CellData.ClassList += " official-appointment";
+            if (args.Date.Day == CurrentDate.Value.Day)
+            {
+                this.SelectedValue = this.SelectedDate?.ToString("M/d/yyyy") + " (Official appointment)";
+            }
+        }
+    }
+    
+
 }
+

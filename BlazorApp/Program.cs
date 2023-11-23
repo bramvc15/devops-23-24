@@ -34,6 +34,8 @@ builder.Services.AddTransient<ScheduleTimeSlotService>();
 builder.Services.AddTransient<AppointmentService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSyncfusionBlazor();
+builder.Services.AddTransient<TimeSlotService>();
+builder.Services.AddTransient<ScheduleTimeSlotService>();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     {
