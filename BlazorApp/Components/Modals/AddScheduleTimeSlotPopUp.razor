@@ -14,6 +14,7 @@
                 <ModalTitle>Tijdslot toevoegen</ModalTitle>
                 <CloseButton />
             </ModalHeader>
+            <h6 style="color:red">@exceptionMessage</h6>
             <Validations @ref="validations" Mode="ValidationMode.Auto">
                 <ModalBody>
                     <Validation Validator="ValidateAppointmentType">
@@ -63,8 +64,12 @@
 </div>
 
 @code {
+    [Parameter]
+    public EventCallback<ScheduleTimeSlot> OnScheduleTimeSlotAdded { get; set; }
+
     private Validations validations;
     private string errorMessage = string.Empty;
+    private string exceptionMessage = string.Empty;
 
     private TimeSpan? selectedStartTime = new TimeSpan(12, 0, 0);
     private TimeSpan? selectedEndTime = new TimeSpan(12, 0, 0);
@@ -120,6 +125,7 @@
 
     private async Task CreateScheduleTimeSlot()
     {
+        exceptionMessage = string.Empty;
         if (await validations.ValidateAll())
         {
             var appointmentType = selectedAppointmentType == 15 ? AppointmentType.Consultatie : AppointmentType.Operatie;
@@ -145,7 +151,16 @@
             var duration = selectedEndTime!.Value - selectedStartTime!.Value;
             int durationInMinutes = (int)duration.TotalMinutes;
 
-            await scheduleTimeSlotService.AddScheduleTimeSlot(0, appointmentType, dayOfWeek, dateTime, durationInMinutes);
+            try
+            {
+                ScheduleTimeSlot newSlot = await scheduleTimeSlotService.AddScheduleTimeSlot(0, appointmentType, dayOfWeek, dateTime, durationInMinutes);
+                await OnScheduleTimeSlotAdded.InvokeAsync(newSlot);
+            } catch (InvalidOperationException ex)
+            {
+                exceptionMessage = ex.Message;
+                return;
+            }
+
             modalRef?.Hide();
         }
     }

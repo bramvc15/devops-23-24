@@ -20,7 +20,7 @@
             <br />
             <h1>Scheduler</h1>
             <p>Here you can view and edit your schedule.</p>
-            <AddScheduleTimeSlotPopUp />
+            <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" />
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -99,6 +99,38 @@
     private List<ScheduleTimeSlot> FridayList = new List<ScheduleTimeSlot>();
     private List<ScheduleTimeSlot> SaturdayList = new List<ScheduleTimeSlot>();
     private List<ScheduleTimeSlot> SundayList = new List<ScheduleTimeSlot>();
+
+    private async Task HandleScheduleTimeSlotAdded(ScheduleTimeSlot newSlot)
+    {
+        ListOfScheduleTimeSlots.Append(newSlot);
+
+        switch (newSlot.DayOfWeek)
+        {
+            case "Monday":
+                MondayList.Add(newSlot);
+                break;
+            case "Tuesday":
+                TuesdayList.Add(newSlot);
+                break;
+            case "Wednesday":
+                WednesdayList.Add(newSlot);
+                break;
+            case "Thursday":
+                ThursdayList.Add(newSlot);
+                break;
+            case "Friday":
+                FridayList.Add(newSlot);
+                break;
+            case "Saturday":
+                SaturdayList.Add(newSlot);
+                break;
+            case "Sunday":
+                SundayList.Add(newSlot);
+                break;
+        }
+
+        StateHasChanged();
+    }
 
     private async Task EditScheduleTimeSlot(int id)
     {
