@@ -3,7 +3,7 @@ namespace Domain
     public class Doctor
     {
         public string Name { get; set; }
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
         public string Specialization { get; set; }
         public string Biograph { get; set; }
         public string IsAvailable { get; set; }

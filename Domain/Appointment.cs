@@ -2,9 +2,9 @@ namespace Domain
 {
     public class Appointment
     {
-        public string? Reason { get; set; };
-        public string? Note { get; set; };
-        public Patient Patient { get; set; };
+        public string? Reason { get; set; }
+        public string? Note { get; set; }
+        public Patient Patient { get; set; }
     }
 
     public void CreateAppointment()
