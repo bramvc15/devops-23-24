@@ -78,11 +78,9 @@ public class Patient
     {
         return _appointments;
     }
-    #endregion
-
-
-    public void MakeAppointment()
+        public void MakeAppointment()
     {
         // TODO implement
     }
+    #endregion
 }
