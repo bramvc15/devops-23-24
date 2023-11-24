@@ -1,14 +1,13 @@
-namespace Domain
+namespace Domain;
+
+public enum BloodType
 {
-    public enum BloodType
-    {
-        APositive,
-        ANegative,
-        BPositive,
-        BNegative,
-        ABPositive,
-        ABNegative,
-        OPositive,
-        ONegative
-    }
+    APositive,
+    ANegative,
+    BPositive,
+    BNegative,
+    ABPositive,
+    ABNegative,
+    OPositive,
+    ONegative
 }
