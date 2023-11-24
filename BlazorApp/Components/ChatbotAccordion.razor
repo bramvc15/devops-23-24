@@ -14,10 +14,10 @@
     <div class="card-header d-flex justify-content-between" id="headingOne" @onclick=this.Collapse>
     <h5 class="mb-0">
         <button class="btn" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-        @question.Question
+        @Question.Question
         </button>
     </h5>
-    @if(followUpQuestions == null || followUpQuestions.Count() == 0) {
+    @if(FollowUpQuestions == null || FollowUpQuestions.Count() == 0) {
         <button type="button" class="close mx-2" aria-label="Close" @onclick="() => DeleteQuestion()" @onclick:stopPropagation="true">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -27,18 +27,18 @@
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
         <div class="card-body">
             <h5>Antwoord</h5> 
-            @question.Answer
+            @Question.Answer
         </div>
         <div class="container">
-            @if (followUpQuestions != null && followUpQuestions.Count() > 0)
+            @if (FollowUpQuestions != null && FollowUpQuestions.Count() > 0)
             {
                 <h5>Follow up keuzeopties:</h5>
-                foreach (var followUpQuestion in followUpQuestions)
+                foreach (var FollowUpQuestion in FollowUpQuestions)
                 {
-                    <ChatbotAccordion question=followUpQuestion onDelete=OnDelete/>
+                    <ChatbotAccordion Question=FollowUpQuestion OnDelete=HandleDelete/>
                 }
             }
-            <ChatbotPopup parentQuestion=question text="Voeg keuzeoptie toe" refresh=refresh/>
+            <ChatbotPopup ParentQuestion=Question Text="Voeg keuzeoptie toe" Refresh=HandleRefresh/>
         </div>
     </div>
     }
@@ -48,28 +48,28 @@
     private bool collapsed = true;
 
     [Parameter]
-    public ChatBotQuestion question { get; set; }
+    public ChatBotQuestion Question { get; set; }
 
     [Parameter]
-    public EventCallback<ChatBotQuestion> onDelete { get; set; }
+    public EventCallback<ChatBotQuestion> OnDelete { get; set; }
 
-    IEnumerable<ChatBotQuestion>? followUpQuestions;
+    IEnumerable<ChatBotQuestion>? FollowUpQuestions;
 
     protected override async Task OnInitializedAsync()
     {
-        followUpQuestions = question.FollowUpQuestions;
+        FollowUpQuestions = Question.FollowUpQuestions;
     }
 
-    private async Task OnDelete(ChatBotQuestion question)
+    private async Task HandleDelete(ChatBotQuestion Question)
     {
-        onDelete.InvokeAsync(question);
-        if(followUpQuestions.Contains(question))
+        OnDelete.InvokeAsync(Question);
+        if(FollowUpQuestions.Contains(Question))
         {
-            followUpQuestions = followUpQuestions.Where(x => x != question);
+            FollowUpQuestions = FollowUpQuestions.Where(x => x != Question);
         }
     }
 
-    protected async Task refresh()
+    protected async Task HandleRefresh()
     {
         await OnInitializedAsync();
         StateHasChanged();
@@ -77,8 +77,8 @@
 
     void DeleteQuestion()
     {
-        OnDelete(question);
-        ChatbotService.DeleteById(question.Id);
+        HandleDelete(Question);
+        ChatbotService.DeleteById(Question.Id);
     }
 
     void Collapse()

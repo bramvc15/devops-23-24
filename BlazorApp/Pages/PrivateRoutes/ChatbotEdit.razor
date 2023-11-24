@@ -22,15 +22,15 @@
         {
         <h1>Chatbot vragen</h1>
         <div id="accordion">
-        @if (ChatBotObj != null)
+        @if (ChatbotQuestionsList != null)
         {
-            foreach (var question in ChatBotObj)
+            foreach (var question in ChatbotQuestionsList)
             {
-                  <ChatbotAccordion question=question onDelete="onDelete"/>
+                  <ChatbotAccordion Question=question OnDelete=HandleDelete/>
             }
         }
         </div> 
-        <ChatbotPopup text="Voeg vraag toe" refresh=refresh />
+        <ChatbotPopup Text="Voeg vraag toe" Refresh=HandleRefresh />
         <button class="btn btn-primary" @onclick="OnInitializedAsync">Refresh</button>
         } else {
                 <p>You are not authorized to access this page. Please log in.</p>
@@ -44,7 +44,7 @@
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
 
-    IEnumerable<ChatBotQuestion>? ChatBotObj;
+    IEnumerable<ChatBotQuestion>? ChatbotQuestionsList;
     private bool collapsed = true;
 
     protected override async Task OnInitializedAsync()
@@ -53,19 +53,19 @@
             NavManager.NavigateTo("/login");
         else
         {
-            ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
-            ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
+            ChatbotQuestionsList = await Task.Run(() => ChatbotService.GetContent());
+            ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
         }
     }
 
-    protected async Task refresh()
+    protected async Task HandleRefresh()
     {
         await OnInitializedAsync();
         StateHasChanged();
     }
 
-    protected async Task onDelete(ChatBotQuestion question) {
-        ChatBotObj = ChatBotObj.Where(x => x.Id != question.Id);
+    protected async Task HandleDelete(ChatBotQuestion question) {
+        ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.Id != question.Id);
         StateHasChanged();
     }
 
