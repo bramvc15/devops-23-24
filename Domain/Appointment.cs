@@ -2,22 +2,55 @@ namespace Domain;
 
 public class Appointment
 {
-    public string? Reason { get; set; }
-    public string? Note { get; set; }
-    public Patient Patient { get; set; }
+    #region Fields
+    private string _reason;
+    private string _note;
+    private Patient _patient;
+    #endregion
 
-    public void CreateAppointment()
+    #region Properties
+    public string Reason {
+        get
+        {
+            return _reason;
+        }
+        private set
+        {
+            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Reason cannot be empty");
+            _reason = value;
+        }
+    }
+    public string Note { 
+        get
+        {
+            return _note;
+        }
+        private set
+        {
+            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Note cannot be empty");
+            _note = value;
+        }
+    }
+    #endregion
+
+    #region Constructors
+    public Appointment(Patient patient, string reason, string note)
     {
-        throw new NotImplementedException();
+        _patient = patient;
+        Reason = reason;
+        Note = note;
+    }
+    #endregion
+
+    #region Methods
+    public bool HasPatient()
+    {
+        return _patient != null;
     }
 
-    public void UpdateAppointment()
+    public void ChangePatient(Patient patient)
     {
-        throw new NotImplementedException();
+        _patient = patient;
     }
-
-    public void DeleteAppointment()
-    {
-        throw new NotImplementedException();
-    }
+    #endregion
 }

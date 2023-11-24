@@ -2,56 +2,117 @@ namespace Domain;
 
 public class Doctor
 {
-    public string Name { get; set; }
-    public Gender Gender { get; set; }
-    public string Specialization { get; set; }
-    public string Biograph { get; set; }
-    public string IsAvailable { get; set; }
-    public List<TimeSlot> TimeSlots { get; set; }
-    public List<ScheduleTimeSlot> ScheduleTimeSlots { get; set; }
+    #region Fields
+    private string _name;
+    private string _specialization;
+    private readonly List<TimeSlot> _timeSlots = new();
+    private readonly List<ScheduleTimeSlot> _scheduleTimeSlots = new();
+    #endregion
 
-    public void IsDoctorAvailable()
+    #region Properties
+    public string Name {
+        get 
+        {
+            return _name;
+        }
+        private set
+        { 
+            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Name cannot be empty"); 
+            _name = value;
+        }
+    }
+    public string Specialization {
+        get 
+        { 
+            return _specialization;
+        }
+        private set
+        { 
+            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Specialization cannot be empty"); 
+            _specialization = value;
+        }
+    }
+    public Gender Gender { get; private set; }
+    public string Biograph { get; private set; } = "This doctor has not written a biograph yet."
+    public bool IsAvailable { get; private set; } = true;
+    #endregion
+
+    #region Constructors
+    public Doctor(string name, string specialization, Gender gender, string biograph = null) {
+        Name = name;
+        Specialization = specialization;
+        Gender = gender;
+
+        if (!string.IsNullOrWhiteSpace(biograph)) {
+            Biograph = biograph;
+        }
+    }
+    #endregion
+
+    #region Methods
+    public void AddScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot)
     {
-        throw new NotImplementedException();
+        _scheduleTimeSlots.Add(scheduleTimeSlot);
     }
 
-    public void HasAvailableTimeSlots()
+    public IEnumerable<ScheduleTimeSlot> GetScheduleTimeSlots()
     {
-        throw new NotImplementedException();
+        return _scheduleTimeSlots;
     }
 
-    public void AddScheduleTimeSlot()
+    public void UpdateScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot)
     {
-        throw new NotImplementedException();
+        // oplossing: oude ScheduleTimeSlot meegeven in functie
+        // int index = _scheduleTimeSlots.FindIndex(x => x.Id == scheduleTimeSlot.Id);
+        // to be implemented
     }
 
-    public void UpdateScheduleTimeSlot()
+    public void DeleteScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot)
     {
-        throw new NotImplementedException();
+        _scheduleTimeSlots.Remove(scheduleTimeSlot)
     }
 
-    public void DeleteScheduleTimeSlot()
+    public void AddTimeSlot(TimeSlot timeSlot)
     {
-        throw new NotImplementedException();
+        _timeSlots.Add(timeSlot);
     }
 
-    public void AddTimeSlot()
+    public IEnumerable<TimeSlot> GetTimeSlots()
     {
-        throw new NotImplementedException();
+        return _timeSlots;
     }
 
-    public void UpdateTimeSlot()
+    public void UpdateTimeSlot(TimeSlot timeSlot)
     {
-        throw new NotImplementedException();
+        // oplossing: oude TimeSlot meegeven in functie
+        // to be implemented
     }
 
-    public void DeleteTimeSlot()
+    public void DeleteTimeSlot(TimeSlot timeSlot)
     {
-        throw new NotImplementedException();
+        _timeSlots.Remove(timeSlot);
+    }
+
+    public bool IsDoctorAvailable()
+    {
+        if (IsAvailable)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool HasAvailableTimeSlots()
+    {
+        // to be implemented
     }
 
     public void CreateForcedAppointment()
     {
-        throw new NotImplementedException();
+        // to be implemented
     }
+    #endregion
 }

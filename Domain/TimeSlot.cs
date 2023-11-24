@@ -2,28 +2,56 @@ namespace Domain;
 
 public class TimeSlot
 {
-    public DateTime DateTime { get; set; }
-    public int Duration { get; set; }
-    public AppointmentType AppointmentType { get; set; }
-    public Appointment Appointment { get; set; }
+    #region Fields
+    private int _duration;
+    private readonly Appointment _appointment;
+    #endregion
 
-    public Boolean IsTimeSlotAvailable()
+    #region Properties
+    public int Duration {
+        get
+        {
+            return _duration;
+        }
+        private set
+        {
+            if(value <= 0) throw new ArgumentException("Duration cannot be less than or equal to 0");
+            _duration = value;
+        }
+    }
+    public AppointmentType AppointmentType { get; private set; }
+    public DateTime DateTime { get; private set; }
+    #endregion
+
+    #region Constructors
+    public TimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration)
     {
-        throw new NotImplementedException();
+        AppointmentType = appointmentType;
+        DateTime = dateTime;
+        Duration = duration;
+        _appointment = null;
+    }
+    #endregion
+
+    #region Methods
+    public bool IsTimeSlotAvailable()
+    {
+        return _appointment == null;
     }
 
-    public void AddAppointment()
+    public void CreateAppointment()
     {
-        throw new NotImplementedException();
+         // to be implemented
     }
 
     public void UpdateAppointment()
     {
-        throw new NotImplementedException();
+         // to be implemented
     }
 
     public void DeleteAppointment()
     {
-        throw new NotImplementedException();
+         // to be implemented
     }
+    #endregion
 }
