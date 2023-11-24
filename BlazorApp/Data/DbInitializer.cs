@@ -37,7 +37,68 @@ namespace BlazorApp.Data
                     InfoEducation = "Dr. Van Coile voltooide zijn medische opleiding aan de Universiteit van Gent en behaalde zijn specialisatiediploma in oogheelkunde aan de Katholieke Universiteit Leuven. Zijn specialisatie omvat diverse oogheelkundige aandoeningen.",
                     InfoPublications = "Hij heeft actief bijgedragen aan oogheelkundig onderzoek en heeft meerdere erkenningen en prijzen ontvangen voor zijn toewijding aan de oogheelkunde.",
                     Image = "https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*",
+                },
+                new Doctor
+                {
+                    Name = "Dr. S. Patel",
+                    Gender = "Female",
+                    Specialization = "Eye Specialist",
+                    InfoOver = "Dr. S. Patel is a dedicated eye specialist committed to providing comprehensive eye care services. With a focus on patient well-being, she brings a wealth of experience in treating various eye conditions.",
+                    InfoOpleiding = "Dr. Patel earned her medical degree from Johns Hopkins University and completed her specialization in ophthalmology at Harvard Medical School. She is well-versed in the latest advancements in eye care.",
+                    InfoPublicaties = "Actively involved in eye care research, Dr. Patel has published numerous articles and received recognition for her outstanding contributions to the field.",
+                    Image = "https://www.stevensegallery.com/640/360",
+                },
+                new Doctor
+                {
+                    Name = "Dr. M. García",
+                    Gender = "Male",
+                    Specialization = "Eye Specialist",
+                    InfoOver = "Dr. M. García is a passionate eye specialist dedicated to improving the vision and eye health of his patients. With a background in ophthalmology, he provides personalized and advanced eye care.",
+                    InfoOpleiding = "Dr. García completed his medical training at the University of Barcelona and pursued his specialization in ophthalmology at King's College London. He has expertise in a wide range of eye conditions.",
+                    InfoPublicaties = "Contributing to eye care research, Dr. García has presented at international conferences and received accolades for his commitment to excellence in ophthalmology.",
+                    Image = "https://www.stevensegallery.com/640/361",
+                },
+                new Doctor
+                {
+                    Name = "Dr. A. Wang",
+                    Gender = "Female",
+                    Specialization = "Eye Specialist",
+                    InfoOver = "Dr. A. Wang is an experienced eye specialist with a focus on delivering comprehensive and compassionate eye care. She is dedicated to enhancing the visual health and well-being of her patients.",
+                    InfoOpleiding = "Dr. Wang graduated from Stanford University School of Medicine and completed her residency in ophthalmology at the Mayo Clinic. She is skilled in the latest diagnostic and treatment techniques.",
+                    InfoPublicaties = "Actively involved in eye research, Dr. Wang has published research papers in renowned journals and received awards for her significant contributions to the field.",
+                    Image = "https://www.stevensegallery.com/640/362",
+                },
+                new Doctor
+                {
+                    Name = "Dr. R. Singh",
+                    Gender = "Male",
+                    Specialization = "Eye Specialist",
+                    InfoOver = "Dr. R. Singh is a dedicated eye specialist committed to providing high-quality eye care services. With extensive experience, he focuses on the diagnosis and treatment of various eye conditions.",
+                    InfoOpleiding = "Dr. Singh completed his medical education at the University of Delhi and pursued his specialization in ophthalmology at Johns Hopkins University. He is proficient in advanced eye surgeries.",
+                    InfoPublicaties = "Contributing to eye care advancements, Dr. Singh has published research articles and received recognition for his outstanding contributions to the field.",
+                    Image = "https://www.stevensegallery.com/640/363",
+                },
+                new Doctor
+                {
+                    Name = "Dr. E. Martinez",
+                    Gender = "Female",
+                    Specialization = "Eye Specialist",
+                    InfoOver = "Dr. E. Martinez is a compassionate eye specialist dedicated to providing patient-centered eye care. With expertise in various eye conditions, she strives to improve the vision and ocular health of her patients.",
+                    InfoOpleiding = "Dr. Martinez received her medical degree from Columbia University and completed her residency in ophthalmology at the University of California, San Francisco. She is proficient in the latest diagnostic technologies.",
+                    InfoPublicaties = "Actively contributing to eye care research, Dr. Martinez has presented at national conferences and received awards for her commitment to excellence in ophthalmology.",
+                    Image = "https://www.stevensegallery.com/640/364",
+                },
+                new Doctor
+                {
+                    Name = "Dr. K. Johnson",
+                    Gender = "Male",
+                    Specialization = "Eye Specialist",
+                    InfoOver = "Dr. K. Johnson is a skilled eye specialist dedicated to providing exceptional eye care services. With a focus on patient satisfaction, he brings expertise in the diagnosis and treatment of a wide range of eye conditions.",
+                    InfoOpleiding = "Dr. Johnson completed his medical training at the University of Chicago and pursued his specialization in ophthalmology at the Cleveland Clinic. He is well-versed in advanced eye surgeries.",
+                    InfoPublicaties = "Contributing to advancements in eye care, Dr. Johnson has authored research articles and received recognition for his significant contributions to the field.",
+                    Image = "https://www.stevensegallery.com/640/365",
                 }
+
             };
 
 

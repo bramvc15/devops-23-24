@@ -1,11 +1,14 @@
 .main-container {
-    height: 90vh;
+    height: 95vh;
     width: 100%;
     background-color: #D4E8E4;
-    align-content:center;
-    display:flex;
 }
-/*
+#AfspraakComponent{
+    display:flex;
+    align-content:center;
+    margin: 0 auto;
+}
+
 .title-layout {
 
     position: relative;
@@ -22,7 +25,7 @@
     padding-top: 100px;
     padding-left: 120px;
 }
-
+/*
 .headerBox {
     padding-left: 120px;
     color: rgb(22, 44, 104);
