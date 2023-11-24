@@ -11,7 +11,7 @@
 <div class="textBubble-@(type == "bot" ? "bot" : "user")">
     <div>
     <div class="content">
-        @if (ChatBotObj == null || visible)
+        @if (ChatbotQuestionsList == null || visible)
         {
             <span class="message">
                 @Message
@@ -20,7 +20,7 @@
                 <img src="@Image" alt="typing" />
             }
         } else {
-            @foreach(var question in ChatBotObj)
+            @foreach(var question in ChatbotQuestionsList)
             {
                 <button class="question" @onclick="() => displayQuestion(question)">
                     @question.Question
@@ -42,7 +42,7 @@
     public string? Image { get; set; }
 
     [Parameter]	
-    public IEnumerable<ChatBotQuestion>? ChatBotObj { get; set; }
+    public IEnumerable<ChatBotQuestion>? ChatbotQuestionsList { get; set; }
     
 
     public bool visible = false;

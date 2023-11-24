@@ -38,9 +38,9 @@
         @foreach (var message in chatMessages)
         {
             if(message.Message != null) {
-            <ChatMessage Message="@message.Message" type="@message.type" ChatBotObj="@message.ChatBotObj" QuestionClicked="HandleQuestionClicked" /> 
+            <ChatMessage Message="@message.Message" type="@message.type" ChatbotQuestionsList="@message.ChatbotQuestionsList" QuestionClicked="HandleQuestionClicked" /> 
             } else  {
-            <ChatMessage type="@message.type" ChatBotObj="@message.ChatBotObj" QuestionClicked="HandleQuestionClicked" />
+            <ChatMessage type="@message.type" ChatbotQuestionsList="@message.ChatbotQuestionsList" QuestionClicked="HandleQuestionClicked" />
             }
         }
         @if(typing) {
@@ -60,19 +60,19 @@
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; } = default!;
 
-    IEnumerable<ChatBotQuestion>? ChatBotObj;
+    IEnumerable<ChatBotQuestion>? ChatbotQuestionsList;
 
     protected override async Task OnInitializedAsync()
     {
-        await getChatBotObj();
+        await getChatbotQuestions();
         await startChat();
     }
 
-    private async Task getChatBotObj()
+    private async Task getChatbotQuestions()
     {
         try {
-            ChatBotObj = await ChatbotService.GetContent();
-            ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
+            ChatbotQuestionsList = await ChatbotService.GetContent();
+            ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
         } catch(Exception e) {
             Console.WriteLine(e.Message);
         }
@@ -81,8 +81,8 @@
     protected async Task getFollowUpQuestions(ChatBotQuestion question)
     {
         //IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
-        List<ChatBotQuestion>? followUpObj = question.FollowUpQuestions;
-        await showQuestions(followUpObj);
+        List<ChatBotQuestion>? followUpQuestions = question.FollowUpQuestions;
+        await showQuestions(followUpQuestions);
     }
 
     void ToggleChatbox()
@@ -103,11 +103,11 @@
     private async Task startChat()
     {
         restartable = false;
-        await getChatBotObj();
+        await getChatbotQuestions();
         chatMessages.Clear();
         chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", type = "bot" });
         StateHasChanged(); // Maybe deleting?
-        await showQuestions(ChatBotObj);
+        await showQuestions(ChatbotQuestionsList);
     }
 
     private async Task HandleQuestionClicked(ChatBotQuestion question)
@@ -115,7 +115,7 @@
         restartable = false;
         await botResponse(question.Answer);
 
-        ChatBotObj = ChatBotObj.Where(x => x != question);
+        ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x != question);
 
         if(question.FollowUpQuestions == null || question.FollowUpQuestions.Count() > 0)
         {
@@ -123,12 +123,12 @@
         } else {
             
             await botResponse("Hebt u verder nog vragen?");
-            if(ChatBotObj.Count() == 0)
+            if(ChatbotQuestionsList.Count() == 0)
             {
-                await getChatBotObj();
+                await getChatbotQuestions();
             }
 
-            await showQuestions(ChatBotObj);
+            await showQuestions(ChatbotQuestionsList);
         }
         
         await JSRuntime.InvokeVoidAsync("scrollToBottom");
@@ -152,10 +152,10 @@
         await JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
-    private async Task showQuestions(IEnumerable<ChatBotQuestion>? obj)
+    private async Task showQuestions(IEnumerable<ChatBotQuestion>? questions)
     {
         await Task.Delay(450);
-        chatMessages.Add(new ChatMessage { Message = null,  type = "questions", ChatBotObj=obj });
+        chatMessages.Add(new ChatMessage { Message = null,  type = "questions", ChatbotQuestionsList=questions });
         if(chatMessages.Count() > 4)
         { 
             restartable = true;
