@@ -25,48 +25,48 @@ namespace BlazorApp.Services
         //     return _ctx.ChatBotQuestions.Where(question => question.FollowUpID == followUpID).ToList();
         // }
         
-        public void AddQuestion(ChatBotQuestion question)
+        public async Task AddQuestion(ChatBotQuestion question)
         {
             _ctx.ChatBotQuestions.Add(question);
-            _ctx.SaveChanges();
+            await _ctx.SaveChangesAsync();
         }
 
-        public void AddFollowUpQuestion(ChatBotQuestion parentQuestion, ChatBotQuestion question)
+        public async Task AddFollowUpQuestion(ChatBotQuestion parentQuestion, ChatBotQuestion question)
         {
             question.IsFollowUp = true;
 
             if(parentQuestion.FollowUpQuestions == null) parentQuestion.FollowUpQuestions = new List<ChatBotQuestion>();
 
             parentQuestion.FollowUpQuestions.Add(question);
-            EditQuestion(parentQuestion);
+            await EditQuestion(parentQuestion);
         }
 
-        public void EditQuestion(ChatBotQuestion question)
+        public async Task EditQuestion(ChatBotQuestion question)
         {
             _ctx.ChatBotQuestions.Update(question);
-            _ctx.SaveChanges();
+            await _ctx.SaveChangesAsync();
         }
 
-        public void DeleteQuestion(ChatBotQuestion question)
+        public async Task DeleteQuestion(ChatBotQuestion question)
         {
             RecursiveDelete(question);
             _ctx.ChatBotQuestions.Remove(question);
-            _ctx.SaveChanges();
+            await _ctx.SaveChangesAsync();
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteById(int id)
         {
-            ChatBotQuestion question = _ctx.ChatBotQuestions.Find(id);
-            DeleteQuestion(question);
+            ChatBotQuestion question = await _ctx.ChatBotQuestions.FindAsync(id);
+            await DeleteQuestion(question);
         }
 
-        public void RecursiveDelete(ChatBotQuestion question)
+        public async Task RecursiveDelete(ChatBotQuestion question)
         {
             if (question.FollowUpQuestions != null)
             {
                 foreach (ChatBotQuestion followUpQuestion in question.FollowUpQuestions)
                 {
-                    RecursiveDelete(followUpQuestion);
+                    await RecursiveDelete(followUpQuestion);
                     _ctx.ChatBotQuestions.Remove(followUpQuestion);
                 }
             }
