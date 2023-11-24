@@ -25,7 +25,7 @@ namespace BlazorApp.Services
         
         public async Task AddQuestion(ChatBotQuestion question)
         {
-            await _ctx.ChatBotQuestions.AddAsync(question);
+            _ctx.ChatBotQuestions.Add(question);
             await _ctx.SaveChangesAsync();
         }
 
