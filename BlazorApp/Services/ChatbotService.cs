@@ -49,7 +49,7 @@ namespace BlazorApp.Services
 
         public void DeleteQuestion(ChatBotQuestion question)
         {
-            recursiveDelete(question);
+            RecursiveDelete(question);
             _ctx.ChatBotQuestions.Remove(question);
             _ctx.SaveChanges();
         }
@@ -60,13 +60,13 @@ namespace BlazorApp.Services
             DeleteQuestion(question);
         }
 
-        public void recursiveDelete(ChatBotQuestion question)
+        public void RecursiveDelete(ChatBotQuestion question)
         {
             if (question.FollowUpQuestions != null)
             {
                 foreach (ChatBotQuestion followUpQuestion in question.FollowUpQuestions)
                 {
-                    recursiveDelete(followUpQuestion);
+                    RecursiveDelete(followUpQuestion);
                     _ctx.ChatBotQuestions.Remove(followUpQuestion);
                 }
             }

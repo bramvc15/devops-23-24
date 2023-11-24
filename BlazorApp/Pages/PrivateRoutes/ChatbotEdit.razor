@@ -26,11 +26,11 @@
         {
             foreach (var question in ChatbotQuestionsList)
             {
-                  <ChatbotAccordion question=question onDelete="onDelete"/>
+                  <ChatbotAccordion Question=question OnDelete=HandleDelete/>
             }
         }
         </div> 
-        <ChatbotPopup text="Voeg vraag toe" refresh=refresh />
+        <ChatbotPopup Text="Voeg vraag toe" Refresh=HandleRefresh />
         <button class="btn btn-primary" @onclick="OnInitializedAsync">Refresh</button>
         } else {
                 <p>You are not authorized to access this page. Please log in.</p>
@@ -58,13 +58,13 @@
         }
     }
 
-    protected async Task refresh()
+    protected async Task HandleRefresh()
     {
         await OnInitializedAsync();
         StateHasChanged();
     }
 
-    protected async Task onDelete(ChatBotQuestion question) {
+    protected async Task HandleDelete(ChatBotQuestion question) {
         ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.Id != question.Id);
         StateHasChanged();
     }
