@@ -2,13 +2,13 @@ namespace Domain
 {
     public class Doctor
     {
-        public string Name { get; set; };
-        public string Gender { get; set; };
-        public string Specialization { get; set; };
-        public string Biograph { get; set; };
-        public string IsAvailable { get; set; };
-        public List<TimeSlot> TimeSlots { get; set; };
-        public List<ScheduleTimeSlot> ScheduleTimeSlots { get; set; };
+        public string Name { get; set; }
+        public string Gender { get; set; }
+        public string Specialization { get; set; }
+        public string Biograph { get; set; }
+        public string IsAvailable { get; set; }
+        public List<TimeSlot> TimeSlots { get; set; }
+        public List<ScheduleTimeSlot> ScheduleTimeSlots { get; set; }
     }
 
     public void IsDoctorAvailable()
