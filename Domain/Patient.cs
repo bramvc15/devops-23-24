@@ -2,26 +2,87 @@ namespace Domain;
 
 public class Patient
 {
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public string PhoneNumber { get; set; }
-    public Gender Gender { get; set; }
-    public DateTime DateOfBirth { get; set; }
-    public BloodType BloodType { get; set; }
-    public List<Appointment> Appointments { get; set; }
+    #region Fields
+    private string _name;
+    private string _email;
+    private string _phoneNumber;
+    private DateTime _dateOfBirth;
+    private readonly List<Appointment> _appointments = new();
+    #endregion
 
-    public void AddAppointment()
-    {
-        throw new NotImplementedException();
+    #region Properties
+    public string Name {
+        get 
+        {
+            return _name;
+        }
+        private set
+        { 
+            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Name cannot be empty"); 
+            _name = value;
+        }
     }
-
-    public void UpdateAppointment()
-    {
-        throw new NotImplementedException();
+    public string Email {
+        get 
+        {
+            return _email;
+        }
+        private set
+        { 
+            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Email cannot be empty");
+            // TODO additional email validation
+            _email = value;
+        }
     }
+    public string PhoneNumber {
+        get 
+        {
+            return _phoneNumber;
+        }
+        private set
+        { 
+            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Phone number cannot be empty");
+            _phoneNumber = value;
+            // TODO additional phone number validation
+        }
+    }
+    public DateTime DateOfBirth {
+        get 
+        {
+            return _dateOfBirth;
+        }
+        private set
+        { 
+            if(value == null) throw new ArgumentNullException("Date of birth cannot be empty");
+            // TODO additional date of birth validation
+            _dateOfBirth = value;
+        }
+    }
+    public Gender Gender { get; private set; }
+    public BloodType BloodType { get; private set; }
+    #endregion
 
-    public void DeleteAppointment()
+    #region Constructors
+    public Patient(string name, string email, string phoneNumber, DateTime dateOfBirth, Gender gender, BloodType bloodType) {
+        Name = name;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        DateOfBirth = dateOfBirth;
+        Gender = gender;
+        BloodType = bloodType;
+    }
+    #endregion
+
+    #region Methods
+    public IEnumerable<Appointment> getAppointments()
     {
-        throw new NotImplementedException();
+        return _appointments;
+    }
+    #endregion
+
+
+    public void MakeAppointment()
+    {
+        // TODO implement
     }
 }
