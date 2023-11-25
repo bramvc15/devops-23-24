@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "+//wXGtorQ/Dy8obB34SmHCrJzkk/kAnpN1UwXZTQ8Qc27pFwGvchjcX/GxIgsJ2k1bS7gG8ZlV/63x9RgmXHQ==",
+  "dgSpecHash": "3K4X0yL9dDlNc063AYpfQQuYBh3WMaXjrfnnaKY+jNH23pj/46Nm74QIjJ9PkSCHsmNrZoT/CufRuX+CFCI7OQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lander\\Documents\\HoGent\\3de Jaar\\DevOps\\devops-23-24-net-g07\\Domain\\Domain.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\Victo\\Desktop\\DevOps\\devops-23-24-net-g07\\Domain\\Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Victo\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\Victo\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\Victo\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512"
+  ],
   "logs": []
 }
