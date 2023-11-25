@@ -60,20 +60,15 @@ public class Doctor
         return _scheduleTimeSlots;
     }
 
-    public void UpdateScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot)
+    public void UpdateScheduleTimeSlot(ScheduleTimeSlot oldScheduleTimeSlot, ScheduleTimeSlot newScheduleTimeSlot)
     {
-        ScheduleTimeSlot existingTimeSlot = _scheduleTimeSlots.FirstOrDefault(t => t.DayOfWeek == scheduleTimeSlot.DayOfWeek && t.DateTime == scheduleTimeSlot.DateTime);
-
-        if (existingTimeSlot != null)
+        if (_scheduleTimeSlots.Contains(oldScheduleTimeSlot))
         {
-/*            existingTimeSlot.AppointmentType = scheduleTimeSlot.AppointmentType;
-            existingTimeSlot.DateTime = scheduleTimeSlot.DateTime;
-            existingTimeSlot.Duration = scheduleTimeSlot.Duration;
-            existingTimeSlot.DayOfWeek = scheduleTimeSlot.DayOfWeek;*/
+             _scheduleTimeSlots.FirstOrDefault(oldScheduleTimeSlot).UpdateScheduleTimeSlot(newScheduleTimeSlot);
         }
         else
-        {
-            throw new ArgumentException("Specified time slot not found in the schedule.");
+        { 
+            throw new ArgumentException("The schedule time slot does not exist in the schedule.");
         }
     }
 
@@ -93,19 +88,15 @@ public class Doctor
         return _timeSlots;
     }
 
-    public void UpdateTimeSlot(TimeSlot timeSlot)
+    public void UpdateTimeSlot(TimeSlot oldTimeSlot, TimeSlot newTimeSlot)
     {
-        TimeSlot existingTimeSlot = _timeSlots.FirstOrDefault(t => t.DateTime == timeSlot.DateTime);
-
-        if (existingTimeSlot != null)
+        if (_timeSlots.Contains(oldTimeSlot))
         {
-/*            existingTimeSlot.AppointmentType = timeSlot.AppointmentType;
-            existingTimeSlot.Duration = timeSlot.Duration;
-            existingTimeSlot.DateTime = timeSlot.DateTime;*/
+             _timeSlots.FirstOrDefault(oldTimeSlot).UpdateTimeSlot(newTimeSlot);
         }
         else
-        {
-            throw new ArgumentException("Specified time slot not found in the schedule.");
+        { 
+            throw new ArgumentException("The time slot does not exist.");
         }
     }
 
@@ -132,9 +123,23 @@ public class Doctor
         return false;
     }
 
-    public void CreateForcedAppointment()
+    public void CreateAppointmentForPatient(Patient patient, TimeSlot timeSlot, string reason, string note)
     {
-        // to be implemented
+        if (_timeSlots.Contains(timeSlot))
+        {
+            if (timeSlot.IsTimeSlotAvailable())
+            {
+                timeSlot.CreateAppointment(patient, reason, note);
+            }
+            else
+            {
+                throw new ArgumentException("This time slot is not available.");
+            }
+        }
+        else
+        {
+            throw new ArgumentException("This time slot does not exist.");
+        }
     }
     #endregion
 }
