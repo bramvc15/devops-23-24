@@ -33,7 +33,7 @@ public class Doctor
         }
     }
     public Gender Gender { get; private set; }
-    public string Biograph { get; private set; } = "This doctor has not written a biograph yet."
+    public string Biograph { get; private set; } = "This doctor has not written a biograph yet.";
     public bool IsAvailable { get; private set; } = true;
     #endregion
 
@@ -62,14 +62,25 @@ public class Doctor
 
     public void UpdateScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot)
     {
-        // oplossing: oude ScheduleTimeSlot meegeven in functie
-        // int index = _scheduleTimeSlots.FindIndex(x => x.Id == scheduleTimeSlot.Id);
-        // to be implemented
+        ScheduleTimeSlot existingTimeSlot = _scheduleTimeSlots.FirstOrDefault(t => t.DayOfWeek == scheduleTimeSlot.DayOfWeek && t.DateTime == scheduleTimeSlot.DateTime);
+
+        if (existingTimeSlot != null)
+        {
+/*            existingTimeSlot.AppointmentType = scheduleTimeSlot.AppointmentType;
+            existingTimeSlot.DateTime = scheduleTimeSlot.DateTime;
+            existingTimeSlot.Duration = scheduleTimeSlot.Duration;
+            existingTimeSlot.DayOfWeek = scheduleTimeSlot.DayOfWeek;*/
+        }
+        else
+        {
+            throw new ArgumentException("Specified time slot not found in the schedule.");
+        }
     }
+
 
     public void DeleteScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot)
     {
-        _scheduleTimeSlots.Remove(scheduleTimeSlot)
+        _scheduleTimeSlots.Remove(scheduleTimeSlot);
     }
 
     public void AddTimeSlot(TimeSlot timeSlot)
@@ -84,8 +95,18 @@ public class Doctor
 
     public void UpdateTimeSlot(TimeSlot timeSlot)
     {
-        // oplossing: oude TimeSlot meegeven in functie
-        // to be implemented
+        TimeSlot existingTimeSlot = _timeSlots.FirstOrDefault(t => t.DateTime == timeSlot.DateTime);
+
+        if (existingTimeSlot != null)
+        {
+/*            existingTimeSlot.AppointmentType = timeSlot.AppointmentType;
+            existingTimeSlot.Duration = timeSlot.Duration;
+            existingTimeSlot.DateTime = timeSlot.DateTime;*/
+        }
+        else
+        {
+            throw new ArgumentException("Specified time slot not found in the schedule.");
+        }
     }
 
     public void DeleteTimeSlot(TimeSlot timeSlot)
@@ -95,19 +116,20 @@ public class Doctor
 
     public bool IsDoctorAvailable()
     {
-        if (IsAvailable)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        if (IsAvailable) return true;
+        else return false;
     }
 
     public bool HasAvailableTimeSlots()
     {
-        // to be implemented
+        foreach (var timeSlot in _timeSlots) 
+        {
+            if (timeSlot.IsTimeSlotAvailable())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void CreateForcedAppointment()
