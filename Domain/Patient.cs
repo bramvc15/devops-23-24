@@ -101,9 +101,9 @@ public class Patient
         return _appointments;
     }
 
-    public void MakeAppointment(string reason, string note)
+    public void MakeAppointment(string reason, string note, Doctor doctor, TimeSlot timeSlot)
     {
-        Appointment appointment = new(this, reason, note);
+        Appointment appointment = doctor.GetTimeSlots().FirstOrDefault(timeSlot).CreateAppointment(this, reason, note);
         _appointments.Add(appointment);
     }
     #endregion
