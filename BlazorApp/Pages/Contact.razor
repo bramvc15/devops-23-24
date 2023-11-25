@@ -173,6 +173,24 @@
         public string Message { get; set; }
     }
 
+    public class ContactModel
+    {
+        [Required(ErrorMessage = "Naam is verplicht.")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Voornaam is verplicht.")]
+        public string FirstName { get; set; }
+        [Required(ErrorMessage = "Email is verplicht.")]
+        [EmailAddress(ErrorMessage = "Voer een geldig emailadres in.")]
+        public string Email { get; set; }
+        [Required(ErrorMessage = "Geboortedatum is verplicht.")]
+        public DateTime DateOfBirth { get; set; }
+        [Required(ErrorMessage = "Telefoonnummer is verplicht.")]
+        [RegularExpression(@"[0-9]{10}", ErrorMessage = "Voer een geldig telefoonnummer in.")]
+        public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Een bericht is verplicht.")]
+        public string Message { get; set; }
+    }
+
     // Create references for other form fields as needed
 
     // Define a method to handle the form submission
