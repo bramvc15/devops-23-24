@@ -4,7 +4,7 @@ public class TimeSlot
 {
     #region Fields
     private int _duration;
-    private readonly Appointment _appointment;
+    private Appointment _appointment;
     #endregion
 
     #region Properties
@@ -39,19 +39,28 @@ public class TimeSlot
         return _appointment == null;
     }
 
-    public void CreateAppointment()
+    public Appointment CreateAppointment(Patient patient, string reason, string note)
     {
-         // to be implemented
+        _appointment = new Appointment(patient, reason, note);
+        return _appointment;
     }
 
-    public void UpdateAppointment()
+    public void UpdateAppointment(Appointment newAppointment)
     {
-         // to be implemented
+        _appointment = newAppointment;
     }
 
     public void DeleteAppointment()
     {
-         // to be implemented
+        if (_appointment == null) throw new ArgumentException("Appointment does not exist");
+        _appointment = null;
+    }
+
+    public void UpdateTimeSlot(TimeSlot newTimeSlot)
+    {
+        AppointmentType = newTimeSlot.AppointmentType;
+        DateTime = newTimeSlot.DateTime;
+        Duration = newTimeSlot.Duration;
     }
     #endregion
 }

@@ -32,4 +32,14 @@ public class ScheduleTimeSlot
         DayOfWeek = dayOfWeek;
     }
     #endregion
+
+    #region Methods
+    public void UpdateScheduleTimeSlot(ScheduleTimeSlot newScheduleTimeSlot)
+    {
+        AppointmentType = newScheduleTimeSlot.AppointmentType;
+        DateTime = newScheduleTimeSlot.DateTime;
+        Duration = newScheduleTimeSlot.Duration;
+        DayOfWeek = newScheduleTimeSlot.DayOfWeek;
+    }
+    #endregion
 }
