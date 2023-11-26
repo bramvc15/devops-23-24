@@ -5,6 +5,7 @@ public class Doctor
     #region Fields
     private string _name;
     private string _specialization;
+    private Gender _gender;
     private readonly List<TimeSlot> _timeSlots = new();
     private readonly List<ScheduleTimeSlot> _scheduleTimeSlots = new();
     #endregion
@@ -32,20 +33,47 @@ public class Doctor
             _specialization = value;
         }
     }
-    public Gender Gender { get; private set; }
+    public Gender Gender {
+        get
+        {
+            return _gender;
+        }
+        private set
+        {
+            if (!Enum.IsDefined(typeof(Gender), value))
+            {
+                throw new ArgumentException("Invalid gender value");
+            }
+
+            _gender = value;
+        }
+    }
     public string Biograph { get; private set; } = "This doctor has not written a biograph yet.";
     public bool IsAvailable { get; private set; } = true;
     #endregion
 
     #region Constructors
     public Doctor(string name, string specialization, Gender gender, string biograph = null) {
-        Name = name;
-        Specialization = specialization;
-        Gender = gender;
+        if (string.IsNullOrEmpty(name))
+        {
+            throw new ArgumentNullException("Name cannot be empty");
+        }
 
         if (!string.IsNullOrWhiteSpace(biograph)) {
             Biograph = biograph;
         }
+
+        if (string.IsNullOrWhiteSpace(specialization)) {
+            throw new ArgumentNullException("Specialization cannot be empty");
+        }
+
+        if (!Enum.IsDefined(typeof(Gender), gender)) {
+            throw new ArgumentException("Invalid gender value");
+        }
+
+        _name = name;
+        _specialization = specialization;
+        _gender = gender;
     }
     #endregion
 

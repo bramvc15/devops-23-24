@@ -2,6 +2,6 @@
 
 public enum AppointmentType
 {
-    Consultatie,
-    Operatie
+    Consultation,
+    Operation
 }

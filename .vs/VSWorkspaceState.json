@@ -1,7 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\BlazorApp"
+    "\\Domain\\bin",
+    "\\Domain\\CMS",
+    "\\Domain\\Core",
+    "\\Domain\\DTO",
+    "\\Domain\\Enums",
+    "\\Tests\\Domain.Tests"
   ],
+  "SelectedNode": "\\Domain",
   "PreviewInSolutionExplorer": false
 }

@@ -52,5 +52,10 @@ public class Appointment
     {
         _patient = patient;
     }
+
+    public Patient GetPatient()
+    {
+        return _patient;
+    }
     #endregion
 }

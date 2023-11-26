@@ -62,5 +62,10 @@ public class TimeSlot
         DateTime = newTimeSlot.DateTime;
         Duration = newTimeSlot.Duration;
     }
+
+    public Appointment GetAppointment()
+    {
+        return _appointment;
+    }
     #endregion
 }
