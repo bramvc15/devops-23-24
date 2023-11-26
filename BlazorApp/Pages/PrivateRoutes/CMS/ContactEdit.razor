@@ -5,6 +5,7 @@
 @using BlazorApp.Models
 @using BlazorApp.Controllers
 @using BlazorApp.Components.Modals
+@using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavManager
 @inject ContactService contactService
 
@@ -57,43 +58,44 @@
                 <!-- Right Column for Google Maps -->
                 <div class="col-md-6">
                     <h1 class="mb-4">Stel ons een vraag</h1>
-                    <form action="submit_form.php" method="post">
+                    <EditForm Model="@Model" OnValidSubmit="@SubmitForm" FormName="ContactForm">
+                        <DataAnnotationsValidator />
+                        <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
                         <!-- Name and First Name -->
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="box" name="name" placeholder="Naam" required>
+                                <InputText @bind-Value="Model.Name" placeholder="Naam"  class="form-control" id="box" />
                             </div>
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control"id="box"  name="firstName" placeholder="Voornaam" required>
+                                <InputText @bind-Value="Model.FirstName" placeholder="Voornaam" class="form-control" id="box" />
                             </div>
                         </div>
 
                         <!-- Email -->
                         <div class="form-group">
-                            <input type="email" class="form-control"id="box"  name="email" placeholder="email" required>
+                            <InputText @bind-Value="Model.Email" placeholder="E-mail" class="form-control" id="box" />
                         </div>
 
                         <!-- Date of Birth -->
                         <div class="form-group">
-                            <input type="date" class="form-control" id="box"  name="dob" placeholder="Geboortedatum" required>
+                            <InputDate @bind-Value="Model.DateOfBirth" placeholder="Geboortedatum" class="form-control" id="box" />
                         </div>
 
                         <!-- Phone Number -->
                         <div class="form-group">
-                            <input type="tel" class="form-control" id="box"  name="phoneNumber"
-                                pattern="[0-9]{10}" placeholder="gsm" required>
+                            <InputText @bind-Value="Model.PhoneNumber" placeholder="Telefoonnummer" class="form-control" id="box" />
                         </div>
 
                         <!-- Message -->
                         <div class="form-group">
-                            <textarea class="form-control" id="box"  name="message" rows="4" placeholder="bericht of vraag" required></textarea>
+                            <InputTextArea rows="4" @bind-Value="Model.Message" placeholder="Bericht of vraag" class="form-control" id="box" />
                         </div>
 
                         <!-- Submit Button -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">verstuur</button>
                         </div>
-                    </form>
+                    </EditForm>
 
 
 
@@ -112,12 +114,39 @@
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
     
     IEnumerable<ContactM>? ConObj;
+
+    public ContactModel? Model { get; set; }
     
       protected override async Task OnInitializedAsync()
     {
+        
+        Model = new ContactModel();
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
         ConObj = await Task.Run(() => contactService.GetContent());
+    }
+
+    public class ContactModel
+    {
+        [Required(ErrorMessage = "Naam is verplicht.")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Voornaam is verplicht.")]
+        public string FirstName { get; set; }
+        [Required(ErrorMessage = "Email is verplicht.")]
+        [EmailAddress(ErrorMessage = "Voer een geldig emailadres in.")]
+        public string Email { get; set; }
+        [Required(ErrorMessage = "Geboortedatum is verplicht.")]
+        public DateTime DateOfBirth { get; set; }
+        [Required(ErrorMessage = "Telefoonnummer is verplicht.")]
+        [RegularExpression(@"[0-9]{10}", ErrorMessage = "Voer een geldig telefoonnummer in.")]
+        public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Een bericht is verplicht.")]
+        public string Message { get; set; }
+    }
+
+    private void SubmitForm()
+    {
+    
     }
 
 }
