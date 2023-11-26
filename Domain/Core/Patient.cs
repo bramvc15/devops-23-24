@@ -9,6 +9,8 @@ public class Patient
     private string _email;
     private string _phoneNumber;
     private DateTime _dateOfBirth;
+    private Gender _gender;
+    private BloodType _bloodType;
     private readonly List<Appointment> _appointments = new();
     #endregion
 
@@ -19,7 +21,7 @@ public class Patient
             return _name;
         }
         private set
-        { 
+        {
             if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Name cannot be empty"); 
             _name = value;
         }
@@ -80,18 +82,85 @@ public class Patient
             _dateOfBirth = value;
         }
     }
-    public Gender Gender { get; private set; }
-    public BloodType BloodType { get; private set; }
+    public Gender Gender
+    {
+        get
+        {
+            return _gender;
+        }
+        private set
+        {
+            if (!Enum.IsDefined(typeof(Gender), value))
+            {
+                throw new ArgumentException("Invalid Gender value");
+            }
+
+            _gender = value;
+        }
+    }
+    public BloodType BloodType
+    {
+        get
+        {
+            return _bloodType;
+        }
+        private set
+        {
+            if (!Enum.IsDefined(typeof(Gender), value))
+            {
+                throw new ArgumentException("Invalid BloodType value");
+            }
+
+            _bloodType = value;
+        }
+    }
     #endregion
 
     #region Constructors
     public Patient(string name, string email, string phoneNumber, DateTime dateOfBirth, Gender gender, BloodType bloodType) {
-        Name = name;
-        Email = email;
-        PhoneNumber = phoneNumber;
-        DateOfBirth = dateOfBirth;
-        Gender = gender;
-        BloodType = bloodType;
+        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("Name cannot be empty");
+        _name = name;
+
+        if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException("Email cannot be empty");
+
+        if (!IsValidEmail(email))
+        {
+            throw new ArgumentException("Invalid email format");
+        }
+        _email = email;
+
+        if (string.IsNullOrWhiteSpace(phoneNumber)) throw new ArgumentNullException("Phone number cannot be empty");
+
+        if (!IsValidPhoneNumber(phoneNumber))
+        {
+            throw new ArgumentException("Invalid phone number format");
+        }
+        _phoneNumber = phoneNumber;
+
+        if (dateOfBirth == default(DateTime)) throw new ArgumentNullException("Date of birth cannot be empty");
+
+        if (dateOfBirth > DateTime.Now)
+        {
+            throw new ArgumentException("Date of birth cannot be in the future");
+        }
+
+        if (DateTime.Now.Year - dateOfBirth.Year > 150)
+        {
+            throw new ArgumentException("Date of birth is too far in the past");
+        }
+        _dateOfBirth = dateOfBirth;
+
+        if (!Enum.IsDefined(typeof(Gender), gender))
+        {
+            throw new ArgumentException("Invalid Gender value");
+        }
+        _gender = gender;
+
+        if (!Enum.IsDefined(typeof(BloodType), bloodType))
+        {
+            throw new ArgumentException("Invalid BloodType value");
+        }
+        _bloodType = bloodType;
     }
     #endregion
 

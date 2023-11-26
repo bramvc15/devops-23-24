@@ -16,7 +16,7 @@ public class Appointment
         }
         private set
         {
-            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Reason cannot be empty");
+            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Reason cannot be empty");
             _reason = value;
         }
     }
@@ -27,18 +27,38 @@ public class Appointment
         }
         private set
         {
-            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Note cannot be empty");
-            _note = value;
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                _note = "This appointment has no additional note.";
+            }
+            else
+            {
+                _note = value;
+            }
         }
     }
     #endregion
 
     #region Constructors
-    public Appointment(Patient patient, string reason, string note)
+    public Appointment(Patient patient, string reason, string note = null)
     {
+        if (patient == null)
+        {
+            throw new ArgumentNullException("Patient cannot be empty, a appointment needs a patient");
+        }
         _patient = patient;
+        if (string.IsNullOrWhiteSpace(reason)) {
+            throw new ArgumentNullException("Reason cannot be empty");
+        }
         Reason = reason;
-        Note = note;
+        if (!string.IsNullOrWhiteSpace(note))
+        {
+            Note = note;
+        } 
+        else
+        {
+            Note = "This appointment has no additional note.";
+        }
     }
     #endregion
 
@@ -50,6 +70,10 @@ public class Appointment
 
     public void ChangePatient(Patient patient)
     {
+        if (patient == null)
+        {
+            throw new ArgumentNullException("Patient cannot be empty, a appointment needs a patient");
+        }
         _patient = patient;
     }
 

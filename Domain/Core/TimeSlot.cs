@@ -4,6 +4,8 @@ public class TimeSlot
 {
     #region Fields
     private int _duration;
+    private AppointmentType _appointmentType;
+    private DateTime _dateTime;
     private Appointment _appointment;
     #endregion
 
@@ -15,20 +17,87 @@ public class TimeSlot
         }
         private set
         {
-            if(value <= 0) throw new ArgumentException("Duration cannot be less than or equal to 0");
+            if (value == null)
+            {
+                throw new ArgumentNullException("Duration cannot be null");
+            }
+            if (value <= 0) throw new ArgumentException("Duration cannot be less than or equal to 0");
+            if (value > 1440)
+            {
+                throw new ArgumentException("Duration cannot be longer than 24 hours");
+            }
             _duration = value;
         }
     }
-    public AppointmentType AppointmentType { get; private set; }
-    public DateTime DateTime { get; private set; }
+    public AppointmentType AppointmentType
+    {
+        get
+        {
+            return _appointmentType;
+        }
+        private set
+        {
+            if (!Enum.IsDefined(typeof(AppointmentType), value))
+            {
+                throw new ArgumentException("Invalid AppointmentType");
+            }
+            _appointmentType = value;
+        }
+    }
+    public DateTime DateTime
+    {
+        get
+        {
+            return _dateTime;
+        }
+        private set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException("DateTime cannot be null");
+            }
+            if (value < DateTime.Now)
+            {
+                throw new ArgumentException("DateTime cannot be in the past");
+            }
+            _dateTime = value;
+        }
+    }
     #endregion
 
     #region Constructors
     public TimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration)
     {
-        AppointmentType = appointmentType;
-        DateTime = dateTime;
-        Duration = duration;
+        if (!Enum.IsDefined(typeof(AppointmentType), appointmentType))
+        {
+            throw new ArgumentException("Invalid AppointmentType");
+        }
+        _appointmentType = appointmentType;
+
+        if (dateTime == null)
+        {
+            throw new ArgumentNullException("DateTime cannot be null");
+        }
+        if (dateTime < DateTime.Now)
+        {
+            throw new ArgumentException("DateTime cannot be in the past");
+        }
+        _dateTime = dateTime;
+
+        if (duration == null)
+        {
+            throw new ArgumentNullException("Duration cannot be null");
+        }
+        if (duration <= 0)
+        {
+            throw new ArgumentException("Duration cannot be less than or equal to 0");
+        }
+        if (duration > 1440)
+        {
+            throw new ArgumentException("Duration cannot be longer than 24 hours");
+        }
+        _duration = duration;
+
         _appointment = null;
     }
     #endregion
@@ -58,9 +127,9 @@ public class TimeSlot
 
     public void UpdateTimeSlot(TimeSlot newTimeSlot)
     {
-        AppointmentType = newTimeSlot.AppointmentType;
-        DateTime = newTimeSlot.DateTime;
-        Duration = newTimeSlot.Duration;
+        _appointmentType = newTimeSlot.AppointmentType;
+        _dateTime = newTimeSlot.DateTime;
+        _duration = newTimeSlot.Duration;
     }
 
     public Appointment GetAppointment()
