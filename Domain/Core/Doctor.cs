@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Domain;
 
 public class Doctor : Entity
@@ -225,6 +227,50 @@ public class Doctor : Entity
             // Check for overlap: new slot end should not be between existing slot's start and end
             if (scheduleTimeSlot.DateTime.AddMinutes(scheduleTimeSlot.Duration) > existingSlot.DateTime &&
                 scheduleTimeSlot.DateTime.AddMinutes(scheduleTimeSlot.Duration) <= existingSlot.DateTime.AddMinutes(existingSlot.Duration) && scheduleTimeSlot.DayOfWeek == existingSlot.DayOfWeek)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static bool IsValidTimeSlot(TimeSlot timeSlot, List<TimeSlot> li)
+    {
+        foreach (var existingSlot in li)
+        {
+            // Check for overlap: new slot start should not be between existing slot's start and end
+            if (timeSlot.DateTime >= existingSlot.DateTime &&
+                timeSlot.DateTime < existingSlot.DateTime.AddMinutes(existingSlot.Duration))
+            {
+                return false;
+            }
+
+            // Check for overlap: new slot end should not be between existing slot's start and end
+            if (timeSlot.DateTime.AddMinutes(timeSlot.Duration) > existingSlot.DateTime &&
+                timeSlot.DateTime.AddMinutes(timeSlot.Duration) <= existingSlot.DateTime.AddMinutes(existingSlot.Duration))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    #endregion
+
+    #region ValidationMethods
+    private static bool IsValidScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot, List<ScheduleTimeSlot> li)
+    {
+        foreach (var existingSlot in li)
+        {
+            // Check for overlap: new slot start should not be between existing slot's start and end
+            if (scheduleTimeSlot.DateTime >= existingSlot.DateTime &&
+                scheduleTimeSlot.DateTime < existingSlot.DateTime.AddMinutes(existingSlot.Duration) && scheduleTimeSlot.DayOfWeek == existingSlot.DayOfWeek)
+            {
+                return false;
+            }
+
+            // Check for overlap: new slot end should not be between existing slot's start and end
+            if (scheduleTimeSlot.DateTime.AddMinutes(scheduleTimeSlot.Duration) > existingSlot.DateTime &&
+                scheduleTimeSlot.DateTime.AddMinutes(scheduleTimeSlot.Duration) <= existingSlot.DateTime.AddMinutes(existingSlot.Duration))
             {
                 return false;
             }
