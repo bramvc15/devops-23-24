@@ -134,6 +134,58 @@ public class DoctorTest
 
         Assert.DoesNotContain(scheduleTimeSlot, _doctor.GetScheduleTimeSlots());
     }
+
+    [Fact]
+    public void Doctor_AddInvalidScheduleTimeSlot_SlotOverlapping()
+    {
+        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
+
+        _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
+
+        ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 12, 0, 0), 30, DayOfWeek.Monday);
+
+        Assert.Throws<ArgumentException>(() => _doctor.AddScheduleTimeSlot(overlappingScheduleTimeSlot));
+    }
+
+    [Fact]
+    public void Doctor_AddInvalidScheduleTimeSlot_StartTimeOverlapping()
+    {
+        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
+
+        _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
+
+        ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 12, 30, 0), 60, DayOfWeek.Monday);
+
+        Assert.Throws<ArgumentException>(() => _doctor.AddScheduleTimeSlot(overlappingScheduleTimeSlot));
+    }
+
+    [Fact]
+    public void Doctor_AddInvalidScheduleTimeSlot_EndTimeOverlapping()
+    {
+        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
+
+        _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
+
+        ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 11, 30, 0), 60, DayOfWeek.Monday);
+
+        Assert.Throws<ArgumentException>(() => _doctor.AddScheduleTimeSlot(overlappingScheduleTimeSlot));
+    }
+
+    [Fact]
+    public void Doctor_AddScheduleTimeSlot_StartTimeOnEndTimeExistingSlot()
+    {
+        Exception caughtException = Record.Exception(() =>
+        {
+            ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
+
+            _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
+
+            ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 13, 0, 0), 60, DayOfWeek.Monday);
+
+            _doctor.AddScheduleTimeSlot(overlappingScheduleTimeSlot);
+        });
+        Assert.Null(caughtException);
+    }
     #endregion
 
     #region TimeSlot tests
@@ -172,6 +224,58 @@ public class DoctorTest
         _doctor.DeleteTimeSlot(timeSlot);
 
         Assert.DoesNotContain(timeSlot, _doctor.GetTimeSlots());
+    }
+
+    [Fact]
+    public void Doctor_AddInvalidTimeSlot_SlotOverlapping()
+    {
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60);
+
+        _doctor.AddTimeSlot(timeSlot);
+
+        TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 12, 30, 0), 20);
+
+        Assert.Throws<ArgumentException>(() => _doctor.AddTimeSlot(overlappingTimeSlot));
+    }
+
+    [Fact]
+    public void Doctor_AddInvalidTimeSlot_StartTimeOverlapping()
+    {
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60);
+
+        _doctor.AddTimeSlot(timeSlot);
+
+        TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 12, 30, 0), 60);
+
+        Assert.Throws<ArgumentException>(() => _doctor.AddTimeSlot(overlappingTimeSlot));
+    }
+
+    [Fact]
+    public void Doctor_AddInvalidTimeSlot_EndTimeOverlapping()
+    {
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60);
+
+        _doctor.AddTimeSlot(timeSlot);
+
+        TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 11, 30, 0), 60);
+
+        Assert.Throws<ArgumentException>(() => _doctor.AddTimeSlot(overlappingTimeSlot));
+    }
+
+    [Fact]
+    public void Doctor_AddTimeSlot_StartTimeOnEndTimeExistingSlot()
+    {
+        Exception caughtException = Record.Exception(() =>
+        {
+            TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60);
+
+            _doctor.AddTimeSlot(timeSlot);
+
+            TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 13, 0, 0), 60);
+
+            _doctor.AddTimeSlot(overlappingTimeSlot);
+        });
+        Assert.Null(caughtException);
     }
     #endregion
 }
