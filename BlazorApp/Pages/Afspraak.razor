@@ -47,7 +47,7 @@
                         @if (doc != null)
                         {
                             <div class="center">
-                                <button @onclick="(e) => chooseDoc(doc)">
+                                <button @onclick="(e) => ChooseDoc(doc)">
                                     <DoctorCard ImageSrc=@doc.Image Name=@doc.Name Specialization=@doc.Specialization/>
                                 </button>
                             </div>                        
@@ -66,7 +66,7 @@
         </div>
         <div class="afspraakbox">
             <div class="temp">
-                <button class="butTemp" @onclick=chooseTime>temp</button>
+                <button class="butTemp" @onclick=ChooseTime>temp</button>
             </div>
         </div>
     </div>
@@ -152,12 +152,12 @@
     {
         DocObj = await Task.Run(() => doctorService.GetAll());
     }
-    private void chooseDoc(Doctor doc) {
+    private void ChooseDoc(Doctor doc) {
         doctorId = doc.Id;
         showDoctors = !showDoctors;
         showAfspraak = !showAfspraak;
     }
-    private void chooseTime()
+    private void ChooseTime()
     {
         showAfspraak = !showAfspraak;
         showContact = !showContact;
