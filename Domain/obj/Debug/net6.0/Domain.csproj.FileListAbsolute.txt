@@ -1,0 +1,28 @@
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.AssemblyInfoInputs.cache
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.AssemblyInfo.cs
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\bin\Debug\net6.0\Domain.deps.json
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\bin\Debug\net6.0\Domain.dll
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\bin\Debug\net6.0\Domain.pdb
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.AssemblyInfoInputs.cache
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.AssemblyInfo.cs
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.sourcelink.json
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.dll
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\refint\Domain.dll
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.pdb
+C:\Users\Victo\Desktop\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\ref\Domain.dll
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\bin\Debug\net6.0\Domain.deps.json
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\bin\Debug\net6.0\Domain.dll
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\bin\Debug\net6.0\Domain.pdb
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.AssemblyInfoInputs.cache
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.AssemblyInfo.cs
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.sourcelink.json
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.dll
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\refint\Domain.dll
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.pdb
+C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\ref\Domain.dll
