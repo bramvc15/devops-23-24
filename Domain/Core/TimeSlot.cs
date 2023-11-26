@@ -136,5 +136,10 @@ public class TimeSlot : Entity
     {
         return _appointment;
     }
+
+    public Appointment GetAppointment()
+    {
+        return _appointment;
+    }
     #endregion
 }
