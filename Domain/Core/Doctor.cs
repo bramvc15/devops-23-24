@@ -176,7 +176,7 @@ public class Doctor : Entity
         {
             if (timeSlot.IsTimeSlotAvailable())
             {
-                timeSlot.CreateAppointment(patient, timeSlot.DateTime, reason, note);
+                timeSlot.CreateAppointment(patient, Name, timeSlot.DateTime, reason, note);
             }
             else
             {

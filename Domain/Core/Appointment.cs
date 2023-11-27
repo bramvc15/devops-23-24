@@ -9,6 +9,7 @@ public class Appointment : Entity
     private string _note;
     private Patient _patient;
     private DateTime _dateTime;
+    private string _nameDoctor;
     #endregion
 
     #region Properties
@@ -79,6 +80,9 @@ public class Appointment : Entity
             throw new ArgumentException("DateTime cannot be in the past");
         }
         _dateTime = dateTime;
+
+        if (string.IsNullOrWhiteSpace(nameDoctor)) throw new ArgumentNullException("Name Doctor cannot be empty");
+        _nameDoctor = nameDoctor;
     }
     #endregion
 

@@ -116,9 +116,9 @@ public class TimeSlot : Entity
         return _appointment == null;
     }
 
-    public Appointment CreateAppointment(Patient patient, DateTime dateTime, string reason, string note)
+    public Appointment CreateAppointment(Patient patient, string nameDoctor, DateTime dateTime, string reason, string note)
     {
-        _appointment = new Appointment(patient, dateTime, reason, note);
+        _appointment = new Appointment(patient, nameDoctor, dateTime, reason, note);
         return _appointment;
     }
 
