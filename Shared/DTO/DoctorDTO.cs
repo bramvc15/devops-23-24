@@ -1,4 +1,5 @@
-namespace Domain;
+using Enums;
+namespace Shared;
 
 public class DoctorDTO
 {

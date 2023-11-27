@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "BlazorApp\Blaz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{7BF91E3C-FB42-4322-BB0D-B2524FB49075}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{E0B8C078-394F-408E-89C9-8D1C29C4379C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{E0B8C078-394F-408E-89C9-8D1C29C4379C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
