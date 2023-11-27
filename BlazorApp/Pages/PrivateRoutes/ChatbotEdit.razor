@@ -53,8 +53,8 @@
             NavManager.NavigateTo("/login");
         else
         {
-            ChatBotObj = await ChatbotService.GetContent();
-            ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
+            ChatbotQuestionsList = await ChatbotService.GetContent();
+            ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
         }
     }
 
@@ -66,7 +66,7 @@
 
     protected async Task DeleteChatBotQuestion(ChatBotQuestion question) 
     {
-        ChatBotObj = ChatBotObj.Where(x => x.Id != question.Id);
+        ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.Id != question.Id);
         StateHasChanged();
     }
 

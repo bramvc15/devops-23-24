@@ -80,7 +80,6 @@
     }
 
     protected async Task GetFollowUpQuestions(ChatBotQuestion question)
-    protected async Task GetFollowUpQuestions(ChatBotQuestion question)
     {
         //IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
         List<ChatBotQuestion>? followUpQuestions = question.FollowUpQuestions;
@@ -93,19 +92,15 @@
     }
 
     private async Task ClearChat()
-    private async Task ClearChat()
     {
-        while(chatMessages.Last().Type != "questions")
         while(chatMessages.Last().Type != "questions")
         {
             await Task.Delay(100);
         }
 
         await StartChat();
-        await StartChat();
     }
 
-    private async Task StartChat()
     private async Task StartChat()
     {
         restartable = false;
@@ -127,7 +122,6 @@
         if(question.FollowUpQuestions == null || question.FollowUpQuestions.Count() > 0)
         {
             await GetFollowUpQuestions(question);
-            await GetFollowUpQuestions(question);
         } else {
             
             await ShowBotResponse("Hebt u verder nog vragen?");
@@ -142,7 +136,6 @@
         await JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
-    private async Task TypingDelay()
     private async Task TypingDelay()
     {
         await Task.Delay(250);

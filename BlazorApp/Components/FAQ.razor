@@ -1,7 +1,6 @@
 <div class="card faq mb-3">
     <div class="row">
         @for (int i = 0; i < Faq.GetLength(0); i++)
-        @for (int i = 0; i < Faq.GetLength(0); i++)
         {
             int questionNumber = i;
             <div class="col-md-4 text-center @(SelectedQuestionNr == questionNumber ? "selected" : "")">
@@ -28,12 +27,9 @@
 
     [Parameter]
     public string[,] Faq { get; set; }
-    public string[,] Faq { get; set; }
 
     private void DisplayAnswer(int index)
-    private void DisplayAnswer(int index)
     {
-        if (displayedAnswer == Faq[index, 1]) {
         if (displayedAnswer == Faq[index, 1]) {
             displayedAnswer = "";
             SelectedQuestionNr = -1;
