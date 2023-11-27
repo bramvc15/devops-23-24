@@ -2,25 +2,23 @@ using Microsoft.Playwright.NUnit;
 using Microsoft.Playwright;
 using NUnit.Framework;
 
-namespace PlaywrightTests;
+namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class CMSTest : PageTest
 {
 
-    public static string baseUrl;
-
     [OneTimeSetUp]
     public void Init()
     {
-        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+
     }
     
     [SetUp]
     public async Task SetUp()
     {
-        await Page.GotoAsync($"{baseUrl}/admin");
+        await Page.GotoAsync($"{TestHelper.BaseUrl}/admin");
         
         bool loggedOut = await Page.IsVisibleAsync("data-test-id=login-username");
 
@@ -38,7 +36,7 @@ public class CMSTest : PageTest
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
         await Page.ClickAsync("data-test-id=sidebar-cms-home");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        Assert.AreEqual($"{baseUrl}/admin/cms/home", Page.Url);
+        Assert.AreEqual($"{TestHelper.BaseUrl}/admin/cms/home", Page.Url);
     }
 
     // [Test]
@@ -61,7 +59,7 @@ public class CMSTest : PageTest
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
         await Page.ClickAsync("data-test-id=sidebar-cms-location");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        Assert.AreEqual($"{baseUrl}/admin/cms/location", Page.Url);
+        Assert.AreEqual($"{TestHelper.BaseUrl}/admin/cms/location", Page.Url);
     }
 
     [Test]
@@ -76,13 +74,13 @@ public class CMSTest : PageTest
         await Page.Locator("[data-test-id=\"edit-location-save\"]").ClickAsync();
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        await Page.GotoAsync($"{baseUrl}/admin/cms/location");
+        await Page.GotoAsync($"{TestHelper.BaseUrl}/admin/cms/location");
 
         await Expect(Page.GetByText("Test location")).ToBeVisibleAsync();
     }
 
     public async Task LogIn() {
-        await Page.GotoAsync($"{baseUrl}/login");
+        await Page.GotoAsync($"{TestHelper.BaseUrl}/login");
         await Page.FillAsync("data-test-id=login-username", "admin1");
         await Page.FillAsync("data-test-id=login-password", "admin123");
         await Page.ClickAsync("data-test-id=login-button");

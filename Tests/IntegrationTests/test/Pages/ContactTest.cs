@@ -2,24 +2,23 @@ using Microsoft.Playwright.NUnit;
 using Microsoft.Playwright;
 using NUnit.Framework;
 
-namespace PlaywrightTests;
+namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class ContactTest : PageTest
 {
-    public static string baseUrl;
 
     [OneTimeSetUp]
     public void Init()
     {
-        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+        
     }
     
     [SetUp]
     public async Task SetUp()
     {
-        await Page.GotoAsync($"{baseUrl}/Contact");
+        await Page.GotoAsync($"{TestHelper.BaseUrl}/Contact");
     }
 
     // [Test]
@@ -31,6 +30,6 @@ public class ContactTest : PageTest
     //     await Page.FillAsync("data-test-id=contact-phone", "0414251470");
     //     await Page.FillAsync("data-test-id=contact-message", "TestMessage");
     //     await Page.ClickAsync("data-test-id=contact-submit-button");
-    //     Assert.AreEqual($"{baseUrl}/submit_form.php", Page.Url);
+    //     Assert.AreEqual($"{TestHelper.BaseUrl}/submit_form.php", Page.Url);
     // }
 }

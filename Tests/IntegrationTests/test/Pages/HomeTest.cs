@@ -2,25 +2,24 @@ using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using Shouldly;
 
-namespace PlaywrightTests;
+namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class HomeTest : PageTest
 {
 
-    public static string baseUrl;
 
     [OneTimeSetUp]
     public void Init()
     {
-        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+
     }
 
     [SetUp]
     public async Task SetUp()
     {
-        await Page.GotoAsync(baseUrl);
+        await Page.GotoAsync(TestHelper.BaseUrl);
     }
 
     [Test]
@@ -34,20 +33,20 @@ public class HomeTest : PageTest
     public async Task Home_MaakAfspraakButtonRedirectsToMaakAfspraakPage()
     {
         await Page.ClickAsync("data-test-id=home-maakafspraak-button");
-        Assert.AreEqual($"{baseUrl}/Afspraak", Page.Url);
+        Assert.AreEqual($"{TestHelper.BaseUrl}/Afspraak", Page.Url);
     }
 
     // [Test]
     // public async Task Home_ContacteerOnsButtonRedirectsToContactPage()
     // {
     //     await Page.ClickAsync("data-test-id=home-contacteerons-button");
-    //     Assert.AreEqual($"{baseUrl}/Contact", Page.Url);
+    //     Assert.AreEqual($"{TestHelper.BaseUrl}/Contact", Page.Url);
     // }
 
     [Test]
     public async Task Home_BlogPostLeesVerderRedirectsToActuaDetailPage()
     {
         await Page.ClickAsync("data-test-id=actuafield-leesverder-button");
-        Assert.IsTrue(Page.Url.Contains($"{baseUrl}/ActuaDetail/"));
+        Assert.IsTrue(Page.Url.Contains($"{TestHelper.BaseUrl}/ActuaDetail/"));
     }
 }

@@ -2,25 +2,23 @@ using Microsoft.Playwright.NUnit;
 using Microsoft.Playwright;
 using NUnit.Framework;
 
-namespace PlaywrightTests;
+namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class AdminTest : PageTest
 {
 
-    public static string baseUrl;
-
     [OneTimeSetUp]
     public void Init()
     {
-        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+       
     }
     
     [SetUp]
     public async Task SetUp()
     {
-        await Page.GotoAsync($"{baseUrl}/admin");
+        await Page.GotoAsync($"{TestHelper.BaseUrl}/admin");
         
         bool loggedOut = await Page.IsVisibleAsync("data-test-id=login-username");
 
@@ -36,13 +34,13 @@ public class AdminTest : PageTest
     // {
     //     await Page.ClickAsync("data-test-id=sidebar-employees");
     //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-    //     Assert.AreEqual($"{baseUrl}/admin/employees", Page.Url);
+    //     Assert.AreEqual($"{TestHelper.TestHelper.BaseUrl}/admin/employees", Page.Url);
     //     Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=employees-title"));
     //     Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=employees-card"));
     // }
 
     public async Task LogIn() {
-        await Page.GotoAsync($"{baseUrl}/login");
+        await Page.GotoAsync($"{TestHelper.BaseUrl}/login");
         await Page.FillAsync("data-test-id=login-username", "admin1");
         await Page.FillAsync("data-test-id=login-password", "admin123");
         await Page.ClickAsync("data-test-id=login-button");

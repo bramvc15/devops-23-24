@@ -3,25 +3,24 @@ using Microsoft.Playwright;
 using NUnit.Framework;
 using Shouldly;
 
-namespace PlaywrightTests;
+namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class BehandelingenTest : PageTest
 {
 
-    public static string baseUrl;
 
     [OneTimeSetUp]
     public void Init()
     {
-        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+
     }
 
     [SetUp]
     public async Task SetUp()
     {
-        await Page.GotoAsync($"{baseUrl}/behandelingen");
+        await Page.GotoAsync($"{TestHelper.BaseUrl}/behandelingen");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
     }
 
@@ -37,7 +36,7 @@ public class BehandelingenTest : PageTest
     // {
     //     await Page.ClickAsync("data-test-id=treatmentcard-behandeling-button");
     //     await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-    //     Assert.AreEqual($"{baseUrl}/behandelingen/ooglidcorrectie", Page.Url);
+    //     Assert.AreEqual($"{TestHelper.BaseUrl}/behandelingen/ooglidcorrectie", Page.Url);
     // }
 
     [Test]

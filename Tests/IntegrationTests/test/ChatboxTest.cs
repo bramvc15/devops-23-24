@@ -3,24 +3,24 @@ using Microsoft.Playwright;
 using NUnit.Framework;
 using Shouldly;
 
-namespace PlaywrightTests;
+namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class ChatboxTest : PageTest
 {
-    public static string baseUrl;
+    
 
     [OneTimeSetUp]
     public void Init()
     {
-        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+
     }
     
     [SetUp]
     public async Task SetUp()
     {
-        await Page.GotoAsync($"{baseUrl}");
+        await Page.GotoAsync($"{TestHelper.BaseUrl}");
     }
 
     [Test]

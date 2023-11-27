@@ -1,7 +1,7 @@
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 
-namespace PlaywrightTests;
+namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
@@ -10,39 +10,38 @@ public class NavigationTest : PageTest
     // debug: $env:PWDEBUG=0
     // run tests command: dotnet test --settings .runsettings
     // bin/Debug/net6.0/playwright.ps1 codegen 192.168.0.123:5046  
-    public static string baseUrl;
 
     [OneTimeSetUp]
     public void Init()
     {
-        baseUrl = TestContext.Parameters["WebAppUrl"] ?? throw new Exception("WebAppUrl is not configured as a parameter.");
+
     }
 
     [SetUp]
     public async Task SetUp()
     {
-        await Page.GotoAsync(baseUrl);
+        await Page.GotoAsync(TestHelper.BaseUrl);
     }
 
     [Test]
     public async Task NavbarRedirectsToOnsTeamPage()
     {
         await Page.ClickAsync("text=Ons team");
-        Assert.AreEqual($"{baseUrl}/onsTeam", Page.Url);
+        Assert.AreEqual($"{TestHelper.BaseUrl}/onsTeam", Page.Url);
     }
 
     [Test]
     public async Task NavbarRedirectsToBehandelingenPage()
     {
         await Page.ClickAsync("text=Behandelingen");
-        Assert.AreEqual($"{baseUrl}/behandelingen", Page.Url);
+        Assert.AreEqual($"{TestHelper.BaseUrl}/behandelingen", Page.Url);
     }
 
     [Test]
     public async Task NavbarRedirectsToContactPage()
     {
         await Page.ClickAsync("text=Contact");
-        Assert.AreEqual($"{baseUrl}/Contact", Page.Url);
+        Assert.AreEqual($"{TestHelper.BaseUrl}/Contact", Page.Url);
     }
 
     // [Test]
