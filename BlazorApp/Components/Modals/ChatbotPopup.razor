@@ -34,9 +34,9 @@
 </Modal>
 
 @code {
-    [Parameter]
-    public string Text { get; set; }
-    
+        [Parameter]
+        public string Text { get; set; }
+
     private Modal? modalRef;
 
     string? question;
@@ -48,23 +48,24 @@
     [Parameter]
     public EventCallback Refresh { get; set; }
 
-    public void HandleRefresh() {
+    public void HandleRefresh() 
+    {
         Refresh.InvokeAsync();
     }
 
-    void AddQuestion() {
-        if(this.question == null || this.answer == null || this.question == "" || this.answer == "") {
+    public async Task AddQuestion() 
+    {
+        if(this.question == null || this.answer == null || this.question == "" || this.answer == "") 
             return;
-        }
+
         ChatBotQuestion question = new ChatBotQuestion();
         question.Question = this.question;
         question.Answer = this.answer;
 
-        if(ParentQuestion != null) {
+        if(ParentQuestion != null)
             ChatbotService.AddFollowUpQuestion(ParentQuestion, question);
-        } else {
-            ChatbotService.AddQuestion(question);
-        }
+        else
+            await ChatbotService.AddQuestion(question);
         
         modalRef?.Hide();
         this.question = null;

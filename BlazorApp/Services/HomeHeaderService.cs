@@ -7,7 +7,6 @@ namespace BlazorApp.Services
 
     public class HomeHeaderService
     {
-
         private readonly DatabaseContext _ctx;
 
         public HomeHeaderService(DatabaseContext ctx)
@@ -37,7 +36,6 @@ namespace BlazorApp.Services
         {
             var headerToUpdate = _ctx.HomeHeaders.Find(1);
 
-
             if (headerToUpdate is null)
             {
                 throw new InvalidOperationException("does not exist");
@@ -58,7 +56,5 @@ namespace BlazorApp.Services
            // headerToUpdate.Title = newTitle;
             _ctx.SaveChanges();
         }
-
     }
-
 }

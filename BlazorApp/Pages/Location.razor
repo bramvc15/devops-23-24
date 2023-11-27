@@ -47,7 +47,7 @@
 
      IEnumerable<LocationM>? LocObj;
     
-      protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         LocObj = await locationService.GetContent();
     }

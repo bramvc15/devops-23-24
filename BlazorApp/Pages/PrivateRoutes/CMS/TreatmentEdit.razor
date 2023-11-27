@@ -156,8 +156,7 @@ else
         newName = Treatment.Name;
         newDescription = Treatment.Description;
         newImage = Treatment.Image;
-        richTextEditRef.SetHtmlAsync(newDescription);
-
+        await richTextEditRef.SetHtmlAsync(newDescription);
         return modalRef?.Show();
     }
 
@@ -169,8 +168,7 @@ else
     private async void UpdateTreatment()
     {
         content = await richTextEditRef.GetHtmlAsync();
-        treatmentService.UpdateTreatment(id, newName, content, newImage);
-
-        HideModal();
+        await treatmentService.UpdateTreatment(id, newName, content, newImage);
+        await HideModal();
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp.Services
 {
-
     public class ContactService
     {
         private readonly DatabaseContext _ctx;
@@ -34,7 +33,5 @@ namespace BlazorApp.Services
 
             await _ctx.SaveChangesAsync();
         }
-
     }
-
 }

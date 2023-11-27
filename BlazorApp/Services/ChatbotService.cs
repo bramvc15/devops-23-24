@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp.Services
 {
-
     public class ChatbotService
     {
         private readonly DatabaseContext _ctx;

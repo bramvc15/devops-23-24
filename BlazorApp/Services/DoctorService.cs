@@ -36,9 +36,6 @@ namespace BlazorApp.Services
             return newDoctor;
         }
 
-
-
-
         public void DeleteById(int id)
         {
             var doctorToDelete = _DBContext.Doctors.Find(id);
@@ -86,6 +83,5 @@ namespace BlazorApp.Services
         //     await _DBContext.SaveChangesAsync();
         //     return true;
         // }
-
     }
 }

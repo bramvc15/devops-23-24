@@ -46,12 +46,10 @@
 </div>
 
 @code {
-
     IEnumerable<Doctor>? DocObj;
+
     protected override async Task OnInitializedAsync()
     {
-
         DocObj = await doctorService.GetAll();
     }
-
 }

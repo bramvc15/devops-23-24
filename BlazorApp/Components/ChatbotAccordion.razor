@@ -55,14 +55,14 @@
 
     IEnumerable<ChatBotQuestion>? followUpQuestions;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         followUpQuestions = Question.FollowUpQuestions;
     }
 
     private async Task DeleteChatBotQuestion(ChatBotQuestion question)
     {
-        OnDelete.InvokeAsync(question);
+        await OnDelete.InvokeAsync(question);
         if(followUpQuestions.Contains(question))
         {
             followUpQuestions = followUpQuestions.Where(x => x != question);
@@ -75,13 +75,13 @@
         StateHasChanged();
     }
 
-    void DeleteQuestion()
+    private async Task DeleteQuestion()
     {
-        DeleteChatBotQuestion(Question);
-        ChatbotService.DeleteById(Question.Id);
+        await DeleteChatBotQuestion(Question);
+        await ChatbotService.DeleteById(Question.Id);
     }
 
-    void Collapse()
+    public void Collapse()
     {
         collapsed = !collapsed;
     }

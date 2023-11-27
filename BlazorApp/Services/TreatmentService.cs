@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp.Services
 {
-
     public class TreatmentService
     {
-
         private readonly DatabaseContext _ctx;
 
         public TreatmentService(DatabaseContext ctx)
@@ -32,7 +30,6 @@ namespace BlazorApp.Services
             return treatment;
         }
 
-
         public async Task UpdateTreatment(int id, string newName, string newDescription, string newImage)
         {
             var treatmentToUpdate = await _ctx.Treatments.FindAsync(id);
@@ -56,7 +53,5 @@ namespace BlazorApp.Services
 
             await _ctx.SaveChangesAsync();
         }
-
     }
-
 }

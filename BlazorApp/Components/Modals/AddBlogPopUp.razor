@@ -41,7 +41,6 @@
 </div>
 
 @code {
-
     protected RichTextEditor? richTextEditRef;
     protected string? content;
     string? newTitle;
@@ -60,19 +59,17 @@
         return modalRef?.Hide();
     }
 
-    private void UpdateTitle()
+    private async Task UpdateTitle()
     {
-
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
-        blogService.AddBlog(newTitle, content, newImage);
-
+        await blogService.AddBlog(newTitle, content, newImage);
         modalRef?.Hide();
     }
 
-
     IEnumerable<HomeHeader>? HomObj2;
 
+    // ??
     protected override async Task OnInitializedAsync()
     {
         
