@@ -45,7 +45,6 @@
         }
         @if(typing) {
             <ChatMessage Type="bot" Image="images/typingAnimation.gif"  />
-            <ChatMessage Type="bot" Image="images/typingAnimation.gif"  />
         }
     </div>
 </div>
@@ -107,7 +106,6 @@
         await GetChatbotQuestions();
         chatMessages.Clear();
         chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", Type = "bot" });
-        chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", Type = "bot" });
         StateHasChanged(); // Maybe deleting?
         await ShowQuestions(ChatbotQuestionsList);
     }
@@ -148,8 +146,6 @@
 
     private async Task ShowBotResponse(string answer)
     {
-        await TypingDelay();
-        chatMessages.Add(new ChatMessage { Message = answer, Type = "bot" });
         await TypingDelay();
         chatMessages.Add(new ChatMessage { Message = answer, Type = "bot" });
         StateHasChanged();
