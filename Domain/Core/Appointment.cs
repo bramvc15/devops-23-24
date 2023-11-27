@@ -1,6 +1,6 @@
 namespace Domain;
 
-public class Appointment
+public class Appointment : Entity
 {
     #region Fields
     private string _reason;

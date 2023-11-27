@@ -17,18 +17,15 @@ public class TreatmentController : ControllerBase
         _service = service;
     }
 
-
     [HttpGet]
-    public IEnumerable<Treatment> GetContent()
+    public async Task<IEnumerable<Treatment>> GetContent()
     {
-
-        return _service.GetContent();
-
+        return await _service.GetContent();
     }
 
     [HttpPost]
-    public void UpdateContent(int id, string newName, string newDescription, string newImage)
+    public async Task UpdateTreatment(int id, string newName, string newDescription, string newImage)
     {
-        _service.UpdateTreatment(id, newName, newDescription, newImage);
+        await _service.UpdateTreatment(id, newName, newDescription, newImage);
     }
 }

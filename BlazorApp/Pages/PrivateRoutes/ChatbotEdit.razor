@@ -13,7 +13,7 @@
 @inject NavigationManager NavManager
 @using BlazorApp.Components.Modals
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Admin - Chat Bot</PageTitle>
 
 <SideNavMenu />
 <div class="content"> 
@@ -26,7 +26,7 @@
         {
             foreach (var question in ChatbotQuestionsList)
             {
-                  <ChatbotAccordion Question=question OnDelete=HandleDelete/>
+                  <ChatbotAccordion Question=question OnDelete="DeleteChatBotQuestion"/>
             }
         }
         </div> 
@@ -53,7 +53,7 @@
             NavManager.NavigateTo("/login");
         else
         {
-            ChatbotQuestionsList = await Task.Run(() => ChatbotService.GetContent());
+            ChatbotQuestionsList = await ChatbotService.GetContent();
             ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
         }
     }
@@ -64,7 +64,8 @@
         StateHasChanged();
     }
 
-    protected async Task HandleDelete(ChatBotQuestion question) {
+    protected async Task DeleteChatBotQuestion(ChatBotQuestion question) 
+    {
         ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.Id != question.Id);
         StateHasChanged();
     }
@@ -73,6 +74,4 @@
     {
         collapsed = !collapsed;
     }
-
-    
 }

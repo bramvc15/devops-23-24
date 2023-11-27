@@ -10,6 +10,7 @@
 @inject ChatbotService ChatbotService
 
    <button class="btn" @onclick="ShowModal">@Text</button>
+   <button class="btn" @onclick="ShowModal">@Text</button>
    <Modal @ref="modalRef">
     <ModalContent Centered>
         <ModalHeader>
@@ -52,19 +53,19 @@
         Refresh.InvokeAsync();
     }
 
-    void AddQuestion() {
-        if(this.question == null || this.answer == null || this.question == "" || this.answer == "") {
+    public async Task AddQuestion() 
+    {
+        if(this.question == null || this.answer == null || this.question == "" || this.answer == "") 
             return;
-        }
+
         ChatBotQuestion question = new ChatBotQuestion();
         question.Question = this.question;
         question.Answer = this.answer;
 
-        if(ParentQuestion != null) {
-            ChatbotService.AddFollowUpQuestion(ParentQuestion, question);
-        } else {
-            ChatbotService.AddQuestion(question);
-        }
+        if(ParentQuestion != null)
+            await ChatbotService.AddFollowUpQuestion(ParentQuestion, question);
+        else
+            await ChatbotService.AddQuestion(question);
         
         modalRef?.Hide();
         this.question = null;

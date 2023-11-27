@@ -13,9 +13,9 @@ namespace BlazorApp.Services
             _ctx = ctx;
         }
 
-        public IEnumerable<AppointmentTimeSlot> GetContent()
+        public async Task<IEnumerable<AppointmentTimeSlot>> GetContent()
         {
-            return _ctx.AppointmentTimeSlots.ToList();
+            return await _ctx.AppointmentTimeSlots.ToListAsync();
         }
 
         public void UpdateAppointmentTimeSlot(int Id, int Doctor_Id, int Patient_Id, DateTime DateTime, int Duration)

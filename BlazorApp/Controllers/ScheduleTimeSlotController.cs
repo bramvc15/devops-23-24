@@ -19,11 +19,9 @@ public class ScheduleTimeSlotController : ControllerBase
 
     [HttpGet]
     [Route("getScheduleTimeSlots")]
-    public IEnumerable<ScheduleTimeSlot> GetContent()
+    public async Task<IEnumerable<ScheduleTimeSlot>> GetContent()
     {
-
-        return _service.GetContent();
-
+        return await _service.GetContent();
     }
 
     [HttpPost]

@@ -13,9 +13,9 @@ namespace BlazorApp.Services
             _ctx = ctx;
         }
 
-        public IEnumerable<Patient> GetContent()
+        public async Task<IEnumerable<Patient>> GetContent()
         {
-            return _ctx.Patients.ToList();
+            return await _ctx.Patients.ToListAsync();
         }
 
         public void UpdatePatient(int Id, string Name, string Email, string PhoneNumber)

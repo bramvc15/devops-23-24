@@ -17,18 +17,15 @@ public class ContactController : ControllerBase
         _service = service;
     }
 
-
     [HttpGet]
-    public IEnumerable<ContactM> GetContent()
+    public async Task<IEnumerable<ContactM>> GetContent()
     {
-
-        return _service.GetContent();
-
+        return await _service.GetContent();
     }
 
     [HttpPost]
-    public void UpdateContent( string content)
+    public async Task UpdateContactText( string content)
     {
-        _service.UpdateContactText(content);
+        await _service.UpdateContactText(content);
     }
 }

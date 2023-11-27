@@ -17,18 +17,15 @@ public class LocationController : ControllerBase
         _service = service;
     }
 
-
     [HttpGet]
-    public IEnumerable<LocationM> GetContent()
+    public async Task<IEnumerable<LocationM>> GetContent()
     {
-
-        return _service.GetContent();
-
+        return await _service.GetContent();
     }
 
     [HttpPost]
-    public void UpdateContent( string content)
+    public async Task UpdateLocationText( string content)
     {
-        _service.UpdateLocationText(content);
+        await _service.UpdateLocationText(content);
     }
 }

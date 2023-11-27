@@ -1,4 +1,4 @@
-﻿@page "/ActuaDetail/{BlogId:int}"
+﻿@page "/actua-detail/{BlogId:int}"
 
 @using BlazorApp.Models
 @using BlazorApp.Services
@@ -40,7 +40,6 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-
-		BlogPost = await Task.Run(() => blogService.GetBlogById(BlogId));
+		BlogPost = await blogService.GetBlogById(BlogId);
 	}
 }

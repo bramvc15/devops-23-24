@@ -10,9 +10,9 @@ namespace BlazorApp.Models
         public string? Gender { get; set; }
         public string? Specialization { get; set; }
 
-        public string? InfoOver { get; set; }
-        public string? InfoOpleiding { get; set; }
-        public string? InfoPublicaties { get; set; }
+        public string? InfoAbout { get; set; }
+        public string? InfoEducation { get; set; }
+        public string? InfoPublications { get; set; }
 
         public string? Image { get; set; }
     }

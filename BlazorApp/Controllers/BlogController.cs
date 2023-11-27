@@ -18,17 +18,16 @@ public class BlogController : ControllerBase
     }
 
     [HttpGet]
-    public (IEnumerable<Blog>, int totalPages) GetContent()
+    public async Task<(IEnumerable<Blog>, int totalPages)> GetContent()
     {
-        return _service.GetContent();
-
+        return await _service.GetContent();
     }
 
     [HttpPost]
-     public void AddBlog(string newTitle, string newText, string newImage){
-        _service.AddBlog(newTitle, newText, newImage);
+     public async Task AddBlog(string newTitle, string newText, string newImage)
+    {
+        await _service.AddBlog(newTitle, newText, newImage);
      }
-
 
     // [HttpPost]
     // public void UpdateBlog(int id, string newTitle, string content)

@@ -60,21 +60,18 @@
         return modalRef?.Hide();
     }
 
-    private void UpdateTitle()
+    private async Task UpdateTitle()
     {
-
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
-        locationService.UpdateLocationText(content);
-
+        await locationService.UpdateLocationText(content);
         modalRef?.Hide();
     }
-
 
     IEnumerable<LocationM>? LocObj;
 
     protected override async Task OnInitializedAsync()
     {
-        LocObj = await Task.Run(() => locationService.GetContent());
+        LocObj = await locationService.GetContent();
     }
 }

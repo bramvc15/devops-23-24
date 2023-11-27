@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace Domain;
 
-public class Patient
+public class Patient : Entity
 {
     #region Fields
     private string _name;
@@ -165,7 +165,7 @@ public class Patient
     #endregion
 
     #region Methods
-    public IEnumerable<Appointment> getAppointments()
+    public IEnumerable<Appointment> GetAppointments()
     {
         return _appointments;
     }

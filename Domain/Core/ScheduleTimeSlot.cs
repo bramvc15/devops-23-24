@@ -1,6 +1,6 @@
 ﻿namespace Domain;
 
-public class ScheduleTimeSlot
+public class ScheduleTimeSlot : Entity
 {
     #region Fields
     private int _duration;

@@ -35,7 +35,7 @@
                 <h5>Follow up keuzeopties:</h5>
                 foreach (var FollowUpQuestion in FollowUpQuestions)
                 {
-                    <ChatbotAccordion Question=FollowUpQuestion OnDelete=HandleDelete/>
+                    <ChatbotAccordion Question=FollowUpQuestion OnDelete=DeleteChatBotQuestion/>
                 }
             }
             <ChatbotPopup ParentQuestion=Question Text="Voeg keuzeoptie toe" Refresh=HandleRefresh/>
@@ -55,15 +55,15 @@
 
     IEnumerable<ChatBotQuestion>? FollowUpQuestions;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         FollowUpQuestions = Question.FollowUpQuestions;
     }
 
-    private async Task HandleDelete(ChatBotQuestion Question)
+    private async Task DeleteChatBotQuestion(ChatBotQuestion question)
     {
-        OnDelete.InvokeAsync(Question);
-        if(FollowUpQuestions.Contains(Question))
+        await OnDelete.InvokeAsync(question);
+        if(FollowUpQuestions.Contains(question))
         {
             FollowUpQuestions = FollowUpQuestions.Where(x => x != Question);
         }
@@ -75,13 +75,13 @@
         StateHasChanged();
     }
 
-    void DeleteQuestion()
+    private async Task DeleteQuestion()
     {
-        HandleDelete(Question);
-        ChatbotService.DeleteById(Question.Id);
+        await DeleteChatBotQuestion(Question);
+        await ChatbotService.DeleteById(Question.Id);
     }
 
-    void Collapse()
+    public void Collapse()
     {
         collapsed = !collapsed;
     }

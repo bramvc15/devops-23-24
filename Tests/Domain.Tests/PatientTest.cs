@@ -84,7 +84,7 @@ public class PatientTest
         TimeSlot newTimeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60);
         newDoctor.AddTimeSlot(newTimeSlot);
         _patient.MakeAppointment("Reason: example", "Note: example", newDoctor, newTimeSlot); ;
-        Assert.Single(_patient.getAppointments());
+        Assert.Single(_patient.GetAppointments());
     }
     #endregion
 }
