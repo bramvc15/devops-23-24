@@ -38,43 +38,43 @@ namespace BlazorApp.Data
 
             #region ScheduleTimeSlots
             // Monday
-            ScheduleTimeSlot scheduleTimeSlot1 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot2 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot3 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot4 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot5 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot6 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot7 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot8 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot9 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot1 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Monday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot2 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Monday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot3 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Monday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot4 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Monday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot5 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Monday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot6 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Monday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot7 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Monday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot8 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Monday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot9 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Monday, "Dr. Smith");
 
             // Tuesday
-            ScheduleTimeSlot scheduleTimeSlot10 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot11 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot12 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot13 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot14 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot15 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot16 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot17 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot18 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Tuesday);
+            ScheduleTimeSlot scheduleTimeSlot10 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Tuesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot11 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Tuesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot12 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Tuesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot13 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Tuesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot14 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Tuesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot15 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Tuesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot16 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Tuesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot17 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Tuesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot18 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Tuesday, "Dr. Smith");
 
             // Wednesday
-            ScheduleTimeSlot scheduleTimeSlot19 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Wednesday);
-            ScheduleTimeSlot scheduleTimeSlot20 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Wednesday);
-            ScheduleTimeSlot scheduleTimeSlot21 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Wednesday);
-            ScheduleTimeSlot scheduleTimeSlot22 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Wednesday);
+            ScheduleTimeSlot scheduleTimeSlot19 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Wednesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot20 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Wednesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot21 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Wednesday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot22 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Wednesday, "Dr. Smith");
 
             // Thursday
-            ScheduleTimeSlot scheduleTimeSlot23 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot24 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot25 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot26 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot27 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot28 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot29 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot30 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot31 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Thursday);
+            ScheduleTimeSlot scheduleTimeSlot23 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Thursday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot24 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Thursday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot25 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Thursday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot26 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Thursday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot27 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Thursday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot28 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Thursday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot29 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Thursday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot30 = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Thursday, "Dr. Smith");
+            ScheduleTimeSlot scheduleTimeSlot31 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Thursday, "Dr. Smith");
 
             // Friday
             ScheduleTimeSlot scheduleTimeSlot32 = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Friday);
@@ -280,6 +280,7 @@ namespace BlazorApp.Data
 
             // domain
             context.Doctors.AddRange(doctors);
+            context.ScheduleTimeSlots.AddRange(scheduleTimeSlots);
             context.Patients.AddRange(patients);
             // context.ScheduleTimeSlots.AddRange(scheduleTimeSlots);
             // context.TimeSlots.AddRange(timeSlots);
