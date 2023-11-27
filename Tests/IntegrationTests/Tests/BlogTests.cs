@@ -36,6 +36,6 @@ public class ActuaDetailTests : PageTest
     {
         await Page.GotoAsync($"{TestHelper.BaseUrl}/actua-detail/1");
         await Page.ClickAsync("data-test-id=actua-detail-back");
-        Expect(Page).ToHaveURLAsync(new Regex($@"^{Regex.Escape(TestHelper.BaseUrl)}/?$"));
+        Expect(Page).ToHaveURLAsync($"{TestHelper.BaseUrl}/");
     }
 }

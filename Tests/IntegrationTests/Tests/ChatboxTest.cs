@@ -40,6 +40,7 @@ public class ChatboxTest : PageTest
     public async Task OnClick_ShowQuestions()
     {
         await OpenChatbox();
+        await Page.WaitForTimeoutAsync(300);
         Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=chatbox-question"));
     }
 
@@ -59,7 +60,6 @@ public class ChatboxTest : PageTest
 
     public async Task OpenChatbox() {
         await Page.ClickAsync("data-test-id=chatbox-header");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
     }
 
     public async Task ClickQuestion() {

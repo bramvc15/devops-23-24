@@ -26,28 +26,28 @@ public class TeamTests : PageTest
     }
 
     [Test]
-    public async Task OnsTeam_Show_Doctors_OnLoad() {
+    public async Task Team_Show_Doctors_OnLoad() {
         Assert.IsTrue(await Page.IsVisibleAsync("data-test-id=team-doctor-name"));
         var doctorName = await Page.TextContentAsync("data-test-id=team-doctor-name");
         doctorName.ShouldNotBeEmpty();
     }
 
     [Test]
-    public async Task OnsTeam_BreadCrumbRedirectsToHomePage()
+    public async Task Team_BreadCrumbRedirectsToHomePage()
     {
         await Page.ClickAsync("data-test-id=team-home-breadcrumb");
-        Expect(Page).ToHaveURLAsync(new Regex($@"^{Regex.Escape(TestHelper.BaseUrl)}/?$"));
+        await Expect(Page).ToHaveURLAsync($"{TestHelper.BaseUrl}/");
     }
 
     [Test]
-    public async Task OnsTeam_DoctorLeesMeerRedirectsToDoctorDetailPage()
+    public async Task Team_DoctorLeesMeerRedirectsToDoctorDetailPage()
     {
         await Page.ClickAsync("data-test-id=team-doctor-details-button");
         Assert.IsTrue(Page.Url.Contains($"{TestHelper.BaseUrl}/docter-info/"));
     }
 
     [Test]
-    public async Task OnsTeam_DoctorDetailBackButtonRedirectsToOnsTeamPage()
+    public async Task Team_DoctorDetailBackButtonRedirectsToOnsTeamPage()
     {
         await Page.ClickAsync("data-test-id=team-doctor-details-button");
         Assert.IsTrue(Page.Url.Contains($"{TestHelper.BaseUrl}/docter-info/"));

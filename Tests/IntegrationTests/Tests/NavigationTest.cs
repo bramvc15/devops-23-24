@@ -27,7 +27,7 @@ public class NavigationTest : PageTest
     public async Task NavbarRedirectsToOnsTeamPage()
     {
         await Page.ClickAsync("text=Ons team");
-        Assert.AreEqual($"{TestHelper.BaseUrl}/onsTeam", Page.Url);
+        Assert.AreEqual($"{TestHelper.BaseUrl}/ons-team", Page.Url);
     }
 
     [Test]
@@ -41,7 +41,7 @@ public class NavigationTest : PageTest
     public async Task NavbarRedirectsToContactPage()
     {
         await Page.ClickAsync("text=Contact");
-        Assert.AreEqual($"{TestHelper.BaseUrl}/Contact", Page.Url);
+        Assert.AreEqual($"{TestHelper.BaseUrl}/contact", Page.Url);
     }
 
     // [Test]

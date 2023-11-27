@@ -4,7 +4,7 @@
         {
             int questionNumber = i;
             <div class="col-md-4 text-center @(SelectedQuestionNr == questionNumber ? "selected" : "")">
-                <span @onclick="() => DisplayAnswer(questionNumber)" class="faqBtn">
+                <span @onclick="() => DisplayAnswer(questionNumber)" class="faqBtn" data-test-id="faq-item">
                     @Faq[i, 0]
                 </span>
             </div>
