@@ -30,7 +30,7 @@
             }
         }
         </div> 
-        <ChatbotPopup Text="Voeg vraag toe" Refresh=Refresh />
+        <ChatbotPopup Text="Voeg vraag toe" Refresh=HandleRefresh />
         <button class="btn btn-primary" @onclick="OnInitializedAsync">Refresh</button>
         } else {
                 <p>You are not authorized to access this page. Please log in.</p>
@@ -58,7 +58,7 @@
         }
     }
 
-    protected async Task Refresh()
+    protected async Task HandleRefresh()
     {
         await OnInitializedAsync();
         StateHasChanged();

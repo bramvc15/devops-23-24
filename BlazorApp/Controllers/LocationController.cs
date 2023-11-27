@@ -24,8 +24,8 @@ public class LocationController : ControllerBase
     }
 
     [HttpPost]
-    public void UpdateContent( string content)
+    public async Task UpdateLocationText( string content)
     {
-        _service.UpdateLocationText(content);
+        await _service.UpdateLocationText(content);
     }
 }

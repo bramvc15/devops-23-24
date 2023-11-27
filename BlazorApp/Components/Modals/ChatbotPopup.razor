@@ -63,7 +63,7 @@
         question.Answer = this.answer;
 
         if(ParentQuestion != null)
-            ChatbotService.AddFollowUpQuestion(ParentQuestion, question);
+            await ChatbotService.AddFollowUpQuestion(ParentQuestion, question);
         else
             await ChatbotService.AddQuestion(question);
         

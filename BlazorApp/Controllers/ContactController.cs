@@ -24,8 +24,8 @@ public class ContactController : ControllerBase
     }
 
     [HttpPost]
-    public void UpdateContent( string content)
+    public async Task UpdateContactText( string content)
     {
-        _service.UpdateContactText(content);
+        await _service.UpdateContactText(content);
     }
 }

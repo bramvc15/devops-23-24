@@ -22,7 +22,6 @@ namespace BlazorApp.Services
         {
             var locationToUpdate = await _ctx.Locations.FindAsync(1);
 
-
             if (locationToUpdate is null)
             {
                 throw new InvalidOperationException("does not exist");

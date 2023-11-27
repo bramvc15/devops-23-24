@@ -85,33 +85,27 @@
             </div>
         </div>
 
-    </div>
-
-    <div class="page-container">
-    <div class="title-layout">
-        <h1>Locatie</h1>
-        <a ><u>Home</u> > Locaties </a>
-    </div>
-    <div class="container mt-4">
+        <div class="container mt-4">
             <div class="row">
                 <!-- Left Column for Text -->
-                <div class="col-md-6">
-                            @if (LocObj != null)
-            {
-                @foreach (var h in LocObj)
-                {
+            <div class="col-md-6">
+                <h2>Onze locatie</h2>
+                    @if (LocObj != null)
+                    {
+                        @foreach (var h in LocObj)
+                        {
 
-                
-                    
-                    @((MarkupString)h.Context)
-                
-                }
-            }
-            else
-            {
 
-                <h1>ERROR</h1>
-            }
+
+                            @((MarkupString)h.Context)
+
+                        }
+                    }
+                    else
+                    {
+
+                        <h1>ERROR</h1>
+                    }
                 </div>
 
                 <!-- Right Column for Google Maps -->
@@ -120,7 +114,6 @@
                 </div>
             </div>
         </div>
-        
     </div>
 
 
@@ -138,11 +131,11 @@
 
     public ContactModel? Model { get; set; }
     
-      protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         Model = new ContactModel();
-        ConObj = await Task.Run(() => contactService.GetContent());
-        LocObj = await Task.Run(() => locationService.GetContent());
+        ConObj = await contactService.GetContent();
+        LocObj = await locationService.GetContent();
     }
 
     public class ContactModel

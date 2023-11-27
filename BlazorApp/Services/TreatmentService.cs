@@ -34,7 +34,6 @@ namespace BlazorApp.Services
         {
             var treatmentToUpdate = await _ctx.Treatments.FindAsync(id);
 
-
             if (treatmentToUpdate is null)
             {
                 throw new InvalidOperationException("does not exist");

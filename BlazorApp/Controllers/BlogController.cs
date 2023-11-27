@@ -24,8 +24,9 @@ public class BlogController : ControllerBase
     }
 
     [HttpPost]
-     public void AddBlog(string newTitle, string newText, string newImage){
-        _service.AddBlog(newTitle, newText, newImage);
+     public async Task AddBlog(string newTitle, string newText, string newImage)
+    {
+        await _service.AddBlog(newTitle, newText, newImage);
      }
 
     // [HttpPost]

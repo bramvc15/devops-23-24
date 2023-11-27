@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp.Services
 {
-
     public class HomeHeaderService
     {
         private readonly DatabaseContext _ctx;

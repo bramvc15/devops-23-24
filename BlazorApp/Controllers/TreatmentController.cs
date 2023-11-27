@@ -24,8 +24,8 @@ public class TreatmentController : ControllerBase
     }
 
     [HttpPost]
-    public void UpdateContent(int id, string newName, string newDescription, string newImage)
+    public async Task UpdateTreatment(int id, string newName, string newDescription, string newImage)
     {
-        _service.UpdateTreatment(id, newName, newDescription, newImage);
+        await _service.UpdateTreatment(id, newName, newDescription, newImage);
     }
 }
