@@ -6,21 +6,15 @@ using System.Text.RegularExpressions;
 namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
-[TestFixture]
 public class ActuaDetailTests : PageTest
 {
-    [OneTimeSetUp]
-    public void Init()
-    {
-
-    }
-
     [Test]
     public async Task Home_BlogPostLeesVerderRedirectsToActuaDetailPage()
     {
         await Page.GotoAsync($"{TestHelper.BaseUrl}/");
         await Page.ClickAsync("data-test-id=actua-detail-button");
         Assert.IsTrue(Page.Url.Contains($"{TestHelper.BaseUrl}/actua-detail/"));
+        await Expect(Page).ToHaveURLAsync(new Regex(".*/actua-detail/\\d+"));
     }
 
     [Test]

@@ -7,17 +7,8 @@ using System.Text.RegularExpressions;
 namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
-[TestFixture]
 public class TeamTests : PageTest
 {
-
-
-    [OneTimeSetUp]
-    public void Init()
-    {
-        
-    }
-
     [SetUp]
     public async Task SetUp()
     {

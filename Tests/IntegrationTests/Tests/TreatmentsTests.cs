@@ -8,17 +8,8 @@ using System.Text.RegularExpressions;
 namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
-[TestFixture]
 public class TreatmentTests : PageTest
 {
-
-
-    [OneTimeSetUp]
-    public void Init()
-    {
-
-    }
-
     [SetUp]
     public async Task SetUp()
     {

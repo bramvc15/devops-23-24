@@ -4,11 +4,10 @@ using NUnit.Framework;
 namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
-[TestFixture]
 public class NavigationTest : PageTest
 {
     // debug: $env:PWDEBUG=0
-    // run tests command: dotnet test --settings .runsettings
+    // run tests command: dotnet test
     // bin/Debug/net6.0/playwright.ps1 codegen 192.168.0.123:5046  
 
     [OneTimeSetUp]

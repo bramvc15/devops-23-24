@@ -5,16 +5,8 @@ using NUnit.Framework;
 namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
-[TestFixture]
 public class ContactTest : PageTest
 {
-
-    [OneTimeSetUp]
-    public void Init()
-    {
-        
-    }
-    
     [SetUp]
     public async Task SetUp()
     {

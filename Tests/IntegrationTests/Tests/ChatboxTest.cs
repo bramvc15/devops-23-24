@@ -6,17 +6,8 @@ using Shouldly;
 namespace IntegrationTests;
 
 [Parallelizable(ParallelScope.Self)]
-[TestFixture]
 public class ChatboxTest : PageTest
-{
-    
-
-    [OneTimeSetUp]
-    public void Init()
-    {
-
-    }
-    
+{ 
     [SetUp]
     public async Task SetUp()
     {
