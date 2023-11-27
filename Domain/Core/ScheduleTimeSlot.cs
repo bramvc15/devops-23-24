@@ -7,6 +7,7 @@ public class ScheduleTimeSlot : Entity
     private AppointmentType _appointmentType;
     private DateTime _dateTime;
     private DayOfWeek _dayOfWeek;
+    private string _nameDoctor;
     #endregion
 
     #region Properties
@@ -72,6 +73,17 @@ public class ScheduleTimeSlot : Entity
             _dayOfWeek = value;
         }
     }
+    public string NameDoctor {
+        get
+        {
+            return _nameDoctor;
+        }
+        private set
+        {
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Name Doctor cannot be empty");
+            _nameDoctor = value;
+        }
+    }
     #endregion
 
     #region Constructors
@@ -111,6 +123,9 @@ public class ScheduleTimeSlot : Entity
             throw new ArgumentException("The given DayOfWeek does not exist");
         }
         _dayOfWeek = dayOfWeek;
+
+        if (string.IsNullOrWhiteSpace(nameDoctor)) throw new ArgumentNullException("Name Doctor cannot be empty");
+        _nameDoctor = nameDoctor;
     }
     #endregion
 
@@ -121,6 +136,7 @@ public class ScheduleTimeSlot : Entity
         _dateTime = newScheduleTimeSlot._dateTime;
         _duration = newScheduleTimeSlot._duration;
         _dayOfWeek = newScheduleTimeSlot._dayOfWeek;
+        _nameDoctor = newScheduleTimeSlot._nameDoctor;
     }
     #endregion
 }

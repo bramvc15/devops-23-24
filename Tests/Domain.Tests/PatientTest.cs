@@ -71,7 +71,7 @@ public class PatientTest
     public void Patient_MakeAppointment()
     {
         Doctor newDoctor = new Doctor("Dr. Doofenshmirtz", "Evil-Specialization", Gender.Other);
-        TimeSlot newTimeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60);
+        TimeSlot newTimeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, "Dr. Smith");
         newDoctor.AddTimeSlot(newTimeSlot);
         _patient.MakeAppointment("Reason: example", "Note: example", newDoctor, newTimeSlot);
 
@@ -81,7 +81,7 @@ public class PatientTest
     public void Patient_GetAppointments()
     {
         Doctor newDoctor = new Doctor("Dr. Doofenshmirtz", "Evil-Specialization", Gender.Other);
-        TimeSlot newTimeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60);
+        TimeSlot newTimeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, "Dr. Smith");
         newDoctor.AddTimeSlot(newTimeSlot);
         _patient.MakeAppointment("Reason: example", "Note: example", newDoctor, newTimeSlot); ;
         Assert.Single(_patient.GetAppointments());

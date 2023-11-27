@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace Domain;
 
 public class Doctor : Entity
@@ -178,7 +176,7 @@ public class Doctor : Entity
         {
             if (timeSlot.IsTimeSlotAvailable())
             {
-                timeSlot.CreateAppointment(patient, reason, note);
+                timeSlot.CreateAppointment(patient, timeSlot.DateTime, reason, note);
             }
             else
             {
