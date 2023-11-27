@@ -15,9 +15,9 @@ namespace BlazorApp.Services
             _ctx = ctx;
         }
 
-        public IEnumerable<HomeHeader> GetContent()
+        public async Task<IEnumerable<HomeHeader>> GetContent()
         {
-            return _ctx.HomeHeaders.ToList();
+            return await _ctx.HomeHeaders.ToListAsync();
         }
 
         public async Task UpdateHeaderTitleAsync(int headerId, string newTitle)

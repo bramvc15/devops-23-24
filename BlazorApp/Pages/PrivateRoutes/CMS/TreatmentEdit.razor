@@ -120,7 +120,7 @@ else
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        TreatmentObj = await Task.Run(() => treatmentService.GetContent());
+        TreatmentObj = await treatmentService.GetContent();
     }
 
     int id;
@@ -149,9 +149,9 @@ else
 
     private Modal? modalRef;
 
-    private Task? ShowModal(string name)
+    private async Task<Task?> ShowModal(string name)
     {
-        Treatment = treatmentService.GetContentByName(name);
+        Treatment = await treatmentService.GetContentByName(name);
         id = Treatment.Id;
         newName = Treatment.Name;
         newDescription = Treatment.Description;

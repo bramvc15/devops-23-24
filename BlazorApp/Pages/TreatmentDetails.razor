@@ -55,6 +55,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        TreatmentObj = await Task.Run(() => treatmentService.GetContentByName(Naam));
+        TreatmentObj = await treatmentService.GetContentByName(Naam);
     }
 }

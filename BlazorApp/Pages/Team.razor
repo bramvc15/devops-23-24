@@ -51,7 +51,7 @@
     protected override async Task OnInitializedAsync()
     {
 
-        DocObj = await Task.Run(() => doctorService.GetAll());
+        DocObj = await doctorService.GetAll();
     }
 
 }

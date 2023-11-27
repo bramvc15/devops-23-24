@@ -43,6 +43,6 @@
 	protected override async Task OnInitializedAsync()
 	{
 
-		BlogPost = await Task.Run(() => blogService.GetBlogById(BlogId));
+		BlogPost = await blogService.GetBlogById(BlogId);
 	}
 }

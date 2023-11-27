@@ -19,11 +19,9 @@ public class PatientController : ControllerBase
 
     [HttpGet]
     [Route("getPatients")]
-    public IEnumerable<Patient> GetContent()
+    public async Task<IEnumerable<Patient>> GetContent()
     {
-
-        return _service.GetContent();
-
+        return await _service.GetContent();
     }
 
     [HttpPost]

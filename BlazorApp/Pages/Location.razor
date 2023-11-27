@@ -49,7 +49,7 @@
     
       protected override async Task OnInitializedAsync()
     {
-        LocObj = await Task.Run(() => locationService.GetContent());
+        LocObj = await locationService.GetContent();
     }
 
 }

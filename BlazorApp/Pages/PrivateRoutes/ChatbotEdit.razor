@@ -53,7 +53,7 @@
             NavManager.NavigateTo("/login");
         else
         {
-            ChatBotObj = await Task.Run(() => ChatbotService.GetContent());
+            ChatBotObj = await ChatbotService.GetContent();
             ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
         }
     }
@@ -64,7 +64,8 @@
         StateHasChanged();
     }
 
-    protected async Task DeleteChatBotQuestion(ChatBotQuestion question) {
+    protected async Task DeleteChatBotQuestion(ChatBotQuestion question) 
+    {
         ChatBotObj = ChatBotObj.Where(x => x.Id != question.Id);
         StateHasChanged();
     }
@@ -73,6 +74,4 @@
     {
         collapsed = !collapsed;
     }
-
-    
 }

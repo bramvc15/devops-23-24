@@ -50,6 +50,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Doctor = await Task.Run(() => doctorService.GetDoctorById(DoctorId));
+        Doctor = await doctorService.GetDoctorById(DoctorId);
     }
 }

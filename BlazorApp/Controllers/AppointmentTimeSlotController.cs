@@ -19,11 +19,9 @@ public class AppointmentTimeSlotController : ControllerBase
 
     [HttpGet]
     [Route("getAppointmentTimeSlots")]
-    public IEnumerable<AppointmentTimeSlot> GetContent()
+    public async Task<IEnumerable<AppointmentTimeSlot>> GetContent()
     {
-
-        return _service.GetContent();
-
+        return await _service.GetContent();
     }
 
     [HttpPost]

@@ -7,7 +7,6 @@ namespace BlazorApp.Services
 
     public class ContactService
     {
-
         private readonly DatabaseContext _ctx;
 
         public ContactService(DatabaseContext ctx)
@@ -15,16 +14,14 @@ namespace BlazorApp.Services
             _ctx = ctx;
         }
 
-        public IEnumerable<ContactM> GetContent()
+        public async Task<IEnumerable<ContactM>> GetContent()
         {
-            return _ctx.Contacts.ToList();
+            return await _ctx.Contacts.ToListAsync();
         }
 
-
-        public void UpdateContactText( string content)
+        public async Task UpdateContactText( string content)
         {
-            var contactToUpdate = _ctx.Contacts.Find(1);
-
+            var contactToUpdate = await _ctx.Contacts.FindAsync(1);
 
             if (contactToUpdate is null)
             {
@@ -35,7 +32,7 @@ namespace BlazorApp.Services
                 contactToUpdate.Context = content;
             }
 
-            _ctx.SaveChanges();
+            await _ctx.SaveChangesAsync();
         }
 
     }

@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "JaI1FGIgqFaUJoNPWNKq/xzMQF7eL7DH0cDYGQZqPH0pqvhSMYqr6nnGELrDU+vKGIrDdQR3pfgT4SAzUdrSQg==",
+  "dgSpecHash": "9pavqkcbdBGJ7dchf3NIWopKkR0T4I2PsVvofBgNgxa7ioaVAW8PZ4Asa02M+1uNTMMqvT1EXU2yXT61iy3MyQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Victo\\Source\\Repos\\devops-23-24-net-g07\\Domain\\Domain.csproj",
+  "projectFilePath": "C:\\Users\\Lander\\Documents\\HoGent\\3de Jaar\\DevOps\\devops-23-24-net-g07\\Domain\\Domain.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Victo\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\Victo\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\Victo\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512"
+    "C:\\Users\\Lander\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.20\\microsoft.netcore.app.ref.6.0.20.nupkg.sha512",
+    "C:\\Users\\Lander\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.20\\microsoft.windowsdesktop.app.ref.6.0.20.nupkg.sha512",
+    "C:\\Users\\Lander\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.20\\microsoft.aspnetcore.app.ref.6.0.20.nupkg.sha512"
   ],
   "logs": []
 }

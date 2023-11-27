@@ -97,7 +97,7 @@ else
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+        BlogObj = await blogService.GetContent(currentPage, 5);
     }
 
     private async Task ChangePage(int page)
@@ -108,7 +108,7 @@ else
         }
 
         currentPage = page;
-        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+        BlogObj = await blogService.GetContent(currentPage, 5);
         StateHasChanged();
     }
 }

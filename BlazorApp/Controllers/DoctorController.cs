@@ -17,15 +17,15 @@ public class DoctorController : ControllerBase
 
     [HttpGet]
     [Route("getDoctors")]
-    public IEnumerable<Doctor> GetAll()
+    public async Task<IEnumerable<Doctor>> GetAll()
     {
-        return _service.GetAll();
+        return await _service.GetAll();
     }
 
     [HttpGet("id")]
     [Route("getDoctorById")]
-    public Doctor GetDoctorbyId(int id){
-        return _service.GetDoctorById(id);
+    public async Task<Doctor> GetDoctorbyId(int id){
+        return await _service.GetDoctorById(id);
     }
 
     // [HttpGet("{id}")]

@@ -7,7 +7,6 @@ namespace BlazorApp.Services
 
     public class ChatbotService
     {
-
         private readonly DatabaseContext _ctx;
 
         public ChatbotService(DatabaseContext ctx)
@@ -25,10 +24,10 @@ namespace BlazorApp.Services
         //     return _ctx.ChatBotQuestions.Where(question => question.FollowUpID == followUpID).ToList();
         // }
         
-        public void AddQuestion(ChatBotQuestion question)
+        public async Task AddQuestion(ChatBotQuestion question)
         {
-            _ctx.ChatBotQuestions.Add(question);
-            _ctx.SaveChanges();
+            await _ctx.ChatBotQuestions.AddAsync(question);
+            await _ctx.SaveChangesAsync();
         }
 
         public void AddFollowUpQuestion(ChatBotQuestion parentQuestion, ChatBotQuestion question)
@@ -38,13 +37,13 @@ namespace BlazorApp.Services
             if (parentQuestion.FollowUpQuestions == null) parentQuestion.FollowUpQuestions = new List<ChatBotQuestion>();
 
             parentQuestion.FollowUpQuestions.Add(question);
-            EditQuestion(parentQuestion);
+            _ = EditQuestion(parentQuestion);
         }
 
-        public void EditQuestion(ChatBotQuestion question)
+        public async Task EditQuestion(ChatBotQuestion question)
         {
-            _ctx.ChatBotQuestions.Update(question);
-            _ctx.SaveChanges();
+            await _ctx.ChatBotQuestions.FindAsync(question);
+            await _ctx.SaveChangesAsync();
         }
 
         public void DeleteQuestion(ChatBotQuestion question)
@@ -54,9 +53,9 @@ namespace BlazorApp.Services
             _ctx.SaveChanges();
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteById(int id)
         {
-            ChatBotQuestion question = _ctx.ChatBotQuestions.Find(id);
+            ChatBotQuestion question = await _ctx.ChatBotQuestions.FindAsync(id);
             DeleteQuestion(question);
         }
 

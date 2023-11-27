@@ -26,3 +26,11 @@ C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.
 C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\refint\Domain.dll
 C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.pdb
 C:\Users\Victo\Source\Repos\devops-23-24-net-g07\Domain\obj\Debug\net6.0\ref\Domain.dll
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\bin\Debug\net6.0\Domain.deps.json
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\bin\Debug\net6.0\Domain.dll
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\bin\Debug\net6.0\Domain.pdb
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.sourcelink.json
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.dll
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\refint\Domain.dll
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\Domain.pdb
+C:\Users\Lander\Documents\HoGent\3de Jaar\DevOps\devops-23-24-net-g07\Domain\obj\Debug\net6.0\ref\Domain.dll

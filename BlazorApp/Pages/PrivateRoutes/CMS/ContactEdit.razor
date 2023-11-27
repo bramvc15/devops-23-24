@@ -118,7 +118,6 @@
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        ConObj = await Task.Run(() => contactService.GetContent());
+        ConObj = await contactService.GetContent();
     }
-
 }

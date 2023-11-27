@@ -151,7 +151,7 @@
     IEnumerable<Doctor>? DocObj;
     protected override async Task OnInitializedAsync()
     {
-        DocObj = await Task.Run(() => doctorService.GetAll());
+        DocObj = await doctorService.GetAll();
     }
     private void ChooseDoc(Doctor doc) {
         doctorId = doc.Id;

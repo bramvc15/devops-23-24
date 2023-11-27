@@ -6,38 +6,32 @@ namespace BlazorApp.Services
 {
     public class DoctorService
     {
-
         private readonly DatabaseContext _DBContext;
-
-
 
         public DoctorService(DatabaseContext databaseContext)
         {
             _DBContext = databaseContext;
         }
 
-        public IEnumerable<Doctor> GetAll()
+        public async Task<IEnumerable<Doctor>> GetAll()
         {
-            return _DBContext.Doctors
-                .ToList();
-        }
-        public Doctor GetDoctorById(int id)
-        {
-            return _DBContext.Doctors.Find(id);
+            return await _DBContext.Doctors.ToListAsync();
         }
 
-
+        public async Task<Doctor> GetDoctorById(int id)
+        {
+            return await _DBContext.Doctors.FindAsync(id);
+        }
 
         public async Task<IEnumerable<Doctor>> GetAllAsync()
         {
             return await _DBContext.Doctors.ToListAsync();
         }
 
-
-        public Doctor Create(Doctor newDoctor)
+        public async Task<Doctor> Create(Doctor newDoctor)
         {
-            _DBContext.Doctors.Add(newDoctor);
-            _DBContext.SaveChanges();
+            await _DBContext.Doctors.AddAsync(newDoctor);
+            await _DBContext.SaveChangesAsync();
 
             return newDoctor;
         }

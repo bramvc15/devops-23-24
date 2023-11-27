@@ -80,8 +80,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        HomObj = await Task.Run(() => homeHeaderService.GetContent());
-        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+        HomObj = await homeHeaderService.GetContent();
+        BlogObj = await blogService.GetContent(currentPage, 5);
     }
 
     private async Task ChangePage(int page)
@@ -92,7 +92,7 @@
         }
 
         currentPage = page;
-        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+        BlogObj = await blogService.GetContent(currentPage, 5);
         StateHasChanged();
     }
 }
