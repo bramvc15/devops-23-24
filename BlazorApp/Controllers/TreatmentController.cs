@@ -17,13 +17,10 @@ public class TreatmentController : ControllerBase
         _service = service;
     }
 
-
     [HttpGet]
-    public IEnumerable<Treatment> GetContent()
+    public async Task<IEnumerable<Treatment>> GetContent()
     {
-
-        return _service.GetContent();
-
+        return await _service.GetContent();
     }
 
     [HttpPost]

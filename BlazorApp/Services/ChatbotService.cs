@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp.Services
 {
-
     public class ChatbotService
     {
-
         private readonly DatabaseContext _ctx;
 
         public ChatbotService(DatabaseContext ctx)
@@ -27,7 +25,7 @@ namespace BlazorApp.Services
         
         public async Task AddQuestion(ChatBotQuestion question)
         {
-            _ctx.ChatBotQuestions.Add(question);
+            await _ctx.ChatBotQuestions.AddAsync(question);
             await _ctx.SaveChangesAsync();
         }
 
@@ -35,7 +33,7 @@ namespace BlazorApp.Services
         {
             question.IsFollowUp = true;
 
-            if(parentQuestion.FollowUpQuestions == null) parentQuestion.FollowUpQuestions = new List<ChatBotQuestion>();
+            if (parentQuestion.FollowUpQuestions == null) parentQuestion.FollowUpQuestions = new List<ChatBotQuestion>();
 
             parentQuestion.FollowUpQuestions.Add(question);
             await EditQuestion(parentQuestion);

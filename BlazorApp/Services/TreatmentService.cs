@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp.Services
 {
-
     public class TreatmentService
     {
-
         private readonly DatabaseContext _ctx;
 
         public TreatmentService(DatabaseContext ctx)
@@ -15,14 +13,14 @@ namespace BlazorApp.Services
             _ctx = ctx;
         }
 
-        public IEnumerable<Treatment> GetContent()
+        public async Task<IEnumerable<Treatment>> GetContent()
         {
-            return _ctx.Treatments.ToList();
+            return await _ctx.Treatments.ToListAsync();
         }
 
-        public Treatment GetContentByName(string name)
+        public async Task<Treatment> GetContentByName(string name)
         {
-            var treatment =  _ctx.Treatments.FirstOrDefault(t => t.Name == name);
+            var treatment =  await _ctx.Treatments.FirstOrDefaultAsync(t => t.Name == name);
 
             if (treatment is null)
             {
@@ -32,10 +30,9 @@ namespace BlazorApp.Services
             return treatment;
         }
 
-
-        public void UpdateTreatment(int id, string newName, string newDescription, string newImage)
+        public async Task UpdateTreatment(int id, string newName, string newDescription, string newImage)
         {
-            var treatmentToUpdate = _ctx.Treatments.Find(id);
+            var treatmentToUpdate = await _ctx.Treatments.FindAsync(id);
 
 
             if (treatmentToUpdate is null)
@@ -54,9 +51,7 @@ namespace BlazorApp.Services
                 throw new InvalidOperationException("updating content is null");
             }
 
-            _ctx.SaveChanges();
+            await _ctx.SaveChangesAsync();
         }
-
     }
-
 }

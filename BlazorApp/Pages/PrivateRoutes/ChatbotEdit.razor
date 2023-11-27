@@ -13,7 +13,7 @@
 @inject NavigationManager NavManager
 @using BlazorApp.Components.Modals
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Admin - Chat Bot</PageTitle>
 
 <SideNavMenu />
 <div class="content"> 
@@ -26,11 +26,11 @@
         {
             foreach (var question in ChatbotQuestionsList)
             {
-                  <ChatbotAccordion Question=question OnDelete=HandleDelete/>
+                  <ChatbotAccordion Question=question OnDelete="DeleteChatBotQuestion"/>
             }
         }
         </div> 
-        <ChatbotPopup Text="Voeg vraag toe" Refresh=HandleRefresh />
+        <ChatbotPopup Text="Voeg vraag toe" Refresh=Refresh />
         <button class="btn btn-primary" @onclick="OnInitializedAsync">Refresh</button>
         } else {
                 <p>You are not authorized to access this page. Please log in.</p>
@@ -53,19 +53,20 @@
             NavManager.NavigateTo("/login");
         else
         {
-            ChatbotQuestionsList = await Task.Run(() => ChatbotService.GetContent());
-            ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
+            ChatBotObj = await ChatbotService.GetContent();
+            ChatBotObj = ChatBotObj.Where(x => x.IsFollowUp == null);
         }
     }
 
-    protected async Task HandleRefresh()
+    protected async Task Refresh()
     {
         await OnInitializedAsync();
         StateHasChanged();
     }
 
-    protected async Task HandleDelete(ChatBotQuestion question) {
-        ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.Id != question.Id);
+    protected async Task DeleteChatBotQuestion(ChatBotQuestion question) 
+    {
+        ChatBotObj = ChatBotObj.Where(x => x.Id != question.Id);
         StateHasChanged();
     }
 
@@ -73,6 +74,4 @@
     {
         collapsed = !collapsed;
     }
-
-    
 }

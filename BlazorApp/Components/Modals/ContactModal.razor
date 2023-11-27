@@ -38,7 +38,6 @@
 </div>
 
 @code {
-
     protected RichTextEditor? richTextEditRef;
     protected string? content;
     LocationM? header;
@@ -60,21 +59,18 @@
         return modalRef?.Hide();
     }
 
-    private void UpdateTitle()
+    private async Task UpdateTitle()
     {
-
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
-        contactService.UpdateContactText(content);
-
+        await contactService.UpdateContactText(content);
         modalRef?.Hide();
     }
-
 
     IEnumerable<ContactM>? ConObj;
 
     protected override async Task OnInitializedAsync()
     {
-        ConObj = await Task.Run(() => contactService.GetContent());
+        ConObj = await contactService.GetContent();
     }
 }

@@ -17,13 +17,10 @@ public class ContactController : ControllerBase
         _service = service;
     }
 
-
     [HttpGet]
-    public IEnumerable<ContactM> GetContent()
+    public async Task<IEnumerable<ContactM>> GetContent()
     {
-
-        return _service.GetContent();
-
+        return await _service.GetContent();
     }
 
     [HttpPost]

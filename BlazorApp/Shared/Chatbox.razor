@@ -45,6 +45,7 @@
         }
         @if(typing) {
             <ChatMessage Type="bot" Image="images/typingAnimation.gif"  />
+            <ChatMessage Type="bot" Image="images/typingAnimation.gif"  />
         }
     </div>
 </div>
@@ -79,6 +80,7 @@
     }
 
     protected async Task GetFollowUpQuestions(ChatBotQuestion question)
+    protected async Task GetFollowUpQuestions(ChatBotQuestion question)
     {
         //IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
         List<ChatBotQuestion>? followUpQuestions = question.FollowUpQuestions;
@@ -91,20 +93,25 @@
     }
 
     private async Task ClearChat()
+    private async Task ClearChat()
     {
+        while(chatMessages.Last().Type != "questions")
         while(chatMessages.Last().Type != "questions")
         {
             await Task.Delay(100);
         }
 
         await StartChat();
+        await StartChat();
     }
 
+    private async Task StartChat()
     private async Task StartChat()
     {
         restartable = false;
         await GetChatbotQuestions();
         chatMessages.Clear();
+        chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", Type = "bot" });
         chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", Type = "bot" });
         StateHasChanged(); // Maybe deleting?
         await ShowQuestions(ChatbotQuestionsList);
@@ -119,6 +126,7 @@
 
         if(question.FollowUpQuestions == null || question.FollowUpQuestions.Count() > 0)
         {
+            await GetFollowUpQuestions(question);
             await GetFollowUpQuestions(question);
         } else {
             
@@ -135,6 +143,7 @@
     }
 
     private async Task TypingDelay()
+    private async Task TypingDelay()
     {
         await Task.Delay(250);
         typing = true;
@@ -146,6 +155,8 @@
 
     private async Task ShowBotResponse(string answer)
     {
+        await TypingDelay();
+        chatMessages.Add(new ChatMessage { Message = answer, Type = "bot" });
         await TypingDelay();
         chatMessages.Add(new ChatMessage { Message = answer, Type = "bot" });
         StateHasChanged();

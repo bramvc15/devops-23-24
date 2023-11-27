@@ -2,6 +2,8 @@
 @using BlazorApp.Auth
 @inject NavigationManager NavManager
 
+<PageTitle>Admin - Home</PageTitle>
+
 <div class="sidebar">
     <SideNavMenu />
 </div>
@@ -10,15 +12,14 @@
         <div class="col-md-6 text-center">
             @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             {
-                <h3>Welcome @BlitzWareAuthService.AuthService.userData.Username</h3>
-                <p>You are authenticated.</p>
+                <h3>Welkom @BlitzWareAuthService.AuthService.userData.Username</h3>
+                <p>Je bent ingelogt.</p>
             }
             else
             {
-                <p>You are not authorized to access this page. Please log in.</p>
-                <p><a href="/login">Click here to LOGIN.</a></p>
-            }
-                    
+                <p>U heeft geen toegang tot deze pagina, gelieve in te loggen.</p>
+                <p><a href="/login">Klik hier om in te loggen.</a></p>
+            }   
         </div>
     </div>
 </div>
@@ -27,7 +28,7 @@
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");

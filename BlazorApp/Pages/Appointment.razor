@@ -8,6 +8,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 
 <PageTitle>Afspraak maken</PageTitle>
+
 <div class="main-container">
     <div class="title-layout">
         <h1>Afspraak maken</h1>
@@ -106,8 +107,8 @@
                             <label class='formLabel' for="birthDate">Geboortedatum</label>
                         </div>
                         <div class='formInput'>
-                            <InputDate id="birthDate" @bind-Value="clientData.birthDate"/>
-                            <ValidationMessage For="@(() => clientData.birthDate)" />
+                            <InputDate id="birthDate" @bind-Value="clientData.BirthDate"/>
+                            <ValidationMessage For="@(() => clientData.BirthDate)" />
                         </div>
                     </div>
                 </div>
@@ -150,7 +151,7 @@
     IEnumerable<Doctor>? DocObj;
     protected override async Task OnInitializedAsync()
     {
-        DocObj = await Task.Run(() => doctorService.GetAll());
+        DocObj = await doctorService.GetAll();
     }
     private void ChooseDoc(Doctor doc) {
         doctorId = doc.Id;
@@ -168,7 +169,7 @@
     {
         showContact = !showContact;
         showSucces = !showSucces;
-        Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.birthDate);
+        Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.BirthDate);
     }
 }
 

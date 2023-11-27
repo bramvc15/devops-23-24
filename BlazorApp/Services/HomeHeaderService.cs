@@ -7,7 +7,6 @@ namespace BlazorApp.Services
 
     public class HomeHeaderService
     {
-
         private readonly DatabaseContext _ctx;
 
         public HomeHeaderService(DatabaseContext ctx)
@@ -15,9 +14,9 @@ namespace BlazorApp.Services
             _ctx = ctx;
         }
 
-        public IEnumerable<HomeHeader> GetContent()
+        public async Task<IEnumerable<HomeHeader>> GetContent()
         {
-            return _ctx.HomeHeaders.ToList();
+            return await _ctx.HomeHeaders.ToListAsync();
         }
 
         public async Task UpdateHeaderTitleAsync(int headerId, string newTitle)
@@ -36,7 +35,6 @@ namespace BlazorApp.Services
         public void UpdateHeaderTitle(string newTitle, string content)
         {
             var headerToUpdate = _ctx.HomeHeaders.Find(1);
-
 
             if (headerToUpdate is null)
             {
@@ -58,7 +56,5 @@ namespace BlazorApp.Services
            // headerToUpdate.Title = newTitle;
             _ctx.SaveChanges();
         }
-
     }
-
 }

@@ -26,11 +26,9 @@ public class HomeHeaderController : ControllerBase
     // }
 
     [HttpGet]
-    public IEnumerable<HomeHeader> GetContent()
+    public async Task<IEnumerable<HomeHeader>> GetContent()
     {
-
-        return _service.GetContent();
-
+        return await _service.GetContent();
     }
 
     [HttpPost]

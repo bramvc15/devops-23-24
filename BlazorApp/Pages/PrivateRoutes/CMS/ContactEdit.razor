@@ -10,7 +10,8 @@
 @inject ContactService contactService
 
 
-<PageTitle>Contact</PageTitle>
+<PageTitle>Admin - CMS Contact</PageTitle>
+
 <div class="sidebar">
     <SideNavMenu />
 </div>
@@ -123,7 +124,7 @@
         Model = new ContactModel();
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        ConObj = await Task.Run(() => contactService.GetContent());
+        ConObj = await contactService.GetContent();
     }
 
     public class ContactModel

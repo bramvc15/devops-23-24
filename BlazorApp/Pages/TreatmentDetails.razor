@@ -3,7 +3,7 @@
 @using BlazorApp.Services
 @inject TreatmentService treatmentService
 
-<PageTitle>Behandeling Details</PageTitle>
+<PageTitle>Behandeling @Naam</PageTitle>
 
 <div class="background-div">
     <div class="overlay">
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                    <FAQ faq="@faq" />
+                    <FAQ Faq="@faq" />
                 </div>
             </div>
         }
@@ -43,7 +43,7 @@
 
 @code {
     [Parameter]
-    public string naam { get; set; }
+    public string Naam { get; set; }
 
     string[,] faq = new string[,] {
     {"Kom ik in aanmerking?", "Sint nisi ex sunt officia ex pariatur. Dolor amet in exercitation laboris duis pariatur minim labore ex aliqua. Proident Lorem ex ipsum tempor occaecat elit ut cupidatat aliquip sit dolore qui cillum cupidatat."},
@@ -55,6 +55,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        TreatmentObj = await Task.Run(() => treatmentService.GetContentByName(naam));
+        TreatmentObj = await treatmentService.GetContentByName(Naam);
     }
 }

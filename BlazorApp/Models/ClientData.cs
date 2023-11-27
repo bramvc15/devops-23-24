@@ -7,15 +7,18 @@ namespace BlazorApp.Models
         [Required (ErrorMessage = "Naam is verplicht")]
         [StringLength(30, ErrorMessage = "Naam is te lang")]
         public string Name { get; set; }
+
         [Required (ErrorMessage = "Email is verplicht")]
         [EmailAddress(ErrorMessage = "Email is niet geldig")]
         public string Email { get; set; }
+
         [Required (ErrorMessage = "Telefoon is verplicht")]
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "Invalid phone number format.")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Incorrect telefoonnummer formaat.")]
         public string Phone { get; set; }
+
         [Required (ErrorMessage = "Geboortedatum is verplicht")]
         [DateNotInFuture(ErrorMessage = "Geboortedatum mag niet in de toekomst liggen")]
-        public DateTime birthDate { get; set; }
+        public DateTime BirthDate { get; set; }
     }
 }
 

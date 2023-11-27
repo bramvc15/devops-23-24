@@ -56,13 +56,12 @@
             </ModalFooter>
         </ModalContent>
     </Modal>
-    <p>The value of the title field is: @newTitle</p>
+    <p>De waarde van het title field is: @newTitle</p>
      @plainTextContent <!-- Plain text content -->
 
 </div>
 
 @code {
-
     protected RichTextEditor? richTextEditRef;
     protected string? content;
     HomeHeader? header;
@@ -86,19 +85,16 @@
 
     private void UpdateTitle()
     {
-
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
         homeHeaderService.UpdateHeaderTitle(newTitle , content);
-
         modalRef?.Hide();
     }
-
 
     IEnumerable<HomeHeader>? HomObj2;
 
     protected override async Task OnInitializedAsync()
     {
-        HomObj2 = await Task.Run(() => homeHeaderService.GetContent());
+        HomObj2 = await homeHeaderService.GetContent();
     }
 }

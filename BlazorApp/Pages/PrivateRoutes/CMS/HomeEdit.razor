@@ -13,7 +13,8 @@
 @inject NavigationManager NavManager
 @using Newtonsoft.Json;
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Admin - CMS Home</PageTitle>
+
 <div class="sidebar">
     <SideNavMenu />
 </div>
@@ -78,7 +79,7 @@ else
 {
     <div class="row justify-content-center align-items-center" style="height: 100vh;">
         <div class="col-md-6">
-            <p>You are not allowed to access this page!</p>
+            <p>U heeft geen toegang tot deze pagina.</p>
         </div>
     </div>
 }
@@ -96,7 +97,7 @@ else
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+        BlogObj = await blogService.GetContent(currentPage, 5);
     }
 
     private async Task ChangePage(int page)
@@ -107,7 +108,7 @@ else
         }
 
         currentPage = page;
-        BlogObj = await Task.Run(() => blogService.GetContent(currentPage, 5));
+        BlogObj = await blogService.GetContent(currentPage, 5);
         StateHasChanged();
     }
 }

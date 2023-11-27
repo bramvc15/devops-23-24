@@ -1,4 +1,4 @@
-@page "/onsTeam"
+@page "/ons-team"
 @using BlazorApp.Data
 @using BlazorApp.Models
 @using BlazorApp.Services
@@ -46,12 +46,10 @@
 </div>
 
 @code {
-
     IEnumerable<Doctor>? DocObj;
+
     protected override async Task OnInitializedAsync()
     {
-
-        DocObj = await Task.Run(() => doctorService.GetAll());
+        DocObj = await doctorService.GetAll();
     }
-
 }

@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp.Services
 {
-
     public class LocationService
     {
-
         private readonly DatabaseContext _ctx;
 
         public LocationService(DatabaseContext ctx)
@@ -15,15 +13,14 @@ namespace BlazorApp.Services
             _ctx = ctx;
         }
 
-        public IEnumerable<LocationM> GetContent()
+        public async Task<IEnumerable<LocationM>> GetContent()
         {
-            return _ctx.Locations.ToList();
+            return await _ctx.Locations.ToListAsync();
         }
 
-
-        public void UpdateLocationText( string content)
+        public async Task UpdateLocationText( string content)
         {
-            var locationToUpdate = _ctx.Locations.Find(1);
+            var locationToUpdate = await _ctx.Locations.FindAsync(1);
 
 
             if (locationToUpdate is null)
@@ -35,9 +32,7 @@ namespace BlazorApp.Services
                 locationToUpdate.Context = content;
             }
 
-            _ctx.SaveChanges();
+            await _ctx.SaveChangesAsync();
         }
-
     }
-
 }

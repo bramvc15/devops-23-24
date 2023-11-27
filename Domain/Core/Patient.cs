@@ -165,7 +165,7 @@ public class Patient : Entity
     #endregion
 
     #region Methods
-    public IEnumerable<Appointment> getAppointments()
+    public IEnumerable<Appointment> GetAppointments()
     {
         return _appointments;
     }

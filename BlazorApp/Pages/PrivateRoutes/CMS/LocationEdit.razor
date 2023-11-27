@@ -7,7 +7,9 @@
 @using BlazorApp.Components.Modals
 @inject NavigationManager NavManager
 @inject LocationService locationService
-<PageTitle>Locatie</PageTitle>
+
+<PageTitle>Admin - CMS Locatie</PageTitle>
+
 <div class="sidebar">
     <SideNavMenu />
 </div>
@@ -60,11 +62,10 @@
     
     IEnumerable<LocationM>? LocObj;
     
-      protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        LocObj = await Task.Run(() => locationService.GetContent());
+        LocObj = await locationService.GetContent();
     }
-
 }
