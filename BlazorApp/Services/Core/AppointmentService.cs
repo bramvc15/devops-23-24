@@ -3,7 +3,7 @@ using BlazorApp.Models;
 using Blazorise;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.Core
 {
     public class AppointmentService
     {
@@ -21,7 +21,7 @@ namespace BlazorApp.Services
 
         public async Task<Appointment> GetAppointmentById(int id)
         {
-            var appointment =  await _ctx.Appointments.FindAsync(id);
+            var appointment = await _ctx.Appointments.FindAsync(id);
 
             if (appointment == null)
             {

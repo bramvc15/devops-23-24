@@ -2,7 +2,7 @@ using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.CMS
 {
     public class TreatmentService
     {
@@ -20,7 +20,7 @@ namespace BlazorApp.Services
 
         public async Task<Treatment> GetContentByName(string name)
         {
-            var treatment =  await _ctx.Treatments.FirstOrDefaultAsync(t => t.Name == name);
+            var treatment = await _ctx.Treatments.FirstOrDefaultAsync(t => t.Name == name);
 
             if (treatment is null)
             {

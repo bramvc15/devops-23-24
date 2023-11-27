@@ -2,7 +2,7 @@
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.Core
 {
     public class TimeSlotService
     {

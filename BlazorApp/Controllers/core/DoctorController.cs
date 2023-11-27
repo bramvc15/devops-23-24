@@ -1,6 +1,7 @@
-using BlazorApp.Services;
 using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Shared;
+using BlazorApp.Services.Core;
 
 namespace BlazorApp.Controllers.core;
 
@@ -8,7 +9,7 @@ namespace BlazorApp.Controllers.core;
 [Route("api/[controller]")]
 public class DoctorController : ControllerBase
 {
-    DoctorService _service;
+    private readonly DoctorService _service;
 
     public DoctorController(DoctorService service)
     {
@@ -16,15 +17,14 @@ public class DoctorController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getDoctors")]
-    public async Task<IEnumerable<Doctor>> GetAll()
+    public async Task<IEnumerable<DoctorDTO>> GetAll()
     {
         return await _service.GetAll();
     }
 
-    [HttpGet("id")]
-    [Route("getDoctorById")]
-    public async Task<Doctor> GetDoctorbyId(int id)
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<DoctorDTO> GetDoctorbyId(int id)
     {
         return await _service.GetDoctorById(id);
     }

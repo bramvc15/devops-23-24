@@ -1,17 +1,18 @@
 @page "/admin/cms/home"
 @inherits EditHeaderPopUp
-@using BlazorApp.Data
-@using BlazorApp.Services
-@using BlazorApp.Models
-@using BlazorApp.Controllers
-@using BlazorApp.Components.Modals
-@using Microsoft.AspNetCore.Components
-@using System.Text.Json
+@    using BlazorApp.Data
+@    using BlazorApp.Services
+@    using BlazorApp.Models
+@    using BlazorApp.Controllers
+@    using BlazorApp.Components.Modals
+@    using Microsoft.AspNetCore.Components
+@    using System.Text.Json
 @inject DatabaseContext databaseContext
 @inject BlogService blogService
-@using BlazorApp.Auth
+@    using BlazorApp.Auth
 @inject NavigationManager NavManager
-@using Newtonsoft.Json;
+@    using Newtonsoft.Json;
+    using BlazorApp.Services.CMS;
 
 <PageTitle>Admin - CMS Home</PageTitle>
 

@@ -1,7 +1,8 @@
-using BlazorApp.Services;
 using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
+using Shared;
+using BlazorApp.Services.Core;
 
 namespace BlazorApp.Controllers.core;
 
@@ -9,7 +10,7 @@ namespace BlazorApp.Controllers.core;
 [Route("api/[controller]")]
 public class PatientController : ControllerBase
 {
-    PatientService _service;
+    private readonly PatientService _service;
 
     public PatientController(PatientService service)
     {
@@ -17,16 +18,14 @@ public class PatientController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getPatients")]
-    public async Task<IEnumerable<Patient>> GetContent()
+    public async Task<IEnumerable<PatientDTO>> GetContent()
     {
         return await _service.GetContent();
     }
 
     [HttpPost]
-    [Route("updatePatient")]
-    public void UpdateContent(int Id, string Name, string Email, string PhoneNumber)
+    public void UpdateContent(PatientDTO request)
     {
-        _service.UpdatePatient(Id, Name, Email, PhoneNumber);
+        _service.UpdatePatient(request);
     }
 }

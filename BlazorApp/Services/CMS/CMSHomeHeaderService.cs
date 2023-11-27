@@ -2,13 +2,13 @@ using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.CMS
 {
-    public class HomeHeaderService
+    public class CMSHomeHeaderService
     {
         private readonly DatabaseContext _ctx;
 
-        public HomeHeaderService(DatabaseContext ctx)
+        public CMSHomeHeaderService(DatabaseContext ctx)
         {
             _ctx = ctx;
         }
@@ -39,20 +39,23 @@ namespace BlazorApp.Services
             {
                 throw new InvalidOperationException("does not exist");
             }
-            if(newTitle != null && content != null){
-                headerToUpdate.Title  = newTitle;
+            if (newTitle != null && content != null)
+            {
+                headerToUpdate.Title = newTitle;
                 headerToUpdate.Context = content;
             }
 
-            if(newTitle == null && content != null ){
+            if (newTitle == null && content != null)
+            {
                 headerToUpdate.Context = content;
             }
-            
-            if(content == null && newTitle != null){
-                headerToUpdate.Title  = newTitle;
+
+            if (content == null && newTitle != null)
+            {
+                headerToUpdate.Title = newTitle;
             }
 
-           // headerToUpdate.Title = newTitle;
+            // headerToUpdate.Title = newTitle;
             _ctx.SaveChanges();
         }
     }

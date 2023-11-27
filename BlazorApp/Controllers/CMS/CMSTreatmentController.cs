@@ -1,7 +1,8 @@
-using BlazorApp.Services;
 using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
+using Shared;
+using BlazorApp.Services.CMS;
 
 namespace BlazorApp.Controllers.CMS;
 
@@ -9,7 +10,7 @@ namespace BlazorApp.Controllers.CMS;
 [Route("[controller]")]
 public class CMSTreatmentController : ControllerBase
 {
-    TreatmentService _service;
+    private readonly TreatmentService _service;
 
     public CMSTreatmentController(TreatmentService service)
     {
@@ -17,15 +18,15 @@ public class CMSTreatmentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Treatment>> GetContent()
+    public async Task<IEnumerable<CMSTreatment>> GetContent()
     {
         return await _service.GetContent();
     }
 
     // moet dit niet HttpPut ??
     [HttpPost]
-    public async Task UpdateTreatment(int id, string newName, string newDescription, string newImage)
+    public async Task UpdateTreatment(CMSTreatment request)
     {
-        await _service.UpdateTreatment(id, newName, newDescription, newImage);
+        await _service.UpdateTreatment(request);
     }
 }

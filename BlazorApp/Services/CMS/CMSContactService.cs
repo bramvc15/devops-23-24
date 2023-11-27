@@ -2,13 +2,13 @@ using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.CMS
 {
-    public class ContactService
+    public class CMSContactService
     {
         private readonly DatabaseContext _ctx;
 
-        public ContactService(DatabaseContext ctx)
+        public CMSContactService(DatabaseContext ctx)
         {
             _ctx = ctx;
         }
@@ -18,7 +18,7 @@ namespace BlazorApp.Services
             return await _ctx.Contacts.ToListAsync();
         }
 
-        public async Task UpdateContactText( string content)
+        public async Task UpdateContactText(string content)
         {
             var contactToUpdate = await _ctx.Contacts.FindAsync(1);
 
@@ -26,8 +26,9 @@ namespace BlazorApp.Services
             {
                 throw new InvalidOperationException("does not exist");
             }
-            if(content != null){
-       
+            if (content != null)
+            {
+
                 contactToUpdate.Context = content;
             }
 

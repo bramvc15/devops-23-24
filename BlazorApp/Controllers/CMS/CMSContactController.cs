@@ -1,7 +1,8 @@
-using BlazorApp.Services;
 using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
+using Shared;
+using BlazorApp.Services.CMS;
 
 namespace BlazorApp.Controllers.CMS;
 
@@ -9,22 +10,22 @@ namespace BlazorApp.Controllers.CMS;
 [Route("[controller]")]
 public class CMSContactController : ControllerBase
 {
-    ContactService _service;
+    private readonly CMSContactService _service;
 
-    public CMSContactController(ContactService service)
+    public CMSContactController(CMSContactService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<ContactM>> GetContent()
+    public async Task<IEnumerable<CMSContact>> GetContent()
     {
         return await _service.GetContent();
     }
 
     [HttpPost]
-    public async Task UpdateContactText(string content)
+    public async Task UpdateContactText(CMSContact request)
     {
-        await _service.UpdateContactText(content);
+        await _service.UpdateContactText(request);
     }
 }

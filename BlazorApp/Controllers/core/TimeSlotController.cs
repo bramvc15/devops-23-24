@@ -1,7 +1,8 @@
-﻿using BlazorApp.Services;
-using BlazorApp.Models;
+﻿using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
+using Shared;
+using BlazorApp.Services.Core;
 
 namespace BlazorApp.Controllers.core;
 
@@ -9,7 +10,7 @@ namespace BlazorApp.Controllers.core;
 [Route("api/[controller]")]
 public class TimeSlotController : ControllerBase
 {
-    TimeSlotService _service;
+    private readonly TimeSlotService _service;
 
     public TimeSlotController(TimeSlotService service)
     {
@@ -17,34 +18,35 @@ public class TimeSlotController : ControllerBase
     }
 
     [HttpGet]
-    public Task<IEnumerable<TimeSlot>> GetTimeSlots()
+    public Task<IEnumerable<TimeSlotDTO>> GetTimeSlots()
     {
         return _service.GetTimeSlots();
     }
 
-    [HttpGet("{id}")]
-    public async Task<TimeSlot> GetTimeSlotById(int Id)
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<TimeSlotDTO> GetTimeSlotById(int Id)
     {
         return await _service.GetTimeSlotById(Id);
     }
 
     [HttpPost]
-    [Route("postTimeSlot")]
-    public void AddTimeSlot(int DoctorId, [FromBody] TimeSlot timeSlot)
+    public void AddTimeSlot(int DoctorId, [FromBody] TimeSlotDTO request)
     {
-        _service.AddTimeSlot(timeSlot);
+        _service.AddTimeSlot(request);
     }
 
-    [HttpPut("{Id:int}")]
-    public void UpdateTimeSlot(int id, [FromBody] TimeSlot timeSlot)
+    [HttpPut]
+    [Route("{id}")]
+    public void UpdateTimeSlot(int id, [FromBody] TimeSlotDTO request)
     {
-        _service.UpdateTimeSlot(id, timeSlot);
+        _service.UpdateTimeSlot(id, request);
     }
 
     [HttpDelete]
-    [Route("removeTimeSlot/{Id}")]
-    public void DeleteTimeSlot(int Id)
+    [Route("{id}")]
+    public async Task DeleteTimeSlot(int id)
     {
-        _service.DeleteTimeSlot(Id);
+        await _service.DeleteTimeSlot(id);
     }
 }

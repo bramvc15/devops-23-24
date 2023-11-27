@@ -2,7 +2,7 @@ using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.CMS
 {
     public class LocationService
     {
@@ -18,7 +18,7 @@ namespace BlazorApp.Services
             return await _ctx.Locations.ToListAsync();
         }
 
-        public async Task UpdateLocationText( string content)
+        public async Task UpdateLocationText(string content)
         {
             var locationToUpdate = await _ctx.Locations.FindAsync(1);
 
@@ -26,8 +26,9 @@ namespace BlazorApp.Services
             {
                 throw new InvalidOperationException("does not exist");
             }
-            if(content != null){
-       
+            if (content != null)
+            {
+
                 locationToUpdate.Context = content;
             }
 

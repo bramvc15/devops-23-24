@@ -1,7 +1,7 @@
-using BlazorApp.Services;
 using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using BlazorApp.Pages;
+using Shared;
+using BlazorApp.Services.Core;
 
 namespace BlazorApp.Controllers.core;
 
@@ -9,7 +9,7 @@ namespace BlazorApp.Controllers.core;
 [Route("api/[controller]")]
 public class AppointmentController : ControllerBase
 {
-    AppointmentService _service;
+    private readonly AppointmentService _service;
 
     public AppointmentController(AppointmentService service)
     {
@@ -17,41 +17,41 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet]
-    public Task<IEnumerable<Appointment>> GetContent()
+    public Task<IEnumerable<AppointmentDTO>> GetContent()
     {
         return _service.GetContent();
     }
 
     [HttpGet]
     [Route("{id}")]
-    public Task<Appointment> GetAppointmentById(int id)
+    public Task<AppointmentDTO> GetAppointmentById(int id)
     {
         return _service.GetAppointmentById(id);
     }
 
     [HttpGet]
     [Route("byDoctorId/{doctorId}")]
-    public Task<IEnumerable<Appointment>> GetAppointmentsByDoctorId(int doctorId)
+    public Task<IEnumerable<AppointmentDTO>> GetAppointmentsByDoctorId(int doctorId)
     {
         return _service.GetAppointmentsByDoctorId(doctorId);
     }
 
     [HttpGet]
     [Route("byPatientId/{patientId}")]
-    public Task<IEnumerable<Appointment>> GetAppointmentsByPatientId(int patientId)
+    public Task<IEnumerable<AppointmentDTO>> GetAppointmentsByPatientId(int patientId)
     {
         return _service.GetAppointmentsByPatientId(patientId);
     }
 
     [HttpPost]
-    public void CreateAppointment([FromBody] Appointment appointment)
+    public void CreateAppointment([FromBody] AppointmentDTO appointment)
     {
         _ = _service.CreateAppointment(appointment);
     }
 
     [HttpPut]
     [Route("{id}")]
-    public void UpdateAppointmentById(int id, [FromBody] Appointment appointment)
+    public void UpdateAppointmentById(int id, [FromBody] AppointmentDTO appointment)
     {
         _service.UpdateAppointmentById(id, appointment);
     }

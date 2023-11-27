@@ -1,7 +1,8 @@
-using BlazorApp.Services;
 using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
+using Shared;
+using BlazorApp.Services.CMS;
 
 namespace BlazorApp.Controllers.CMS;
 
@@ -9,9 +10,9 @@ namespace BlazorApp.Controllers.CMS;
 [Route("[controller]")]
 public class CMSHomeHeaderController : ControllerBase
 {
-    HomeHeaderService _service;
+    private readonly CMSHomeHeaderService _service;
 
-    public CMSHomeHeaderController(HomeHeaderService service)
+    public CMSHomeHeaderController(CMSHomeHeaderService service)
     {
         _service = service;
     }
@@ -25,14 +26,14 @@ public class CMSHomeHeaderController : ControllerBase
     // }
 
     [HttpGet]
-    public async Task<IEnumerable<HomeHeader>> GetContent()
+    public async Task<IEnumerable<CMSHomeHeader>> GetContent()
     {
         return await _service.GetContent();
     }
 
     [HttpPost]
-    public void UpdateContent(string newTitle, string content)
+    public void UpdateContent(CMSHomeHeader request)
     {
-        _service.UpdateHeaderTitle(newTitle, content);
+        _service.UpdateHeaderTitle(request);
     }
 }

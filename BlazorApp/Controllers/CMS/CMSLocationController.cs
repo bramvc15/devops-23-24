@@ -1,7 +1,8 @@
-using BlazorApp.Services;
 using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
+using Shared;
+using BlazorApp.Services.CMS;
 
 namespace BlazorApp.Controllers.CMS;
 
@@ -9,7 +10,7 @@ namespace BlazorApp.Controllers.CMS;
 [Route("[controller]")]
 public class CMSLocationController : ControllerBase
 {
-    LocationService _service;
+    private readonly LocationService _service;
 
     public CMSLocationController(LocationService service)
     {
@@ -17,14 +18,14 @@ public class CMSLocationController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<LocationM>> GetContent()
+    public async Task<IEnumerable<CMSLocation>> GetContent()
     {
         return await _service.GetContent();
     }
 
     [HttpPost]
-    public async Task UpdateLocationText(string content)
+    public async Task UpdateLocationText(CMSLocation request)
     {
-        await _service.UpdateLocationText(content);
+        await _service.UpdateLocationText(request);
     }
 }

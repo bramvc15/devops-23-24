@@ -1,7 +1,9 @@
-using BlazorApp.Services;
 using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
+using Shared;
+using Domain;
+using BlazorApp.Services.Core;
 
 namespace BlazorApp.Controllers.core;
 
@@ -9,7 +11,7 @@ namespace BlazorApp.Controllers.core;
 [Route("api/[controller]")]
 public class ScheduleTimeSlotController : ControllerBase
 {
-    ScheduleTimeSlotService _service;
+    private readonly ScheduleTimeSlotService _service;
 
     public ScheduleTimeSlotController(ScheduleTimeSlotService service)
     {
@@ -17,44 +19,40 @@ public class ScheduleTimeSlotController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getScheduleTimeSlots")]
-    public Task<List<ScheduleTimeSlot>> GetScheduleTimeSlots()
+    public Task<List<ScheduleTimeSlotDTO>> GetScheduleTimeSlots()
     {
         return _service.GetScheduleTimeSlots();
     }
 
     [HttpGet]
-    [Route("getScheduleTimeSlotById/{id}")]
-    public Task<ScheduleTimeSlot> GetScheduleTimeSlotById(int Id)
+    [Route("{id}")]
+    public Task<ScheduleTimeSlotDTO> GetScheduleTimeSlotById(int Id)
     {
         return _service.GetScheduleTimeSlotById(Id);
     }
 
     [HttpGet]
-    [Route("getScheduleTimeSlotsByDoctorId/{DoctorId}")]
-    public Task<List<ScheduleTimeSlot>> GetScheduleTimeSlotsByDoctorId(int DoctorId)
+    [Route("byDoctorId/{DoctorId}")]
+    public Task<List<ScheduleTimeSlotDTO>> GetScheduleTimeSlotsByDoctorId(int DoctorId)
     {
         return _service.GetScheduleTimeSlotsByDoctorId(DoctorId);
     }
 
     [HttpPost]
-    [Route("addScheduleTimeSlot")]
     public void AddScheduleTimeSlot(int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
     {
         _service.AddScheduleTimeSlot(DoctorId, AppointmentType, DayOfWeek, DateTime, Duration);
     }
 
     [HttpPut]
-    [Route("updateScheduleTimeSlot")]
     public void UpdateScheduleTimeSlot(int Id, int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
     {
         _service.UpdateScheduleTimeSlot(Id, DoctorId, AppointmentType, DayOfWeek, DateTime, Duration);
     }
 
     [HttpDelete]
-    [Route("deleteScheduleTimeSlot")]
-    public void DeleteScheduleTimeSlot(int Id)
+    public async Task DeleteScheduleTimeSlot(int Id)
     {
-        _service.DeleteScheduleTimeSlot(Id);
+        await _service.DeleteScheduleTimeSlot(Id);
     }
 }

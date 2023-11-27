@@ -2,7 +2,7 @@ using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.Core
 {
     public class ScheduleTimeSlotService
     {
@@ -37,18 +37,18 @@ namespace BlazorApp.Services
                 if (ScheduleTimeSlot.DayOfWeek == DayOfWeek)
                 {
                     // StartTime in minutes
-                    var ScheduleTimeSlotStart = (ScheduleTimeSlot.DateTime.Hour * 60) + ScheduleTimeSlot.DateTime.Minute;
+                    var ScheduleTimeSlotStart = ScheduleTimeSlot.DateTime.Hour * 60 + ScheduleTimeSlot.DateTime.Minute;
                     // EndTime in minutes
-                    var ScheduleTimeSlotEnd = (ScheduleTimeSlot.DateTime.Hour * 60) + ScheduleTimeSlot.DateTime.Minute + ScheduleTimeSlot.Duration;
+                    var ScheduleTimeSlotEnd = ScheduleTimeSlot.DateTime.Hour * 60 + ScheduleTimeSlot.DateTime.Minute + ScheduleTimeSlot.Duration;
 
                     // Check if StartTime of ScheduleTimeSlot is in the same time interval
-                    if ((DateTime.Hour * 60 + DateTime.Minute) > ScheduleTimeSlotStart && (DateTime.Hour * 60 + DateTime.Minute) < ScheduleTimeSlotEnd)
+                    if (DateTime.Hour * 60 + DateTime.Minute > ScheduleTimeSlotStart && DateTime.Hour * 60 + DateTime.Minute < ScheduleTimeSlotEnd)
                     {
                         throw new InvalidOperationException("Gepland tijdslot valt in hetzelfde tijdsinterval als een bestaand gepland tijdslot 1");
                     }
 
                     // Check if EndTime of ScheduleTimeSlot is in the same time interval
-                    if ((DateTime.Hour * 60 + DateTime.Minute + Duration) > ScheduleTimeSlotStart && (DateTime.Hour * 60 + DateTime.Minute + Duration) < ScheduleTimeSlotEnd)
+                    if (DateTime.Hour * 60 + DateTime.Minute + Duration > ScheduleTimeSlotStart && DateTime.Hour * 60 + DateTime.Minute + Duration < ScheduleTimeSlotEnd)
                     {
                         throw new InvalidOperationException("Gepland tijdslot valt in hetzelfde tijdsinterval als een bestaand gepland tijdslot 2");
                     }

@@ -2,13 +2,13 @@ using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.CMS
 {
-    public class ChatbotService
+    public class CMSChatbotService
     {
         private readonly DatabaseContext _ctx;
 
-        public ChatbotService(DatabaseContext ctx)
+        public CMSChatbotService(DatabaseContext ctx)
         {
             _ctx = ctx;
         }
@@ -22,7 +22,7 @@ namespace BlazorApp.Services
         // {
         //     return _ctx.ChatBotQuestions.Where(question => question.FollowUpID == followUpID).ToList();
         // }
-        
+
         public async Task AddQuestion(ChatBotQuestion question)
         {
             _ctx.ChatBotQuestions.Add(question);

@@ -1,4 +1,4 @@
-using BlazorApp.Services;
+using BlazorApp.Services.CMS;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
 
@@ -8,7 +8,7 @@ namespace BlazorApp.Controllers.CMS;
 [Route("[controller]")]
 public class CMSBlogController : ControllerBase
 {
-    BlogService _service;
+    private readonly BlogService _service;
 
     public CMSBlogController(BlogService service)
     {
@@ -16,15 +16,15 @@ public class CMSBlogController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<(IEnumerable<Blog>, int totalPages)> GetContent()
+    public async Task<(IEnumerable<CMSBlog>, int totalPages)> GetContent()
     {
         return await _service.GetContent();
     }
 
     [HttpPost]
-    public async Task AddBlog(string newTitle, string newText, string newImage)
+    public async Task AddBlog(CMSBlog request)
     {
-        await _service.AddBlog(newTitle, newText, newImage);
+        await _service.AddBlog(request);
     }
 
     // [HttpPost]

@@ -4,13 +4,14 @@ using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using Blazorise.RichTextEdit;
 using Microsoft.EntityFrameworkCore;
-using BlazorApp.Services;
 using Syncfusion.Blazor;
 
 
 using static BlazorApp.Auth.BlitzWareAuth;
 using BlazorApp.Auth;
 using Blazored.LocalStorage;
+using BlazorApp.Services.Core;
+using BlazorApp.Services.CMS;
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF1cWWhIf0x0TXxbf1xzZFRGalhXTnRdUiweQnxTdEZiWH1fcXRRQGJeV0N1WQ==");
 
@@ -23,12 +24,12 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<DoctorService>();
-builder.Services.AddTransient<HomeHeaderService>();
+builder.Services.AddTransient<CMSHomeHeaderService>();
 builder.Services.AddTransient<BlogService>();
 builder.Services.AddTransient<LocationService>();
-builder.Services.AddTransient<ContactService>();
+builder.Services.AddTransient<CMSContactService>();
 builder.Services.AddTransient<TreatmentService>();
-builder.Services.AddTransient<ChatbotService>();
+builder.Services.AddTransient<CMSChatbotService>();
 builder.Services.AddTransient<PatientService>();
 builder.Services.AddTransient<ScheduleTimeSlotService>(); 
 builder.Services.AddTransient<AppointmentService>();
