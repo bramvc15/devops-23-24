@@ -1,18 +1,16 @@
 using BlazorApp.Services;
-using BlazorApp.Models;
-using BlazorApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using BlazorApp.Pages;
+using Shared;
 
-namespace BlazorApp.Controllers;
+namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("[controller]")]
-public class BlogController : ControllerBase
+public class CMSBlogController : ControllerBase
 {
     BlogService _service;
 
-    public BlogController(BlogService service)
+    public CMSBlogController(BlogService service)
     {
         _service = service;
     }
@@ -24,10 +22,10 @@ public class BlogController : ControllerBase
     }
 
     [HttpPost]
-     public async Task AddBlog(string newTitle, string newText, string newImage)
+    public async Task AddBlog(string newTitle, string newText, string newImage)
     {
         await _service.AddBlog(newTitle, newText, newImage);
-     }
+    }
 
     // [HttpPost]
     // public void UpdateBlog(int id, string newTitle, string content)

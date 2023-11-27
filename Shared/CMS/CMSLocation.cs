@@ -1,6 +1,7 @@
 namespace Domain;
 
-public class CMSContact
+public class CMSLocation
 {
+    public int Id { get; set; }
     public string? Context { get; set; }
 }

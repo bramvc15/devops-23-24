@@ -1,10 +1,9 @@
 using BlazorApp.Services;
 using BlazorApp.Models;
-using BlazorApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
 
-namespace BlazorApp.Controllers;
+namespace BlazorApp.Controllers.core;
 
 [ApiController]
 [Route("api/[controller]")]

@@ -2,14 +2,14 @@ using BlazorApp.Services;
 using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlazorApp.Controllers;
+namespace BlazorApp.Controllers.core;
 
 [ApiController]
 [Route("api/[controller]")]
 public class DoctorController : ControllerBase
 {
     DoctorService _service;
-    
+
     public DoctorController(DoctorService service)
     {
         _service = service;
@@ -24,7 +24,8 @@ public class DoctorController : ControllerBase
 
     [HttpGet("id")]
     [Route("getDoctorById")]
-    public async Task<Doctor> GetDoctorbyId(int id){
+    public async Task<Doctor> GetDoctorbyId(int id)
+    {
         return await _service.GetDoctorById(id);
     }
 

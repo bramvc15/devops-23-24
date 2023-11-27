@@ -1,18 +1,17 @@
 using BlazorApp.Services;
 using BlazorApp.Models;
-using BlazorApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
 
-namespace BlazorApp.Controllers;
+namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("[controller]")]
-public class TreatmentController : ControllerBase
+public class CMSTreatmentController : ControllerBase
 {
     TreatmentService _service;
 
-    public TreatmentController(TreatmentService service)
+    public CMSTreatmentController(TreatmentService service)
     {
         _service = service;
     }

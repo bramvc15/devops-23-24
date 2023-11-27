@@ -1,18 +1,17 @@
 using BlazorApp.Services;
 using BlazorApp.Models;
-using BlazorApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
 
-namespace BlazorApp.Controllers;
+namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("[controller]")]
-public class HomeHeaderController : ControllerBase
+public class CMSHomeHeaderController : ControllerBase
 {
     HomeHeaderService _service;
 
-    public HomeHeaderController(HomeHeaderService service)
+    public CMSHomeHeaderController(HomeHeaderService service)
     {
         _service = service;
     }

@@ -1,18 +1,17 @@
 using BlazorApp.Services;
 using BlazorApp.Models;
-using BlazorApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
 
-namespace BlazorApp.Controllers;
+namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("[controller]")]
-public class LocationController : ControllerBase
+public class CMSLocationController : ControllerBase
 {
     LocationService _service;
 
-    public LocationController(LocationService service)
+    public CMSLocationController(LocationService service)
     {
         _service = service;
     }
@@ -24,7 +23,7 @@ public class LocationController : ControllerBase
     }
 
     [HttpPost]
-    public async Task UpdateLocationText( string content)
+    public async Task UpdateLocationText(string content)
     {
         await _service.UpdateLocationText(content);
     }

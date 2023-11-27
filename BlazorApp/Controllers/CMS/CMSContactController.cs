@@ -1,18 +1,17 @@
 using BlazorApp.Services;
 using BlazorApp.Models;
-using BlazorApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
 
-namespace BlazorApp.Controllers;
+namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
-[Route("api/[controller]")]
-public class ContactController : ControllerBase
+[Route("[controller]")]
+public class CMSContactController : ControllerBase
 {
-   ContactService _service;
+    ContactService _service;
 
-    public ContactController(ContactService service)
+    public CMSContactController(ContactService service)
     {
         _service = service;
     }
@@ -24,7 +23,7 @@ public class ContactController : ControllerBase
     }
 
     [HttpPost]
-    public async Task UpdateContactText( string content)
+    public async Task UpdateContactText(string content)
     {
         await _service.UpdateContactText(content);
     }
