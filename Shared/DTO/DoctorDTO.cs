@@ -8,4 +8,5 @@ public class DoctorDTO
     public Gender Gender { get; set; }
     public string Biograph { get; set; }
     public bool IsAvailable { get; set; }
+    public string ImageLink { get; set; }
 }
