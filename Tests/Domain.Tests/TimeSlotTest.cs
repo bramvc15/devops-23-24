@@ -16,7 +16,7 @@ public class TimeSlotTest
     {
         _timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, "Dr. Smith");
         Patient patient = new Patient("Rino Petereyns", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-        _appointment = new Appointment(patient, new DateTime(2024, 2, 17, 12, 0, 0), "Reason: Operation on both eyes", "Note: patient is known to act weird");
+        _appointment = new Appointment(patient, "Dr. Smith", new DateTime(2024, 2, 17, 12, 0, 0), "Reason: Operation on both eyes", "Note: patient is known to act weird");
     }
     #endregion
 
@@ -77,7 +77,7 @@ public class TimeSlotTest
     public void TimeSlot_CreateAppointment()
     {
         Patient newPatient = new Patient("New Patient", "newPatient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-        _timeSlot.CreateAppointment(newPatient, new DateTime(2024, 2, 17, 12, 0, 0), "Reason: Operation on both eyes", "Note: patient is known to act weird");
+        _timeSlot.CreateAppointment(newPatient, "Dr. Smith", new DateTime(2024, 2, 17, 12, 0, 0), "Reason: Operation on both eyes", "Note: patient is known to act weird");
         Assert.Equal(_timeSlot.GetAppointment().GetPatient(), newPatient);
         Assert.Equal(_timeSlot.GetAppointment().Reason, "Reason: Operation on both eyes");
         Assert.Equal(_timeSlot.GetAppointment().Note, "Note: patient is known to act weird");
@@ -88,7 +88,7 @@ public class TimeSlotTest
     public void TimeSlot_UpdateAppointment()
     {
         Patient newPatient = new Patient("New Patient", "newPatient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-        Appointment newAppointment = new Appointment(newPatient, new DateTime(2024, 2, 17, 12, 0, 0), "New Reason", "New Note");
+        Appointment newAppointment = new Appointment(newPatient, "Dr. Smith", new DateTime(2024, 2, 17, 12, 0, 0), "New Reason", "New Note");
         _timeSlot.UpdateAppointment(newAppointment);
         Assert.Equal(_timeSlot.GetAppointment().GetPatient(), newPatient);
         Assert.Equal(_timeSlot.GetAppointment().Reason, "New Reason");
@@ -99,7 +99,7 @@ public class TimeSlotTest
     public void TimeSlot_DeleteAppointment()
     {
         Patient newPatient = new Patient("New Patient", "newPatient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-        _timeSlot.CreateAppointment(newPatient, new DateTime(2024, 2, 17, 12, 0, 0), "Reason: Operation on both eyes", "Note: patient is known to act weird");
+        _timeSlot.CreateAppointment(newPatient, "Dr. Smith", new DateTime(2024, 2, 17, 12, 0, 0), "Reason: Operation on both eyes", "Note: patient is known to act weird");
         _timeSlot.DeleteAppointment();
         Assert.Equal(_timeSlot.GetAppointment(), null);
     }

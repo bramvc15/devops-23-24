@@ -9,6 +9,7 @@ public class Appointment : Entity
     private string _note;
     private Patient _patient;
     private DateTime _dateTime;
+    private string _nameDoctor;
     #endregion
 
     #region Properties
@@ -59,10 +60,22 @@ public class Appointment : Entity
             _dateTime = value;
         }
     }
+    public string NameDoctor
+    {
+        get
+        {
+            return _nameDoctor;
+        }
+        private set
+        {
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Name Doctor cannot be empty");
+            _nameDoctor = value;
+        }
+    }
     #endregion
 
     #region Constructors
-    public Appointment(Patient patient, DateTime dateTime, string reason, string note = null)
+    public Appointment(Patient patient, string nameDoctor, DateTime dateTime, string reason, string note = null)
     {
         if (patient == null)
         {
@@ -91,6 +104,9 @@ public class Appointment : Entity
             throw new ArgumentException("DateTime cannot be in the past");
         }
         _dateTime = dateTime;
+
+        if (string.IsNullOrWhiteSpace(nameDoctor)) throw new ArgumentNullException("Name Doctor cannot be empty");
+        _nameDoctor = nameDoctor;
     }
     #endregion
 
