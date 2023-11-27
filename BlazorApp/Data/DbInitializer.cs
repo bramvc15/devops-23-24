@@ -22,9 +22,9 @@ namespace BlazorApp.Data
                     Name = "Dr. J. Van der Veken",
                     Gender = "Male",
                     Specialization = "Eye Specialist",
-                    InfoOver = "Dr. J. Van der Veken is een ervaren oogarts met een passie voor het verbeteren van het gezichtsvermogen van zijn patiënten. Met jarenlange ervaring in de oogheelkunde, is hij toegewijd aan het bieden van hoogwaardige oogzorg.",
-                    InfoOpleiding = "Dr. Van der Veken voltooide zijn medische opleiding aan de Universiteit van Amsterdam en behaalde zijn specialisatiediploma in oogheelkunde aan de Erasmus Universiteit Rotterdam. Hij heeft expertise in de behandeling van diverse oogaandoeningen.",
-                    InfoPublicaties = "Dr. Van der Veken heeft bijgedragen aan oogheelkundig onderzoek en heeft diverse onderscheidingen ontvangen voor zijn toewijding aan oogzorg.",
+                    InfoAbout = "Dr. J. Van der Veken is een ervaren oogarts met een passie voor het verbeteren van het gezichtsvermogen van zijn patiënten. Met jarenlange ervaring in de oogheelkunde, is hij toegewijd aan het bieden van hoogwaardige oogzorg.",
+                    InfoEducation = "Dr. Van der Veken voltooide zijn medische opleiding aan de Universiteit van Amsterdam en behaalde zijn specialisatiediploma in oogheelkunde aan de Erasmus Universiteit Rotterdam. Hij heeft expertise in de behandeling van diverse oogaandoeningen.",
+                    InfoPublications = "Dr. Van der Veken heeft bijgedragen aan oogheelkundig onderzoek en heeft diverse onderscheidingen ontvangen voor zijn toewijding aan oogzorg.",
                     Image = "https://images.healthshots.com/healthshots/en/uploads/2022/07/02195043/doctor-stress.jpg",
 
                 },
@@ -33,9 +33,9 @@ namespace BlazorApp.Data
                     Name = "Dr. B. Van Coile",
                     Gender = "Male",
                     Specialization = "Eye Specialist",
-                    InfoOver = "Dr. B. Van Coile is een gepassioneerde oogarts met een diepgaande kennis van oogzorg. Hij streeft naar het bieden van hoogwaardige oogzorg en het verbeteren van het gezichtsvermogen van zijn patiënten.",
-                    InfoOpleiding = "Dr. Van Coile voltooide zijn medische opleiding aan de Universiteit van Gent en behaalde zijn specialisatiediploma in oogheelkunde aan de Katholieke Universiteit Leuven. Zijn specialisatie omvat diverse oogheelkundige aandoeningen.",
-                    InfoPublicaties = "Hij heeft actief bijgedragen aan oogheelkundig onderzoek en heeft meerdere erkenningen en prijzen ontvangen voor zijn toewijding aan de oogheelkunde.",
+                    InfoAbout = "Dr. B. Van Coile is een gepassioneerde oogarts met een diepgaande kennis van oogzorg. Hij streeft naar het bieden van hoogwaardige oogzorg en het verbeteren van het gezichtsvermogen van zijn patiënten.",
+                    InfoEducation = "Dr. Van Coile voltooide zijn medische opleiding aan de Universiteit van Gent en behaalde zijn specialisatiediploma in oogheelkunde aan de Katholieke Universiteit Leuven. Zijn specialisatie omvat diverse oogheelkundige aandoeningen.",
+                    InfoPublications = "Hij heeft actief bijgedragen aan oogheelkundig onderzoek en heeft meerdere erkenningen en prijzen ontvangen voor zijn toewijding aan de oogheelkunde.",
                     Image = "https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*",
                 }
             };

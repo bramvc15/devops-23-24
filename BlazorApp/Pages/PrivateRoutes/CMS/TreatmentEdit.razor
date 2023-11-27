@@ -10,7 +10,8 @@
 @inject NavigationManager NavManager
 @inject TreatmentService treatmentService
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Admin - CMS Behandelingen</PageTitle>
+
 <div class="sidebar">
     <SideNavMenu />
 </div>
@@ -86,8 +87,8 @@
                     </RichTextEdit>
                 </Field>
                 <Field>
-                    <FieldLabel>Image</FieldLabel>
-                    <TextEdit Placeholder="Geef image link..." @bind-Text="newImage" />
+                    <FieldLabel>Afbeelding</FieldLabel>
+                    <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImage" />
                 </Field>
             </ModalBody>
             <ModalFooter>
@@ -101,7 +102,7 @@ else
 {
     <div class="row justify-content-center align-items-center" style="height: 100vh;">
         <div class="col-md-6">
-            <p>You are not allowed to access this page!</p>
+            <p>U heeft geen toegang tot deze pagina.</p>
         </div>
     </div>
 }

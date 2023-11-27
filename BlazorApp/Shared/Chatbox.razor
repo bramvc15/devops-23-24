@@ -23,7 +23,7 @@
         <div class="d-flex">
             @if (restartable)
             {
-                <div class="restart" @onclick="clearChat" @onclick:stopPropagation="true">
+                <div class="restart" @onclick="ClearChat" @onclick:stopPropagation="true">
                     ↻
                 </div>
             }
@@ -38,13 +38,13 @@
         @foreach (var message in chatMessages)
         {
             if(message.Message != null) {
-            <ChatMessage Message="@message.Message" type="@message.type" ChatBotObj="@message.ChatBotObj" QuestionClicked="HandleQuestionClicked" /> 
+            <ChatMessage Message="@message.Message" Type="@message.Type" ChatBotObj="@message.ChatBotObj" QuestionClicked="HandleQuestionClicked" /> 
             } else  {
-            <ChatMessage type="@message.type" ChatBotObj="@message.ChatBotObj" QuestionClicked="HandleQuestionClicked" />
+            <ChatMessage Type="@message.Type" ChatBotObj="@message.ChatBotObj" QuestionClicked="HandleQuestionClicked" />
             }
         }
         @if(typing) {
-            <ChatMessage type="bot" Image="images/typingAnimation.gif"  />
+            <ChatMessage Type="bot" Image="images/typingAnimation.gif"  />
         }
     </div>
 </div>
@@ -64,11 +64,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await getChatBotObj();
-        await startChat();
+        await GetChatBotObj();
+        await StartChat();
     }
 
-    private async Task getChatBotObj()
+    private async Task GetChatBotObj()
     {
         try {
             ChatBotObj = await ChatbotService.GetContent();
@@ -78,11 +78,11 @@
         }
     }
 
-    protected async Task getFollowUpQuestions(ChatBotQuestion question)
+    protected async Task GetFollowUpQuestions(ChatBotQuestion question)
     {
         //IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
         List<ChatBotQuestion>? followUpObj = question.FollowUpQuestions;
-        await showQuestions(followUpObj);
+        await ShowQuestions(followUpObj);
     }
 
     void ToggleChatbox()
@@ -90,51 +90,51 @@
         visible = !visible;
     }
 
-    private async Task clearChat()
+    private async Task ClearChat()
     {
-        while(chatMessages.Last().type != "questions")
+        while(chatMessages.Last().Type != "questions")
         {
             await Task.Delay(100);
         }
 
-        await startChat();
+        await StartChat();
     }
 
-    private async Task startChat()
+    private async Task StartChat()
     {
         restartable = false;
-        await getChatBotObj();
+        await GetChatBotObj();
         chatMessages.Clear();
-        chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", type = "bot" });
+        chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", Type = "bot" });
         StateHasChanged(); // Maybe deleting?
-        await showQuestions(ChatBotObj);
+        await ShowQuestions(ChatBotObj);
     }
 
     private async Task HandleQuestionClicked(ChatBotQuestion question)
     {
         restartable = false;
-        await botResponse(question.Answer);
+        await BotResponse(question.Answer);
 
         ChatBotObj = ChatBotObj.Where(x => x != question);
 
         if(question.FollowUpQuestions == null || question.FollowUpQuestions.Count() > 0)
         {
-            await getFollowUpQuestions(question);
+            await GetFollowUpQuestions(question);
         } else {
             
-            await botResponse("Hebt u verder nog vragen?");
+            await BotResponse("Hebt u verder nog vragen?");
             if(ChatBotObj.Count() == 0)
             {
-                await getChatBotObj();
+                await GetChatBotObj();
             }
 
-            await showQuestions(ChatBotObj);
+            await ShowQuestions(ChatBotObj);
         }
         
         await JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
-    private async Task typingDelay()
+    private async Task TypingDelay()
     {
         await Task.Delay(250);
         typing = true;
@@ -144,18 +144,18 @@
         StateHasChanged();
     }
 
-    private async Task botResponse(string answer)
+    private async Task BotResponse(string answer)
     {
-        await typingDelay();
-        chatMessages.Add(new ChatMessage { Message = answer, type = "bot" });
+        await TypingDelay();
+        chatMessages.Add(new ChatMessage { Message = answer, Type = "bot" });
         StateHasChanged();
         await JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
-    private async Task showQuestions(IEnumerable<ChatBotQuestion>? obj)
+    private async Task ShowQuestions(IEnumerable<ChatBotQuestion>? obj)
     {
         await Task.Delay(450);
-        chatMessages.Add(new ChatMessage { Message = null,  type = "questions", ChatBotObj=obj });
+        chatMessages.Add(new ChatMessage { Message = null,  Type = "questions", ChatBotObj=obj });
         if(chatMessages.Count() > 4)
         { 
             restartable = true;

@@ -1,11 +1,11 @@
 <div class="card faq mb-3">
     <div class="row">
-        @for (int i = 0; i < faq.GetLength(0); i++)
+        @for (int i = 0; i < Faq.GetLength(0); i++)
         {
             int questionNumber = i;
             <div class="col-md-4 text-center @(selectedQuestionNr == questionNumber ? "selected" : "")">
-                <span @onclick="() => displayAnswer(questionNumber)" class="faqBtn">
-                    @faq[i, 0]
+                <span @onclick="() => DisplayAnswer(questionNumber)" class="faqBtn">
+                    @Faq[i, 0]
                 </span>
             </div>
         }
@@ -26,15 +26,15 @@
     public int selectedQuestionNr { get; set; } = -1;
 
     [Parameter]
-    public string[,] faq { get; set; }
+    public string[,] Faq { get; set; }
 
-    private void displayAnswer(int index)
+    private void DisplayAnswer(int index)
     {
-        if (displayedAnswer == faq[index, 1]) {
+        if (displayedAnswer == Faq[index, 1]) {
             displayedAnswer = "";
             selectedQuestionNr = -1;
         } else {
-            displayedAnswer = faq[index, 1];
+            displayedAnswer = Faq[index, 1];
             selectedQuestionNr = index;
         }
     }

@@ -7,16 +7,16 @@
         </div>
         <div class="midNav">
             <div class="midNavItem">
-                <NavLink href="/onsTeam" Match="NavLinkMatch.All"><p class="navText">Ons Team</p></NavLink>
+                <NavLink href="/ons-team" Match="NavLinkMatch.All"><p class="navText">Ons Team</p></NavLink>
             </div>
             <div class="midNavItem">
                 <NavLink href="/behandelingen" Match="NavLinkMatch.All"><p class="navText">Behandelingen</p></NavLink>
             </div>
             <div class="midNavItem">
-                <NavLink href="/Locatie" Match="NavLinkMatch.All"><p class="navText">Locatie</p></NavLink>
+                <NavLink href="/locatie" Match="NavLinkMatch.All"><p class="navText">Locatie</p></NavLink>
             </div>
             <div class="midNavItem">
-                <NavLink href="/Contact" Match="NavLinkMatch.All"><p class="navText">Contact</p></NavLink>
+                <NavLink href="/contact" Match="NavLinkMatch.All"><p class="navText">Contact</p></NavLink>
             </div>
         </div>
         <div class="lastNav">
@@ -41,11 +41,11 @@
             </div>
             <div class="mobileNavLinks" style="display: @(collapseNavMenu ? "none" : "flex")">
                 <NavLink href="" Match="NavLinkMatch.All" @onclick="ToggleNavMenuBack"><p class="navText">Home</p></NavLink>
-                <NavLink href="onsTeam" @onclick="ToggleNavMenuBack"><p class="navText">Ons Team</p></NavLink>
+                <NavLink href="ons-team" @onclick="ToggleNavMenuBack"><p class="navText">Ons Team</p></NavLink>
                 <NavLink href="behandelingen" @onclick="ToggleNavMenuBack"><p class="navText">Behandelingen</p></NavLink>
-                <NavLink href="Locatie" @onclick="ToggleNavMenuBack"><p class="navText">Locatie</p></NavLink>
-                <NavLink href="Contact" @onclick="ToggleNavMenuBack"><p class="navText">Contact</p></NavLink>
-                <NavLink href="Afspraak" @onclick="ToggleNavMenuBack"><p class="navText">Maak een afspraak</p></NavLink> @*nog de href aan te passen *@
+                <NavLink href="locatie" @onclick="ToggleNavMenuBack"><p class="navText">Locatie</p></NavLink>
+                <NavLink href="contact" @onclick="ToggleNavMenuBack"><p class="navText">Contact</p></NavLink>
+                <NavLink href="afspraak" @onclick="ToggleNavMenuBack"><p class="navText">Maak een afspraak</p></NavLink> @*nog de href aan te passen *@
             </div>
         </div>
     </div>

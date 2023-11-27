@@ -8,7 +8,7 @@
 @inject ChatbotService ChatbotService
 
 
-<div class="textBubble-@(type == "bot" ? "bot" : "user")">
+<div class="textBubble-@(Type == "bot" ? "bot" : "user")">
     <div>
     <div class="content">
         @if (ChatBotObj == null || visible)
@@ -22,7 +22,7 @@
         } else {
             @foreach(var question in ChatBotObj)
             {
-                <button class="question" @onclick="() => displayQuestion(question)">
+                <button class="question" @onclick="() => DisplayQuestion(question)">
                     @question.Question
                 </button>
             }
@@ -36,7 +36,7 @@
     public string Message { get; set; }
 
     [Parameter]
-    public string type { get; set; }
+    public string Type { get; set; }
 
     [Parameter]
     public string? Image { get; set; }
@@ -52,7 +52,7 @@
     [Parameter]
     public EventCallback<ChatBotQuestion> QuestionClicked { get; set; }
 
-    public async Task displayQuestion(ChatBotQuestion question) {
+    public async Task DisplayQuestion(ChatBotQuestion question) {
         Message = question.Question;
         visible = true;
         await QuestionClicked.InvokeAsync(question);

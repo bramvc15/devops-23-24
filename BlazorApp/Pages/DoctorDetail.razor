@@ -1,4 +1,4 @@
-﻿@page "/DoctorDetail/{DoctorId:int}"
+﻿@page "/docter-info/{DoctorId:int}"
 @using BlazorApp.Models
 @using BlazorApp.Services
 @inject DoctorService doctorService
@@ -9,7 +9,7 @@
         {
             <div class="imageBackWrapper">
                 <div class="exitDoctorDetail">
-                    <NavLink class="backArrownav" href="/onsTeam">
+                    <NavLink class="backArrownav" href="/ons-team">
                         <p class="lastText">
                             <img src="images/BackArrow.png" class="backArrow" alt="icon" />
                         </p>
@@ -31,11 +31,11 @@
                 </ul>
                 <div id="biography">
                     <h3>Over @Doctor.Name</h3>
-                    <p>@Doctor.InfoOver</p>
+                    <p>@Doctor.InfoAbout</p>
                     <h3>Opleiding en Training</h3>
-                    <p>@Doctor.InfoOpleiding</p>
+                    <p>@Doctor.InfoEducation</p>
                     <h3>Publicaties en Erkenningen</h3>
-                    <p>@Doctor.InfoPublicaties</p>
+                    <p>@Doctor.InfoPublications</p>
                 </div>
 
             </div>
