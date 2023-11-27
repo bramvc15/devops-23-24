@@ -25,5 +25,24 @@ namespace BlazorApp.Data
         public DbSet<CMSHomeHeader> HomeHeaders => Set<CMSHomeHeader>();
         public DbSet<CMSLocation> Locations => Set<CMSLocation>();
         public DbSet<CMSTreatment> Treatments => Set<CMSTreatment>();
+
+        // ModelChanges on persist
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ScheduleTimeSlot>()
+                .HasOne<Doctor>()
+                .WithMany()
+                .HasForeignKey(scheduleSlot => scheduleSlot.NameDoctor);
+
+            modelBuilder.Entity<TimeSlot>()
+                .HasOne<Doctor>()
+                .WithMany()
+                .HasForeignKey(timeSlot => timeSlot.NameDoctor);
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne<TimeSlot>()
+                .WithMany()
+                .HasForeignKey(a => a.DateTime);
+        }
     }
 }
