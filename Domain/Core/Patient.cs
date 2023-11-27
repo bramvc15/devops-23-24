@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace Domain;
 
-public class Patient
+public class Patient : Entity
 {
     #region Fields
     private string _name;

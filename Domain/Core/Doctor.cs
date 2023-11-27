@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace Domain;
 
-public class Doctor
+public class Doctor : Entity
 {
     #region Fields
     private string _name;
