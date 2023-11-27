@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace Domain;
 
 public class Doctor : Entity
@@ -52,6 +50,7 @@ public class Doctor : Entity
     }
     public string Biograph { get; private set; } = "This doctor has not written a biograph yet.";
     public bool IsAvailable { get; private set; } = true;
+    public string ImageLink { get; private set; } = string.Empty;
     #endregion
 
     #region Constructors
@@ -172,7 +171,7 @@ public class Doctor : Entity
         {
             if (timeSlot.IsTimeSlotAvailable())
             {
-                timeSlot.CreateAppointment(patient, reason, note);
+                timeSlot.CreateAppointment(patient, timeSlot.DateTime, reason, note);
             }
             else
             {
@@ -183,6 +182,16 @@ public class Doctor : Entity
         {
             throw new ArgumentException("This time slot does not exist.");
         }
+    }
+
+    public void SetImageLink(string imageLink)
+    {
+        ImageLink = imageLink;
+    }
+
+    public void SetAvailability(bool availability)
+    {
+        IsAvailable = availability;
     }
     #endregion
 

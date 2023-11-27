@@ -1,3 +1,5 @@
+using System;
+
 namespace Domain;
 
 public class Appointment : Entity
@@ -6,6 +8,7 @@ public class Appointment : Entity
     private string _reason;
     private string _note;
     private Patient _patient;
+    private DateTime _dateTime;
     #endregion
 
     #region Properties
@@ -37,10 +40,29 @@ public class Appointment : Entity
             }
         }
     }
+    public DateTime DateTime
+    {
+        get
+        {
+            return _dateTime;
+        }
+        private set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException("DateTime cannot be null");
+            }
+            if (value < DateTime.Now)
+            {
+                throw new ArgumentException("DateTime cannot be in the past");
+            }
+            _dateTime = value;
+        }
+    }
     #endregion
 
     #region Constructors
-    public Appointment(Patient patient, string reason, string note = null)
+    public Appointment(Patient patient, DateTime dateTime, string reason, string note = null)
     {
         if (patient == null)
         {
@@ -50,7 +72,7 @@ public class Appointment : Entity
         if (string.IsNullOrWhiteSpace(reason)) {
             throw new ArgumentNullException("Reason cannot be empty");
         }
-        Reason = reason;
+        _reason = reason;
         if (!string.IsNullOrWhiteSpace(note))
         {
             Note = note;
@@ -59,6 +81,16 @@ public class Appointment : Entity
         {
             Note = "This appointment has no additional note.";
         }
+
+        if (dateTime == null)
+        {
+            throw new ArgumentNullException("DateTime cannot be null");
+        }
+        if (dateTime < DateTime.Now)
+        {
+            throw new ArgumentException("DateTime cannot be in the past");
+        }
+        _dateTime = dateTime;
     }
     #endregion
 

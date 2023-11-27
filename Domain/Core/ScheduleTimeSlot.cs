@@ -7,6 +7,7 @@ public class ScheduleTimeSlot : Entity
     private AppointmentType _appointmentType;
     private DateTime _dateTime;
     private DayOfWeek _dayOfWeek;
+    private string _nameDoctor;
     #endregion
 
     #region Properties
@@ -71,25 +72,40 @@ public class ScheduleTimeSlot : Entity
             _dayOfWeek = value;
         }
     }
+    public string NameDoctor {
+        get
+        {
+            return _nameDoctor;
+        }
+        private set
+        {
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Name Doctor cannot be empty");
+            _nameDoctor = value;
+        }
+    }
     #endregion
 
     #region Constructors
-    public ScheduleTimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration, DayOfWeek dayOfWeek)
+    public ScheduleTimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration, DayOfWeek dayOfWeek, string nameDoctor)
     {
-        if (!Enum.IsDefined(typeof(AppointmentType), appointmentType)) {
+        if (!Enum.IsDefined(typeof(AppointmentType), appointmentType))
+        {
             throw new ArgumentException("Invalid AppointmentType");
         }
         _appointmentType = appointmentType;
 
-        if (dateTime == null) {
+        if (dateTime == null)
+        {
             throw new ArgumentNullException("DateTime cannot be null");
         }
         _dateTime = dateTime;
 
-        if (duration == null) {
+        if (duration == null)
+        {
             throw new ArgumentNullException("Duration cannot be null");
         }
-        if (duration <= 0) {
+        if (duration <= 0)
+        {
             throw new ArgumentException("Duration cannot be less than or equal to 0");
         }
         if (duration > 1440)
@@ -98,10 +114,14 @@ public class ScheduleTimeSlot : Entity
         }
         _duration = duration;
 
-        if (!Enum.IsDefined(typeof(DayOfWeek), dayOfWeek)) {
+        if (!Enum.IsDefined(typeof(DayOfWeek), dayOfWeek))
+        {
             throw new ArgumentException("The given DayOfWeek does not exist");
         }
         _dayOfWeek = dayOfWeek;
+
+        if (string.IsNullOrWhiteSpace(nameDoctor)) throw new ArgumentNullException("Name Doctor cannot be empty");
+        _nameDoctor = nameDoctor;
     }
     #endregion
 
@@ -112,6 +132,7 @@ public class ScheduleTimeSlot : Entity
         _dateTime = newScheduleTimeSlot._dateTime;
         _duration = newScheduleTimeSlot._duration;
         _dayOfWeek = newScheduleTimeSlot._dayOfWeek;
+        _nameDoctor = newScheduleTimeSlot._nameDoctor;
     }
     #endregion
 }

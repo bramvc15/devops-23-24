@@ -15,7 +15,7 @@ public class AppointmentTest
 	public AppointmentTest()
 	{
 		_patient = new Patient("Rino Petereyns", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-		_appointment = new Appointment(_patient, "Reason: Operation on both eyes", "Note: patient is known to act weird");
+		_appointment = new Appointment(_patient, new DateTime(2024, 2, 17, 12, 0, 0), "Reason: Operation on both eyes", "Note: patient is known to act weird");
 	}
 	#endregion
 
@@ -26,26 +26,40 @@ public class AppointmentTest
 		Assert.Equal(_appointment.Reason, "Reason: Operation on both eyes");
 		Assert.Equal(_appointment.Note, "Note: patient is known to act weird");
 		Assert.Equal(_appointment.GetPatient(), _patient);
+		Assert.Equal(_appointment.DateTime, new DateTime(2024, 2, 17, 12, 0, 0));
 	}
 
 	[Fact]
 	public void Appointment_Constructor_EmptyReason_ThrowsException()
 	{
 		Patient newPatient = new Patient("New Patient", "patient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-		Assert.Throws<ArgumentNullException>(() => new Appointment(newPatient, "", "Note: this is a note."));
+		Assert.Throws<ArgumentNullException>(() => new Appointment(newPatient, new DateTime(2024, 2, 17, 12, 0, 0), "", "Note: this is a note."));
 	}
 
 	[Fact]
 	public void Appointment_Constructor_ValidParametersWithoutNote()
 	{
 		Patient newPatient = new Patient("New Patient", "patient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-		Appointment newAppointment = new Appointment(newPatient, "Reason: new reason", "");
+		Appointment newAppointment = new Appointment(newPatient, new DateTime(2024, 2, 17, 12, 0, 0), "Reason: new reason", "");
 		Assert.Equal(newAppointment.Note, "This appointment has no additional note.");
 	}
-	#endregion
 
-	#region Method tests
 	[Fact]
+	public void Appointment_Constructor_PatientNull_ThrowsException()
+	{
+		Assert.Throws<ArgumentNullException>(() => new Appointment((Patient) null, new DateTime(2024, 2, 17, 12, 0, 0), "Reason: new reason", ""));
+	}
+
+    [Fact]
+    public void Appointment_Constructor_InvalidDateTime_ThrowsException()
+    {
+        Patient newPatient = new Patient("New Patient", "patient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
+        Assert.Throws<ArgumentException>(() => new Appointment(newPatient, new DateTime(1990, 2, 17, 12, 0, 0), "Reason: new reason", ""));
+    }
+    #endregion
+
+    #region Method tests
+    [Fact]
 	public void Appointment_HasPatient_IsTrue()
 	{
 		Assert.True(_appointment.HasPatient());

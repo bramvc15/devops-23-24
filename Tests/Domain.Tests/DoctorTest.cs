@@ -65,7 +65,7 @@ public class DoctorTest
     public void Doctor_MakeAppointmentForPatient()
     {
         Patient patient = new Patient("Rino Petereyns", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-        TimeSlot timeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 4, 1, 16, 20, 0), 60);
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 4, 1, 16, 20, 0), 60, "Dr. Smith");
 
         _doctor.AddTimeSlot(timeSlot);
         _doctor.CreateAppointmentForPatient(patient, timeSlot, "Reason: Operation on both eyes", "Note: patient is known to act weird");
@@ -79,6 +79,7 @@ public class DoctorTest
         Assert.Equal(timeSlot.DateTime, fetchedTimeSlot.DateTime);
         Assert.Equal(timeSlot.AppointmentType, fetchedTimeSlot.AppointmentType);
         Assert.Equal(timeSlot.Duration, fetchedTimeSlot.Duration);
+        Assert.Equal(timeSlot.NameDoctor, fetchedTimeSlot.NameDoctor);
 
         Assert.NotNull(fetchedAppointment);
         Assert.Equal(patient, fetchedPatient);
@@ -89,11 +90,25 @@ public class DoctorTest
     [Fact]
     public void Doctor_HasAvailableTimeSlots()
     {
-        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 4, 1, 11, 0, 0), 60);
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 4, 1, 11, 0, 0), 60, "Dr. Smith");
 
         _doctor.AddTimeSlot(timeSlot);
 
         Assert.True(_doctor.HasAvailableTimeSlots());
+    }
+
+    [Fact]
+    public void Doctor_SetImageLink()
+    {
+        _doctor.SetImageLink("https://fakelink.com");
+        Assert.Equal(_doctor.ImageLink, "https://fakelink.com");
+    }
+
+    [Fact]
+    public void Doctor_SetAvailability()
+    {
+        _doctor.SetAvailability(false);
+        Assert.Equal(_doctor.IsDoctorAvailable(), false);
     }
     #endregion
 
@@ -101,7 +116,7 @@ public class DoctorTest
     [Fact]
     public void Doctor_AddScheduleTimeSlot()
     {
-        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
+        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday, "Dr. Smith");
 
         _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
 
@@ -111,10 +126,10 @@ public class DoctorTest
     [Fact]
     public void Doctor_UpdateScheduleTimeSlot()
     {
-        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 18, 12, 0, 0), 60, DayOfWeek.Tuesday);
+        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 18, 12, 0, 0), 60, DayOfWeek.Tuesday, "Dr. Smith");
         _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
 
-        ScheduleTimeSlot newScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 19, 12, 0, 0), 60, DayOfWeek.Thursday);
+        ScheduleTimeSlot newScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 19, 12, 0, 0), 60, DayOfWeek.Thursday, "Dr. Smith");
         _doctor.UpdateScheduleTimeSlot(scheduleTimeSlot, newScheduleTimeSlot);
 
         ScheduleTimeSlot updatedScheduleTimeSlot = _doctor.GetScheduleTimeSlots().FirstOrDefault(x => x.DateTime == newScheduleTimeSlot.DateTime);
@@ -122,12 +137,13 @@ public class DoctorTest
         Assert.Equal(newScheduleTimeSlot.AppointmentType, updatedScheduleTimeSlot.AppointmentType);
         Assert.Equal(newScheduleTimeSlot.Duration, updatedScheduleTimeSlot.Duration);
         Assert.Equal(newScheduleTimeSlot.DayOfWeek, updatedScheduleTimeSlot.DayOfWeek);
+        Assert.Equal(newScheduleTimeSlot.NameDoctor, updatedScheduleTimeSlot.NameDoctor);
     }
 
     [Fact]
     public void Doctor_DeleteScheduleTimeSlot()
     {
-        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 20, 12, 0, 0), 60, DayOfWeek.Friday);
+        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 20, 12, 0, 0), 60, DayOfWeek.Friday, "Dr. Smith");
         _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
 
         _doctor.DeleteScheduleTimeSlot(scheduleTimeSlot);
@@ -138,11 +154,11 @@ public class DoctorTest
     [Fact]
     public void Doctor_AddInvalidScheduleTimeSlot_SlotOverlapping()
     {
-        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
+        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday, "Dr. Smith");
 
         _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
 
-        ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 12, 0, 0), 30, DayOfWeek.Monday);
+        ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 12, 0, 0), 30, DayOfWeek.Monday, "Dr. Smith");
 
         Assert.Throws<ArgumentException>(() => _doctor.AddScheduleTimeSlot(overlappingScheduleTimeSlot));
     }
@@ -150,11 +166,11 @@ public class DoctorTest
     [Fact]
     public void Doctor_AddInvalidScheduleTimeSlot_StartTimeOverlapping()
     {
-        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
+        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday, "Dr. Smith");
 
         _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
 
-        ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 12, 30, 0), 60, DayOfWeek.Monday);
+        ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 12, 30, 0), 60, DayOfWeek.Monday, "Dr. Smith");
 
         Assert.Throws<ArgumentException>(() => _doctor.AddScheduleTimeSlot(overlappingScheduleTimeSlot));
     }
@@ -162,11 +178,11 @@ public class DoctorTest
     [Fact]
     public void Doctor_AddInvalidScheduleTimeSlot_EndTimeOverlapping()
     {
-        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
+        ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday, "Dr. Smith");
 
         _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
 
-        ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 11, 30, 0), 60, DayOfWeek.Monday);
+        ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 11, 30, 0), 60, DayOfWeek.Monday, "Dr. Smith");
 
         Assert.Throws<ArgumentException>(() => _doctor.AddScheduleTimeSlot(overlappingScheduleTimeSlot));
     }
@@ -176,11 +192,11 @@ public class DoctorTest
     {
         Exception caughtException = Record.Exception(() =>
         {
-            ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday, "Dr. Smith");
 
             _doctor.AddScheduleTimeSlot(scheduleTimeSlot);
 
-            ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 13, 0, 0), 60, DayOfWeek.Monday);
+            ScheduleTimeSlot overlappingScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 17, 13, 0, 0), 60, DayOfWeek.Monday, "Dr. Smith");
 
             _doctor.AddScheduleTimeSlot(overlappingScheduleTimeSlot);
         });
@@ -192,7 +208,7 @@ public class DoctorTest
     [Fact]
     public void Doctor_AddTimeSlot()
     {
-        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60);
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60, "Dr. Smith");
 
         _doctor.AddTimeSlot(timeSlot);
 
@@ -202,10 +218,10 @@ public class DoctorTest
     [Fact]
     public void Doctor_UpdateTimeSlot()
     {
-        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 21, 12, 0, 0), 60);
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 21, 12, 0, 0), 60, "Dr. Smith");
         _doctor.AddTimeSlot(timeSlot);
 
-        TimeSlot newTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 22, 12, 0, 0), 40);
+        TimeSlot newTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 22, 12, 0, 0), 40, "Dr. Jane");
         _doctor.UpdateTimeSlot(timeSlot, newTimeSlot);
 
         TimeSlot updatedTimeSlot = _doctor.GetTimeSlots().FirstOrDefault(x => x.DateTime == newTimeSlot.DateTime);
@@ -213,12 +229,13 @@ public class DoctorTest
         Assert.Equal(newTimeSlot.AppointmentType, updatedTimeSlot.AppointmentType);
         Assert.Equal(newTimeSlot.Duration, updatedTimeSlot.Duration);
         Assert.Equal(newTimeSlot.DateTime, updatedTimeSlot.DateTime);
+        Assert.Equal(newTimeSlot.NameDoctor, updatedTimeSlot.NameDoctor);
     }
 
     [Fact]
     public void Doctor_DeleteTimeSlot()
     {
-        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 23, 12, 0, 0), 60);
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 23, 12, 0, 0), 60, "Dr. Smith");
         _doctor.AddTimeSlot(timeSlot);
 
         _doctor.DeleteTimeSlot(timeSlot);
@@ -229,11 +246,11 @@ public class DoctorTest
     [Fact]
     public void Doctor_AddInvalidTimeSlot_SlotOverlapping()
     {
-        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60);
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60, "Dr. Smith");
 
         _doctor.AddTimeSlot(timeSlot);
 
-        TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 12, 30, 0), 20);
+        TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 12, 30, 0), 20, "Dr. Smith");
 
         Assert.Throws<ArgumentException>(() => _doctor.AddTimeSlot(overlappingTimeSlot));
     }
@@ -241,11 +258,11 @@ public class DoctorTest
     [Fact]
     public void Doctor_AddInvalidTimeSlot_StartTimeOverlapping()
     {
-        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60);
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60, "Dr. Smith");
 
         _doctor.AddTimeSlot(timeSlot);
 
-        TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 12, 30, 0), 60);
+        TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 12, 30, 0), 60, "Dr. Smith");
 
         Assert.Throws<ArgumentException>(() => _doctor.AddTimeSlot(overlappingTimeSlot));
     }
@@ -253,11 +270,11 @@ public class DoctorTest
     [Fact]
     public void Doctor_AddInvalidTimeSlot_EndTimeOverlapping()
     {
-        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60);
+        TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60, "Dr. Smith");
 
         _doctor.AddTimeSlot(timeSlot);
 
-        TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 11, 30, 0), 60);
+        TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 11, 30, 0), 60, "Dr. Smith");
 
         Assert.Throws<ArgumentException>(() => _doctor.AddTimeSlot(overlappingTimeSlot));
     }
@@ -267,11 +284,11 @@ public class DoctorTest
     {
         Exception caughtException = Record.Exception(() =>
         {
-            TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60);
+            TimeSlot timeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 1, 20, 12, 0, 0), 60, "Dr. Smith");
 
             _doctor.AddTimeSlot(timeSlot);
 
-            TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 13, 0, 0), 60);
+            TimeSlot overlappingTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 1, 20, 13, 0, 0), 60, "Dr. Smith");
 
             _doctor.AddTimeSlot(overlappingTimeSlot);
         });
