@@ -4,6 +4,8 @@
 @using BlazorApp.Services
 @using BlazorApp.Models
 @using BlazorApp.Controllers
+@using System.ComponentModel.DataAnnotations
+@using System.Net.Mail
 <PageTitle>Contact</PageTitle>
 
 
@@ -39,50 +41,45 @@
                 <!-- Right Column for Google Maps -->
                 <div class="col-md-6">
                     <h1 class="mb-4">Stel ons een vraag</h1>
-                    <form action="submit_form.php" method="post" onsubmit="SubmitForm(); return false;">
+                    <!-- <form action="submit_form.php" method="post" onsubmit="SubmitForm(); return false;"> -->
+                    <EditForm Model="@Model" OnValidSubmit="@SubmitForm" FormName="ContactForm">
+                        <DataAnnotationsValidator />
+                        <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
                         <!-- Name and First Name -->
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="box" name="name" placeholder="Naam" required @ref="nameInput" data-test-id="contact-name">
+                                <InputText @bind-Value="Model.Name" placeholder="Naam"  class="form-control" id="box" />
                             </div>
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="box" name="firstName" placeholder="Voornaam" required @ref="firstNameInput" data-test-id="contact-firstname">
+                                <InputText @bind-Value="Model.FirstName" placeholder="Voornaam" class="form-control" id="box" />
                             </div>
                         </div>
 
                         <!-- Email -->
                         <div class="form-group">
-                            <input type="email" class="form-control"id="box"  name="email" placeholder="email" required @ref="emailInput" data-test-id="contact-email">
+                            <InputText @bind-Value="Model.Email" placeholder="E-mail" class="form-control" id="box" />
                         </div>
 
                         <!-- Date of Birth -->
                         <div class="form-group">
-                            <input type="date" class="form-control" id="box"  name="dob" placeholder="Geboortedatum" required @ref="dateInput" data-test-id="contact-date">
+                            <InputDate @bind-Value="Model.DateOfBirth" placeholder="Geboortedatum" class="form-control" id="box" />
                         </div>
 
                         <!-- Phone Number -->
                         <div class="form-group">
-                            <input type="tel" class="form-control" id="box"  name="phoneNumber"
-                                pattern="[0-9]{10}" placeholder="gsm" required @ref="telInput" data-test-id="contact-phone">
+                            <InputText @bind-Value="Model.PhoneNumber" placeholder="Telefoonnummer" class="form-control" id="box" />
                         </div>
 
                         <!-- Message -->
                         <div class="form-group">
-                            <textarea class="form-control" id="box"  name="message" rows="4" placeholder="bericht of vraag" required @ref="msgInput" data-test-id="contact-message"></textarea>
+                            <InputTextArea rows="4" @bind-Value="Model.Message" placeholder="Bericht of vraag" class="form-control" id="box" />
                         </div>
 
                         <!-- Submit Button -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary" data-test-id="contact-submit-button">verstuur</button>
                         </div>
-                    </form>
-
-
-
-
-
-
-
+                    </EditForm>
                 </div>
             </div>
         </div>
@@ -94,18 +91,32 @@
     @using System.Net
     @using System.Net.Mail
 
-    private ElementReference nameInput;
-    private ElementReference firstNameInput;
-    private ElementReference emailInput;
-    private ElementReference dateInput;
-    private ElementReference telInput;
-    private ElementReference msgInput;
+    IEnumerable<ContactM>? ConObj;
 
-     IEnumerable<ContactM>? ConObj;
+    public ContactModel? Model { get; set; }
     
       protected override async Task OnInitializedAsync()
     {
+        Model = new ContactModel();
         ConObj = await Task.Run(() => contactService.GetContent());
+    }
+
+    public class ContactModel
+    {
+        [Required(ErrorMessage = "Naam is verplicht.")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Voornaam is verplicht.")]
+        public string FirstName { get; set; }
+        [Required(ErrorMessage = "Email is verplicht.")]
+        [EmailAddress(ErrorMessage = "Voer een geldig emailadres in.")]
+        public string Email { get; set; }
+        [Required(ErrorMessage = "Geboortedatum is verplicht.")]
+        public DateTime DateOfBirth { get; set; }
+        [Required(ErrorMessage = "Telefoonnummer is verplicht.")]
+        [RegularExpression(@"[0-9]{10}", ErrorMessage = "Voer een geldig telefoonnummer in.")]
+        public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Een bericht is verplicht.")]
+        public string Message { get; set; }
     }
 
     // Create references for other form fields as needed
@@ -114,9 +125,10 @@
     private void SubmitForm()
     {
         // Get the values from the form fields
-        var name = nameInput;
-        var firstName = firstNameInput;
-        var email = emailInput.ToString;
+        var name = Model.Name;
+        var firstName = Model.FirstName;
+        var email = Model.Email;
+
         // Get values from other form fields as needed
         using (SmtpClient smtpClient = new SmtpClient("your-smtp-server.com"))
         {

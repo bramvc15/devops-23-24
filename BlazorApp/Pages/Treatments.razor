@@ -5,30 +5,28 @@
 
 <PageTitle>Behandelingen</PageTitle>
 
-<body>
-    <div class="background-div">
-        <div class="overlay">
-            <h1>Behandelingen</h1>
-            <span class="breadcrumbs" data-test-id="behandelingen-home-breadcrumb">
-                <a href="/"><u>Home</u></a> > Behandelingen
-            </span>
+<div class="background-div">
+    <div class="overlay">
+        <h1>Behandelingen</h1>
+        <span class="breadcrumbs" data-test-id="behandelingen-home-breadcrumb">
+            <a href="/"><u>Home</u></a> > Behandelingen
+        </span>
 
-            <div class="container mt-40">
-                <div class="row ">
-                    @if (TreatmentObj != null)
+        <div class="container mt-40">
+            <div class="row ">
+                @if (TreatmentObj != null)
+                {
+                    foreach (var treatment in TreatmentObj)
                     {
-                        foreach (var treatment in TreatmentObj)
-                        {
-                            <div class="col-md-4 d-flex flex-fill">
-                                <TreatmentCard ImageSrc=@treatment.Image Title=@treatment.Name OnCardClick="@( () => NavigateDetailTreatment(treatment.Name.ToLower()) )" />
-                            </div>
-                        }
+                        <div class="col-md-4 d-flex flex-fill">
+                            <TreatmentCard ImageSrc=@treatment.Image Title=@treatment.Name OnCardClick="@( () => NavigateDetailTreatment(treatment.Name.ToLower()) )" />
+                        </div>
                     }
-                </div>
+                }
             </div>
         </div>
     </div>
-</body>
+</div>
 
 @code {
     [Inject] NavigationManager NavigationManager { get; set; }

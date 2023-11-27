@@ -9,7 +9,7 @@
 @using Microsoft.AspNetCore.Components
 @inject ChatbotService ChatbotService
 
-   <button class="btn" @onclick="ShowModal">@text</button>
+   <button class="btn" @onclick="ShowModal">@Text</button>
    <Modal @ref="modalRef">
     <ModalContent Centered>
         <ModalHeader>
@@ -27,15 +27,15 @@
             </Field>
         </ModalBody>
         <ModalFooter>
-            <Button Color="Color.Secondary" >Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@addQuestion">Voeg toe</Button>
+            <Button Color="Color.Secondary" Clicked="@CloseModal" >Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@AddQuestion">Voeg toe</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
 
 @code {
     [Parameter]
-    public string text { get; set; }
+    public string Text { get; set; }
     
     private Modal? modalRef;
 
@@ -43,16 +43,16 @@
     string? answer;
 
     [Parameter]
-    public ChatBotQuestion? parentQuestion { get; set; }
+    public ChatBotQuestion? ParentQuestion { get; set; }
 
     [Parameter]
-    public EventCallback refresh { get; set; }
+    public EventCallback Refresh { get; set; }
 
-    public void handleRefresh() {
-        refresh.InvokeAsync();
+    public void HandleRefresh() {
+        Refresh.InvokeAsync();
     }
 
-    void addQuestion() {
+    void AddQuestion() {
         if(this.question == null || this.answer == null || this.question == "" || this.answer == "") {
             return;
         }
@@ -60,8 +60,8 @@
         question.Question = this.question;
         question.Answer = this.answer;
 
-        if(parentQuestion != null) {
-            ChatbotService.AddFollowUpQuestion(parentQuestion, question);
+        if(ParentQuestion != null) {
+            ChatbotService.AddFollowUpQuestion(ParentQuestion, question);
         } else {
             ChatbotService.AddQuestion(question);
         }
@@ -70,7 +70,12 @@
         this.question = null;
         this.answer = null;
 
-        handleRefresh();
+        HandleRefresh();
+    }
+
+    private Task? CloseModal()
+    {
+        return modalRef?.Hide();
     }
 
     private Task? ShowModal()
