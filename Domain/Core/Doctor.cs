@@ -54,6 +54,9 @@ public class Doctor : Entity
     #endregion
 
     #region Constructors
+    // Database Constructor
+    private Doctor() { }
+
     public Doctor(string name, string specialization, Gender gender, string biograph = null) {
         if (string.IsNullOrEmpty(name))
         {

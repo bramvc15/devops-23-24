@@ -117,6 +117,9 @@ public class Patient : Entity
     #endregion
 
     #region Constructors
+    // Database Constructor
+    private Patient() { }
+
     public Patient(string name, string email, string phoneNumber, DateTime dateOfBirth, Gender gender, BloodType bloodType) {
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("Name cannot be empty");
         _name = name;

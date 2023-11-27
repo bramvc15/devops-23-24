@@ -72,9 +72,13 @@ public class Appointment : Entity
             _nameDoctor = value;
         }
     }
+    public Patient Patient { get { return _patient; } }
     #endregion
 
     #region Constructors
+    // Database Constructor
+    private Appointment() { }
+
     public Appointment(Patient patient, string nameDoctor, DateTime dateTime, string reason, string note = null)
     {
         if (patient == null)

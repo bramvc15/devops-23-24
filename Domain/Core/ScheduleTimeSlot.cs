@@ -86,6 +86,9 @@ public class ScheduleTimeSlot : Entity
     #endregion
 
     #region Constructors
+    // Database Constructor
+    private ScheduleTimeSlot() { }
+
     public ScheduleTimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration, DayOfWeek dayOfWeek, string nameDoctor)
     {
         if (!Enum.IsDefined(typeof(AppointmentType), appointmentType))

@@ -11,11 +11,6 @@ namespace BlazorApp.Data
         public static void Initialize(DatabaseContext context)
         {
 
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any() && context.ChatBotQuestions.Any() && context.Appointments.Any() && context.TimeSlots.Any() && context.Patients.Any() && context.ScheduleTimeSlots.Any())
-            {
-                return;
-            }
-
             // domain
             #region Doctors
             Doctor doctor1 = new Doctor("Dr. J. Van der Veken", "Eye Specialist", Gender.Male, "Dr. J. Van der Veken is een ervaren oogarts met een passie voor het verbeteren van het gezichtsvermogen van zijn patiënten. Met jarenlange ervaring in de oogheelkunde, is hij toegewijd aan het bieden van hoogwaardige oogzorg.");
@@ -203,8 +198,8 @@ namespace BlazorApp.Data
             #endregion
 
             #region Appointments
-            Appointment appointment1 = new Appointment(patient1, new DateTime(2023, 12, 23, 8, 0, 0), "Reason: Normal Consultation", "");
-            Appointment appointment2 = new Appointment(patient1, new DateTime(2023, 12, 23, 9, 0, 0), "Reason: Normal Operation", "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren.");
+            Appointment appointment1 = new Appointment(patient1, "Dr. Smith", new DateTime(2023, 12, 23, 8, 0, 0), "Reason: Normal Consultation", "");
+            Appointment appointment2 = new Appointment(patient1, "Dr. Smith", new DateTime(2023, 12, 23, 9, 0, 0), "Reason: Normal Operation", "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren.");
 
             var appointments = new Appointment[]
             {
@@ -216,7 +211,6 @@ namespace BlazorApp.Data
             #region Header
             var header = new CMSHomeHeader
             {
-                Id = 0,
                 Title = "Vision Oogcentrum Gent",
                 Context = "Van harte welkom bij Vision Oogcenter Gent, waar we met liefde en zorg voor uw ogen zorgen. Onze toegewijde oogartsen zijn hier om uw visuele behoeften te vervullen en uw gezichtsvermogen te optimaliseren. Bij ons vindt u de perfecte combinatie van expertise, geavanceerde technologie en persoonlijke aandacht. Stap binnen in een wereld waar dromen van helder zicht werkelijkheid worden. We kijken ernaar uit u te verwelkomen en samen te werken aan een scherpere toekomst."
 
@@ -226,7 +220,6 @@ namespace BlazorApp.Data
             #region Location
             var location = new CMSLocation
             {
-                Id = 0,
                 Context = "Ergens in GENT, best via de E40 binnen rijden"
 
             };
@@ -235,7 +228,6 @@ namespace BlazorApp.Data
             #region Contact
             var contact = new CMSContact
             {
-                Id = 0,
                 Context = "wij zijn mensen en geen ALiens ookal zijn we oogartsen"
 
             };
@@ -246,7 +238,6 @@ namespace BlazorApp.Data
             {
                 new CMSTreatment
                 {
-                    Id = 0,
                     Name = "Ooglidcorrectie",
                     Description = "Een ooglidcorrectie, ook wel bekend als blepharoplastie, is een verfijnde cosmetische chirurgische procedure die tot doel heeft de jeugdige uitstraling van de ogen te herstellen en functionele problemen in verband met verslapte oogleden te verhelpen. Met het natuurlijke verouderingsproces of genetische factoren kunnen oogleden na verloop van tijd gaan hangen, wat kan resulteren in vermoeidheid, verminderd gezichtsvermogen en een verouderde uitstraling.\n\nBij een ooglidcorrectie verwijdert onze ervaren oogarts zorgvuldig overtollig huid- en vetweefsel rond de ogen. Hierdoor wordt niet alleen de esthetische aantrekkingskracht hersteld, maar ook eventuele gezondheidsproblemen zoals beperkt gezichtsvermogen als gevolg van hangende oogleden kunnen worden verlicht. Onze patiënten ervaren doorgaans minimale ongemakken en een snel herstel, met blijvende resultaten die de jeugdige uitstraling van de ogen herstellen en hun algehele zelfvertrouwen vergroten.\n\nEen ooglidcorrectie kan een levensveranderende ingreep zijn, waardoor patiënten weer kunnen stralen en zich zelfverzekerd voelen. Neem vandaag nog contact met ons op voor een consult om te ontdekken hoe deze procedure u kan helpen de jeugdige, levendige oogopslag te herstellen die u verdient.",
                     ImageLink = "https://blitzware-files.s3.eu-central-1.amazonaws.com/b020388d-71c6-4908-ac78-4cb18403604c-ooglidcorrectie.png"
@@ -254,7 +245,6 @@ namespace BlazorApp.Data
 
                 new CMSTreatment
                 {
-                    Id = 1,
                     Name = "Cataractoperatie",
                     Description = "Een cataractoperatie is een veilige en effectieve ingreep die wordt uitgevoerd om cataract, ook wel staar genoemd, te behandelen. Cataract is een veelvoorkomende oogaandoening die optreedt wanneer de natuurlijke ooglens troebel wordt, waardoor het zicht wazig en troebel wordt. Deze vertroebeling kan het dagelijks leven aanzienlijk beïnvloeden, maar met een cataractoperatie kunnen we uw helderheid en kwaliteit van zien herstellen.\n\nTijdens de procedure verwijdert onze bekwame oogarts de troebele ooglens en vervangt deze door een heldere, kunstmatige lens, die bekend staat als een intraoculaire lens (IOL). Deze IOL herstelt uw gezichtsvermogen en stelt u in staat weer scherp en duidelijk te zien. De cataractoperatie is meestal een poliklinische ingreep en wordt uitgevoerd onder lokale verdoving. Patiënten ervaren doorgaans weinig tot geen pijn en kunnen snel terugkeren naar hun dagelijkse activiteiten.\n\nHet herstellen van helder zicht na een cataractoperatie kan een levensveranderende ervaring zijn, waardoor patiënten weer volop van het leven kunnen genieten. Als u symptomen van cataract ervaart, zoals wazig zicht, verblindheid door licht of problemen met nachtzicht, aarzel dan niet om contact met ons op te nemen voor een consult. Onze deskundige oogartsen staan klaar om u te helpen uw gezichtsvermogen te herstellen en uw kwaliteit van leven te verbeteren.",
                     ImageLink = "https://blitzware-files.s3.eu-central-1.amazonaws.com/bff02029-b469-4b50-a468-390035e1fa64-cataractoperatie.png"
@@ -262,7 +252,6 @@ namespace BlazorApp.Data
 
                 new CMSTreatment
                 {
-                    Id = 2,
                     Name = "Straaloperatie",
                     Description = "De straaloperatie, ook bekend als lasercorrectie van oogafwijkingen, is een geavanceerde en niet-invasieve procedure die tot doel heeft om de afhankelijkheid van bril of contactlenzen te verminderen of zelfs te elimineren. Deze revolutionaire techniek heeft miljoenen mensen geholpen om scherp en helder zicht te bereiken zonder de belemmeringen van correctieve lenzen.\n\nTijdens een straaloperatie gebruiken onze ervaren oogchirurgen geavanceerde laserapparatuur om microscopisch kleine aanpassingen aan het hoornvlies van het oog aan te brengen. Deze aanpassingen kunnen bijziendheid, verziendheid, astigmatisme en andere oogafwijkingen corrigeren, waardoor het licht op de juiste manier op het netvlies wordt gefocust. De procedure is meestal snel, vrijwel pijnloos en vereist minimaal hersteltijd.\n\nDe voordelen van een straaloperatie zijn talrijk en omvatten een verbeterde kwaliteit van leven, meer vrijheid in uw dagelijkse activiteiten en het verminderen of elimineren van de kosten en het ongemak van brillen of contactlenzen. Veel patiënten ervaren na de ingreep een significante verbetering van hun zicht, waardoor ze scherp en helder kunnen zien zonder enige visuele hulpmiddelen.\n\nAls u geïnteresseerd bent in een straaloperatie om uw zicht te corrigeren, aarzel dan niet om contact met ons op te nemen voor een consult. Onze toegewijde oogartsen staan klaar om uw specifieke behoeften te beoordelen en u te begeleiden naar de best mogelijke oplossing voor uw oogafwijkingen. Ervaar de vrijheid van helder zicht met een straaloperatie en ontdek hoe het uw leven kan veranderen.",
                     ImageLink = "https://blitzware-files.s3.eu-central-1.amazonaws.com/3a88b810-0585-458a-9196-73a0fe215b90-straaloperatie.png"
@@ -275,7 +264,6 @@ namespace BlazorApp.Data
             {
                 new CMSBlog
                 {
-                    Id = 0,
                     Title = "Laseroperatie voor bijziendheid: de voor- en nadelen",
                     Text = "Bijziendheid is een veel voorkomende oogafwijking. Het is een "+
                     "refractieafwijking, wat betekent dat het oog niet in staat is om lichtstralen op de juiste manier te breken. Hierdoor ontstaat een wazig beeld. Bijziendheid kan worden gecorrigeerd met een bril of contactlenzen, "+
@@ -285,7 +273,6 @@ namespace BlazorApp.Data
 
                new CMSBlog
                 {
-                    Id = 0,
                     Title = "Vision oogcenter ",
                     Text = "Een nieuwe oogarts in het Vision Oogcentrum Gent: Dr. J. Van der Veken. "+
                     "Dr. J. Van der Veken is een oogarts met een bijzondere interesse in de behandeling van glaucoom en cataract. "+
@@ -302,14 +289,12 @@ namespace BlazorApp.Data
             {
                 new CMSChatBotQuestion
                 {
-                    Id = 0,
                     Question = "Hoeveel kost een behandeling?",
                     Answer = "In welke behandeling bent u geïnteresseerd?",
                     FollowUpQuestions = new List<CMSChatBotQuestion>
                     {
                         new CMSChatBotQuestion
                         {
-                            Id = 1,
                             IsFollowUp = true,
                             Question = "Ooglidcorrectie",
                             Answer = "Over welk soort ooglidcorrectie gaat het?",
@@ -317,14 +302,12 @@ namespace BlazorApp.Data
                             {
                                 new CMSChatBotQuestion
                                 {
-                                    Id = 2,
                                     IsFollowUp = true,
                                     Question = "Bovenooglidcorrectie",
                                     Answer = "Een bovenooglidcorrectie kost 1250 euro.",
                                 },
                                 new CMSChatBotQuestion
                                 {
-                                    Id = 3,
                                     IsFollowUp = true,
                                     Question = "Onderooglidcorrectie",
                                     Answer = "Een onderooglidcorrectie kost 1000 euro.",
@@ -333,14 +316,12 @@ namespace BlazorApp.Data
                         },
                         new CMSChatBotQuestion
                         {
-                            Id = 4,
                             IsFollowUp = true,
                             Question = "Cataractoperatie",
                             Answer = "Een cataractoperatie kost tussen de 800 en 1500 euro.",
                         },
                         new CMSChatBotQuestion
                         {
-                            Id = 5,
                             IsFollowUp = true,
                             Question = "Straaloperatie",
                             Answer = "Een straaloperatie kost tussen de 1250 en 2000 euro.",
@@ -349,13 +330,11 @@ namespace BlazorApp.Data
                 },
                 new CMSChatBotQuestion
                 {
-                    Id = 6,
                     Question = "Waar is de vestiging gelegen?",
                     Answer = "Onze vestiging is gelegen in 9040 Gent, op de Antwerpsesteenweg 1022.",
                 },
                 new CMSChatBotQuestion
                 {
-                    Id = 7,
                     Question = "Hoe maak ik een afspraak?",
                     Answer = "Rechtsbovenaan de pagina kan u op de knop 'Maak een afspraak' klikken. U wordt dan doorverwezen naar een pagina waar u een afspraak kan maken.",
                 },

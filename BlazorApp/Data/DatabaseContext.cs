@@ -29,7 +29,26 @@ namespace BlazorApp.Data
         // ModelChanges on persist
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ScheduleTimeSlot>()
+           modelBuilder.Entity<CMSBlog>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<CMSChatBotQuestion>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<CMSContact>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<CMSHomeHeader>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<CMSLocation>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<CMSTreatment>()
+                .HasKey(e => e.Id);
+
+            /*
+             modelBuilder.Entity<ScheduleTimeSlot>()
                 .HasOne<Doctor>()
                 .WithMany()
                 .HasForeignKey(scheduleSlot => scheduleSlot.NameDoctor);
@@ -43,6 +62,7 @@ namespace BlazorApp.Data
                 .HasOne<TimeSlot>()
                 .WithMany()
                 .HasForeignKey(a => a.DateTime);
+            */
         }
     }
 }

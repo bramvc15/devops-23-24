@@ -79,6 +79,9 @@ public class TimeSlot : Entity
     #endregion
 
     #region Constructors
+    // Database Constructor
+    private TimeSlot() { }
+
     public TimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration, string nameDoctor)
     {
         if (!Enum.IsDefined(typeof(AppointmentType), appointmentType))
