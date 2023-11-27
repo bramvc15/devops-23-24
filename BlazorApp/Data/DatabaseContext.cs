@@ -1,5 +1,5 @@
-using BlazorApp.Models;
-using BlazorApp.Pages;
+using Domain;
+using Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp.Data
@@ -11,16 +11,19 @@ namespace BlazorApp.Data
         {
 
         }
-        public DbSet<Blog> Blogs => Set<Blog>();
-        public DbSet<ChatBotQuestion> ChatBotQuestions => Set<ChatBotQuestion>();
-        public DbSet<ContactM> Contacts => Set<ContactM>();
+        // Domain Tables
         public DbSet<Doctor> Doctors => Set<Doctor>();
-        public DbSet<HomeHeader> HomeHeaders => Set<HomeHeader>();
-        public DbSet<LocationM> Locations => Set<LocationM>();
         public DbSet<Patient> Patients => Set<Patient>();
-        public DbSet<Treatment> Treatments => Set<Treatment>();
         public DbSet<Appointment> Appointments => Set<Appointment>();
         public DbSet<TimeSlot> TimeSlots => Set<TimeSlot>();
         public DbSet<ScheduleTimeSlot> ScheduleTimeSlots => Set<ScheduleTimeSlot>();
+
+        // CMS Tables
+        public DbSet<CMSBlog> Blogs => Set<CMSBlog>();
+        public DbSet<CMSChatBotQuestion> ChatBotQuestions => Set<CMSChatBotQuestion>();
+        public DbSet<CMSContact> Contacts => Set<CMSContact>();
+        public DbSet<CMSHomeHeader> HomeHeaders => Set<CMSHomeHeader>();
+        public DbSet<CMSLocation> Locations => Set<CMSLocation>();
+        public DbSet<CMSTreatment> Treatments => Set<CMSTreatment>();
     }
 }
