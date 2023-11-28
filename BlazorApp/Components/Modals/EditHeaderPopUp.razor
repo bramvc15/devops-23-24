@@ -18,7 +18,7 @@
             @foreach (var h in HomObj2)
             {
 
-                <h1>@h.Title</h1>
+                <h1 data-test-id="home-title">@h.Title</h1>
                 
                    @((MarkupString)h.Context)
             
@@ -27,7 +27,7 @@
         else
         {
 
-            <h1>title</h1>
+            <h1 data-test-id="home-title">title</h1>
             <p>
                 context
             </p>

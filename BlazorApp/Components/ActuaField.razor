@@ -1,9 +1,9 @@
 <div>
     <div class="field grid-container">
 
-        <h2 class="grid-title">@Title</h2>
+        <h2 class="grid-title" data-test-id="actuafield-blogpost-title">@Title</h2>
         <p class="grid-text">@((MarkupString)@Text)</p>
-        <a href="/actua-detail/@Id" class="grid-hyper">lees verder</a>
+        <a href="/actua-detail/@Id" class="grid-hyper" data-test-id="actua-detail-button">Lees verder</a>
         <img class="grid-image" src=@Image>
     </div>
 

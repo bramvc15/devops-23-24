@@ -4,7 +4,7 @@
     <a class="sidebar-item" href="/admin/patiënten"><p>Patiënten</p> <i class="fa fa-fw fa-user"></i></a>
     <a class="sidebar-item" href="/admin/chatbot"><p>Chatbox</p> <i class="fa fa-fw fa-comments"></i></a>
 
-    <div class="sidebar-item" @onclick="ToggleCMS">
+    <div class="sidebar-item" @onclick="ToggleCMS" data-test-id="sidebar-cms">
         <p>CMS</p><i class="fa fa-fw fa-envelope"></i>
     </div>
     <ul class="sub-items @cmsItemStyle">

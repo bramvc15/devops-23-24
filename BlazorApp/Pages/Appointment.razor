@@ -65,9 +65,9 @@
         <div class="headerBox">
             <p class="header">3. Kies een tijdslot</p>
         </div>
-        <div class="afspraakbox">
+        <div class="afspraakbox" data-test-id="appointment-box">
             <div class="temp">
-                <button class="butTemp" @onclick=ChooseTime>temp</button>
+                <button class="butTemp" @onclick=ChooseTime data-test-id="appointment-temp-button">temp</button>
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="submitBtn">Verzenden</button>
+                <button type="submit" class="submitBtn" data-test-id="appointment-submit">Verzenden</button>
             </div>
         </EditForm>
     </div>
