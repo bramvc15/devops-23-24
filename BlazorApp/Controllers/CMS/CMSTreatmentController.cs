@@ -18,14 +18,13 @@ public class CMSTreatmentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<CMSTreatment>> GetContent()
+    public async Task<IEnumerable<CMSTreatment>> GetTreatments()
     {
-        return await _service.GetContent();
+        return await _service.GetTreatments();
     }
 
-    // moet dit niet HttpPut ??
-    [HttpPost]
-    public async Task UpdateTreatment(CMSTreatment request)
+    [HttpPut]
+    public async Task<CMSTreatment> UpdateTreatment(CMSTreatment request)
     {
         await _service.UpdateTreatment(request);
     }

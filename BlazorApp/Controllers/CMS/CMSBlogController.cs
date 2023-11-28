@@ -8,28 +8,34 @@ namespace BlazorApp.Controllers.CMS;
 [Route("[controller]")]
 public class CMSBlogController : ControllerBase
 {
-    private readonly BlogService _service;
+    private readonly CMSBlogService _service;
 
-    public CMSBlogController(BlogService service)
+    public CMSBlogController(CMSBlogService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public async Task<(IEnumerable<CMSBlog>, int totalPages)> GetContent()
+    public async Task<IEnumerable<CMSBlog>> GetBlogs()
     {
-        return await _service.GetContent();
+        return await _service.GetBlogs();
     }
 
     [HttpPost]
-    public async Task AddBlog(CMSBlog request)
+    public async Task<CMSBlog> CreateBlog([FromBody] CMSBlog request)
     {
-        await _service.AddBlog(request);
+        return await _service.CreateBlog(request);
     }
 
-    // [HttpPost]
-    // public void UpdateBlog(int id, string newTitle, string content)
-    // {
-    //     _service.UpdateBlog(int id ,string newTitle, string content)
-    // }
+    [HttpPut]
+    public async Task<CMSBlog> UpdateBlog([FromBody] CMSBlog request)
+    {
+        return await _service.UpdateBlog(request);
+    }
+
+    [HttpDelete]
+    public async Task<CMSBlog> DeleteBlog([FromBody] CMSBlog request)
+    {
+        return await _service.DeleteBlog(request);
+    }
 }

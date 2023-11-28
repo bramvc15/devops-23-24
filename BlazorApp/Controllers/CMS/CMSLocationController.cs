@@ -1,8 +1,6 @@
-using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using BlazorApp.Pages;
-using Shared;
 using BlazorApp.Services.CMS;
+using Shared;
 
 namespace BlazorApp.Controllers.CMS;
 
@@ -18,14 +16,14 @@ public class CMSLocationController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<CMSLocation>> GetContent()
+    public async Task<IEnumerable<CMSLocation>> GetLocation()
     {
-        return await _service.GetContent();
+        return await _service.GetLocation();
     }
 
-    [HttpPost]
-    public async Task UpdateLocationText(CMSLocation request)
+    [HttpPut]
+    public async Task<CMSLocation> UpdateLocation(CMSLocation request)
     {
-        await _service.UpdateLocationText(request);
+        return await _service.UpdateLocation(request);
     }
 }

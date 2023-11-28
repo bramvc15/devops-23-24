@@ -1,19 +1,30 @@
 using BlazorApp.Data;
-using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared;
 
 namespace BlazorApp.Services.CMS
 {
-    public class BlogService
+    public class CMSBlogService
     {
         private readonly DatabaseContext _ctx;
 
-        public BlogService(DatabaseContext ctx)
+        public CMSBlogService(DatabaseContext ctx)
         {
             _ctx = ctx;
         }
 
-        public async Task<(IEnumerable<Blog> blogs, int totalPages)> GetContent(int page = 1, int pageSize = 5)
+        public async Task<IEnumerable<CMSBlog>> GetBlogs()
+        {
+            return await _ctx.Blogs.OrderByDescending(blog => blog.Id);
+        }
+
+        public async Task<CMSBlog> CreateBlog(CMSBlog newBlog)
+        {
+            _ctx.Blogs.Add(newBlog);
+        }
+
+        /*
+        public async Task<(IEnumerable<CMSBlog> blogs, int totalPages)> GetContent(int page = 1, int pageSize = 5)
         {
             var totalCount = await _ctx.Blogs.CountAsync();
             var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
@@ -90,5 +101,6 @@ namespace BlazorApp.Services.CMS
         //     // headerToUpdate.Title = newTitle;
         //     _ctx.SaveChanges();
         // }
+        */
     }
 }
