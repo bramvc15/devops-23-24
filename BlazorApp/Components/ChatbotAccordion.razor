@@ -63,22 +63,23 @@
     private async Task DeleteChatBotQuestion(ChatBotQuestion question)
     {
         await OnDelete.InvokeAsync(question);
-        if(FollowUpQuestions.Contains(question))
+        if(FollowUpQuestions != null && FollowUpQuestions.Contains(question))
         {
             FollowUpQuestions = FollowUpQuestions.Where(x => x != Question);
+            StateHasChanged();
         }
     }
 
     protected async Task HandleRefresh()
     {
-        await OnInitializedAsync();
+        OnInitialized();
         StateHasChanged();
     }
 
     private async Task DeleteQuestion()
     {
-        await DeleteChatBotQuestion(Question);
         await ChatbotService.DeleteById(Question.Id);
+        await DeleteChatBotQuestion(Question);
     }
 
     public void Collapse()

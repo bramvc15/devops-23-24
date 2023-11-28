@@ -62,6 +62,13 @@
 
     IEnumerable<ChatBotQuestion>? ChatbotQuestionsList;
 
+    public class ChatMessage
+    {
+        public string? Message { get; set; }
+        public string Type { get; set; }
+        public IEnumerable<ChatBotQuestion>? ChatbotQuestionsList { get; set; }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await GetChatbotQuestions();
