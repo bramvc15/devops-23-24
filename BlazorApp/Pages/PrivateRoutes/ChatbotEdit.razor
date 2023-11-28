@@ -26,7 +26,7 @@
         {
             foreach (var question in ChatbotQuestionsList)
             {
-                  <ChatbotAccordion Question=question OnDelete="DeleteChatBotQuestion"/>
+                  <ChatbotAccordion Question=question OnDelete=HandleRefresh/>
             }
         }
         </div> 
@@ -53,21 +53,19 @@
             NavManager.NavigateTo("/login");
         else
         {
-            ChatbotQuestionsList = await ChatbotService.GetContent();
-            ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
+            await HandleRefresh();
         }
     }
 
     protected async Task HandleRefresh()
     {
-        await OnInitializedAsync();
-        StateHasChanged();
+        ChatbotQuestionsList = await ChatbotService.GetContent();
+        ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
     }
 
     protected async Task DeleteChatBotQuestion(ChatBotQuestion question) 
     {
-        ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.Id != question.Id);
-        StateHasChanged();
+        await HandleRefresh();
     }
 
     void Collapse()

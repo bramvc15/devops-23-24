@@ -10,7 +10,6 @@
 @inject ChatbotService ChatbotService
 
    <button class="btn" @onclick="ShowModal">@Text</button>
-   <button class="btn" @onclick="ShowModal">@Text</button>
    <Modal @ref="modalRef">
     <ModalContent Centered>
         <ModalHeader>
@@ -74,13 +73,15 @@
         HandleRefresh();
     }
 
-    private Task? CloseModal()
+    private async Task CloseModal()
     {
-        return modalRef?.Hide();
+        if(modalRef != null)
+            await modalRef.Hide();
     }
 
-    private Task? ShowModal()
+    private async Task ShowModal()
     {
-        return modalRef?.Show();
+        if(modalRef != null)
+            await modalRef.Show();
     }
 }
