@@ -10,12 +10,6 @@ public class NavigationTest : PageTest
     // run tests command: dotnet test
     // bin/Debug/net6.0/playwright.ps1 codegen 192.168.0.123:5046  
 
-    [OneTimeSetUp]
-    public void Init()
-    {
-
-    }
-
     [SetUp]
     public async Task SetUp()
     {
