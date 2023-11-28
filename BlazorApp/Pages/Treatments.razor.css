@@ -36,6 +36,17 @@ h5 {
   
 }
 
+@media only screen and (max-width: 500px) {
+    .overlay {
+        padding: 20px;
+        padding-top: 100px;
+    }
+    
+    h1 {
+        font-size: 32px;
+    }
+}
+
 .container {
     margin-top: 80px;
     max-width: 100%;

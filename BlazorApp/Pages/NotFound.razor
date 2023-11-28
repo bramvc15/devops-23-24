@@ -1,0 +1,24 @@
+@page "/notfound"
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="page-container">
+    <div class="row justify-content-center">
+        <div class="col-md-12 notfound-col">
+            <h1 class="text-center">404: Pagina niet gevonden</h1>
+            <p class="text-center">Helaas, het lijkt erop dat de pagina die je zoekt niet bestaat.</p>
+            <p class="text-center pt-3">
+                <button class="btn btn-primary" @onclick="GoBack">Ga terug</button>
+            </p>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+}
