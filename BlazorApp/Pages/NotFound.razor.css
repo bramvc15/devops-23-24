@@ -1,0 +1,24 @@
+.page-container {
+    min-height: 100vh;
+    width: 100%;
+    background-color: rgb(194,228,218);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #033878;
+}
+
+.notfound-col {
+    background-color: rgb(228, 238, 235);
+    padding: 30px;
+    border-radius: 15px;
+}
+
+.btn {
+    background-color: #033878;
+    border: 0;
+}
+
+.btn:hover {
+    background-color: #002b5a;
+}

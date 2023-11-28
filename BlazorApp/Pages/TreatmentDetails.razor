@@ -5,11 +5,10 @@
 
 <PageTitle>Behandeling @Naam</PageTitle>
 
+@if (TreatmentObj != null)
+{
 <div class="background-div">
     <div class="overlay">
-
-        @if (TreatmentObj != null)
-        {
             <h1 class="text-capitalize">@TreatmentObj.Name</h1>
 
             <span class="breadcrumbs text-capitalize">
@@ -36,10 +35,11 @@
                     <FAQ Faq="@faq" />
                 </div>
             </div>
-        }
-
     </div>
 </div>
+} else {
+    <NotFound />
+}
 
 @code {
     [Parameter]
@@ -55,6 +55,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        TreatmentObj = await treatmentService.GetContentByName(Naam);
+        try {
+            TreatmentObj = await treatmentService.GetContentByName(Naam);
+        }
+        catch (Exception e) {
+            TreatmentObj = null;
+        }
     }
 }
