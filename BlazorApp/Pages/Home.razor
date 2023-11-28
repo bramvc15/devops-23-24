@@ -32,8 +32,8 @@
                 </p>
             }
             <div class="buttons">
-                <button data-test-id="home-maakafspraak-button" class="custom-button btn-custom">Maak een afspraak <span class="oi oi-calendar"></span></button>
-                <button data-test-id="home-contacteerons-button" class="custom-button btn-custom">Contacteer ons <span
+                <button data-test-id="home-maakafspraak-button" class="custom-button btn-custom" @onclick="GoToAfspraakPage">Maak een afspraak <span class="oi oi-calendar"></span></button>
+                <button data-test-id="home-contacteerons-button" class="custom-button btn-custom" @onclick="GoToContactPage">Contacteer ons <span
                         class="oi oi-envelope-closed"></span></button>
             </div>
         </div>
@@ -54,7 +54,7 @@
         }
         <nav>
             <ul class="pagination">
-                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <li class="page-item @(currentPage == 1 ? "disabled d-none" : "")">
                     <a class="page-link" @onclick="(() => ChangePage(currentPage - 1))">Vorige</a>
                 </li>
                 @for (int i = 1; i <= BlogObj.totalPages; i++)
@@ -63,7 +63,7 @@
                         <a class="page-link" @onclick="(() => ChangePage(i))">@i</a>
                     </li>
                 }
-                <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled" : "")">
+                <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled d-none" : "")">
                     <a class="page-link" @onclick="(() => ChangePage(currentPage + 1))">Volgende</a>
                 </li>
             </ul>
@@ -74,6 +74,8 @@
 
 
 @code {
+    @inject NavigationManager NavigationManager
+    
     IEnumerable<HomeHeader>? HomObj;
     (IEnumerable<Blog> blogs, int totalPages) BlogObj;
     int currentPage = 1;
@@ -94,5 +96,13 @@
         currentPage = page;
         BlogObj = await blogService.GetContent(currentPage, 5);
         StateHasChanged();
+    }
+    
+    private void GoToAfspraakPage() {
+        NavigationManager.NavigateTo("/afspraak");
+    }
+
+    private void GoToContactPage() {
+        NavigationManager.NavigateTo("/contact");
     }
 }

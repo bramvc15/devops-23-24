@@ -2,6 +2,7 @@
 
 /* Style the overall page layout */
 .bodyWrapper {
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
