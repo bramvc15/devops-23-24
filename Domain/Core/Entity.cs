@@ -3,7 +3,7 @@
 public abstract class Entity
 {
     public int Id { get; init; }
-    public bool IsEnabled { get; set; }
+    public int Ref_Id { get; set; }
 
     protected Entity()
     {

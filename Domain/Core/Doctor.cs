@@ -51,6 +51,8 @@ public class Doctor : Entity
     public string Biograph { get; private set; } = "This doctor has not written a biograph yet.";
     public bool IsAvailable { get; private set; } = true;
     public string ImageLink { get; private set; } = string.Empty;
+    public List<TimeSlot> TimeSlots { get { return _timeSlots; } }
+    public List<ScheduleTimeSlot> ScheduleTimeSlots { get { return _scheduleTimeSlots; } }
     #endregion
 
     #region Constructors
@@ -174,7 +176,7 @@ public class Doctor : Entity
         {
             if (timeSlot.IsTimeSlotAvailable())
             {
-                timeSlot.CreateAppointment(patient, Name, timeSlot.DateTime, reason, note);
+                timeSlot.CreateAppointment(patient, reason, note);
             }
             else
             {
@@ -212,7 +214,7 @@ public class Doctor : Entity
 
             // Check for overlap: new slot end should not be between existing slot's start and end
             if (scheduleTimeSlot.DateTime.AddMinutes(scheduleTimeSlot.Duration) > existingSlot.DateTime &&
-                scheduleTimeSlot.DateTime.AddMinutes(scheduleTimeSlot.Duration) <= existingSlot.DateTime.AddMinutes(existingSlot.Duration))
+                scheduleTimeSlot.DateTime.AddMinutes(scheduleTimeSlot.Duration) <= existingSlot.DateTime.AddMinutes(existingSlot.Duration) && scheduleTimeSlot.DayOfWeek == existingSlot.DayOfWeek)
             {
                 return false;
             }

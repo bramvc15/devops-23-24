@@ -7,7 +7,6 @@ public class TimeSlot : Entity
     private AppointmentType _appointmentType;
     private DateTime _dateTime;
     private Appointment _appointment;
-    private string _nameDoctor;
     #endregion
     
     #region Properties
@@ -64,25 +63,14 @@ public class TimeSlot : Entity
             _dateTime = value;
         }
     }
-    public string NameDoctor
-    {
-        get
-        {
-            return _nameDoctor;
-        }
-        private set
-        {
-            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Name Doctor cannot be empty");
-            _nameDoctor = value;
-        }
-    }
+    public Appointment Appointment { get { return _appointment; } }
     #endregion
 
     #region Constructors
     // Database Constructor
     private TimeSlot() { }
 
-    public TimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration, string nameDoctor)
+    public TimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration)
     {
         if (!Enum.IsDefined(typeof(AppointmentType), appointmentType))
         {
@@ -114,9 +102,6 @@ public class TimeSlot : Entity
         }
         _duration = duration;
 
-        if (string.IsNullOrWhiteSpace(nameDoctor)) throw new ArgumentNullException("Name Doctor cannot be empty");
-        _nameDoctor = nameDoctor;
-
         _appointment = null;
     }
     #endregion
@@ -127,9 +112,9 @@ public class TimeSlot : Entity
         return _appointment == null;
     }
 
-    public Appointment CreateAppointment(Patient patient, string nameDoctor, DateTime dateTime, string reason, string note)
+    public Appointment CreateAppointment(Patient patient, string reason, string note)
     {
-        _appointment = new Appointment(patient, nameDoctor, dateTime, reason, note);
+        _appointment = new Appointment(patient, reason, note);
         return _appointment;
     }
 
@@ -149,7 +134,6 @@ public class TimeSlot : Entity
         _appointmentType = newTimeSlot.AppointmentType;
         _dateTime = newTimeSlot.DateTime;
         _duration = newTimeSlot.Duration;
-        _nameDoctor = newTimeSlot.NameDoctor;
     }
 
     public Appointment GetAppointment()

@@ -29,40 +29,55 @@ namespace BlazorApp.Data
         // ModelChanges on persist
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           modelBuilder.Entity<CMSBlog>()
-                .HasKey(e => e.Id);
+            // ignore Ref_Id in Doctor (don't persist)
+            modelBuilder.Entity<Doctor>().Ignore(d => d.Ref_Id);
 
-            modelBuilder.Entity<CMSChatBotQuestion>()
-                .HasKey(e => e.Id);
+            // ignore Ref_Id in Patient (don't persist)
+            modelBuilder.Entity<Patient>().Ignore(p => p.Ref_Id);
 
-            modelBuilder.Entity<CMSContact>()
-                .HasKey(e => e.Id);
-
-            modelBuilder.Entity<CMSHomeHeader>()
-                .HasKey(e => e.Id);
-
-            modelBuilder.Entity<CMSLocation>()
-                .HasKey(e => e.Id);
-
-            modelBuilder.Entity<CMSTreatment>()
-                .HasKey(e => e.Id);
-
-            /*
-             modelBuilder.Entity<ScheduleTimeSlot>()
-                .HasOne<Doctor>()
-                .WithMany()
-                .HasForeignKey(scheduleSlot => scheduleSlot.NameDoctor);
-
-            modelBuilder.Entity<TimeSlot>()
-                .HasOne<Doctor>()
-                .WithMany()
-                .HasForeignKey(timeSlot => timeSlot.NameDoctor);
+            // relation Patient One-To-Many Appointment
+            modelBuilder.Entity<Appointment>()
+                .Property<int>("Ref_Id")
+                .HasColumnName("Patient_Id");
 
             modelBuilder.Entity<Appointment>()
-                .HasOne<TimeSlot>()
-                .WithMany()
-                .HasForeignKey(a => a.DateTime);
-            */
+                .HasOne(a => a.Patient)
+                .WithMany(p => p.Appointments)
+                .HasForeignKey(a => a.Ref_Id)
+                .HasConstraintName("FK_Appointment_Patient");
+
+            // relation Doctor One-To-Many TimeSlot
+            modelBuilder.Entity<TimeSlot>()
+                .Property<int>("Ref_Id")
+                .HasColumnName("Doctor_Id");
+
+            modelBuilder.Entity<Doctor>()
+                .HasMany(d => d.TimeSlots)
+                .WithOne()
+                .HasForeignKey(d => d.Ref_Id)
+                .HasConstraintName("FK_Doctor_TimeSlot");
+
+            // relation TimeSlot One-To-One Appointment
+            modelBuilder.Entity<Appointment>()
+                .Property<int>("Id")
+                .HasColumnName("TimeSlot_Id");
+
+            modelBuilder.Entity<TimeSlot>()
+                .HasOne(t => t.Appointment)
+                .WithOne(a => a.TimeSlot)
+                .HasForeignKey<Appointment>(t => t.Id)
+                .IsRequired(false);
+
+            // relation Doctor One-To-Many ScheduleTimeSlot
+            modelBuilder.Entity<ScheduleTimeSlot>()
+                .Property<int>("Ref_Id")
+                .HasColumnName("Doctor_Id");
+
+            modelBuilder.Entity<Doctor>()
+                .HasMany(d => d.ScheduleTimeSlots)
+                .WithOne()
+                .HasForeignKey(d => d.Ref_Id)
+                .HasConstraintName("FK_Doctor_ScheduleTimeSlot");
         }
     }
 }

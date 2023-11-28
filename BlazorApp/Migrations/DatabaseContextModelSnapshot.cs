@@ -25,20 +25,8 @@ namespace BlazorApp.Migrations
             modelBuilder.Entity("Domain.Appointment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NameDoctor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("int")
+                        .HasColumnName("TimeSlot_Id");
 
                     b.Property<string>("Note")
                         .IsRequired()
@@ -48,7 +36,13 @@ namespace BlazorApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Ref_Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Patient_Id");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Ref_Id");
 
                     b.ToTable("Appointments");
                 });
@@ -73,9 +67,6 @@ namespace BlazorApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -112,9 +103,6 @@ namespace BlazorApp.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -148,14 +136,13 @@ namespace BlazorApp.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NameDoctor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Ref_Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Doctor_Id");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Ref_Id");
 
                     b.ToTable("ScheduleTimeSlots");
                 });
@@ -177,14 +164,13 @@ namespace BlazorApp.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NameDoctor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Ref_Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Doctor_Id");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Ref_Id");
 
                     b.ToTable("TimeSlots");
                 });
@@ -313,11 +299,67 @@ namespace BlazorApp.Migrations
                     b.ToTable("Treatments");
                 });
 
+            modelBuilder.Entity("Domain.Appointment", b =>
+                {
+                    b.HasOne("Domain.TimeSlot", "TimeSlot")
+                        .WithOne("Appointment")
+                        .HasForeignKey("Domain.Appointment", "Id");
+
+                    b.HasOne("Domain.Patient", "Patient")
+                        .WithMany("Appointments")
+                        .HasForeignKey("Ref_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Appointment_Patient");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("TimeSlot");
+                });
+
+            modelBuilder.Entity("Domain.ScheduleTimeSlot", b =>
+                {
+                    b.HasOne("Domain.Doctor", null)
+                        .WithMany("ScheduleTimeSlots")
+                        .HasForeignKey("Ref_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Doctor_ScheduleTimeSlot");
+                });
+
+            modelBuilder.Entity("Domain.TimeSlot", b =>
+                {
+                    b.HasOne("Domain.Doctor", null)
+                        .WithMany("TimeSlots")
+                        .HasForeignKey("Ref_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Doctor_TimeSlot");
+                });
+
             modelBuilder.Entity("Shared.CMSChatBotQuestion", b =>
                 {
                     b.HasOne("Shared.CMSChatBotQuestion", null)
                         .WithMany("FollowUpQuestions")
                         .HasForeignKey("CMSChatBotQuestionId");
+                });
+
+            modelBuilder.Entity("Domain.Doctor", b =>
+                {
+                    b.Navigation("ScheduleTimeSlots");
+
+                    b.Navigation("TimeSlots");
+                });
+
+            modelBuilder.Entity("Domain.Patient", b =>
+                {
+                    b.Navigation("Appointments");
+                });
+
+            modelBuilder.Entity("Domain.TimeSlot", b =>
+                {
+                    b.Navigation("Appointment")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shared.CMSChatBotQuestion", b =>

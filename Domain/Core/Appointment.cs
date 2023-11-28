@@ -8,8 +8,6 @@ public class Appointment : Entity
     private string _reason;
     private string _note;
     private Patient _patient;
-    private DateTime _dateTime;
-    private string _nameDoctor;
     #endregion
 
     #region Properties
@@ -41,45 +39,17 @@ public class Appointment : Entity
             }
         }
     }
-    public DateTime DateTime
-    {
-        get
-        {
-            return _dateTime;
-        }
-        private set
-        {
-            if (value == null)
-            {
-                throw new ArgumentNullException("DateTime cannot be null");
-            }
-            if (value < DateTime.Now)
-            {
-                throw new ArgumentException("DateTime cannot be in the past");
-            }
-            _dateTime = value;
-        }
-    }
-    public string NameDoctor
-    {
-        get
-        {
-            return _nameDoctor;
-        }
-        private set
-        {
-            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Name Doctor cannot be empty");
-            _nameDoctor = value;
-        }
-    }
     public Patient Patient { get { return _patient; } }
+
+    // empty reference for one-to-one relation for db
+    public TimeSlot TimeSlot { get; private set; } = null!;
     #endregion
 
     #region Constructors
     // Database Constructor
     private Appointment() { }
 
-    public Appointment(Patient patient, string nameDoctor, DateTime dateTime, string reason, string note = null)
+    public Appointment(Patient patient, string reason, string note = null)
     {
         if (patient == null)
         {
@@ -98,19 +68,6 @@ public class Appointment : Entity
         {
             Note = "This appointment has no additional note.";
         }
-
-        if (dateTime == null)
-        {
-            throw new ArgumentNullException("DateTime cannot be null");
-        }
-        if (dateTime < DateTime.Now)
-        {
-            throw new ArgumentException("DateTime cannot be in the past");
-        }
-        _dateTime = dateTime;
-
-        if (string.IsNullOrWhiteSpace(nameDoctor)) throw new ArgumentNullException("Name Doctor cannot be empty");
-        _nameDoctor = nameDoctor;
     }
     #endregion
 

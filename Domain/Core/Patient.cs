@@ -114,6 +114,7 @@ public class Patient : Entity
             _bloodType = value;
         }
     }
+    public List<Appointment> Appointments { get { return _appointments; } }
     #endregion
 
     #region Constructors
@@ -175,7 +176,7 @@ public class Patient : Entity
 
     public void MakeAppointment(string reason, string note, Doctor doctor, TimeSlot timeSlot)
     {
-        Appointment appointment = doctor.GetTimeSlots().FirstOrDefault(timeSlot).CreateAppointment(this, doctor.Name, timeSlot.DateTime, reason, note);
+        Appointment appointment = doctor.GetTimeSlots().FirstOrDefault(timeSlot).CreateAppointment(this, reason, note);
         _appointments.Add(appointment);
     }
     #endregion
