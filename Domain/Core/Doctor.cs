@@ -176,7 +176,7 @@ public class Doctor : Entity
         {
             if (timeSlot.IsTimeSlotAvailable())
             {
-                timeSlot.CreateAppointment(patient, Name, timeSlot.DateTime, reason, note);
+                timeSlot.CreateAppointment(patient, reason, note);
             }
             else
             {
@@ -268,7 +268,7 @@ public class Doctor : Entity
 
             // Check for overlap: new slot end should not be between existing slot's start and end
             if (scheduleTimeSlot.DateTime.AddMinutes(scheduleTimeSlot.Duration) > existingSlot.DateTime &&
-                scheduleTimeSlot.DateTime.AddMinutes(scheduleTimeSlot.Duration) <= existingSlot.DateTime.AddMinutes(existingSlot.Duration))
+                scheduleTimeSlot.DateTime.AddMinutes(scheduleTimeSlot.Duration) <= existingSlot.DateTime.AddMinutes(existingSlot.Duration) && scheduleTimeSlot.DayOfWeek == existingSlot.DayOfWeek)
             {
                 return false;
             }
