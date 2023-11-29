@@ -6,6 +6,8 @@
 @    using BlazorApp.Components.Modals
 @inject TimeSlotService timeSlotService
 @inject DatabaseContext databaseContext
+@using Shared
+@using BlazorApp.BlazorShared
 
 <button @onclick="() => ChooseDate(DateTime.Now)">Choose Time</button>
 
@@ -51,7 +53,7 @@
     public EventCallback<DateTime> OnDateChosen { get; set; }
 
     [Parameter]
-    public IEnumerable<TimeSlot> TimeSlotObj { get; set; }
+    public IEnumerable<TimeSlotDTO> TimeSlotObj { get; set; }
 
     public DateTime? SelectedDate { get; set; } = DateTime.Now;
     public string SelectedValue { get; set; } = DateTime.Now.ToString("M/d/yyyy");
@@ -75,7 +77,7 @@
 
         // Check if there is any time slot for the current date
         bool hasTimeSlot = TimeSlotObj.Any(timeSlot =>
-        timeSlot.Date?.Date == currentDate.Date);
+        timeSlot.DateTime.Date == currentDate.Date);
 
         if (hasTimeSlot)
         {
