@@ -76,7 +76,7 @@ a {
 }
 .background-div {
     height: 100vh;
-    background-image: url('https://images.unsplash.com/photo-1581584731241-c134a1afe9a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'); /* Replace 'path-to-your-image.jpg' with the actual path to your image */
+    background-image: url('https://oogarts-lokeren.be/_images/pages/37.jpg'); /* Replace 'path-to-your-image.jpg' with the actual path to your image */
     background-size: cover; /* Adjust the background size as needed */
     background-position: center; /* Center the background image */
 }
