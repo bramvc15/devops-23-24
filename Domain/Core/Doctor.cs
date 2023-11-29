@@ -198,6 +198,16 @@ public class Doctor : Entity
     {
         IsAvailable = availability;
     }
+
+    public void UpdateDoctor(string name, string specialization, Gender gender, string biograph, bool isAvailable, string imageLink)
+    {
+        Name = name;
+        Specialization = specialization;
+        Gender = gender;
+        Biograph = biograph;
+        IsAvailable = isAvailable;
+        ImageLink = imageLink;
+    }
     #endregion
 
     #region ValidationMethods
