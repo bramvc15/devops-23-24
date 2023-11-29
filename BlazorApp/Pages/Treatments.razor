@@ -20,7 +20,7 @@
                     {
                         <div class="col-md-4 d-flex flex-fill">
                             <TreatmentCard ImageSrc=@treatment.ImageLink Title=@treatment.Name
-                                OnCardClick="@( () => NavigateDetailTreatment(treatment.Name.ToLower()) )" />
+                                OnCardClick="@( () => NavigateDetailTreatment(treatment.Name) )" />
                         </div>
                     }
                 }
