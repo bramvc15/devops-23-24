@@ -1,6 +1,6 @@
 @using BlazorApp.Data
-@using BlazorApp.Services
-@using BlazorApp.Models
+@using BlazorApp.Services.Core
+@using Shared
 @inject ScheduleTimeSlotService scheduleTimeSlotService
 @inject DatabaseContext databaseContext
 
@@ -22,8 +22,8 @@
                             <FieldLabel>Afspraak type</FieldLabel>
                             <Select TValue="int" @bind-SelectedValue="@selectedAppointmentType">
                                 <SelectItem Value="0">-- Maak een keuze --</SelectItem>
-                                <SelectItem Value="15">@AppointmentType.Consultatie</SelectItem>
-                                <SelectItem Value="60">@AppointmentType.Operatie</SelectItem>
+                                <SelectItem Value="15">@Enums.AppointmentType.Consultation</SelectItem>
+                                <SelectItem Value="60">@Enums.AppointmentType.Operation</SelectItem>
                             </Select>
                         </Field>
                     </Validation>
@@ -65,7 +65,7 @@
 
 @code {
     [Parameter]
-    public EventCallback<ScheduleTimeSlot> OnScheduleTimeSlotAdded { get; set; }
+    public EventCallback<ScheduleTimeSlotDTO> OnScheduleTimeSlotAdded { get; set; }
 
     private Validations validations;
     private string errorMessage = string.Empty;
@@ -128,23 +128,23 @@
         exceptionMessage = string.Empty;
         if (await validations.ValidateAll())
         {
-            var appointmentType = selectedAppointmentType == 15 ? AppointmentType.Consultatie : AppointmentType.Operatie;
+            var appointmentType = selectedAppointmentType == 15 ? Enums.AppointmentType.Consultation : Enums.AppointmentType.Operation;
 
-            var dayOfWeek = string.Empty;
+            DayOfWeek dayOfWeek;
             if (selectedDayOfWeek == 1)
-                dayOfWeek = "Monday";
+                dayOfWeek = DayOfWeek.Monday;
             else if (selectedDayOfWeek == 2)
-                dayOfWeek = "Tuesday";
+                dayOfWeek = DayOfWeek.Tuesday;
             else if (selectedDayOfWeek == 3)
-                dayOfWeek = "Wednesday";
+                dayOfWeek = DayOfWeek.Wednesday;
             else if (selectedDayOfWeek == 4)
-                dayOfWeek = "Thursday";
+                dayOfWeek = DayOfWeek.Thursday;
             else if (selectedDayOfWeek == 5)
-                dayOfWeek = "Friday";
+                dayOfWeek = DayOfWeek.Friday;
             else if (selectedDayOfWeek == 6)
-                dayOfWeek = "Saturday";
+                dayOfWeek = DayOfWeek.Saturday;
             else
-                dayOfWeek = "Sunday";
+                dayOfWeek = DayOfWeek.Sunday;
 
             DateTime dateTime = DateTime.MinValue + (selectedStartTime ?? TimeSpan.Zero);
 
@@ -153,8 +153,14 @@
 
             try
             {
-                ScheduleTimeSlot newSlot = await scheduleTimeSlotService.AddScheduleTimeSlot(0, appointmentType, dayOfWeek, dateTime,
-                durationInMinutes);
+                ScheduleTimeSlotDTO slot = new()
+                {
+                    AppointmentType = appointmentType,
+                    DayOfWeek = dayOfWeek,
+                    DateTime = dateTime,
+                    Duration = durationInMinutes
+                };
+                ScheduleTimeSlotDTO newSlot = await scheduleTimeSlotService.CreateScheduleTimeSlot(slot, 0);
                 await OnScheduleTimeSlotAdded.InvokeAsync(newSlot);
             }
             catch (InvalidOperationException ex)
