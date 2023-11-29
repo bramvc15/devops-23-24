@@ -1,8 +1,6 @@
-using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using BlazorApp.Pages;
-using Shared;
 using BlazorApp.Services.Core;
+using Shared;
 
 namespace BlazorApp.Controllers.core;
 
@@ -18,14 +16,20 @@ public class PatientController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<PatientDTO>> GetContent()
+    public Task<IEnumerable<PatientDTO>> GetPatients()
     {
-        return await _service.GetContent();
+        return _service.GetPatients();
     }
 
     [HttpPost]
-    public void UpdateContent(PatientDTO request)
+    public Task<PatientDTO> CreatePatient([FromBody] PatientDTO patient) 
+    { 
+        return _service.CreatePatient(patient);
+    }
+
+    [HttpPut]
+    public Task<PatientDTO> UpdateContent([FromBody] PatientDTO request)
     {
-        _service.UpdatePatient(request);
+        return _service.UpdatePatient(request);
     }
 }

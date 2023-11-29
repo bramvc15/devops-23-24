@@ -106,7 +106,7 @@ public class Patient : Entity
         }
         private set
         {
-            if (!Enum.IsDefined(typeof(Gender), value))
+            if (!Enum.IsDefined(typeof(BloodType), value))
             {
                 throw new ArgumentException("Invalid BloodType value");
             }
@@ -178,6 +178,16 @@ public class Patient : Entity
     {
         Appointment appointment = doctor.GetTimeSlots().FirstOrDefault(timeSlot).CreateAppointment(this, reason, note);
         _appointments.Add(appointment);
+    }
+
+    public void UpdatePatient(string name, string email, string phoneNumber, DateTime dateOfBirth, Gender gender, BloodType bloodType)
+    {
+        Name = name;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        DateOfBirth = dateOfBirth;
+        Gender = gender;
+        BloodType = bloodType;
     }
     #endregion
 

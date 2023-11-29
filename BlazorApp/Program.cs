@@ -38,6 +38,7 @@ builder.Services.AddScoped<DoctorService>();
 builder.Services.AddScoped<ScheduleTimeSlotService>();
 builder.Services.AddScoped<TimeSlotService>();
 builder.Services.AddScoped<AppointmentService>();
+builder.Services.AddScoped<PatientService>();
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSyncfusionBlazor();
