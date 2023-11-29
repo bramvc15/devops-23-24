@@ -8,6 +8,10 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Domain
+<<<<<<< Updated upstream
 build_property.ProjectDir = C:\Users\Victo\Documents\DevOps\devops-23-24-net-g07\Domain\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
+=======
+build_property.ProjectDir = C:\Users\user\OneDrive - Hogeschool Gent\hogent\3de jaar\DevOps Project\project-oogarts\devops-23-24-net-g07\Domain\
+>>>>>>> Stashed changes

@@ -28,19 +28,18 @@
     .e-calendar .e-content .e-cell.has-time-slot span.e-day,
     .e-calendar .e-content .e-cell.no-time-slot span.e-day {
         background-color: #28a745;
-        border-radius: 50%; 
-        border: 2px solid #000; 
-        display: inline-block; 
+        border-radius: 50%;
+        border: 2px solid #000;
+        display: inline-block;
     }
 
     .e-calendar .e-content .e-cell.has-time-slot span.e-day {
-        background-color: #28a745; 
+        background-color: #28a745;
     }
 
     .e-calendar .e-content .e-cell.no-time-slot span.e-day {
-        background-color: #dc3545; 
+        background-color: #dc3545;
     }
-
 </style>
 
 
@@ -76,7 +75,7 @@
 
         // Check if there is any time slot for the current date
         bool hasTimeSlot = TimeSlotObj.Any(timeSlot =>
-            timeSlot.Date?.Date == currentDate.Date);
+        timeSlot.Date?.Date == currentDate.Date);
 
         if (hasTimeSlot)
         {
@@ -88,7 +87,6 @@
         }
     }
 
-    
+
 
 }
-
