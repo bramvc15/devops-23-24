@@ -24,13 +24,9 @@
             {
                 <p> Loading</p>
             }
-            <h1>title</h1>
-            <p>
-                context
-            </p>
             <div class="buttons">
-                <button class="custom-button btn-custom">Maak een afspraak <span class="oi oi-calendar"></span></button>
-                <button class="custom-button btn-custom">
+                <button class="custom-button btn-custom" @onclick=NavigateToAppointment>Maak een afspraak <span class="oi oi-calendar"></span></button>
+                <button class="custom-button btn-custom" @onclick=NavigateToContact>
                     Contacteer ons <span class="oi oi-envelope-closed"></span>
                 </button>
             </div>
@@ -52,7 +48,7 @@
         }
         <nav>
             <ul class="pagination">
-                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <li class="page-item @(currentPage == 1 ? "disabled d-none" : "")">
                     <a class="page-link" @onclick="(() => ChangePage(currentPage - 1))">Vorige</a>
                 </li>
                 @for (int i = 1; i <= BlogObj.totalPages; i++)
@@ -61,7 +57,7 @@
                         <a class="page-link" @onclick="(() => ChangePage(i))">@i</a>
                     </li>
                 }
-                <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled" : "")">
+                <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled d-none" : "")">
                     <a class="page-link" @onclick="(() => ChangePage(currentPage + 1))">Volgende</a>
                 </li>
             </ul>
@@ -72,6 +68,7 @@
 
 
 @code {
+    [Inject] NavigationManager NavigationManager { get; set; }
     CMSHomeHeader HomObj;
     (IEnumerable<CMSBlog> blogs, int totalPages) BlogObj;
     int currentPage = 1;
@@ -92,5 +89,15 @@
         currentPage = page;
         BlogObj = await blogService.GetBlogs(currentPage, 5);
         StateHasChanged();
+    }
+
+    private void NavigateToAppointment()
+    {
+        NavigationManager.NavigateTo("/afspraak");
+    }
+
+    private void NavigateToContact()
+    {
+        NavigationManager.NavigateTo("/contact");
     }
 }
