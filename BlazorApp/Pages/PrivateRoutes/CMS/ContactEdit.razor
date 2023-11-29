@@ -1,14 +1,13 @@
 @page "/admin/cms/contact"
 @using BlazorApp.Auth
 @using BlazorApp.Data
-@using BlazorApp.Services
-@using BlazorApp.Models
+@using BlazorApp.Services.CMS
 @using BlazorApp.Controllers
 @using BlazorApp.Components.Modals
 @using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavManager
 @inject CMSContactService contactService
-@inject LocationService locationService
+@inject CMSLocationService locationService
 
 
 <PageTitle>Admin - CMS Contact</PageTitle>
@@ -33,22 +32,15 @@
         <div class="container mt-4">
  <ContactModal/>
             
-            <div class="row">
+        <div class="row">
                 
-                <!-- Left Column for Text -->
-                <div class="col-md-6">
+        <!-- Left Column for Text -->
+        <div class="col-md-6">
 
-                    <h2>Onze gegevens</h2>
-                           @if (ConObj != null)
+        <h2>Onze gegevens</h2>
+        @if (contact != null)
         {
-            @foreach (var h in ConObj)
-            {
-
-            
-                
-                   @((MarkupString)h.Context)
-            
-            }
+            @((MarkupString)contact.Context!)
         }
         else
         {
@@ -115,16 +107,9 @@
                 <!-- Left Column for Text -->
                 <div class="col-md-6">
                     <h2>Onze locatie</h2>
-                    @if (LocObj != null)
+                    @if (location != null)
                     {
-                        @foreach (var h in LocObj)
-                        {
-
-
-
-                            @((MarkupString)h.Context)
-
-                        }
+                        @((MarkupString)location.Context!)
                     }
                     else
                     {
@@ -145,8 +130,8 @@
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
     
-    IEnumerable<ContactM>? ConObj;
-    IEnumerable<LocationM>? LocObj;
+    CMSContact? contact;
+    CMSLocation? location;
 
     public ContactModel? Model { get; set; }
     
@@ -156,8 +141,8 @@
         Model = new ContactModel();
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        ConObj = await contactService.GetContent();
-        LocObj = await locationService.GetContent();
+        contact = await contactService.GetContact();
+        location = await locationService.GetLocation();
     }
 
     public class ContactModel

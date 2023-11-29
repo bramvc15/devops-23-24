@@ -1,14 +1,13 @@
 @page "/admin/cms/behandelingen"
 @inherits EditHeaderPopUp
 @using BlazorApp.Data
-@using BlazorApp.Services
-@using BlazorApp.Models
+@using BlazorApp.Services.CMS
 @using BlazorApp.Components.Modals
 @using Microsoft.AspNetCore.Components
 @inject DatabaseContext databaseContext
 @using BlazorApp.Auth
 @inject NavigationManager NavManager
-@inject TreatmentService treatmentService
+@inject CMSTreatmentService treatmentService
 
 <PageTitle>Admin - CMS Behandelingen</PageTitle>
 
@@ -29,9 +28,9 @@ BlitzWareAuthService.AuthService.userData.UserSubLevel)
 
             <div class="container mt-40">
                 <div class="row ">
-                    @if (TreatmentObj != null)
+                    @if (treatments != null)
                     {
-                        foreach (var treatment in TreatmentObj)
+                        foreach (var treatment in treatments)
                         {
                             <div class="col-md-4 d-flex flex-fill">
                                 <TreatmentCard ImageSrc=@treatment.Image Title=@treatment.Name
@@ -113,14 +112,14 @@ else
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
-    IEnumerable<Treatment> TreatmentObj;
-    Treatment Treatment;
+    IEnumerable<CMSTreatment> treatments;
+    CMSTreatment Treatment;
 
     protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        TreatmentObj = await treatmentService.GetContent();
+        treatments = await treatmentService.GetTreatments();
     }
 
     int id;

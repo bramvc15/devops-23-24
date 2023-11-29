@@ -1,6 +1,7 @@
 using BlazorApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Shared;
+using System.Reflection.Metadata;
 
 namespace BlazorApp.Services.CMS
 {
@@ -16,9 +17,18 @@ namespace BlazorApp.Services.CMS
 
         private readonly DbSet<CMSBlog> _blogs;
 
-        public async Task<IEnumerable<CMSBlog>> GetBlogs()
+        public async Task<(IEnumerable<CMSBlog> blogs, int totalPages)> GetBlogs(int page = 1, int pageSize = 5)
         {
-            return await _blogs.ToListAsync();
+            var totalCount = _blogs.Count();
+            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+            var blogsPerPage = await _blogs
+                .OrderByDescending(blog => blog.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (blogsPerPage, totalPages);
+            //return await _blogs.ToListAsync(); // zonder pagination
         }
 
         public async Task<CMSBlog> CreateBlog(CMSBlog newBlog)
