@@ -17,86 +17,26 @@ public class DoctorController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<DoctorDTO>> GetAll()
+    public Task<IEnumerable<DoctorDTO>> GetDoctors()
     {
-        return await _service.GetAll();
+        return _service.GetDoctors();
     }
 
-    [HttpGet]
-    [Route("{id}")]
-    public async Task<DoctorDTO> GetDoctorbyId(int id)
+    [HttpPost]
+    public Task<DoctorDTO> CreateDoctor([FromBody] DoctorDTO newDoc)
     {
-        return await _service.GetDoctorById(id);
+        return _service.CreateDoctor(newDoc);
     }
 
-    // [HttpGet("{id}")]
-    // public ActionResult<Pizza> GetById(int id)
-    // {
-    //     var pizza = _service.GetById(id);
+    [HttpPut]
+    public Task<DoctorDTO> UpdateDoctor([FromBody] DoctorDTO newDoc)
+    {
+        return _service.UpdateDoctor(newDoc);
+    }
 
-    //     if(pizza is not null)
-    //     {
-    //         return pizza;
-    //     }
-    //     else
-    //     {
-    //         return NotFound();
-    //     }
-    // }
-
-
-    // [HttpPost]
-    // public IActionResult Create(Pizza newPizza)
-    // {
-    //     var pizza = _service.Create(newPizza);
-    //     return CreatedAtAction(nameof(GetById), new { id = pizza!.Id }, pizza);
-    // }
-
-    // [HttpPut("{id}/addtopping")]
-    // public IActionResult AddTopping(int id, int toppingId)
-    // {
-    //     var pizzaToUpdate = _service.GetById(id);
-
-    //     if(pizzaToUpdate is not null)
-    //     {
-    //         _service.AddTopping(id, toppingId);
-    //         return NoContent();    
-    //     }
-    //     else
-    //     {
-    //         return NotFound();
-    //     }
-    // }
-
-    // [HttpPut("{id}/updatesauce")]
-    // public IActionResult UpdateSauce(int id, int sauceId)
-    // {
-    //     var pizzaToUpdate = _service.GetById(id);
-
-    //     if(pizzaToUpdate is not null)
-    //     {
-    //         _service.UpdateSauce(id, sauceId);
-    //         return NoContent();    
-    //     }
-    //     else
-    //     {
-    //         return NotFound();
-    //     }
-    // }
-
-    // [HttpDelete("{id}")]
-    // public IActionResult Delete(int id)
-    // {
-    //     var pizza = _service.GetById(id);
-
-    //     if(pizza is not null)
-    //     {
-    //         _service.DeleteById(id);
-    //         return Ok();
-    //     }
-    //     else
-    //     {
-    //         return NotFound();
-    //     }
-    // }
+    [HttpDelete]
+    public Task DeleteDoctor([FromBody] DoctorDTO docToDelete) 
+    {
+        return _service.DeleteDoctor(docToDelete);
+    }
 }

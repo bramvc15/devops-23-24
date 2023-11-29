@@ -10,9 +10,9 @@ using Syncfusion.Blazor;
 using static BlazorApp.Auth.BlitzWareAuth;
 using BlazorApp.Auth;
 using Blazored.LocalStorage;
-using BlazorApp.Services.Core;
 using BlazorApp.Services.CMS;
 using Microsoft.Extensions.DependencyInjection;
+using BlazorApp.Services.Core;
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF1cWWhIf0x0TXxbf1xzZFRGalhXTnRdUiweQnxTdEZiWH1fcXRRQGJeV0N1WQ==");
 
@@ -29,18 +29,13 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<DoctorService>();
 builder.Services.AddScoped<CMSHomeHeaderService>();
 builder.Services.AddScoped<CMSBlogService>();
-builder.Services.AddScoped<LocationService>();
+builder.Services.AddScoped<CMSLocationService>();
 builder.Services.AddScoped<CMSContactService>();
-builder.Services.AddScoped<TreatmentService>();
-builder.Services.AddScoped<CMSChatbotService>();
-builder.Services.AddScoped<PatientService>();
-builder.Services.AddScoped<ScheduleTimeSlotService>(); 
-builder.Services.AddScoped<AppointmentService>();
-builder.Services.AddScoped<TimeSlotService>();
-builder.Services.AddScoped<ScheduleTimeSlotService>();
+builder.Services.AddScoped<CMSTreatmentService>();
+builder.Services.AddScoped<DoctorService>();
+
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSyncfusionBlazor();
 

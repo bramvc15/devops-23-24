@@ -55,7 +55,8 @@ namespace BlazorApp.Data
                 .HasMany(d => d.TimeSlots)
                 .WithOne()
                 .HasForeignKey(d => d.Ref_Id)
-                .HasConstraintName("FK_Doctor_TimeSlot");
+                .HasConstraintName("FK_Doctor_TimeSlot")
+                .OnDelete(DeleteBehavior.Cascade);
 
             // relation TimeSlot One-To-One Appointment
             modelBuilder.Entity<Appointment>()
@@ -66,7 +67,8 @@ namespace BlazorApp.Data
                 .HasOne(t => t.Appointment)
                 .WithOne(a => a.TimeSlot)
                 .HasForeignKey<Appointment>(t => t.Id)
-                .IsRequired(false);
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // relation Doctor One-To-Many ScheduleTimeSlot
             modelBuilder.Entity<ScheduleTimeSlot>()
@@ -77,7 +79,8 @@ namespace BlazorApp.Data
                 .HasMany(d => d.ScheduleTimeSlots)
                 .WithOne()
                 .HasForeignKey(d => d.Ref_Id)
-                .HasConstraintName("FK_Doctor_ScheduleTimeSlot");
+                .HasConstraintName("FK_Doctor_ScheduleTimeSlot")
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

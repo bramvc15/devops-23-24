@@ -1,6 +1,7 @@
 using BlazorApp.Data;
-using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared;
+using Domain;
 
 namespace BlazorApp.Services.Core
 {
@@ -11,77 +12,135 @@ namespace BlazorApp.Services.Core
         public DoctorService(DatabaseContext databaseContext)
         {
             _DBContext = databaseContext;
+            _doctors = databaseContext.Doctors;
         }
 
-        public async Task<IEnumerable<Doctor>> GetAll()
-        {
-            return await _DBContext.Doctors.ToListAsync();
-        }
+        private readonly DbSet<Doctor> _doctors;
 
-        public async Task<Doctor> GetDoctorById(int id)
+        public async Task<IEnumerable<DoctorDTO>> GetDoctors()
         {
-            return await _DBContext.Doctors.FindAsync(id);
-        }
+            var doctors = await _doctors.ToListAsync();
 
-        public async Task<IEnumerable<Doctor>> GetAllAsync()
-        {
-            return await _DBContext.Doctors.ToListAsync();
-        }
+            List<DoctorDTO> convertedDoctors = new();
 
-        public async Task<Doctor> Create(Doctor newDoctor)
-        {
-            await _DBContext.Doctors.AddAsync(newDoctor);
-            await _DBContext.SaveChangesAsync();
-
-            return newDoctor;
-        }
-
-        public void DeleteById(int id)
-        {
-            var doctorToDelete = _DBContext.Doctors.Find(id);
-            if (doctorToDelete is not null)
+            foreach (var doctor in doctors)
             {
-                _DBContext.Doctors.Remove(doctorToDelete);
-                _DBContext.SaveChanges();
+                DoctorDTO convertedDoctor = new DoctorDTO
+                {
+                    Id = doctor.Id,
+                    Name = doctor.Name,
+                    Specialization = doctor.Specialization,
+                    Gender = (Enums.Gender) doctor.Gender,
+                    Biograph = doctor.Biograph,
+                    IsAvailable = doctor.IsAvailable,
+                    ImageLink = doctor.ImageLink,
+                };
+
+                convertedDoctors.Add(convertedDoctor);
+            }
+
+            return convertedDoctors;
+        }
+
+        public async Task<DoctorDTO> CreateDoctor(DoctorDTO newDoctor)
+        {
+            DoctorDTO response = new DoctorDTO();
+
+            try
+            {
+                Doctor newDomainDoctor = new Doctor(newDoctor.Name, newDoctor.Specialization, (Domain.Gender) newDoctor.Gender, newDoctor.Biograph);
+
+                _doctors.Add(newDomainDoctor);
+                await _DBContext.SaveChangesAsync();
+
+                response.Id = newDomainDoctor.Id;
+                response.Name = newDomainDoctor.Name;
+                response.Specialization = newDomainDoctor.Specialization;
+                response.Gender = (Enums.Gender) newDomainDoctor.Gender;
+                response.Biograph = newDomainDoctor.Biograph;
+                response.IsAvailable = newDomainDoctor.IsAvailable;
+                response.ImageLink = newDomainDoctor.ImageLink;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return response;
+        }
+
+        public async Task<DoctorDTO> UpdateDoctor(DoctorDTO updatedDoctor)
+        {
+            DoctorDTO response = new DoctorDTO();
+
+            try
+            {
+                var existingDoctor = await _doctors.FindAsync(updatedDoctor.Id);
+
+                if (existingDoctor != null)
+                {
+                    existingDoctor.UpdateDoctor(updatedDoctor.Name, updatedDoctor.Specialization, (Domain.Gender)updatedDoctor.Gender, updatedDoctor.Biograph, updatedDoctor.IsAvailable, updatedDoctor.ImageLink);
+
+                    await _DBContext.SaveChangesAsync();
+
+                    response = new DoctorDTO
+                    {
+                        Id = existingDoctor.Id,
+                        Name = existingDoctor.Name,
+                        Specialization = existingDoctor.Specialization,
+                        Gender = (Enums.Gender)existingDoctor.Gender,
+                        Biograph = existingDoctor.Biograph,
+                        IsAvailable = existingDoctor.IsAvailable,
+                        ImageLink = existingDoctor.ImageLink,
+                    };
+                }
+                else
+                {
+                    Console.WriteLine("Can't update a Doctor that doesn't exist in the DB");
+                    response = new DoctorDTO
+                    {
+                        Name = "Can't update a Doctor that doesn't exist in the DB",
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return response;
+        }
+
+        public async Task DeleteDoctor(DoctorDTO doctorToDelete)
+        {
+            try
+            {
+                var existingDoctor = await _doctors
+                    .Include(d => d.TimeSlots)
+                        .ThenInclude(t => t.Appointment)
+                    .FirstOrDefaultAsync(d => d.Id == doctorToDelete.Id);
+
+                if (existingDoctor != null)
+                {
+                    foreach (var timeSlot in existingDoctor.TimeSlots)
+                    {
+                        var appointment = timeSlot.Appointment;
+                        if (appointment != null)
+                        {
+                            _DBContext.Remove(appointment);
+                        }
+                        _DBContext.Remove(timeSlot);
+                    }
+
+                    _doctors.Remove(existingDoctor);
+                    await _DBContext.SaveChangesAsync();
+                }
+                else
+                {
+                    Console.WriteLine("Can't delete a Doctor that doesn't exist in the DB");
+                }
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
-
-        // public IEnumerable<Doctor> GetAllDoctorsAsync()
-        // {
-        //     return  _DBContext.Doctors.ToList();
-        // }
-
-
-
-        // public async Task<bool> InsertEmployeeAsync(Doctor doctor)
-        // {
-        //     await _DBContext.Doctors.AddAsync(doctor);
-        //     await _DBContext.SaveChangesAsync();
-        //     return true;
-        // }
-
-
-
-        // public async Task<Doctor> GetEmployeeAsync(int Id)
-        // {
-        //     Doctor doctor = await _DBContext.Doctors.FirstOrDefaultAsync(c => c.Id.Equals(Id));
-        //     return doctor;
-        // }
-
-
-        // public async Task<bool> UpdateEmployeeAsync(Doctor doctor)
-        // {
-        //      _DBContext.Doctors.Update(doctor);
-        //     await _DBContext.SaveChangesAsync();
-        //     return true;
-        // }
-
-
-        // public async Task<bool> DeleteEmployeeAsync(Doctor doctor)
-        // {
-        //     _DBContext.Remove(doctor);
-        //     await _DBContext.SaveChangesAsync();
-        //     return true;
-        // }
     }
 }
