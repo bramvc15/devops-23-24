@@ -33,8 +33,8 @@ BlitzWareAuthService.AuthService.userData.UserSubLevel)
                         foreach (var treatment in treatments)
                         {
                             <div class="col-md-4 d-flex flex-fill">
-                                <TreatmentCard ImageSrc=@treatment.Image Title=@treatment.Name
-                                    OnCardClick="( () => ShowModal(treatment.Name) )" />
+                                <TreatmentCard ImageSrc=@treatment.ImageLink Title=@treatment.Name
+                                    OnCardClick="( () => ShowModal(treatment) )" />
                             </div>
                         }
                     }
@@ -122,7 +122,7 @@ else
         treatments = await treatmentService.GetTreatments();
     }
 
-    int id;
+    int? id;
     string? newName;
     string? newDescription;
     string? newImage;
@@ -148,13 +148,12 @@ else
 
     private Modal? modalRef;
 
-    private async Task<Task?> ShowModal(string name)
+    private async Task<Task?> ShowModal(CMSTreatment treatment)
     {
-        Treatment = await treatmentService.GetContentByName(name);
-        id = Treatment.Id;
-        newName = Treatment.Name;
-        newDescription = Treatment.Description;
-        newImage = Treatment.Image;
+        id = treatment.Id;
+        newName = treatment.Name;
+        newDescription = treatment.Description;
+        newImage = treatment.ImageLink;
         await richTextEditRef.SetHtmlAsync(newDescription);
         return modalRef?.Show();
     }
@@ -167,7 +166,13 @@ else
     private async void UpdateTreatment()
     {
         content = await richTextEditRef.GetHtmlAsync();
-        await treatmentService.UpdateTreatment(id, newName, content, newImage);
+        CMSTreatment treatment = new()
+        {
+            Name = newName,
+            Description = content,
+            ImageLink = newImage
+        };
+        await treatmentService.UpdateTreatment(treatment);
         await HideModal();
     }
 }
