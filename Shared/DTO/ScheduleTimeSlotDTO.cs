@@ -8,5 +8,4 @@ public class ScheduleTimeSlotDTO
     public DateTime DateTime { get; set; }
     public int Duration { get; set; }
     public DayOfWeek DayOfWeek { get; set; }
-    public string NameDoctor { get; set; }
 }
