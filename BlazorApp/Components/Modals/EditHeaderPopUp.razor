@@ -12,16 +12,13 @@
         <Button Color="Color.Primary" Clicked="@ShowModal">Wijzig</Button>
     </div>
     <div>
-
+        @if (homeHeader != null) {
             <h1>@homeHeader.Title</h1>
 
             @((MarkupString)homeHeader.Context!)
-
-
-            <h1>title</h1>
-            <p>
-                context
-            </p>
+        } else {
+            <p>Loading...</p>
+        }
     </div>
     <Modal @ref="modalRef">
         <ModalContent Centered>

@@ -93,6 +93,10 @@
     margin: 5px;
 }
 
+.pagination {
+    margin: 0 20px;
+}
+
 .background-div {
     width: 100%;
     /* Set the width of your div */
