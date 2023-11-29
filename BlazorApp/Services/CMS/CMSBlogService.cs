@@ -1,4 +1,5 @@
 using BlazorApp.Data;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 using Shared;
 using System.Reflection.Metadata;
@@ -30,7 +31,20 @@ namespace BlazorApp.Services.CMS
             return (blogsPerPage, totalPages);
             //return await _blogs.ToListAsync(); // zonder pagination
         }
+        public async Task<CMSBlog> GetBlog(int BlogId)
+        {
+            var blog = await _blogs.FindAsync(BlogId);
 
+            CMSBlog dto = new()
+            {
+               Id = blog.Id,
+               ImageLink = blog.ImageLink,
+               Text = blog.Text,
+               Title = blog.Title
+            };
+
+            return dto;
+        }
         public async Task<CMSBlog> CreateBlog(CMSBlog newBlog)
         {
             _blogs.Add(newBlog);
