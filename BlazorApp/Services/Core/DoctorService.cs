@@ -42,6 +42,25 @@ namespace BlazorApp.Services.Core
             return convertedDoctors;
         }
 
+        public async Task<DoctorDTO> GetDoctor(int DoctorId)
+        {
+            var doctor = await _doctors.FindAsync(DoctorId);
+
+            DoctorDTO dto = new()
+            {
+                Biograph = doctor.Biograph,
+                IsAvailable = doctor.IsAvailable,
+                ImageLink = doctor.ImageLink,
+                Gender = (Enums.Gender)doctor.Gender,
+                Id = doctor.Id,
+                Name = doctor.Name,
+                Specialization = doctor.Specialization,
+
+            };
+
+            return dto;
+        }
+
         public async Task<DoctorDTO> CreateDoctor(DoctorDTO newDoctor)
         {
             DoctorDTO response = new DoctorDTO();
