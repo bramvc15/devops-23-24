@@ -8,8 +8,15 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+
+  <ItemGroup>
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\Appointments\Components\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="appsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
