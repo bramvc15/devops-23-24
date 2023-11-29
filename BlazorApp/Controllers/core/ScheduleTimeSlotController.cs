@@ -1,8 +1,5 @@
-using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using BlazorApp.Pages;
 using Shared;
-using Domain;
 using BlazorApp.Services.Core;
 
 namespace BlazorApp.Controllers.core;
@@ -19,7 +16,7 @@ public class ScheduleTimeSlotController : ControllerBase
     }
 
     [HttpGet]
-    public Task<IEnumerable<ScheduleTimeSlotDTO>> GetScheduleTimeSlots(DoctorDTO doc)
+    public Task<IEnumerable<ScheduleTimeSlotDTO>> GetScheduleTimeSlots([FromBody] DoctorDTO doc)
     {
         return _service.GetScheduleTimeSlots(doc);
     }
