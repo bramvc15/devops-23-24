@@ -90,5 +90,11 @@ public class Appointment : Entity
     {
         return _patient;
     }
+
+    public void UpdateAppointment(Appointment appointment)
+    {
+        Reason = appointment.Reason;
+        Note = appointment.Note;
+    }
     #endregion
 }

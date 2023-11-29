@@ -1,7 +1,6 @@
-using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Shared;
 using BlazorApp.Services.Core;
+using Shared;
 
 namespace BlazorApp.Controllers.core;
 
@@ -17,49 +16,26 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet]
-    public Task<IEnumerable<AppointmentDTO>> GetContent()
+    public Task<IEnumerable<AppointmentDTO>> GetAppointments([FromBody] PatientDTO pat)
     {
-        return _service.GetContent();
-    }
-
-    [HttpGet]
-    [Route("{id}")]
-    public Task<AppointmentDTO> GetAppointmentById(int id)
-    {
-        return _service.GetAppointmentById(id);
-    }
-
-    [HttpGet]
-    [Route("byDoctorId/{doctorId}")]
-    public Task<IEnumerable<AppointmentDTO>> GetAppointmentsByDoctorId(int doctorId)
-    {
-        return _service.GetAppointmentsByDoctorId(doctorId);
-    }
-
-    [HttpGet]
-    [Route("byPatientId/{patientId}")]
-    public Task<IEnumerable<AppointmentDTO>> GetAppointmentsByPatientId(int patientId)
-    {
-        return _service.GetAppointmentsByPatientId(patientId);
+        return _service.GetAppointments(pat);
     }
 
     [HttpPost]
-    public void CreateAppointment([FromBody] AppointmentDTO appointment)
+    public Task<AppointmentDTO> CreateAppointment(int slotId, int patientId, string note, string reason)
     {
-        _ = _service.CreateAppointment(appointment);
+        return _service.CreateAppointment(slotId, patientId, note, reason);
     }
 
     [HttpPut]
-    [Route("{id}")]
-    public void UpdateAppointmentById(int id, [FromBody] AppointmentDTO appointment)
-    {
-        _service.UpdateAppointmentById(id, appointment);
+    public Task<AppointmentDTO> UpdateAppointment([FromBody] AppointmentDTO appointment) 
+    { 
+        return _service.UpdateAppointment(appointment);
     }
 
     [HttpDelete]
-    [Route("{id}")]
-    public void DeleteAppointmentById(int id)
-    {
-        _service.DeleteAppointmentById(id);
+    public Task DeleteAppointment([FromBody] AppointmentDTO appointment) 
+    { 
+        return _service.DeleteAppointment(appointment);
     }
 }

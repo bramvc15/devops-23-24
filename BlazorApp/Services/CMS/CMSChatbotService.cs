@@ -1,6 +1,6 @@
 using BlazorApp.Data;
-using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared;
 
 namespace BlazorApp.Services.CMS
 {
@@ -13,7 +13,7 @@ namespace BlazorApp.Services.CMS
             _ctx = ctx;
         }
 
-        public async Task<IEnumerable<ChatBotQuestion>> GetContent()
+        public async Task<IEnumerable<CMSChatBotQuestion>> GetContent()
         {
             return await _ctx.ChatBotQuestions.Include(question => question.FollowUpQuestions).ToListAsync();
         }
@@ -23,29 +23,29 @@ namespace BlazorApp.Services.CMS
         //     return _ctx.ChatBotQuestions.Where(question => question.FollowUpID == followUpID).ToList();
         // }
 
-        public async Task AddQuestion(ChatBotQuestion question)
+        public async Task AddQuestion(CMSChatBotQuestion question)
         {
             _ctx.ChatBotQuestions.Add(question);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task AddFollowUpQuestion(ChatBotQuestion parentQuestion, ChatBotQuestion question)
+        public async Task AddFollowUpQuestion(CMSChatBotQuestion parentQuestion, CMSChatBotQuestion question)
         {
             question.IsFollowUp = true;
 
-            if (parentQuestion.FollowUpQuestions == null) parentQuestion.FollowUpQuestions = new List<ChatBotQuestion>();
+            if (parentQuestion.FollowUpQuestions == null) parentQuestion.FollowUpQuestions = new List<CMSChatBotQuestion>();
 
             parentQuestion.FollowUpQuestions.Add(question);
             await EditQuestion(parentQuestion);
         }
 
-        public async Task EditQuestion(ChatBotQuestion question)
+        public async Task EditQuestion(CMSChatBotQuestion question)
         {
             _ctx.ChatBotQuestions.Update(question);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task DeleteQuestion(ChatBotQuestion question)
+        public async Task DeleteQuestion(CMSChatBotQuestion question)
         {
             RecursiveDelete(question);
             _ctx.ChatBotQuestions.Remove(question);
@@ -54,15 +54,15 @@ namespace BlazorApp.Services.CMS
 
         public async Task DeleteById(int id)
         {
-            ChatBotQuestion question = await _ctx.ChatBotQuestions.FindAsync(id);
+            CMSChatBotQuestion question = await _ctx.ChatBotQuestions.FindAsync(id);
             await DeleteQuestion(question);
         }
 
-        public async Task RecursiveDelete(ChatBotQuestion question)
+        public async Task RecursiveDelete(CMSChatBotQuestion question)
         {
             if (question.FollowUpQuestions != null)
             {
-                foreach (ChatBotQuestion followUpQuestion in question.FollowUpQuestions)
+                foreach (CMSChatBotQuestion followUpQuestion in question.FollowUpQuestions)
                 {
                     await RecursiveDelete(followUpQuestion);
                     _ctx.ChatBotQuestions.Remove(followUpQuestion);

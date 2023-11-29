@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shared;
 using Domain;
+using Azure;
 
 
 namespace BlazorApp.Services.Core
@@ -50,6 +51,10 @@ namespace BlazorApp.Services.Core
                 });
 
                 return timeSlotDTOs;
+            }
+            else
+            {
+                Console.WriteLine("Can't get TimeSlots of a Doctor that doesn't exist in the DB");
             }
 
             return Enumerable.Empty<TimeSlotDTO>();

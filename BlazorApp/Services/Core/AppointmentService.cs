@@ -1,131 +1,139 @@
-using BlazorApp.Data;
-using BlazorApp.Models;
-using Blazorise;
 using Microsoft.EntityFrameworkCore;
+using BlazorApp.Data;
+using Shared;
+using Domain;
 
 namespace BlazorApp.Services.Core
 {
     public class AppointmentService
     {
-        private readonly DatabaseContext _ctx;
+        private readonly DatabaseContext _DBContext;
 
-        public AppointmentService(DatabaseContext ctx)
+        public AppointmentService(DatabaseContext databaseContext)
         {
-            _ctx = ctx;
+            _DBContext = databaseContext;
         }
 
-        public async Task<IEnumerable<Appointment>> GetContent()
+        public async Task<IEnumerable<AppointmentDTO>> GetAppointments(PatientDTO patient)
         {
-            return await _ctx.Appointments.ToListAsync();
+            var patientEntity = await _DBContext.Patients
+                .Include(p => p.Appointments)
+                .FirstOrDefaultAsync(p => p.Id == patient.Id);
+
+            if (patientEntity != null)
+            {
+                var appointmentDTOs = patientEntity.Appointments.Select(a => new AppointmentDTO
+                {
+                    Id = a.Id,
+                    Reason = a.Reason,
+                    Note = a.Note,
+                    PatientDTO = new PatientDTO
+                    {
+                        Id = a.Patient.Id,
+                        Name = a.Patient.Name,
+                        Email = a.Patient.Email,
+                        PhoneNumber = a.Patient.PhoneNumber,
+                        DateOfBirth = a.Patient.DateOfBirth,
+                        Gender = (Enums.Gender) a.Patient.Gender,
+                        BloodType = (Enums.BloodType) a.Patient.BloodType,
+                    }
+                });
+
+                return appointmentDTOs;
+            }
+            else
+            {
+                Console.WriteLine("Can't get Appointments of a Patient that doesn't exist in the DB");
+            }
+
+            return Enumerable.Empty<AppointmentDTO>();
         }
 
-        public async Task<Appointment> GetAppointmentById(int id)
+        public async Task<AppointmentDTO> CreateAppointment(int timeSlotId, int patientId, string reason, string note)
         {
-            var appointment = await _ctx.Appointments.FindAsync(id);
+            var existingTimeSlot = await _DBContext.TimeSlots
+                    .Include(ts => ts.Appointment)
+                    .FirstOrDefaultAsync(ts => ts.Id == timeSlotId);
 
-            if (appointment == null)
+            if (existingTimeSlot != null && existingTimeSlot.Appointment == null)
             {
-                throw new InvalidOperationException($"There is no appointment with id '{id}'");
-            }
+                var existingPatient = await _DBContext.Patients.FindAsync(patientId);
 
-            return appointment;
+                if (existingPatient != null)
+                {
+                    existingTimeSlot.CreateAppointment(existingPatient, reason, note);
+                    await _DBContext.SaveChangesAsync();
+
+                    return new AppointmentDTO
+                    {
+                        Id = existingTimeSlot.Appointment.Id,
+                        Reason = existingTimeSlot.Appointment.Reason,
+                        Note = existingTimeSlot.Appointment.Note,
+                    };
+                }
+                else
+                {
+                    Console.WriteLine("Can't create Appointment for a Patient who doesn't exist in the DB");
+                    return new AppointmentDTO { };
+                }
+            }
+            else
+            {
+                Console.WriteLine("Can't create Appointment for nonexistent TimeSlot");
+                return new AppointmentDTO { };
+            }
         }
 
-        public async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorId(int doctorId)
+        public async Task<AppointmentDTO> UpdateAppointment(AppointmentDTO updatedAppointment)
         {
-            var appointmantsOfDoctor = await _ctx.Appointments
-                .Where(app => app.DoctorId == doctorId)
-                .ToListAsync();
+            AppointmentDTO response = new AppointmentDTO();
 
-            if (appointmantsOfDoctor == null)
+            try
             {
-                throw new InvalidOperationException($"The doctor with id '{doctorId}' does not have any appointments");
-            }
+                var existingAppointment = await _DBContext.Appointments.FirstOrDefaultAsync(a => a.Id == updatedAppointment.Id);
 
-            return appointmantsOfDoctor;
+                if (existingAppointment != null)
+                {
+                    var existingPatient = await _DBContext.Patients.FirstOrDefaultAsync(p => p.Id == updatedAppointment.PatientDTO.Id);
+                    Appointment updatedDomainAppointment = new Appointment(existingPatient, updatedAppointment.Reason, updatedAppointment.Note);
+                    existingAppointment.UpdateAppointment(updatedDomainAppointment);
+                    existingAppointment.ChangePatient(existingPatient);
+
+                    await _DBContext.SaveChangesAsync();
+
+                    response = new AppointmentDTO
+                    {
+                        Id = existingAppointment.Id,
+                        Reason = existingAppointment.Reason,
+                        Note = existingAppointment.Note,
+                        PatientDTO = null
+                    };
+                }
+                else
+                {
+                    Console.WriteLine("Cannot update a appointment that doesn't exist in the DB");
+                    response = new AppointmentDTO { };
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return response;
         }
 
-        public async Task<IEnumerable<Appointment>> GetAppointmentsByPatientId(int patientId)
+        public async Task DeleteAppointment(AppointmentDTO appointmentToDelete)
         {
-            var appointmantsOfPatient = await _ctx.Appointments
-                .Where(app => app.PatientId == patientId)
-                .ToListAsync();
-
-            if (appointmantsOfPatient == null)
+            var existingAppointment = await _DBContext.Appointments.FirstOrDefaultAsync(a => a.Id == appointmentToDelete.Id);
+            if (existingAppointment != null)
             {
-                throw new InvalidOperationException($"The patient with id '{patientId}' does not have any appointments");
+                _DBContext.Appointments.Remove(existingAppointment);
+                await _DBContext.SaveChangesAsync();
             }
-
-            return appointmantsOfPatient;
-        }
-
-        public async Task<Appointment> CreateAppointment(Appointment appointment)
-        {
-            if (appointment == null)
+            else
             {
-                throw new InvalidOperationException($"The appointment is null");
+                Console.WriteLine("Cannot delete a appointment that doesn't exist in the DB");
             }
-            if (appointment.PatientId == null)
-            {
-                throw new InvalidOperationException($"The patient id is null");
-            }
-            if (appointment.Location == null || string.IsNullOrWhiteSpace(appointment.Location))
-            {
-                throw new InvalidOperationException($"The location is null or empty");
-            }
-            if (appointment.DoctorId == null)
-            {
-                throw new InvalidOperationException($"The doctor id is null");
-            }
-            if (appointment.Reason == null || string.IsNullOrWhiteSpace(appointment.Reason))
-            {
-                throw new InvalidOperationException($"The reason is null or empty");
-            }
-
-            var newAppointment = new Appointment
-            {
-                PatientId = appointment.PatientId,
-                Location = appointment.Location,
-                DoctorId = appointment.DoctorId,
-                Reason = appointment.Reason,
-                Note = appointment.Note
-            };
-
-            _ctx.Appointments.Add(newAppointment);
-            await _ctx.SaveChangesAsync();
-            return newAppointment;
-        }
-
-        public void UpdateAppointmentById(int id, Appointment appointment)
-        {
-            if (appointment == null)
-            {
-                throw new InvalidOperationException($"The appointment is null");
-            }
-
-            var existingAppointment = _ctx.Appointments.Find(id);
-            if (existingAppointment == null)
-            {
-                throw new InvalidOperationException($"There is no appointment with id '{id}'");
-            }
-
-            existingAppointment.DoctorId = appointment.DoctorId;
-            existingAppointment.Reason = appointment.Reason;
-            existingAppointment.Note = appointment.Note;
-
-            _ctx.SaveChanges();
-        }
-
-        public void DeleteAppointmentById(int id)
-        {
-            var appointmentToDelete = _ctx.Appointments.Find(id);
-
-            if (appointmentToDelete != null)
-            {
-                _ctx.Appointments.Remove(appointmentToDelete);
-                _ctx.SaveChanges();
-            }
-            else throw new InvalidOperationException($"The appointment with id '{id}' does not exist");
         }
     }
 }
