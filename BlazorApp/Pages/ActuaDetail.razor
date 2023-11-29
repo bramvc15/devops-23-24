@@ -17,7 +17,8 @@
 					</p>
 				</NavLink>
 			</div>
-
+			@if (BlogPost != null)
+			{
 			<div class="imageText">
 				<div class="ActuaImg">
 					<img class="grid-image" src=@BlogPost.ImageLink>
@@ -29,6 +30,9 @@
 					</p>
 				</div>
 			</div>
+			} else {
+				<p>Loading...</p>
+			}
 		</div>
 	</div>
 </div>

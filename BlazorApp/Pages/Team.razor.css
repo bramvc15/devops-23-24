@@ -52,6 +52,12 @@ a {
 
 }
 
+@media only screen and (max-width: 600px) {
+    .title-layout {
+        padding-left: 20px;
+    }
+}
+
 
 
 .overlay h1 {
