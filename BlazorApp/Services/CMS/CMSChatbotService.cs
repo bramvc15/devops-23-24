@@ -23,10 +23,12 @@ namespace BlazorApp.Services.CMS
         //     return _ctx.ChatBotQuestions.Where(question => question.FollowUpID == followUpID).ToList();
         // }
 
-        public async Task AddQuestion(CMSChatBotQuestion question)
+        public async Task<CMSChatBotQuestion> AddQuestion(CMSChatBotQuestion question)
         {
             _ctx.ChatBotQuestions.Add(question);
             await _ctx.SaveChangesAsync();
+
+            return question;
         }
 
         public async Task AddFollowUpQuestion(CMSChatBotQuestion parentQuestion, CMSChatBotQuestion question)
@@ -47,12 +49,12 @@ namespace BlazorApp.Services.CMS
 
         public async Task DeleteQuestion(CMSChatBotQuestion question)
         {
-            RecursiveDelete(question);
+            await RecursiveDelete(question);
             _ctx.ChatBotQuestions.Remove(question);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task DeleteById(int id)
+        public async Task DeleteById(int? id)
         {
             CMSChatBotQuestion question = await _ctx.ChatBotQuestions.FindAsync(id);
             await DeleteQuestion(question);
