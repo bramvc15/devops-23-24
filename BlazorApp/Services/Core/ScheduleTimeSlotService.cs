@@ -1,97 +1,152 @@
 using BlazorApp.Data;
-using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared;
+using Domain;
 
 namespace BlazorApp.Services.Core
 {
     public class ScheduleTimeSlotService
     {
-        private readonly DatabaseContext _ctx;
+        private readonly DatabaseContext _DBContext;
 
-        public ScheduleTimeSlotService(DatabaseContext ctx)
+        public ScheduleTimeSlotService(DatabaseContext databaseContext)
         {
-            _ctx = ctx;
+            _DBContext = databaseContext;
         }
 
-        public async Task<List<ScheduleTimeSlot>> GetScheduleTimeSlots()
+        public async Task<IEnumerable<ScheduleTimeSlotDTO>> GetScheduleTimeSlots(DoctorDTO doctor)
         {
-            return await _ctx.ScheduleTimeSlots.ToListAsync();
-        }
+            var doctorEntity = await _DBContext.Doctors
+                .Include(d => d.ScheduleTimeSlots)
+                .FirstOrDefaultAsync(d => d.Id == doctor.Id);
 
-        public async Task<ScheduleTimeSlot> GetScheduleTimeSlotById(int id)
-        {
-            return await _ctx.ScheduleTimeSlots.FindAsync(id);
-        }
-
-        public async Task<List<ScheduleTimeSlot>> GetScheduleTimeSlotsByDoctorId(int DoctorId)
-        {
-            return await _ctx.ScheduleTimeSlots.Where(x => x.DoctorId == DoctorId).ToListAsync();
-        }
-
-        public async Task<ScheduleTimeSlot> AddScheduleTimeSlot(int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
-        {
-            // check if new ScheduleTimeSlot doesn't have any conflicts with existing ScheduleTimeSlots
-            var ScheduleTimeSlots = await _ctx.ScheduleTimeSlots.Where(x => x.DoctorId == DoctorId).ToListAsync();
-            foreach (var ScheduleTimeSlot in ScheduleTimeSlots)
+            if (doctorEntity != null)
             {
-                if (ScheduleTimeSlot.DayOfWeek == DayOfWeek)
+                var scheduleTimeSlotDTOs = doctorEntity.ScheduleTimeSlots.Select(s => new ScheduleTimeSlotDTO
                 {
-                    // StartTime in minutes
-                    var ScheduleTimeSlotStart = ScheduleTimeSlot.DateTime.Hour * 60 + ScheduleTimeSlot.DateTime.Minute;
-                    // EndTime in minutes
-                    var ScheduleTimeSlotEnd = ScheduleTimeSlot.DateTime.Hour * 60 + ScheduleTimeSlot.DateTime.Minute + ScheduleTimeSlot.Duration;
+                    Id = s.Id,
+                    AppointmentType = (Enums.AppointmentType) s.AppointmentType,
+                    DateTime = s.DateTime,
+                    Duration = s.Duration,
+                    DayOfWeek = s.DayOfWeek,
+                });
 
-                    // Check if StartTime of ScheduleTimeSlot is in the same time interval
-                    if (DateTime.Hour * 60 + DateTime.Minute > ScheduleTimeSlotStart && DateTime.Hour * 60 + DateTime.Minute < ScheduleTimeSlotEnd)
-                    {
-                        throw new InvalidOperationException("Gepland tijdslot valt in hetzelfde tijdsinterval als een bestaand gepland tijdslot 1");
-                    }
-
-                    // Check if EndTime of ScheduleTimeSlot is in the same time interval
-                    if (DateTime.Hour * 60 + DateTime.Minute + Duration > ScheduleTimeSlotStart && DateTime.Hour * 60 + DateTime.Minute + Duration < ScheduleTimeSlotEnd)
-                    {
-                        throw new InvalidOperationException("Gepland tijdslot valt in hetzelfde tijdsinterval als een bestaand gepland tijdslot 2");
-                    }
-                }
+                return scheduleTimeSlotDTOs;
             }
 
-            var NewScheduleTimeSlot = new ScheduleTimeSlot
-            {
-                DoctorId = DoctorId,
-                AppointmentType = AppointmentType,
-                DayOfWeek = DayOfWeek,
-                DateTime = DateTime,
-                Duration = Duration
-            };
-
-            _ctx.ScheduleTimeSlots.Add(NewScheduleTimeSlot);
-            await _ctx.SaveChangesAsync();
-            return NewScheduleTimeSlot;
+            return Enumerable.Empty<ScheduleTimeSlotDTO>();
         }
 
-        public async Task<ScheduleTimeSlot> UpdateScheduleTimeSlot(int Id, int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
+        public async Task<ScheduleTimeSlotDTO> CreateScheduleTimeSlot(ScheduleTimeSlotDTO newSTS, int docId)
         {
-            var UpdatedScheduleTimeSlot = new ScheduleTimeSlot
-            {
-                Id = Id,
-                DoctorId = DoctorId,
-                AppointmentType = AppointmentType,
-                DayOfWeek = DayOfWeek,
-                DateTime = DateTime,
-                Duration = Duration
-            };
+            ScheduleTimeSlotDTO response = new ScheduleTimeSlotDTO();
 
-            _ctx.ScheduleTimeSlots.Update(UpdatedScheduleTimeSlot);
-            await _ctx.SaveChangesAsync();
-            return UpdatedScheduleTimeSlot;
+            var doctorEntity = await _DBContext.Doctors
+                .Include(d => d.ScheduleTimeSlots)
+                .FirstOrDefaultAsync(d => d.Id == docId);
+
+            var newDomainSTS = new ScheduleTimeSlot((Domain.AppointmentType)newSTS.AppointmentType, newSTS.DateTime, newSTS.Duration, newSTS.DayOfWeek);
+
+            if (doctorEntity != null)
+            {
+                try
+                {
+                    doctorEntity.AddScheduleTimeSlot(newDomainSTS);
+                    await _DBContext.SaveChangesAsync();
+
+                    response.Duration = newDomainSTS.Duration;
+                    response.DayOfWeek = newDomainSTS.DayOfWeek;
+                    response.AppointmentType = (Enums.AppointmentType)newDomainSTS.AppointmentType;
+                    response.DateTime = newDomainSTS.DateTime;
+                    response.Id = newDomainSTS.Id;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                return response;
+            }
+            else
+            {
+                Console.WriteLine("Can't add a ScheduleTimeSlot to a Doctor that doesn't exist in the DB");
+                return response;
+            }
         }
 
-        public async Task<ScheduleTimeSlot> DeleteScheduleTimeSlot(int id)
+        public async Task<ScheduleTimeSlotDTO> UpdateScheduleTimeSlot(ScheduleTimeSlotDTO updatedSTS, int docId)
         {
-            var ScheduleTimeSlot = await _ctx.ScheduleTimeSlots.FindAsync(id);
-            _ctx.ScheduleTimeSlots.Remove(ScheduleTimeSlot);
-            await _ctx.SaveChangesAsync();
-            return ScheduleTimeSlot;
+            ScheduleTimeSlotDTO response = new ScheduleTimeSlotDTO();
+
+            ScheduleTimeSlot updatedDomainSTS = new ScheduleTimeSlot((Domain.AppointmentType) updatedSTS.AppointmentType, updatedSTS.DateTime, updatedSTS.Duration, updatedSTS.DayOfWeek);
+
+            var doctorEntity = await _DBContext.Doctors
+                .Include(d => d.ScheduleTimeSlots)
+                .FirstOrDefaultAsync(d => d.Id == docId);
+
+            if (doctorEntity != null)
+            {
+                try
+                {
+                    var scheduleTimeSlotToUpdate = doctorEntity.ScheduleTimeSlots.FirstOrDefault(s => s.Id == updatedSTS.Id);
+
+                    if (scheduleTimeSlotToUpdate != null)
+                    {
+                        scheduleTimeSlotToUpdate.UpdateScheduleTimeSlot(updatedDomainSTS);
+
+                        // check overlapping
+                        doctorEntity.DeleteScheduleTimeSlot(scheduleTimeSlotToUpdate);
+                        doctorEntity.AddScheduleTimeSlot(scheduleTimeSlotToUpdate);
+
+                        await _DBContext.SaveChangesAsync();
+
+                        response.Id = scheduleTimeSlotToUpdate.Id;
+                        response.Duration = scheduleTimeSlotToUpdate.Duration;
+                        response.DayOfWeek = scheduleTimeSlotToUpdate.DayOfWeek;
+                        response.AppointmentType = (Enums.AppointmentType) scheduleTimeSlotToUpdate.AppointmentType;
+                        response.DateTime = scheduleTimeSlotToUpdate.DateTime;
+                    }
+                    else
+                    {
+                        Console.WriteLine("ScheduleTimeSlot not found for the given Doctor ID");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("Can't update a ScheduleTimeSlot of a Doctor that doesn't exist in the DB");
+            }
+
+            return response;
+        }
+
+        public async Task DeleteScheduleTimeSlot(ScheduleTimeSlotDTO scheduleTimeSlotToDelete, int docId)
+        {
+            var doctorEntity = await _DBContext.Doctors
+                .Include(d => d.ScheduleTimeSlots)
+                .FirstOrDefaultAsync(d => d.Id == docId);
+
+            if (doctorEntity != null)
+            {
+                var scheduleTimeSlotToRemove = doctorEntity.ScheduleTimeSlots.FirstOrDefault(s => s.Id == scheduleTimeSlotToDelete.Id);
+
+                if (scheduleTimeSlotToRemove != null)
+                {
+                    doctorEntity.DeleteScheduleTimeSlot(scheduleTimeSlotToRemove);
+                    await _DBContext.SaveChangesAsync();
+                }
+                else
+                {
+                    Console.WriteLine("ScheduleTimeSlot not found for the given Doctor ID");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Can't delete a ScheduleTimeSlot of a Doctor that doesn't exist in the DB");
+            }
         }
     }
 }

@@ -19,40 +19,26 @@ public class ScheduleTimeSlotController : ControllerBase
     }
 
     [HttpGet]
-    public Task<List<ScheduleTimeSlotDTO>> GetScheduleTimeSlots()
+    public Task<IEnumerable<ScheduleTimeSlotDTO>> GetScheduleTimeSlots(DoctorDTO doc)
     {
-        return _service.GetScheduleTimeSlots();
-    }
-
-    [HttpGet]
-    [Route("{id}")]
-    public Task<ScheduleTimeSlotDTO> GetScheduleTimeSlotById(int Id)
-    {
-        return _service.GetScheduleTimeSlotById(Id);
-    }
-
-    [HttpGet]
-    [Route("byDoctorId/{DoctorId}")]
-    public Task<List<ScheduleTimeSlotDTO>> GetScheduleTimeSlotsByDoctorId(int DoctorId)
-    {
-        return _service.GetScheduleTimeSlotsByDoctorId(DoctorId);
+        return _service.GetScheduleTimeSlots(doc);
     }
 
     [HttpPost]
-    public void AddScheduleTimeSlot(int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
-    {
-        _service.AddScheduleTimeSlot(DoctorId, AppointmentType, DayOfWeek, DateTime, Duration);
+    public Task<ScheduleTimeSlotDTO> CreateScheduleTimeSlot([FromBody] ScheduleTimeSlotDTO dto, int docId) 
+    { 
+        return _service.CreateScheduleTimeSlot(dto, docId);
     }
 
     [HttpPut]
-    public void UpdateScheduleTimeSlot(int Id, int DoctorId, AppointmentType AppointmentType, string DayOfWeek, DateTime DateTime, int Duration)
+    public Task<ScheduleTimeSlotDTO> UpdateScheduleTimeSlot([FromBody] ScheduleTimeSlotDTO dto, int docId)
     {
-        _service.UpdateScheduleTimeSlot(Id, DoctorId, AppointmentType, DayOfWeek, DateTime, Duration);
+        return _service.UpdateScheduleTimeSlot(dto, docId);
     }
 
     [HttpDelete]
-    public async Task DeleteScheduleTimeSlot(int Id)
+    public Task DeleteScheduleTimeSlot([FromBody] ScheduleTimeSlotDTO dto, int docId)
     {
-        await _service.DeleteScheduleTimeSlot(Id);
+        return _service.DeleteScheduleTimeSlot(dto, docId);
     }
 }
