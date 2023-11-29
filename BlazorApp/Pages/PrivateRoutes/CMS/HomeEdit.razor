@@ -1,18 +1,18 @@
 @page "/admin/cms/home"
 @inherits EditHeaderPopUp
-@    using BlazorApp.Data
-@    using BlazorApp.Services
-@    using BlazorApp.Models
-@    using BlazorApp.Controllers
-@    using BlazorApp.Components.Modals
-@    using Microsoft.AspNetCore.Components
-@    using System.Text.Json
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@using BlazorApp.Components.Modals
+@using Microsoft.AspNetCore.Components
+@using System.Text.Json
 @inject DatabaseContext databaseContext
 @inject BlogService blogService
-@    using BlazorApp.Auth
+@using BlazorApp.Auth
 @inject NavigationManager NavManager
-@    using Newtonsoft.Json;
-    using BlazorApp.Services.CMS;
+@using Newtonsoft.Json;
+using BlazorApp.Services.CMS;
 
 <PageTitle>Admin - CMS Home</PageTitle>
 
@@ -20,9 +20,9 @@
     <SideNavMenu />
 </div>
 @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
-                 BlitzWareAuthService.AuthService.appData.AdminRoleLevel
-                 ==
-                 BlitzWareAuthService.AuthService.userData.UserSubLevel)
+BlitzWareAuthService.AuthService.appData.AdminRoleLevel
+==
+BlitzWareAuthService.AuthService.userData.UserSubLevel)
 {
     <div>
         <div class="background-div">
@@ -75,7 +75,7 @@
         </div>
 
     </div>
-} 
+}
 else
 {
     <div class="row justify-content-center align-items-center" style="height: 100vh;">

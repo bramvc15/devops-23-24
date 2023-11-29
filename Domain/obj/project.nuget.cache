@@ -1,14 +1,15 @@
 {
   "version": 2,
-<<<<<<< Updated upstream
-  "dgSpecHash": "LZaSNvIDoH6sGmVwPKwxi/ChVD5l1u6+ZW7vLMLulL9cO1HK31ZidPO7FCbUTpundW1fdojGN04R2dhV+9mJ/g==",
-  "success": true,
-  "projectFilePath": "C:\\Users\\Victo\\Documents\\DevOps\\devops-23-24-net-g07\\Domain\\Domain.csproj",
-=======
   "dgSpecHash": "VzPtFfuKi1hWUuocRyXu+5lIERmUT6tXS3arInIqzEAtnULF2H67EHUMZI49ZVE0gpwS2B41qWxIsfitrg+Ejg==",
   "success": true,
   "projectFilePath": "C:\\Users\\user\\OneDrive - Hogeschool Gent\\hogent\\3de jaar\\DevOps Project\\project-oogarts\\devops-23-24-net-g07\\Domain\\Domain.csproj",
->>>>>>> Stashed changes
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\user\\OneDrive - Hogeschool Gent\\hogent\\3de jaar\\DevOps Project\\project-oogarts\\devops-23-24-net-g07\\Domain\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

@@ -1,6 +1,6 @@
-@    using BlazorApp.Data
-@    using BlazorApp.Services
-@    using BlazorApp.Models
+@using BlazorApp.Data
+@using BlazorApp.Services
+@using BlazorApp.Models
 @inject ScheduleTimeSlotService scheduleTimeSlotService
 @inject DatabaseContext databaseContext
 
@@ -153,9 +153,11 @@
 
             try
             {
-                ScheduleTimeSlot newSlot = await scheduleTimeSlotService.AddScheduleTimeSlot(0, appointmentType, dayOfWeek, dateTime, durationInMinutes);
+                ScheduleTimeSlot newSlot = await scheduleTimeSlotService.AddScheduleTimeSlot(0, appointmentType, dayOfWeek, dateTime,
+                durationInMinutes);
                 await OnScheduleTimeSlotAdded.InvokeAsync(newSlot);
-            } catch (InvalidOperationException ex)
+            }
+            catch (InvalidOperationException ex)
             {
                 exceptionMessage = ex.Message;
                 return;
