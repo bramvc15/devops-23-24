@@ -97,7 +97,6 @@
 
     protected async Task GetFollowUpQuestions(ChatBotQuestion question)
     {
-        //IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() =>
         ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
         List<ChatBotQuestion>? followUpQuestions = question.FollowUpQuestions;
         await ShowQuestions(followUpQuestions);
