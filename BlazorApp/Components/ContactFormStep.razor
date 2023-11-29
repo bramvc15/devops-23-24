@@ -37,8 +37,8 @@
                     <label class='formLabel' for="birthDate">Geboortedatum</label>
                 </div>
                 <div class='formInput'>
-                    <InputDate id="birthDate" @bind-Value="clientData.birthDate" />
-                    <ValidationMessage For="@(() => clientData.birthDate)" />
+                    <InputDate id="birthDate" @bind-Value="clientData.BirthDate" />
+                    <ValidationMessage For="@(() => clientData.BirthDate)" />
                 </div>
             </div>
         </div>
@@ -55,6 +55,6 @@
     private async Task SubmitClientData()
     {
         OnContactSubmitted.InvokeAsync(clientData);
-        Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.birthDate);
+        Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.BirthDate);
     }
 }

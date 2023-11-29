@@ -17,7 +17,7 @@
                 {
                                 <div class="center">
                                     <button @onclick="(e) => SelectDoctor(doc.Id)">
-                                        <DoctorCard ImageSrc=@doc.Image Name=@doc.Name Specialization=@doc.Specialization />
+                                        <DoctorCard ImageSrc=@doc.ImageLink Name=@doc.Name Specialization=@doc.Specialization />
                                     </button>
                                 </div>
                 }
@@ -32,16 +32,19 @@
 </div>
 @code {
     [Parameter]
-    public EventCallback<int> OnDoctorSelected { get; set; }
+    public EventCallback<int?> OnDoctorSelected { get; set; }
 
-    private async Task SelectDoctor(int id)
+    private async Task SelectDoctor(int? id)
     {
-        await OnDoctorSelected.InvokeAsync(id); // Assuming 1 is the doctorId
+        if(id != null)
+        {
+            await OnDoctorSelected.InvokeAsync(id); 
+        }
     }
 
-    IEnumerable<Doctor>? DocObj;
+    IEnumerable<DoctorDTO>? DocObj;
     protected override async Task OnInitializedAsync()
     {
-        DocObj = await Task.Run(() => doctorService.GetAll());
+        DocObj = await doctorService.GetDoctors();
     }
 }

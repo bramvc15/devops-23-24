@@ -16,9 +16,9 @@ public class CMSBlogController : ControllerBase
     }
 
     [HttpGet]
-    public Task<IEnumerable<CMSBlog>> GetBlogs()
+    public Task<(IEnumerable<CMSBlog> blogs, int totalPages)> GetBlogs(int page, int pageSize)
     {
-        return _service.GetBlogs();
+        return _service.GetBlogs(page, pageSize);
     }
 
     [HttpPost]

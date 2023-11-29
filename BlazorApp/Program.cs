@@ -32,6 +32,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<CMSHomeHeaderService>();
 builder.Services.AddScoped<CMSBlogService>();
 builder.Services.AddScoped<CMSLocationService>();
+builder.Services.AddScoped<CMSChatbotService>();
 builder.Services.AddScoped<CMSContactService>();
 builder.Services.AddScoped<CMSTreatmentService>();
 builder.Services.AddScoped<DoctorService>();
