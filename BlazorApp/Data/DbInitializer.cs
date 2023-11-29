@@ -19,9 +19,12 @@ namespace BlazorApp.Data
             #region Doctors
             Doctor doctor1 = new Doctor("Dr. J. Van der Veken", "Eye Specialist", Gender.Male, 
                 "Dr. J. Van der Veken is een ervaren oogarts met een passie voor het verbeteren van het gezichtsvermogen van zijn patiënten. Met jarenlange ervaring in de oogheelkunde, is hij toegewijd aan het bieden van hoogwaardige oogzorg."
-                , "https://images.healthshots.com/healthshots/en/uploads/2022/07/02195043/doctor-stress.jpg");
-            Doctor doctor2 = new Doctor("Dr. Smith", "Eye Specialist", Gender.Male, "Dit is Dr. Smith zijn Bio.",
-                "https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*");
+                );
+            
+            Doctor doctor2 = new Doctor("Dr. Smith", "Eye Specialist", Gender.Male, "Dit is Dr. Smith zijn Bio.");
+
+            doctor1.SetImageLink("https://images.healthshots.com/healthshots/en/uploads/2022/07/02195043/doctor-stress.jpg");
+            doctor2.SetImageLink("https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*");
 
             var doctors = new Doctor[]
             {

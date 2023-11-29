@@ -59,7 +59,7 @@ public class Doctor : Entity
     // Database Constructor
     private Doctor() { }
 
-    public Doctor(string name, string specialization, Gender gender, string biograph = null, string imageLink = null) {
+    public Doctor(string name, string specialization, Gender gender, string biograph = null) {
         if (string.IsNullOrEmpty(name))
         {
             throw new ArgumentNullException("Name cannot be empty");
@@ -68,9 +68,6 @@ public class Doctor : Entity
         if (!string.IsNullOrWhiteSpace(biograph)) {
             Biograph = biograph;
         }
-
-        if (!string.IsNullOrWhiteSpace(imageLink))
-            ImageLink = imageLink;
         if (string.IsNullOrWhiteSpace(specialization)) {
             throw new ArgumentNullException("Specialization cannot be empty");
         }
