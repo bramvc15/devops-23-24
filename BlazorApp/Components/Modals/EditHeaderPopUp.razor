@@ -2,10 +2,9 @@
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @using System.Text.Json.Serialization;
-@using BlazorApp.Services
-@using BlazorApp.Models
+@using BlazorApp.Services.CMS
 @using BlazorApp.Controllers
-@inject HomeHeaderService homeHeaderService
+@inject CMSHomeHeaderService homeHeaderService
 @inject DatabaseContext databaseContext
 
 <div>
@@ -13,25 +12,16 @@
         <Button Color="Color.Primary" Clicked="@ShowModal">Wijzig</Button>
     </div>
     <div>
-        @if (HomObj2 != null)
-        {
-            @foreach (var h in HomObj2)
-            {
 
-                <h1 data-test-id="home-title">@h.Title</h1>
-                
-                   @((MarkupString)h.Context)
-            
-            }
-        }
-        else
-        {
+            <h1>@homeHeader.Title</h1>
 
-            <h1 data-test-id="home-title">title</h1>
+            @((MarkupString)homeHeader.Context!)
+
+
+            <h1>title</h1>
             <p>
                 context
             </p>
-        }
     </div>
     <Modal @ref="modalRef">
         <ModalContent Centered>
@@ -57,16 +47,19 @@
         </ModalContent>
     </Modal>
     <p>De waarde van het title field is: @newTitle</p>
-     @plainTextContent <!-- Plain text content -->
+    @plainTextContent <!-- Plain text content -->
 
 </div>
 
 @code {
     protected RichTextEditor? richTextEditRef;
     protected string? content;
+    CMSHomeHeader? header;
+    int headerId;
     string? newTitle;
 
     string? plainTextContent;
+    string? context;
 
     private Modal? modalRef;
 
@@ -80,18 +73,23 @@
         return modalRef?.Hide();
     }
 
-    private void UpdateTitle()
+    private async Task UpdateTitle()
     {
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
-        homeHeaderService.UpdateHeaderTitle(newTitle , content);
+        CMSHomeHeader header = new()
+        {
+            Title = newTitle,
+            Context = content
+        };
+        await homeHeaderService.UpdateHomeHeader(header);
         modalRef?.Hide();
     }
 
-    IEnumerable<HomeHeader>? HomObj2;
+    CMSHomeHeader? homeHeader;
 
     protected override async Task OnInitializedAsync()
     {
-        HomObj2 = await homeHeaderService.GetContent();
+        homeHeader = await homeHeaderService.GetHomeHeader();
     }
 }

@@ -1,8 +1,6 @@
-@using BlazorApp.Data
-@using BlazorApp.Services
-@using BlazorApp.Models
-@inject BlogService blogService
+@using BlazorApp.Services.CMS
 @inject DatabaseContext databaseContext
+@inject CMSBlogService blogService
 
 <div>
     <div class="buttons">
@@ -36,7 +34,7 @@
         </ModalContent>
     </Modal>
     <p>De waarde van het title field is: @newTitle</p>
-     @plainTextContent <!-- Plain text content -->
+    @plainTextContent <!-- Plain text content -->
 
 </div>
 
@@ -45,7 +43,7 @@
     protected string? content;
     string? newTitle;
     string? newImage;
-    string? plainTextContent; 
+    string? plainTextContent;
 
     private Modal? modalRef;
 
@@ -63,13 +61,13 @@
     {
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
-        await blogService.AddBlog(newTitle, content, newImage);
+        CMSBlog newBlog = new()
+        {
+            Title = newTitle,
+            Text = content,
+            ImageLink = newImage
+        };
+        await blogService.CreateBlog(newBlog);
         modalRef?.Hide();
-    }
-
-    // ??
-    protected override async Task OnInitializedAsync()
-    {
-        
     }
 }

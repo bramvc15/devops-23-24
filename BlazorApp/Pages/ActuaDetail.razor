@@ -1,8 +1,9 @@
 ﻿@page "/actua-detail/{BlogId:int}"
 
 @using BlazorApp.Models
-@using BlazorApp.Services
-@inject BlogService blogService
+@using BlazorApp.Services;
+@using BlazorApp.Services.CMS
+@inject CMSBlogService blogService
 
 <div class="bodyWrapper">
 
@@ -12,36 +13,32 @@
 			<div class="exitActuaDetail">
 				<NavLink class="backArrownav" href="/">
 					<p class="lastText">
-						<img src="images/BackArrow.png" class="backArrow" alt="icon" data-test-id="actua-detail-back"/>
+						<img src="images/BackArrow.png" class="backArrow" alt="icon" />
 					</p>
 				</NavLink>
 			</div>
-			@if (BlogPost != null)
-			{
-				<div class="imageText">
-					<div class="ActuaImg">
-						<img class="grid-image" src=@BlogPost.Image>
-					</div>
 
-					<div class="ActuaText">
-						<p data-test-id="actua-detail-description">
-							@BlogPost.Text
-						</p>
-					</div>
+			<div class="imageText">
+				<div class="ActuaImg">
+					<img class="grid-image" src=@BlogPost.ImageLink>
 				</div>
-			} else {
-				<p>Sorry, deze blogpost werd niet gevonden.</p>
-			}
+
+				<div class="ActuaText">
+					<p>
+						@BlogPost.Text
+					</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 
 @code {
 	[Parameter] public int BlogId { get; set; }
-	Blog? BlogPost;
+	CMSBlog? BlogPost;
 
 	protected override async Task OnInitializedAsync()
 	{
-		BlogPost = await blogService.GetBlogById(BlogId);
+		BlogPost = await blogService.GetBlog(BlogId);
 	}
 }

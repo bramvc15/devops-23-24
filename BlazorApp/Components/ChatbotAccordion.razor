@@ -2,45 +2,50 @@
 @inject IJSRuntime JSRuntime
 @using System.Text.Json
 @using BlazorApp.Data
+@using BlazorApp.Services.CMS
 @using BlazorApp.Services
+@using Shared
 @using BlazorApp.Models
 @using BlazorApp.Controllers
 @inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
-@inject ChatbotService ChatbotService
+@inject CMSChatbotService ChatbotService
 @using BlazorApp.Components.Modals
 
 <div class="card @(collapsed ? "" : "border border-dark")">
     <div class="card-header d-flex justify-content-between" id="headingOne" @onclick=this.Collapse>
-    <h5 class="mb-0">
-        <button class="btn" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-        @Question.Question
-        </button>
-    </h5>
-    @if(FollowUpQuestions == null || FollowUpQuestions.Count() == 0) {
-        <button type="button" class="close mx-2" aria-label="Close" @onclick="() => DeleteQuestion()" @onclick:stopPropagation="true">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    }
+        <h5 class="mb-0">
+            <button class="btn" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                @Question.Question
+            </button>
+        </h5>
+        @if (FollowUpQuestions == null || FollowUpQuestions.Count() == 0)
+        {
+            <button type="button" class="close mx-2" aria-label="Close" @onclick="() => DeleteQuestion()"
+                @onclick:stopPropagation="true">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        }
     </div>
-    @if(!collapsed) {
+    @if (!collapsed)
+    {
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-        <div class="card-body">
-            <h5>Antwoord</h5> 
-            @Question.Answer
-        </div>
-        <div class="container">
-            @if (FollowUpQuestions != null && FollowUpQuestions.Count() > 0)
-            {
-                <h5>Follow up keuzeopties:</h5>
-                foreach (var FollowUpQuestion in FollowUpQuestions)
+            <div class="card-body">
+                <h5>Antwoord</h5>
+                @Question.Answer
+            </div>
+            <div class="container">
+                @if (FollowUpQuestions != null && FollowUpQuestions.Count() > 0)
                 {
-                    <ChatbotAccordion Question=FollowUpQuestion OnDelete=DeleteChatBotQuestion/>
+                    <h5>Follow up keuzeopties:</h5>
+                    foreach (var FollowUpQuestion in FollowUpQuestions)
+                    {
+                        <ChatbotAccordion Question=FollowUpQuestion OnDelete=DeleteChatBotQuestion />
+                    }
                 }
-            }
-            <ChatbotPopup ParentQuestion=Question Text="Voeg keuzeoptie toe" Refresh=HandleRefresh/>
+                <ChatbotPopup ParentQuestion=Question Text="Voeg keuzeoptie toe" Refresh=HandleRefresh />
+            </div>
         </div>
-    </div>
     }
 </div>
 
@@ -48,38 +53,37 @@
     private bool collapsed = true;
 
     [Parameter]
-    public ChatBotQuestion Question { get; set; }
+    public CMSChatBotQuestion Question { get; set; }
 
     [Parameter]
-    public EventCallback<ChatBotQuestion> OnDelete { get; set; }
+    public EventCallback<CMSChatBotQuestion> OnDelete { get; set; }
 
-    IEnumerable<ChatBotQuestion>? FollowUpQuestions;
+    IEnumerable<CMSChatBotQuestion>? FollowUpQuestions;
 
     protected override void OnInitialized()
     {
         FollowUpQuestions = Question.FollowUpQuestions;
     }
 
-    private async Task DeleteChatBotQuestion(ChatBotQuestion question)
+    private async Task DeleteChatBotQuestion(CMSChatBotQuestion question)
     {
         await OnDelete.InvokeAsync(question);
-        if(FollowUpQuestions != null && FollowUpQuestions.Contains(question))
+        if (FollowUpQuestions.Contains(question))
         {
             FollowUpQuestions = FollowUpQuestions.Where(x => x != Question);
-            StateHasChanged();
         }
     }
 
     protected async Task HandleRefresh()
     {
-        OnInitialized();
+        await OnInitializedAsync();
         StateHasChanged();
     }
 
     private async Task DeleteQuestion()
     {
-        await ChatbotService.DeleteById(Question.Id);
         await DeleteChatBotQuestion(Question);
+        await ChatbotService.DeleteById(Question.Id);
     }
 
     public void Collapse()

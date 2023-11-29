@@ -3,12 +3,12 @@
 @inject IJSRuntime JSRuntime
 @using System.Text.Json
 @using BlazorApp.Data
-@using BlazorApp.Services
-@using BlazorApp.Models
+@using BlazorApp.Services.CMS
+@using Shared
 @using BlazorApp.Controllers
 @inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
-@inject ChatbotService ChatbotService
+@inject CMSChatbotService ChatbotService
 @using BlazorApp.Auth
 @inject NavigationManager NavManager
 @using BlazorApp.Components.Modals
@@ -16,25 +16,27 @@
 <PageTitle>Admin - Chat Bot</PageTitle>
 
 <SideNavMenu />
-<div class="content"> 
+<div class="content">
     <div class="container">
         @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
         {
-        <h1>Chatbot vragen</h1>
-        <div id="accordion">
-        @if (ChatbotQuestionsList != null)
-        {
-            foreach (var question in ChatbotQuestionsList)
-            {
-                  <ChatbotAccordion Question=question OnDelete=HandleRefresh/>
-            }
+            <h1>Chatbot vragen</h1>
+            <div id="accordion">
+                @if (ChatbotQuestionsList != null)
+                {
+                    foreach (var question in ChatbotQuestionsList)
+                    {
+                        <ChatbotAccordion Question=question OnDelete="DeleteChatBotQuestion" />
+                    }
+                }
+            </div>
+            <ChatbotPopup Text="Voeg vraag toe" Refresh=HandleRefresh />
+            <button class="btn btn-primary" @onclick="OnInitializedAsync">Refresh</button>
         }
-        </div> 
-        <ChatbotPopup Text="Voeg vraag toe" Refresh=HandleRefresh />
-        <button class="btn btn-primary" @onclick="OnInitializedAsync">Refresh</button>
-        } else {
-                <p>You are not authorized to access this page. Please log in.</p>
-                <p><a href="/login">Click here to LOGIN.</a></p>
+        else
+        {
+            <p>You are not authorized to access this page. Please log in.</p>
+            <p><a href="/login">Click here to LOGIN.</a></p>
         }
     </div>
 
@@ -44,7 +46,7 @@
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
 
-    IEnumerable<ChatBotQuestion>? ChatbotQuestionsList;
+    IEnumerable<CMSChatBotQuestion>? ChatbotQuestionsList;
     private bool collapsed = true;
 
     protected override async Task OnInitializedAsync()
@@ -53,19 +55,21 @@
             NavManager.NavigateTo("/login");
         else
         {
-            await HandleRefresh();
+            ChatbotQuestionsList = await ChatbotService.GetContent();
+            ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
         }
     }
 
     protected async Task HandleRefresh()
     {
-        ChatbotQuestionsList = await ChatbotService.GetContent();
-        ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
+        await OnInitializedAsync();
+        StateHasChanged();
     }
 
-    protected async Task DeleteChatBotQuestion(ChatBotQuestion question) 
+    protected async Task DeleteChatBotQuestion(CMSChatBotQuestion question)
     {
-        await HandleRefresh();
+        ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.Id != question.Id);
+        StateHasChanged();
     }
 
     void Collapse()

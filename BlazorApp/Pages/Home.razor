@@ -1,60 +1,58 @@
-﻿@page "/"
+﻿﻿@page "/"
 @using System.Text.Json
 @using BlazorApp.Data
-@using BlazorApp.Services
+@using BlazorApp.Services.CMS
 @using BlazorApp.Models
 @using BlazorApp.Controllers
-@inject HomeHeaderService homeHeaderService
+@using BlazorApp.BlazorShared
+@using Shared
+@inject CMSHomeHeaderService homeHeaderService
 @inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
-@inject BlogService blogService
+@inject CMSBlogService blogService
 
 <PageTitle>Vision Oogcentrum</PageTitle>
 
 <div>
     <div class="background-div">
         <div class="overlay">
-            @if (HomObj != null)
-            {
-                @foreach (var h in HomObj)
-                {
-
-                    <h1>@h.Title</h1>
-                    <p>@((MarkupString)h.Context)</p>
-                }
+            @if(HomObj != null){
+                <h1>@HomObj.Title</h1>
+                <p>@((MarkupString)HomObj.Context)</p>
             }
             else
             {
-
-                <h1>title</h1>
-                <p>
-                    context
-                </p>
+                <p> Loading</p>
             }
+            <h1>title</h1>
+            <p>
+                context
+            </p>
             <div class="buttons">
-                <button data-test-id="home-maakafspraak-button" class="custom-button btn-custom" @onclick="GoToAfspraakPage">Maak een afspraak <span class="oi oi-calendar"></span></button>
-                <button data-test-id="home-contacteerons-button" class="custom-button btn-custom" @onclick="GoToContactPage">Contacteer ons <span
-                        class="oi oi-envelope-closed"></span></button>
+                <button class="custom-button btn-custom">Maak een afspraak <span class="oi oi-calendar"></span></button>
+                <button class="custom-button btn-custom">
+                    Contacteer ons <span class="oi oi-envelope-closed"></span>
+                </button>
             </div>
         </div>
     </div>
 </div>
 
 <div>
-
-
-
     <div class="actuaBox">
+
         @if (BlogObj.blogs != null)
         {
-            foreach (var b in BlogObj.blogs)
+            @foreach (var b in BlogObj.blogs)
             {
-                <ActuaField Title=@b.Title Text=@b.Text Image=@b.Image Id=@b.Id />
+                <ActuaField Title=@b.Title Text=@b.Text Image=@b.ImageLink Id=@b.Id />
             }
+        }else{
+
         }
         <nav>
             <ul class="pagination">
-                <li class="page-item @(currentPage == 1 ? "disabled d-none" : "")">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
                     <a class="page-link" @onclick="(() => ChangePage(currentPage - 1))">Vorige</a>
                 </li>
                 @for (int i = 1; i <= BlogObj.totalPages; i++)
@@ -63,7 +61,7 @@
                         <a class="page-link" @onclick="(() => ChangePage(i))">@i</a>
                     </li>
                 }
-                <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled d-none" : "")">
+                <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled" : "")">
                     <a class="page-link" @onclick="(() => ChangePage(currentPage + 1))">Volgende</a>
                 </li>
             </ul>
@@ -74,16 +72,14 @@
 
 
 @code {
-    @inject NavigationManager NavigationManager
-    
-    IEnumerable<HomeHeader>? HomObj;
-    (IEnumerable<Blog> blogs, int totalPages) BlogObj;
+    CMSHomeHeader HomObj;
+    (IEnumerable<CMSBlog> blogs, int totalPages) BlogObj;
     int currentPage = 1;
 
     protected override async Task OnInitializedAsync()
     {
-        HomObj = await homeHeaderService.GetContent();
-        BlogObj = await blogService.GetContent(currentPage, 5);
+        HomObj = await homeHeaderService.GetHomeHeader();
+        BlogObj = await blogService.GetBlogs(currentPage, 5);
     }
 
     private async Task ChangePage(int page)
@@ -94,15 +90,7 @@
         }
 
         currentPage = page;
-        BlogObj = await blogService.GetContent(currentPage, 5);
+        BlogObj = await blogService.GetBlogs(currentPage, 5);
         StateHasChanged();
-    }
-    
-    private void GoToAfspraakPage() {
-        NavigationManager.NavigateTo("/afspraak");
-    }
-
-    private void GoToContactPage() {
-        NavigationManager.NavigateTo("/contact");
     }
 }

@@ -1,120 +1,31 @@
 @page "/afspraak"
 @using BlazorApp.Data
-@using BlazorApp.Services
+@using BlazorApp.Services.Core
 @using BlazorApp.Models
 @using BlazorApp.Controllers
 @inherits ComponentBase
 @inject DoctorService doctorService
 @using Microsoft.AspNetCore.Components.Forms
+@using Shared
+@using BlazorApp.BlazorShared
 
 <PageTitle>Afspraak maken</PageTitle>
-
 <div class="main-container">
     <div class="title-layout">
         <h1>Afspraak maken</h1>
         <a><u>Home</u> > Afspraak maken </a>
     </div>
     <div class="treatments" style="display: @(showTreatment ? "block" : "none")">
-        <div class="headerBox">
-            <p class="header">1. Waarvoor wilt u een afspraak maken?</p>
-        </div>
-        <div class="background-div">
-            <div class="overlay">
-                <div class="container mt-40">
-                    <div class="row ">
-                        <div class="col-md-4 d-flex flex-fill">
-                            <TreatmentCard ImageSrc="images/ooglidcorrectie.png" Title="Ooglidcorrectie" OnCardClick="Ooglidcorrectie" />
-                        </div>
-                        <div class="col-md-4 d-flex flex-fill">
-                            <TreatmentCard ImageSrc="images/cataractoperatie.png" Title="Cataractoperatie" OnCardClick="Cataractoperatie" />
-                        </div>
-                        <div class="col-md-4 d-flex flex-fill">
-                            <TreatmentCard ImageSrc="images/straaloperatie.png" Title="Straaloperatie" OnCardClick="Straaloperatie" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <TreatmentStep OnTreatmentSelected="HandleTreatmentSelected" />
     </div>
     <div class="doctors" style="display: @(showDoctors ? "block" : "none")">
-        <div class="headerBox">
-            <p class="header">2. Bij wie wens je een afspraak te maken?</p>
-        </div>
-        <div class="doctorbox">
-         @if (DocObj != null)
-            {
-                @foreach (var doc in DocObj)
-                {  
-                        @if (doc != null)
-                        {
-                            <div class="center">
-                                <button @onclick="(e) => ChooseDoc(doc)">
-                                    <DoctorCard ImageSrc=@doc.Image Name=@doc.Name Specialization=@doc.Specialization/>
-                                </button>
-                            </div>                        
-                        }
-                }
-            }
-            else
-            {
-                <p>DocObj is null.</p>
-            }
-        </div>
+        <DoctorStep OnDoctorSelected="HandleDoctorSelected" />
     </div>
     <div class="afspraak-plannen" style="display: @(showAfspraak ? "block" : "none")">
-        <div class="headerBox">
-            <p class="header">3. Kies een tijdslot</p>
-        </div>
-        <div class="afspraakbox" data-test-id="appointment-box">
-            <div class="temp">
-                <button class="butTemp" @onclick=ChooseTime data-test-id="appointment-temp-button">temp</button>
-            </div>
-        </div>
+        <AppointmentStep OnDateChosen="HandleTimeChosen" />
     </div>
     <div class="contact-info" style="display: @(showContact ? "block" : "none")">
-        <div class="headerBox">
-            <p class="header">4. Vul uw contactgegevens in</p>
-        </div>
-        <EditForm Model="@clientData" OnValidSubmit="@SubmitClientData">
-        <DataAnnotationsValidator /> 
-            <div class="contactbox">
-                <div class="formbox">
-                    <div class="coll">
-                        <div class="la">
-                            <label class='formLabel' for="Name">Naam</label>
-                        </div>
-                        <div class='formInput'>  
-                            <InputText id="Name" @bind-Value="clientData.Name" type='text' placeholder='John Doe'/>
-                            <ValidationMessage For="@(() => clientData.Name)" />
-                        </div>
-                        <div class="la">
-                            <label class='formLabel' for="Email">E-mail</label>
-                        </div>
-                        <div class='formInput'>
-                            <InputText id="Email" @bind-Value="clientData.Email" type='text' placeholder='john@mail.com'/>
-                            <ValidationMessage For="@(() => clientData.Email)" />
-                        </div>
-                    </div>
-                    <div class="coll">
-                        <div class="la">
-                            <label class='formLabel' for="Phone">Telefoon</label>
-                        </div>
-                        <div class='formInput'>
-                            <InputText id="Phone" @bind-Value="clientData.Phone" type='text' placeholder='0489432312'/>
-                            <ValidationMessage For="@(() => clientData.Phone)" />
-                        </div>
-                        <div class="la">
-                            <label class='formLabel' for="birthDate">Geboortedatum</label>
-                        </div>
-                        <div class='formInput'>
-                            <InputDate id="birthDate" @bind-Value="clientData.BirthDate"/>
-                            <ValidationMessage For="@(() => clientData.BirthDate)" />
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="submitBtn" data-test-id="appointment-submit">Verzenden</button>
-            </div>
-        </EditForm>
+        <ContactFormStep OnContactSubmitted="HandleClientData" />
     </div>
     <div class="succes" style="display: @(showSucces ? "flex" : "none")">
         <p>Afspraak is succesvol gemaakt!</p>
@@ -123,57 +34,42 @@
 </div>
 
 @code {
-    private string treatment = "";
-    private int doctorId = 0;
+
+    private String SelectedTreatment = "";
+    private int? DoctorId = 0;
+
     private bool showTreatment = true;
     private bool showDoctors = false;
     private bool showAfspraak = false;
     private bool showContact = false;
     private bool showSucces = false;
-    private void Ooglidcorrectie()
+
+    private void HandleTreatmentSelected(string selectedTreatment)
     {
-        treatment = "Ooglidcorrectie";
+        SelectedTreatment = selectedTreatment;
         showTreatment = !showTreatment;
         showDoctors = !showDoctors;
     }
-    private void Cataractoperatie()
+
+
+    private void HandleDoctorSelected(int? doctorId)
     {
-        treatment = "Cataractoperatie";
-        showTreatment = !showTreatment;
-        showDoctors = !showDoctors;
-    }
-    private void Straaloperatie()
-    {
-        treatment = "Straaloperatie";
-        showTreatment = !showTreatment;
-        showDoctors = !showDoctors;
-    }
-    IEnumerable<Doctor>? DocObj;
-    protected override async Task OnInitializedAsync()
-    {
-        DocObj = await doctorService.GetAll();
-    }
-    private void ChooseDoc(Doctor doc) {
-        doctorId = doc.Id;
+        DoctorId = doctorId;
         showDoctors = !showDoctors;
         showAfspraak = !showAfspraak;
     }
-    private void ChooseTime()
+
+    private void HandleTimeChosen()
     {
         showAfspraak = !showAfspraak;
         showContact = !showContact;
     }
-    private ClientData clientData = new ClientData();
 
-    private async Task SubmitClientData()
+    private async Task HandleClientData()
     {
         showContact = !showContact;
         showSucces = !showSucces;
-        Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.BirthDate);
     }
+
+
 }
-
-
-
-
-

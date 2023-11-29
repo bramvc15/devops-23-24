@@ -2,18 +2,18 @@
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @using System.Text.Json.Serialization;
-@using BlazorApp.Services
+@using BlazorApp.Services.CMS
 @using BlazorApp.Models
 @using BlazorApp.Controllers
-@inject LocationService locationService
+@inject CMSLocationService locationService
 @inject DatabaseContext databaseContext
 
 <div>
     <div class="buttons">
         <Button Color="Color.Primary" Clicked="@ShowModal">Wijzig</Button>
     </div>
-    
-       
+
+
     <Modal @ref="modalRef">
         <ModalContent Centered>
             <ModalHeader>
@@ -29,7 +29,7 @@
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@UpdateTitle" data-test-id="edit-location-save">Opslaan</Button>
+                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
@@ -41,8 +41,12 @@
 
     protected RichTextEditor? richTextEditRef;
     protected string? content;
+    CMSLocation? header;
+    int headerId;
+    string? newTitle;
 
-    string? plainTextContent; 
+    string? plainTextContent;
+    string? context;
 
     private Modal? modalRef;
 
@@ -60,14 +64,7 @@
     {
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
-        await locationService.UpdateLocationText(content);
+        await locationService.UpdateLocation(header);
         modalRef?.Hide();
-    }
-
-    IEnumerable<LocationM>? LocObj;
-
-    protected override async Task OnInitializedAsync()
-    {
-        LocObj = await locationService.GetContent();
     }
 }

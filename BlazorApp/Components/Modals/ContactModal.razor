@@ -2,18 +2,18 @@
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @using System.Text.Json.Serialization;
-@using BlazorApp.Services
+@using BlazorApp.Services.CMS
 @using BlazorApp.Models
 @using BlazorApp.Controllers
-@inject ContactService contactService
+@inject CMSContactService contactService
 @inject DatabaseContext databaseContext
 
 <div>
     <div class="buttons">
         <Button Color="Color.Primary" Clicked="@ShowModal">Wijzig</Button>
     </div>
-    
-       
+
+
     <Modal @ref="modalRef">
         <ModalContent Centered>
             <ModalHeader>
@@ -39,9 +39,14 @@
 
 @code {
     protected RichTextEditor? richTextEditRef;
-    protected string? content;
+    protected string content;
+    CMSLocation header;
+    int headerId;
+    string? newTitle;
+    CMSContact ConObj;
 
     string? plainTextContent;
+    string? context;
 
     private Modal? modalRef;
 
@@ -59,14 +64,14 @@
     {
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
-        await contactService.UpdateContactText(content);
+        await contactService.UpdateContact(ConObj);
         modalRef?.Hide();
     }
 
-    IEnumerable<ContactM>? ConObj;
+    
 
     protected override async Task OnInitializedAsync()
     {
-        ConObj = await contactService.GetContent();
+        ConObj = await contactService.GetContact();
     }
 }
