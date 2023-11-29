@@ -1,8 +1,10 @@
 @page "/ons-team"
 @using BlazorApp.Data
 @using BlazorApp.Models
-@using BlazorApp.Services
+@using BlazorApp.Services.Core
 @using BlazorApp.Controllers
+@using BlazorApp.BlazorShared
+@using Shared
 @inject DoctorService doctorService
 
 <PageTitle>Ons Team</PageTitle>
@@ -25,7 +27,7 @@
                     <div class="col-md-6 col-lg-4">
                         @if (doc != null)
                         {
-                            <TeamCard ImageSrc=@doc.Image Name=@doc.Name Specialization="@doc.Specialization" DoctorId=@doc.Id />
+                            <TeamCard ImageSrc=@doc.ImageLink Name=@doc.Name Specialization="@doc.Specialization" DoctorId=@doc.Id />
                         }
                     </div>
                 }
@@ -42,10 +44,10 @@
 </div>
 
 @code {
-    IEnumerable<Doctor>? DocObj;
+    IEnumerable<DoctorDTO>? DocObj;
 
     protected override async Task OnInitializedAsync()
     {
-        DocObj = await doctorService.GetAll();
+        DocObj = await doctorService.GetDoctors();
     }
 }
