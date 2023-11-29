@@ -177,11 +177,11 @@ namespace BlazorApp.Migrations
 
             modelBuilder.Entity("Shared.CMSBlog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("ImageLink")
                         .HasColumnType("nvarchar(max)");
@@ -199,14 +199,13 @@ namespace BlazorApp.Migrations
 
             modelBuilder.Entity("Shared.CMSChatBotQuestion", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Answer")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CMSChatBotQuestionId")
@@ -216,7 +215,6 @@ namespace BlazorApp.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Question")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -228,11 +226,11 @@ namespace BlazorApp.Migrations
 
             modelBuilder.Entity("Shared.CMSContact", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Context")
                         .HasColumnType("nvarchar(max)");
@@ -244,11 +242,11 @@ namespace BlazorApp.Migrations
 
             modelBuilder.Entity("Shared.CMSHomeHeader", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Context")
                         .HasColumnType("nvarchar(max)");
@@ -263,11 +261,11 @@ namespace BlazorApp.Migrations
 
             modelBuilder.Entity("Shared.CMSLocation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Context")
                         .HasColumnType("nvarchar(max)");
@@ -279,11 +277,11 @@ namespace BlazorApp.Migrations
 
             modelBuilder.Entity("Shared.CMSTreatment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -303,7 +301,8 @@ namespace BlazorApp.Migrations
                 {
                     b.HasOne("Domain.TimeSlot", "TimeSlot")
                         .WithOne("Appointment")
-                        .HasForeignKey("Domain.Appointment", "Id");
+                        .HasForeignKey("Domain.Appointment", "Id")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Patient", "Patient")
                         .WithMany("Appointments")

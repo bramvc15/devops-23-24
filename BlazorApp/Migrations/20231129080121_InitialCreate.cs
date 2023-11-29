@@ -32,8 +32,8 @@ namespace BlazorApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsFollowUp = table.Column<bool>(type: "bit", nullable: true),
                     CMSChatBotQuestionId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -205,7 +205,8 @@ namespace BlazorApp.Migrations
                         name: "FK_Appointments_TimeSlots_TimeSlot_Id",
                         column: x => x.TimeSlot_Id,
                         principalTable: "TimeSlots",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
