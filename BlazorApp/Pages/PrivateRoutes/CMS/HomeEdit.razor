@@ -2,17 +2,17 @@
 @inherits EditHeaderPopUp
 @using BlazorApp.Data
 @using BlazorApp.Services
-@using BlazorApp.Models
 @using BlazorApp.Controllers
 @using BlazorApp.Components.Modals
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @inject DatabaseContext databaseContext
-@inject BlogService blogService
+@inject CMSBlogService blogService;
 @using BlazorApp.Auth
 @inject NavigationManager NavManager
 @using Newtonsoft.Json;
-using BlazorApp.Services.CMS;
+@using BlazorApp.Services.CMS;
+@using Shared;
 
 <PageTitle>Admin - CMS Home</PageTitle>
 
@@ -91,7 +91,7 @@ else
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
-    (IEnumerable<Blog> blogs, int totalPages) BlogObj;
+    (IEnumerable<CMSBlog> blogs, int totalPages) BlogObj;
     int currentPage = 1;
 
     protected override async Task OnInitializedAsync()
