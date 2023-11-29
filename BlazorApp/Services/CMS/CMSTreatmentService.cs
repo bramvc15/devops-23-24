@@ -1,55 +1,46 @@
 using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared;
 
 namespace BlazorApp.Services.CMS
 {
-    public class TreatmentService
+    public class CMSTreatmentService
     {
         private readonly DatabaseContext _ctx;
 
-        public TreatmentService(DatabaseContext ctx)
+        public CMSTreatmentService(DatabaseContext ctx)
         {
             _ctx = ctx;
+            _treatments = ctx.Treatments;
         }
 
-        public async Task<IEnumerable<Treatment>> GetContent()
+        private readonly DbSet<CMSTreatment> _treatments;
+
+        public async Task<IEnumerable<CMSTreatment>> GetTreatments()
         {
-            return await _ctx.Treatments.ToListAsync();
+            return await _treatments.ToListAsync();
         }
 
-        public async Task<Treatment> GetContentByName(string name)
+        public async Task<CMSTreatment> CreateTreatment(CMSTreatment newTreatment)
         {
-            var treatment = await _ctx.Treatments.FirstOrDefaultAsync(t => t.Name == name);
+            _treatments.Add(newTreatment);
+            await _ctx.SaveChangesAsync();
 
-            if (treatment is null)
-            {
-                throw new InvalidOperationException($"does not exist with name '{name}'");
-            }
-
-            return treatment;
+            return newTreatment;
         }
 
-        public async Task UpdateTreatment(int id, string newName, string newDescription, string newImage)
+        public async Task<CMSTreatment> UpdateTreatment(CMSTreatment updatedTreatment) 
+        { 
+            _treatments.Update(updatedTreatment);
+            await _ctx.SaveChangesAsync();
+
+            return updatedTreatment;
+        }
+
+        public async Task DeleteTreatment(CMSTreatment treatmentToDelete)
         {
-            var treatmentToUpdate = await _ctx.Treatments.FindAsync(id);
-
-            if (treatmentToUpdate is null)
-            {
-                throw new InvalidOperationException("does not exist");
-            }
-
-            if (newName != null && newDescription != null && newImage != null)
-            {
-                treatmentToUpdate.Name = newName;
-                treatmentToUpdate.Description = newDescription;
-                treatmentToUpdate.Image = newImage;
-            }
-            else
-            {
-                throw new InvalidOperationException("updating content is null");
-            }
-
+            _treatments.Remove(treatmentToDelete);
             await _ctx.SaveChangesAsync();
         }
     }

@@ -5,7 +5,7 @@ using Shared;
 namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CMSHomeHeaderController : ControllerBase
 {
     private readonly CMSHomeHeaderService _service;
@@ -16,9 +16,9 @@ public class CMSHomeHeaderController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<CMSHomeHeader>> GetHomeHeader()
+    public Task<CMSHomeHeader> GetHomeHeader()
     {
-        return await _service.GetHomeHeader();
+        return _service.GetHomeHeader();
     }
 
     [HttpPut]

@@ -1,6 +1,6 @@
 using BlazorApp.Data;
-using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared;
 
 namespace BlazorApp.Services.CMS
 {
@@ -11,28 +11,22 @@ namespace BlazorApp.Services.CMS
         public CMSContactService(DatabaseContext ctx)
         {
             _ctx = ctx;
+            _contacts = ctx.Contacts;
         }
 
-        public async Task<IEnumerable<ContactM>> GetContent()
+        private readonly DbSet<CMSContact> _contacts;
+
+        public async Task<CMSContact> GetContact()
         {
-            return await _ctx.Contacts.ToListAsync();
+            return await _contacts.FirstOrDefaultAsync();
         }
 
-        public async Task UpdateContactText(string content)
+        public async Task<CMSContact> UpdateContact(CMSContact newCMS)
         {
-            var contactToUpdate = await _ctx.Contacts.FindAsync(1);
-
-            if (contactToUpdate is null)
-            {
-                throw new InvalidOperationException("does not exist");
-            }
-            if (content != null)
-            {
-
-                contactToUpdate.Context = content;
-            }
-
+            _contacts.Update(newCMS);
             await _ctx.SaveChangesAsync();
+
+            return newCMS;
         }
     }
 }

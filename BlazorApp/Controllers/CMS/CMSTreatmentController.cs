@@ -3,29 +3,43 @@ using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
 using Shared;
 using BlazorApp.Services.CMS;
+using Microsoft.EntityFrameworkCore;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CMSTreatmentController : ControllerBase
 {
-    private readonly TreatmentService _service;
+    private readonly CMSTreatmentService _service;
 
-    public CMSTreatmentController(TreatmentService service)
+    public CMSTreatmentController(CMSTreatmentService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<CMSTreatment>> GetTreatments()
+    public Task<IEnumerable<CMSTreatment>> GetTreatments()
     {
-        return await _service.GetTreatments();
+        return _service.GetTreatments();
+    }
+
+    [HttpPost]
+    public Task<CMSTreatment> CreateTreatment([FromBody] CMSTreatment request)
+    {
+        return _service.CreateTreatment(request);
     }
 
     [HttpPut]
-    public async Task<CMSTreatment> UpdateTreatment(CMSTreatment request)
+    public Task<CMSTreatment> UpdateTreatment([FromBody] CMSTreatment request)
     {
-        await _service.UpdateTreatment(request);
+        return _service.UpdateTreatment(request);
+    }
+
+    [HttpDelete]
+    public Task DeleteTreatment([FromBody] CMSTreatment request)
+    {
+        return _service.DeleteTreatment(request);
     }
 }

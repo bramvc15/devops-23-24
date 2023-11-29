@@ -5,7 +5,7 @@ using Shared;
 namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CMSContactController : ControllerBase
 {
     private readonly CMSContactService _service;
@@ -16,14 +16,14 @@ public class CMSContactController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<CMSContact>> GetContact()
+    public Task<CMSContact> GetContact()
     {
-        return await _service.GetContact();
+        return _service.GetContact();
     }
 
     [HttpPut]
-    public async Task<CMSContact> UpdateContact([FromBody] CMSContact request)
+    public Task<CMSContact> UpdateContact([FromBody] CMSContact request)
     {
-        return await _service.UpdateContact(request);
+        return _service.UpdateContact(request);
     }
 }

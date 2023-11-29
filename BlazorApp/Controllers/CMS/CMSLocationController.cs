@@ -5,25 +5,25 @@ using Shared;
 namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CMSLocationController : ControllerBase
 {
-    private readonly LocationService _service;
+    private readonly CMSLocationService _service;
 
-    public CMSLocationController(LocationService service)
+    public CMSLocationController(CMSLocationService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<CMSLocation>> GetLocation()
+    public Task<CMSLocation> GetLocation()
     {
-        return await _service.GetLocation();
+        return _service.GetLocation();
     }
-
+    
     [HttpPut]
-    public async Task<CMSLocation> UpdateLocation(CMSLocation request)
+    public Task<CMSLocation> UpdateLocation([FromBody] CMSLocation request)
     {
-        return await _service.UpdateLocation(request);
+        return _service.UpdateLocation(request);
     }
 }

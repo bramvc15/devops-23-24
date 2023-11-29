@@ -1,6 +1,7 @@
 using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared;
 
 namespace BlazorApp.Services.CMS
 {
@@ -11,52 +12,22 @@ namespace BlazorApp.Services.CMS
         public CMSHomeHeaderService(DatabaseContext ctx)
         {
             _ctx = ctx;
+            _homeHeaders = ctx.HomeHeaders;
         }
 
-        public async Task<IEnumerable<HomeHeader>> GetContent()
+        private readonly DbSet<CMSHomeHeader> _homeHeaders;
+
+        public async Task<CMSHomeHeader> GetHomeHeader()
         {
-            return await _ctx.HomeHeaders.ToListAsync();
+            return await _homeHeaders.FirstOrDefaultAsync();
         }
 
-        public async Task UpdateHeaderTitleAsync(int headerId, string newTitle)
+        public async Task<CMSHomeHeader> UpdateHomeHeader(CMSHomeHeader homeHeader)
         {
-            var headerToUpdate = await _ctx.HomeHeaders.FindAsync(headerId);
-
-            if (headerToUpdate is null)
-            {
-                throw new InvalidOperationException("Header does not exist");
-            }
-
-            headerToUpdate.Title = newTitle;
+            _homeHeaders.Update(homeHeader);
             await _ctx.SaveChangesAsync();
-        }
 
-        public void UpdateHeaderTitle(string newTitle, string content)
-        {
-            var headerToUpdate = _ctx.HomeHeaders.Find(1);
-
-            if (headerToUpdate is null)
-            {
-                throw new InvalidOperationException("does not exist");
-            }
-            if (newTitle != null && content != null)
-            {
-                headerToUpdate.Title = newTitle;
-                headerToUpdate.Context = content;
-            }
-
-            if (newTitle == null && content != null)
-            {
-                headerToUpdate.Context = content;
-            }
-
-            if (content == null && newTitle != null)
-            {
-                headerToUpdate.Title = newTitle;
-            }
-
-            // headerToUpdate.Title = newTitle;
-            _ctx.SaveChanges();
+            return homeHeader; 
         }
     }
 }

@@ -10,6 +10,10 @@ namespace BlazorApp.Data
 
         public static void Initialize(DatabaseContext context)
         {
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any())
+            {
+                return;
+            }
 
             // domain
             #region Doctors

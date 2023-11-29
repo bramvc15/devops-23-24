@@ -12,38 +12,37 @@ using BlazorApp.Auth;
 using Blazored.LocalStorage;
 using BlazorApp.Services.Core;
 using BlazorApp.Services.CMS;
+using Microsoft.Extensions.DependencyInjection;
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF1cWWhIf0x0TXxbf1xzZFRGalhXTnRdUiweQnxTdEZiWH1fcXRRQGJeV0N1WQ==");
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options => options.Listen(System.Net.IPAddress.Parse(builder.Configuration.GetConnectionString("HostAdress")), 5046));
 // Add services to the container.
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
+}, ServiceLifetime.Transient);
+
 builder.Services.AddSingleton<BlitzWareAuthService>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
-builder.Services.AddTransient<DoctorService>();
-builder.Services.AddTransient<CMSHomeHeaderService>();
-builder.Services.AddTransient<BlogService>();
-builder.Services.AddTransient<LocationService>();
-builder.Services.AddTransient<CMSContactService>();
-builder.Services.AddTransient<TreatmentService>();
-builder.Services.AddTransient<CMSChatbotService>();
-builder.Services.AddTransient<PatientService>();
-builder.Services.AddTransient<ScheduleTimeSlotService>(); 
-builder.Services.AddTransient<AppointmentService>();
+builder.Services.AddScoped<DoctorService>();
+builder.Services.AddScoped<CMSHomeHeaderService>();
+builder.Services.AddScoped<CMSBlogService>();
+builder.Services.AddScoped<LocationService>();
+builder.Services.AddScoped<CMSContactService>();
+builder.Services.AddScoped<TreatmentService>();
+builder.Services.AddScoped<CMSChatbotService>();
+builder.Services.AddScoped<PatientService>();
+builder.Services.AddScoped<ScheduleTimeSlotService>(); 
+builder.Services.AddScoped<AppointmentService>();
+builder.Services.AddScoped<TimeSlotService>();
+builder.Services.AddScoped<ScheduleTimeSlotService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSyncfusionBlazor();
-builder.Services.AddTransient<TimeSlotService>();
-builder.Services.AddTransient<ScheduleTimeSlotService>();
-
-builder.Services.AddDbContext<DatabaseContext>(options =>
-    {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
-    }, ServiceLifetime.Transient);
-
-
 
 builder.Services
     .AddBlazorise(options =>

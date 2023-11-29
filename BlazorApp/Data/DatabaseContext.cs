@@ -12,19 +12,19 @@ namespace BlazorApp.Data
 
         }
         // Domain Tables
-        public DbSet<Doctor> Doctors => Set<Doctor>();
-        public DbSet<Patient> Patients => Set<Patient>();
-        public DbSet<Appointment> Appointments => Set<Appointment>();
-        public DbSet<TimeSlot> TimeSlots => Set<TimeSlot>();
-        public DbSet<ScheduleTimeSlot> ScheduleTimeSlots => Set<ScheduleTimeSlot>();
+        public DbSet<Doctor> Doctors {  get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<TimeSlot> TimeSlots { get; set; }
+        public DbSet<ScheduleTimeSlot> ScheduleTimeSlots { get; set; }
 
         // CMS Tables
-        public DbSet<CMSBlog> Blogs => Set<CMSBlog>();
-        public DbSet<CMSChatBotQuestion> ChatBotQuestions => Set<CMSChatBotQuestion>();
-        public DbSet<CMSContact> Contacts => Set<CMSContact>();
-        public DbSet<CMSHomeHeader> HomeHeaders => Set<CMSHomeHeader>();
-        public DbSet<CMSLocation> Locations => Set<CMSLocation>();
-        public DbSet<CMSTreatment> Treatments => Set<CMSTreatment>();
+        public DbSet<CMSBlog> Blogs { get; set; }
+        public DbSet<CMSChatBotQuestion> ChatBotQuestions { get; set; }
+        public DbSet<CMSContact> Contacts { get; set; }
+        public DbSet<CMSHomeHeader> HomeHeaders { get; set; }
+        public DbSet<CMSLocation> Locations { get; set; }
+        public DbSet<CMSTreatment> Treatments { get; set; }
 
         // ModelChanges on persist
         protected override void OnModelCreating(ModelBuilder modelBuilder)

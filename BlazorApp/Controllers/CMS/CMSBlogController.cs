@@ -5,7 +5,7 @@ using Shared;
 namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CMSBlogController : ControllerBase
 {
     private readonly CMSBlogService _service;
@@ -16,26 +16,26 @@ public class CMSBlogController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<CMSBlog>> GetBlogs()
+    public Task<IEnumerable<CMSBlog>> GetBlogs()
     {
-        return await _service.GetBlogs();
+        return _service.GetBlogs();
     }
 
     [HttpPost]
-    public async Task<CMSBlog> CreateBlog([FromBody] CMSBlog request)
+    public Task<CMSBlog> CreateBlog([FromBody] CMSBlog request)
     {
-        return await _service.CreateBlog(request);
+        return _service.CreateBlog(request);
     }
 
     [HttpPut]
-    public async Task<CMSBlog> UpdateBlog([FromBody] CMSBlog request)
+    public Task<CMSBlog> UpdateBlog([FromBody] CMSBlog request)
     {
-        return await _service.UpdateBlog(request);
+        return _service.UpdateBlog(request);
     }
 
     [HttpDelete]
-    public async Task<CMSBlog> DeleteBlog([FromBody] CMSBlog request)
+    public Task DeleteBlog([FromBody] CMSBlog request)
     {
-        return await _service.DeleteBlog(request);
+        return _service.DeleteBlog(request);
     }
 }
