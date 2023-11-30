@@ -24,6 +24,18 @@
   padding-top: 100px;
   padding-left: 120px;
 }
+
+.headerBox {
+  margin-left: 120px;
+}
+
+.header {
+  font-size: 1.5rem;
+  padding-bottom: 2%;
+  color: rgb(22, 44, 104);
+}
+
+
 /*
 .headerBox {
     padding-left: 120px;
@@ -51,3 +63,4 @@ button {
     border: none;
     background-color: transparent;
 }
+*/

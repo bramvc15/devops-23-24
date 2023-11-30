@@ -2,9 +2,6 @@
 @using BlazorApp.Models
 
 
-<div class="headerBox">
-    <p class="header">4. Vul uw contactgegevens in</p>
-</div>
 <EditForm Model="@clientData" OnValidSubmit="@SubmitClientData">
     <DataAnnotationsValidator />
     <div class="contactbox">
@@ -42,7 +39,9 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="submitBtn">Verzenden</button>
+        <div class="btnBox">
+            <button type="submit" class="submitBtn">Verzenden</button>
+        </div>
     </div>
 </EditForm>
 @code {
