@@ -10,13 +10,10 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
 
   <ItemGroup>
-    <Content Remove="appsettings.json" />
+    <Content Remove="appsettings.Development.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\Appointments\Components\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="appsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +31,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Syncfusion.Blazor" Version="23.2.4" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="23.2.6" />
     <PackageReference Include="System.Text.Json" Version="7.0.3" />
     <PackageReference Include="TinyMCE.Blazor" Version="1.0.4" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
