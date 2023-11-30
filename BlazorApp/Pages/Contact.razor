@@ -6,36 +6,21 @@
 @using BlazorApp.Models
 @using BlazorApp.Controllers
 @using System.ComponentModel.DataAnnotations
-@using System.Net.Mail
+@using Microsoft.AspNetCore.Components.Forms
+
 <PageTitle>Contact</PageTitle>
+<div class="page-container">
+    <div class="title-layout">
+        <h1>Contact</h1>
+        <a><u>Home</u> > Contact </a>
+    </div>
+    <div class="container mt-4 mp">
+            <div class="form-container">
+                <h1 class="header1">Stel ons een vraag</h1>
 
 
-    <div class="page-container">
-        <div class="title-layout">
-            <h1>Contact</h1>
-            <span class="breadcrumbs">
-                <a href="/"><u>Home</u></a> > Contact
-            </span>
-        </div>
 
-
-        <div class="container mt-4">
-            <div class="row">
-                <!-- Left Column for Text -->
-                <div class="col-md-6">
-                    @if(ConObj != null){
-                    <h2>Onze gegevens</h2>           
-                    @((MarkupString)ConObj.Context)
-                    }
-                    else
-                    {
-                         <p>Loading</p>
-                    }
-                </div>
-
-                <div class="col-md-6">
-                    <h1 class="mb-4">Stel ons een vraag</h1>
-                    <EditForm Model="@Model" OnValidSubmit="@SubmitForm" FormName="ContactForm">
+                    @* <EditForm Model="@Model" OnValidSubmit="@SubmitForm" FormName="ContactForm">
                         <DataAnnotationsValidator />
                         <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
                         <div class="form-row">
@@ -66,26 +51,65 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary" data-test-id="contact-submit-button">verstuur</button>
                         </div>
-                    </EditForm>
-                </div>
+                    </EditForm> *@
+
+                <EditForm Model="@contactData" OnValidSubmit="@SubmitForm">
+                    @* <DataAnnotationsValidator /> *@
+                    <div class="divide-container">
+                        <div class="left">
+                            <div class="name-container">
+                                <div class="box">
+                                    <label class='formLabel'>Voornaam</label>
+                                    <InputText @bind-Value="contactData.Name" placeholder="Naam" type='text'/>
+                                    @* <ValidationMessage For="@(() => contactData.Name)" /> *@
+                                </div>
+                                <div class="box">
+                                    <label class='formLabel'>Naam</label>
+                                    <InputText @bind-Value="contactData.LastName" placeholder="Achternaam" type='text'/>
+                                    @* <ValidationMessage For="@(() => contactData.LastName)" /> *@
+                                </div>
+                            </div>
+                            <div class="name-container">
+                                <div class="box">
+                                    <label class='formLabel'>E-mail</label>
+                                    <InputText @bind-Value="contactData.Email" type='text' placeholder='naam@mail.com' />
+                                    @* <ValidationMessage For="@(() => contactData.Email)" /> *@
+                                </div>
+                                <div class="box">
+                                    <label class='formLabel'>GSM</label>
+                                    <InputText @bind-Value="contactData.Phone" type='text' placeholder='0489561475' />
+                                    @* <ValidationMessage For="@(() => contactData.Phone)" /> *@
+                                </div>                     
+                            </div>
+                            <label class='formLabel'>Geboortedatum</label>
+                            <InputDate @bind-Value="contactData.BirthDate" />
+                        </div>
+                        <div class="right">
+                            <div class="leftie">
+                                <label class='formLabel'>Bericht of vraag</label>
+                            </div>
+                            <InputTextArea @bind-Value="contactData.Message" rows="10" placeholder=". . ."/>
+                            @* <ValidationMessage For="@(() => contactData.Message)" /> *@
+                        </div>
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="sendBtn">Verstuur</button>
+                    </div>
+                </EditForm>
             </div>
         </div>
-
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-md-6">
-                @if(LocObj != null){
-                    <h2>Onze locatie</h2>
-                    @((MarkupString)LocObj.Context)
-                }
-                else
-                {
-                     <p>Loading</p>
-                }
-                </div>
-                <div class="col-md-6">
-                    <iframe src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Antwerpsesteenweg%201022%209040%20Gent+(Vision%20Oogcentrum)&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
+    </div>
+    <div class="containerLoc">
+        <h1 class="header2">Locatie</h1>
+        <div class="loc-details-con">
+            <div class="loc-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d160404.48929096633!2d3.549413672523532!3d51.08409896849969!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c370e1339443ad%3A0x40099ab2f4d5140!2sGent!5e0!3m2!1snl!2sbe!4v1696930185595!5m2!1snl!2sbe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="loc-details">
+                <p>*Straatnaam #*</p>
+                <p>Gent 9000</p>
+                <p>België</p>
+                <p>Parkeren mogelijk: ja</p>
             </div>
         </div>
     </div>
@@ -100,69 +124,23 @@
     @using System.Net
 
     CMSContact ConObj;
-    CMSLocation LocObj;
 
-    public ContactModel? Model { get; set; }
+    private ContactData contactData = new ContactData();
     
     protected override async Task OnInitializedAsync()
     {
-        Model = new ContactModel();
         ConObj = await contactService.GetContact();
-        LocObj = await locationService.GetLocation();
     }
 
-    public class ContactModel
-    {
-        [Required(ErrorMessage = "Naam is verplicht.")]
-        public string Name { get; set; }
-        [Required(ErrorMessage = "Voornaam is verplicht.")]
-        public string FirstName { get; set; }
-        [Required(ErrorMessage = "Email is verplicht.")]
-        [EmailAddress(ErrorMessage = "Voer een geldig emailadres in.")]
-        public string Email { get; set; }
-        [Required(ErrorMessage = "Geboortedatum is verplicht.")]
-        public DateTime DateOfBirth { get; set; }
-        [Required(ErrorMessage = "Telefoonnummer is verplicht.")]
-        [RegularExpression(@"[0-9]{10}", ErrorMessage = "Voer een geldig telefoonnummer in.")]
-        public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "Een bericht is verplicht.")]
-        public string Message { get; set; }
-    }
-
-    // Create references for other form fields as needed
-
-    // Define a method to handle the form submission
-    private void SubmitForm()
-    {
-        // Get the values from the form fields
-        var name = Model.Name;
-        var firstName = Model.FirstName;
-        var email = Model.Email;
-
-        // Get values from other form fields as needed
-        using (SmtpClient smtpClient = new SmtpClient("your-smtp-server.com"))
+    private async Task SubmitForm()
         {
-            smtpClient.Port = 587;
-            smtpClient.Credentials = new NetworkCredential("your-username", "your-password");
-            smtpClient.EnableSsl = true;
-
-            using (MailMessage mailMessage = new MailMessage("from-email@example.com", "recipient@example.com"))
-            {
-                mailMessage.Subject = "Contact Form Submission";
-                //mailMessage.Body = email;
-
-                try
-                {
-                    smtpClient.Send(mailMessage);
-                    Console.WriteLine("Email sent successfully.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: " + ex.Message);
-                }
-            }
+            Console.WriteLine("test");
         }
-        // Now you can use these values as needed, such as sending them in an email
-    }
+
 }
+
+@* TO DO
+smpt client?
+mail service aanmaken & injecten
+form linken met service *@
 
