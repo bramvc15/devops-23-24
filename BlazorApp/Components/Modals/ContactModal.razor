@@ -22,14 +22,39 @@
             </ModalHeader>
             <ModalBody>
                 <Field>
-                    <FieldLabel>Beschrijving</FieldLabel>
-                    @* rich *@
-                    <RichTextEditor @ref="richTextEditRef" />
+                    <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
+                                  PlaceHolder="Contact..." ReadOnly="@readOnly" SubmitOnEnter="false"
+                                  EnterPressed="@OnSave" ToolbarPosition="Placement.Bottom">
+                        <Editor>@content</Editor>
+                        <Toolbar>
+                            <RichTextEditToolbarGroup>
+                                <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
+                                <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
+                                <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
+                                    <RichTextEditToolbarSelectItem Value="small" />
+                                    <RichTextEditToolbarSelectItem Selected />
+                                    <RichTextEditToolbarSelectItem Value="large" />
+                                    <RichTextEditToolbarSelectItem Value="huge">Very Big</RichTextEditToolbarSelectItem>
+                                </RichTextEditToolbarSelect>
+                                <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
+                                <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
+                            </RichTextEditToolbarGroup>
+                            <!-- Custom toolbar content -->
+                            <RichTextEditToolbarGroup Float="Float.End">
+                                <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
+                                    <Icon Name="IconName.InfoCircle" />
+                                </Button>
+                                <Button Clicked="@OnSave">
+                                    <Icon Name="IconName.Save" />
+                                </Button>
+                            </RichTextEditToolbarGroup>
+                        </Toolbar>
+                    </RichTextEdit>
                 </Field>
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
+                <Button Color="Color.Primary" Clicked="@UpdateContact">Opslaan</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
@@ -38,20 +63,26 @@
 </div>
 
 @code {
-    protected RichTextEditor? richTextEditRef;
-    protected string content;
-    CMSLocation header;
-    int headerId;
-    string? newTitle;
-    CMSContact ConObj;
+
+    protected new RichTextEdit richTextEditRef;
+    protected bool readOnly;
+    protected string contentAsHtml;
+    protected string contentAsDeltaJson;
+    protected string contentAsText;
+    protected string savedContent;
+    protected string? content;
+    CMSContact Contact;
 
     string? plainTextContent;
     string? context;
 
     private Modal? modalRef;
 
-    private Task? ShowModal()
+    private async Task<Task?> ShowModal()
     {
+        Contact = await contactService.GetContact();
+        context = Contact.Context;
+        await richTextEditRef.SetHtmlAsync(context);
         return modalRef?.Show();
     }
 
@@ -60,18 +91,28 @@
         return modalRef?.Hide();
     }
 
-    private async Task UpdateTitle()
+    private async Task UpdateContact()
     {
-        plainTextContent = richTextEditRef?.contentAsText;
-        content = richTextEditRef?.contentAsHtml;
-        await contactService.UpdateContact(ConObj);
+        content = await richTextEditRef.GetHtmlAsync();
+        CMSContact contact = new()
+        {
+            Id = Contact.Id,
+            Context = content
+        };
+        await contactService.UpdateContact(contact);
         modalRef?.Hide();
     }
 
-    
-
-    protected override async Task OnInitializedAsync()
+    public async Task OnContentChanged()
     {
-        ConObj = await contactService.GetContact();
+        contentAsHtml = await richTextEditRef.GetHtmlAsync();
+        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
+        contentAsText = await richTextEditRef.GetTextAsync();
     }
-}
+
+    public async Task OnSave()
+    {
+        savedContent = await richTextEditRef.GetHtmlAsync();
+        await richTextEditRef.ClearAsync();
+    }
+    }

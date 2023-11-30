@@ -30,9 +30,13 @@ namespace BlazorApp.Services.CMS
             return newTreatment;
         }
 
-        public async Task<CMSTreatment> UpdateTreatment(CMSTreatment updatedTreatment) 
-        { 
-            _treatments.Update(updatedTreatment);
+        public async Task<CMSTreatment> UpdateTreatment(CMSTreatment updatedTreatment)
+        {
+            CMSTreatment treatment = await _treatments.FindAsync(updatedTreatment.Id);
+            treatment.Name = updatedTreatment.Name != null ? updatedTreatment.Name : treatment.Name;
+            treatment.Description = updatedTreatment.Description != null ? updatedTreatment.Description : treatment.Description;
+            treatment.ImageLink = updatedTreatment.ImageLink != null ? updatedTreatment.ImageLink : treatment.ImageLink;
+            _treatments.Update(treatment);
             await _ctx.SaveChangesAsync();
 
             return updatedTreatment;

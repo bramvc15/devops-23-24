@@ -32,9 +32,34 @@
                     <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
                 </Field>
                 <Field>
-                    <FieldLabel>Beschrijving</FieldLabel>
-                    @* rich *@
-                    <RichTextEditor @ref="richTextEditRef" />
+                    <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
+                                  PlaceHolder="Beschrijving..." ReadOnly="@readOnly" SubmitOnEnter="false"
+                                  EnterPressed="@OnSave" ToolbarPosition="Placement.Bottom">
+                        <Editor>@newDescription</Editor>
+                        <Toolbar>
+                            <RichTextEditToolbarGroup>
+                                <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
+                                <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
+                                <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
+                                    <RichTextEditToolbarSelectItem Value="small" />
+                                    <RichTextEditToolbarSelectItem Selected />
+                                    <RichTextEditToolbarSelectItem Value="large" />
+                                    <RichTextEditToolbarSelectItem Value="huge">Very Big</RichTextEditToolbarSelectItem>
+                                </RichTextEditToolbarSelect>
+                                <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
+                                <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
+                            </RichTextEditToolbarGroup>
+                            <!-- Custom toolbar content -->
+                            <RichTextEditToolbarGroup Float="Float.End">
+                                <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
+                                    <Icon Name="IconName.InfoCircle" />
+                                </Button>
+                                <Button Clicked="@OnSave">
+                                    <Icon Name="IconName.Save" />
+                                </Button>
+                            </RichTextEditToolbarGroup>
+                        </Toolbar>
+                    </RichTextEdit>
                 </Field>
             </ModalBody>
             <ModalFooter>
@@ -49,11 +74,18 @@
 </div>
 
 @code {
-    protected RichTextEditor? richTextEditRef;
+    protected new RichTextEdit richTextEditRef;
+    protected bool readOnly;
+    protected string contentAsHtml;
+    protected string contentAsDeltaJson;
+    protected string contentAsText;
+    protected string savedContent;
+
     protected string? content;
     CMSHomeHeader? header;
     int headerId;
     string? newTitle;
+    string? newDescription;
 
     string? plainTextContent;
     string? context;
@@ -70,12 +102,25 @@
         return modalRef?.Hide();
     }
 
+    public async Task OnContentChanged()
+    {
+        contentAsHtml = await richTextEditRef.GetHtmlAsync();
+        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
+        contentAsText = await richTextEditRef.GetTextAsync();
+    }
+
+    public async Task OnSave()
+    {
+        savedContent = await richTextEditRef.GetHtmlAsync();
+        await richTextEditRef.ClearAsync();
+    }
+
     private async Task UpdateTitle()
     {
-        plainTextContent = richTextEditRef?.contentAsText;
-        content = richTextEditRef?.contentAsHtml;
+        content = await richTextEditRef.GetHtmlAsync();
         CMSHomeHeader header = new()
         {
+            Id = homeHeader.Id,
             Title = newTitle,
             Context = content
         };
@@ -88,5 +133,8 @@
     protected override async Task OnInitializedAsync()
     {
         homeHeader = await homeHeaderService.GetHomeHeader();
+        newTitle = homeHeader.Title;
+        newDescription = homeHeader.Context;
+        await richTextEditRef.SetHtmlAsync(newDescription);
     }
 }
