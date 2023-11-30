@@ -35,9 +35,123 @@
   
 }
 
+.form-container {
+    /* border: solid red 3px; */
+}
 
-#box{
+.header1 {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 35px;
+    color: rgb(22, 44, 104);;
+}
 
-    border: 2px solid rgb(30, 222, 165);
-    margin: 20px;
+.header2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 35px;
+    color: rgb(22, 44, 104);
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 300px;
+    padding-top: 30px;
+}
+
+.divide-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.formLabel {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 20px;
+    color: rgb(22, 44, 104);
+}
+
+.label-container {
+    display: flex;
+    flex-direction: rox;
+    margin-bottom: 20px;
+}
+
+.name-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.sendBtn {
+    border-radius: 7px;
+    height: 50px;
+    width: 150px;
+    border: none;
+    background-color: rgb(22, 44, 104);
+    color: azure;
+    font-weight: bold;
+}
+
+.sendBtn:hover {
+    background-color: azure;
+    color: rgb(22, 44, 104);
+    transition: 0.5s;
+    border: solid rgb(22, 44, 104);
+}
+
+.leftie {
+    width: 100%;
+    margin-left: 150px;
+}
+
+.mp {
+    background: transparent !important;
+}
+
+.containerLoc {
+    background-color: #d4e8e4;
+    height: 82vh;
+    padding-bottom: 100px;
+}
+
+.loc-details-con {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    width: 100%;
+}
+
+.loc-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+.loc-details {
+    margin-left: 100px;
+    margin-top: 60px;
+}
+
+p {
+    color: rgb(22, 44, 104);
+    font-size: 1.3rem;
+    margin-bottom: 10px !important;
 }

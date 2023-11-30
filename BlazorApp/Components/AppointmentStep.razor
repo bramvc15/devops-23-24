@@ -1,0 +1,94 @@
+@using BlazorApp.Data
+@using BlazorApp.Services.Core
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@using BlazorApp.Auth
+@using BlazorApp.Components.Modals
+@inject TimeSlotService timeSlotService
+@inject DatabaseContext databaseContext
+@using Shared
+@using BlazorApp.BlazorShared
+
+<button @onclick="() => ChooseDate(DateTime.Now)">Choose Time</button>
+
+<div class="headerBox">
+    <p class="header">3. Kies een tijdslot</p>
+</div>
+<div class="afspraakbox">
+    <div class="temp">
+        <SfCalendar TValue="DateTime?" @bind-Value="@SelectedDate">
+            <CalendarEvents TValue="DateTime?" OnRenderDayCell="CustomDates"></CalendarEvents>
+        </SfCalendar>
+        <button class="butTemp" @onclick="() => ChooseDate(DateTime.Now)">temp</button>
+    </div>
+    <div class="display-date">
+        <span class="example-label">Selected date is: <b>@SelectedValue</b></span>
+    </div>
+</div>
+
+<style>
+    .e-calendar .e-content .e-cell.has-time-slot span.e-day,
+    .e-calendar .e-content .e-cell.no-time-slot span.e-day {
+        background-color: #28a745;
+        border-radius: 50%;
+        border: 2px solid #000;
+        display: inline-block;
+    }
+
+    .e-calendar .e-content .e-cell.has-time-slot span.e-day {
+        background-color: #28a745;
+    }
+
+    .e-calendar .e-content .e-cell.no-time-slot span.e-day {
+        background-color: #dc3545;
+    }
+</style>
+
+
+
+
+
+@code {
+    [Parameter]
+    public EventCallback<DateTime> OnDateChosen { get; set; }
+
+    [Parameter]
+    public IEnumerable<TimeSlotDTO> TimeSlotObj { get; set; }
+
+    public DateTime? SelectedDate { get; set; } = DateTime.Now;
+    public string SelectedValue { get; set; } = DateTime.Now.ToString("M/d/yyyy");
+    public DateTime? CurrentDate { get; set; } = DateTime.Now;
+
+    private async Task ChooseDate(DateTime date)
+    {
+        // Simulate choosing a time
+        await OnDateChosen.InvokeAsync(date);
+    }
+
+    public void CustomDates(RenderDayCellEventArgs args)
+    {
+        if (args == null || args.Date == null || TimeSlotObj == null)
+        {
+            // Handle or log the null case
+            return;
+        }
+
+        var currentDate = args.Date.Date;
+
+        // Check if there is any time slot for the current date
+        bool hasTimeSlot = TimeSlotObj.Any(timeSlot =>
+        timeSlot.DateTime.Date == currentDate.Date);
+
+        if (hasTimeSlot)
+        {
+            args.CellData.ClassList += " has-time-slot"; // Apply a CSS class for dates with a TimeSlot
+        }
+        else
+        {
+            args.CellData.ClassList += " no-time-slot"; // Apply a different CSS class for dates without a TimeSlot
+        }
+    }
+
+
+
+}

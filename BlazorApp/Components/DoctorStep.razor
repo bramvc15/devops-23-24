@@ -1,0 +1,46 @@
+@using BlazorApp.Models
+@using BlazorApp.Services;
+@using BlazorApp.Services.Core
+@inject DoctorService doctorService
+<div class="DoctorStepContainer">
+    
+    <div class="doctorbox">
+        @if (DocObj != null)
+        {
+            @foreach (var doc in DocObj)
+            {
+                @if (doc != null)
+                {
+                                <div class="center">
+                                    <button class="click" @onclick="(e) => SelectDoctor(doc.Id)" >
+                                        <DoctorCard ImageSrc=@doc.ImageLink Name=@doc.Name Specialization=@doc.Specialization />
+                                    </button>
+                                </div>
+                }
+            }
+        }
+        else
+        {
+                <p>DocObj is null.</p>
+        }
+
+    </div>
+</div>
+@code {
+    [Parameter]
+    public EventCallback<int?> OnDoctorSelected { get; set; }
+
+    private async Task SelectDoctor(int? id)
+    {
+        if(id != null)
+        {
+            await OnDoctorSelected.InvokeAsync(id); 
+        }
+    }
+
+    IEnumerable<DoctorDTO>? DocObj;
+    protected override async Task OnInitializedAsync()
+    {
+        DocObj = await doctorService.GetDoctors();
+    }
+}

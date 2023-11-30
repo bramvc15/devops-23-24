@@ -1,0 +1,85 @@
+@page "/afspraak"
+@using BlazorApp.Data
+@using BlazorApp.Services.Core
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inherits ComponentBase
+@inject DoctorService doctorService
+@using Microsoft.AspNetCore.Components.Forms
+@using Shared
+@using BlazorApp.BlazorShared
+
+<PageTitle>Afspraak maken</PageTitle>
+
+<div class="main-container">
+    <div class="title-layout">
+        <h1>Afspraak maken</h1>
+        <a><u>Home</u> > Afspraak maken </a>
+    </div>
+    <div class="treatments" style="display: @(showTreatment ? "block" : "none")">
+        <div class="headerBox">
+            <p class="header">1. Waarvoor wilt u een afspraak maken?</p>
+        </div>
+        <TreatmentStep OnTreatmentSelected="HandleTreatmentSelected" />
+    </div>
+    <div class="doctors" style="display: @(showDoctors ? "block" : "none")">
+        <div class="headerBox">
+            <p class="header">2. Bij wie wens je een afspraak te maken?</p>
+        </div>
+        <DoctorStep OnDoctorSelected="HandleDoctorSelected" />
+    </div>
+    <div class="afspraak-plannen" style="display: @(showAfspraak ? "block" : "none")">
+        <AppointmentStep OnDateChosen="HandleTimeChosen" />
+    </div>
+    <div class="contact-info" style="display: @(showContact ? "block" : "none")">
+        <div class="headerBox">
+            <p class="header">4. Vul uw contactgegevens in</p>
+        </div>
+        <ContactFormStep OnContactSubmitted="HandleClientData" />
+    </div>
+    <div class="succes" style="display: @(showSucces ? "flex" : "none")">
+        <p>Afspraak is succesvol gemaakt!</p>
+        <a href="" class="bck">Ga terug</a>
+    </div>
+</div>
+
+@code {
+
+    private String SelectedTreatment = "";
+    private int? DoctorId = 0;
+
+    private bool showTreatment = true;
+    private bool showDoctors = false;
+    private bool showAfspraak = false;
+    private bool showContact = false;
+    private bool showSucces = false;
+
+    private void HandleTreatmentSelected(string selectedTreatment)
+    {
+        SelectedTreatment = selectedTreatment;
+        showTreatment = !showTreatment;
+        showDoctors = !showDoctors;
+    }
+
+
+    private void HandleDoctorSelected(int? doctorId)
+    {
+        DoctorId = doctorId;
+        showDoctors = !showDoctors;
+        showAfspraak = !showAfspraak;
+    }
+
+    private void HandleTimeChosen()
+    {
+        showAfspraak = !showAfspraak;
+        showContact = !showContact;
+    }
+
+    private async Task HandleClientData()
+    {
+        showContact = !showContact;
+        showSucces = !showSucces;
+    }
+
+
+}

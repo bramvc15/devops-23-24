@@ -1,8 +1,6 @@
-@using BlazorApp.Data
-@using BlazorApp.Services
-@using BlazorApp.Models
-@inject BlogService blogService
+@using BlazorApp.Services.CMS
 @inject DatabaseContext databaseContext
+@inject CMSBlogService blogService
 
 <div>
     <div class="buttons">
@@ -25,8 +23,8 @@
                     <RichTextEditor @ref="richTextEditRef" />
                 </Field>
                 <Field>
-                    <FieldLabel>Image</FieldLabel>
-                    <TextEdit Placeholder="Geef image link..." @bind-Text="newImage" />
+                    <FieldLabel>Afbeelding</FieldLabel>
+                    <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImage" />
                 </Field>
             </ModalBody>
             <ModalFooter>
@@ -35,18 +33,17 @@
             </ModalFooter>
         </ModalContent>
     </Modal>
-    <p>The value of the title field is: @newTitle</p>
-     @plainTextContent <!-- Plain text content -->
+    <p>De waarde van het title field is: @newTitle</p>
+    @plainTextContent <!-- Plain text content -->
 
 </div>
 
 @code {
-
     protected RichTextEditor? richTextEditRef;
     protected string? content;
     string? newTitle;
     string? newImage;
-    string? plainTextContent; 
+    string? plainTextContent;
 
     private Modal? modalRef;
 
@@ -60,21 +57,17 @@
         return modalRef?.Hide();
     }
 
-    private void UpdateTitle()
+    private async Task UpdateTitle()
     {
-
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
-        blogService.AddBlog(newTitle, content, newImage);
-
+        CMSBlog newBlog = new()
+        {
+            Title = newTitle,
+            Text = content,
+            ImageLink = newImage
+        };
+        await blogService.CreateBlog(newBlog);
         modalRef?.Hide();
-    }
-
-
-    IEnumerable<HomeHeader>? HomObj2;
-
-    protected override async Task OnInitializedAsync()
-    {
-        
     }
 }

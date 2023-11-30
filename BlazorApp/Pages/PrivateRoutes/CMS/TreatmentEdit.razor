@@ -1,23 +1,23 @@
 @page "/admin/cms/behandelingen"
 @inherits EditHeaderPopUp
 @using BlazorApp.Data
-@using BlazorApp.Services
-@using BlazorApp.Models
+@using BlazorApp.Services.CMS
 @using BlazorApp.Components.Modals
 @using Microsoft.AspNetCore.Components
 @inject DatabaseContext databaseContext
 @using BlazorApp.Auth
 @inject NavigationManager NavManager
-@inject TreatmentService treatmentService
+@inject CMSTreatmentService treatmentService
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Admin - CMS Behandelingen</PageTitle>
+
 <div class="sidebar">
     <SideNavMenu />
 </div>
 @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
-           BlitzWareAuthService.AuthService.appData.AdminRoleLevel
-           ==
-           BlitzWareAuthService.AuthService.userData.UserSubLevel)
+BlitzWareAuthService.AuthService.appData.AdminRoleLevel
+==
+BlitzWareAuthService.AuthService.userData.UserSubLevel)
 {
     <div class="background-div">
         <div class="overlay">
@@ -28,12 +28,13 @@
 
             <div class="container mt-40">
                 <div class="row ">
-                    @if (TreatmentObj != null)
+                    @if (treatments != null)
                     {
-                        foreach (var treatment in TreatmentObj)
+                        foreach (var treatment in treatments)
                         {
                             <div class="col-md-4 d-flex flex-fill">
-                                <TreatmentCard ImageSrc=@treatment.Image Title=@treatment.Name OnCardClick="( () => ShowModal(treatment.Name) )" />
+                                <TreatmentCard ImageSrc=@treatment.ImageLink Title=@treatment.Name
+                                    OnCardClick="( () => ShowModal(treatment) )" />
                             </div>
                         }
                     }
@@ -55,14 +56,9 @@
                 <Field>
                     <FieldLabel>Beschrijving</FieldLabel>
                     @*<RichTextEditor @ref="richTextEditRef" />*@
-                    <RichTextEdit @ref="richTextEditRef"
-                                  Theme="RichTextEditTheme.Snow"
-                                  ContentChanged="@OnContentChanged"
-                                  PlaceHolder="Beschrijving van de behandeling..."
-                                  ReadOnly="@readOnly"
-                                  SubmitOnEnter="false"
-                                  EnterPressed="@OnSave"
-                                  ToolbarPosition="Placement.Bottom">
+                    <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
+                        PlaceHolder="Beschrijving van de behandeling..." ReadOnly="@readOnly" SubmitOnEnter="false"
+                        EnterPressed="@OnSave" ToolbarPosition="Placement.Bottom">
                         <Editor>@newDescription</Editor>
                         <Toolbar>
                             <RichTextEditToolbarGroup>
@@ -79,15 +75,19 @@
                             </RichTextEditToolbarGroup>
                             <!-- Custom toolbar content -->
                             <RichTextEditToolbarGroup Float="Float.End">
-                                <Button onClick="window.open('https://www.quilljs.com/','quilljs')"><Icon Name="IconName.InfoCircle" /></Button>
-                                <Button Clicked="@OnSave"><Icon Name="IconName.Save" /></Button>
+                                <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
+                                    <Icon Name="IconName.InfoCircle" />
+                                </Button>
+                                <Button Clicked="@OnSave">
+                                    <Icon Name="IconName.Save" />
+                                </Button>
                             </RichTextEditToolbarGroup>
                         </Toolbar>
                     </RichTextEdit>
                 </Field>
                 <Field>
-                    <FieldLabel>Image</FieldLabel>
-                    <TextEdit Placeholder="Geef image link..." @bind-Text="newImage" />
+                    <FieldLabel>Afbeelding</FieldLabel>
+                    <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImage" />
                 </Field>
             </ModalBody>
             <ModalFooter>
@@ -101,7 +101,7 @@ else
 {
     <div class="row justify-content-center align-items-center" style="height: 100vh;">
         <div class="col-md-6">
-            <p>You are not allowed to access this page!</p>
+            <p>U heeft geen toegang tot deze pagina.</p>
         </div>
     </div>
 }
@@ -112,21 +112,21 @@ else
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
-    IEnumerable<Treatment> TreatmentObj;
-    Treatment Treatment;
+    private IEnumerable<CMSTreatment> treatments;
+    private CMSTreatment Treatment;
 
     protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        TreatmentObj = await Task.Run(() => treatmentService.GetContent());
+        treatments = await treatmentService.GetTreatments();
     }
 
-    int id;
+    int? id;
     string? newName;
     string? newDescription;
     string? newImage;
-    protected RichTextEdit richTextEditRef;
+    protected new RichTextEdit richTextEditRef;
     protected bool readOnly;
     protected string contentAsHtml;
     protected string contentAsDeltaJson;
@@ -148,15 +148,14 @@ else
 
     private Modal? modalRef;
 
-    private Task? ShowModal(string name)
+    private async Task<Task?> ShowModal(CMSTreatment treatment)
     {
-        Treatment = treatmentService.GetContentByName(name);
-        id = Treatment.Id;
-        newName = Treatment.Name;
-        newDescription = Treatment.Description;
-        newImage = Treatment.Image;
-        richTextEditRef.SetHtmlAsync(newDescription);
-
+        Treatment = treatment;
+        id = treatment.Id;
+        newName = treatment.Name;
+        newDescription = treatment.Description;
+        newImage = treatment.ImageLink;
+        await richTextEditRef.SetHtmlAsync(newDescription);
         return modalRef?.Show();
     }
 
@@ -168,8 +167,14 @@ else
     private async void UpdateTreatment()
     {
         content = await richTextEditRef.GetHtmlAsync();
-        treatmentService.UpdateTreatment(id, newName, content, newImage);
-
-        HideModal();
+        CMSTreatment treatment = new()
+        {
+            Id = Treatment.Id,
+            Name = newName,
+            Description = content,
+            ImageLink = newImage
+        };
+        await treatmentService.UpdateTreatment(treatment);
+        await HideModal();
     }
 }

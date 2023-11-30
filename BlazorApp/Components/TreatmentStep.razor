@@ -1,0 +1,43 @@
+﻿<!-- TreatmentStep.razor -->
+
+<div class="background-div">
+    <div class="overlay">
+        <div class="container mt-40">
+            <div class="row ">
+                <div class="col-md-4 d-flex flex-fill">
+                    <TreatmentCard ImageSrc="images/ooglidcorrectie.png" Title="Ooglidcorrectie"
+                        OnCardClick="SelectOoglid" />
+                </div>
+                <div class="col-md-4 d-flex flex-fill">
+                    <TreatmentCard ImageSrc="images/cataractoperatie.png" Title="Cataractoperatie"
+                        OnCardClick="SelectCataract" />
+                </div>
+                <div class="col-md-4 d-flex flex-fill">
+                    <TreatmentCard ImageSrc="images/straaloperatie.png" Title="Straaloperatie"
+                        OnCardClick="SelectStraal" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+
+    [Parameter]
+    public EventCallback<string> OnTreatmentSelected { get; set; }
+
+    private async Task SelectOoglid()
+    {
+        // Simulate selecting a treatment
+        await OnTreatmentSelected.InvokeAsync("Ooglidcorrectie");
+    }
+    private async Task SelectCataract()
+    {
+        // Simulate selecting a treatment
+        await OnTreatmentSelected.InvokeAsync("Cataractoperatie");
+    }
+    private async Task SelectStraal()
+    {
+        // Simulate selecting a treatment
+        await OnTreatmentSelected.InvokeAsync("Straaloperatie");
+    }
+}

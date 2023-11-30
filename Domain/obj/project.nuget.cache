@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "VzPtFfuKi1hWUuocRyXu+5lIERmUT6tXS3arInIqzEAtnULF2H67EHUMZI49ZVE0gpwS2B41qWxIsfitrg+Ejg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\user\\OneDrive - Hogeschool Gent\\hogent\\3de jaar\\DevOps Project\\project-oogarts\\devops-23-24-net-g07\\Domain\\Domain.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\user\\OneDrive - Hogeschool Gent\\hogent\\3de jaar\\DevOps Project\\project-oogarts\\devops-23-24-net-g07\\Domain\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+﻿.formbox {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 50px;
+    margin-top: 20px;
+}
+
+.contactbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.btnBox {
+    margin-top: 30px;
+}
+
+.submitBtn {
+    border-radius: 7px;
+    height: 50px;
+    width: 150px;
+    border: none;
+    background-color: rgb(22, 44, 104);
+    color: azure;
+    font-weight: bold;
+}
+
+.submitBtn:hover {
+    background-color: azure;
+    color: rgb(22, 44, 104);
+    transition: 0.5s;
+    border: solid rgb(22, 44, 104);
+}
+
+.formLabel {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 20px;
+    color: rgb(22, 44, 104);
+}

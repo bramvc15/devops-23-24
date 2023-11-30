@@ -1,0 +1,191 @@
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+@using System.Text.Json
+@using BlazorApp.Data
+@using BlazorApp.Services.CMS
+@using Shared
+@using BlazorApp.Controllers
+@inject DatabaseContext databaseContext
+@using Microsoft.AspNetCore.Components
+@inject CMSChatbotService ChatbotService
+@inject NavigationManager NavigationManager
+@using BlazorApp.Auth
+@inject NavigationManager NavManager
+
+<div class="chatbox-div @(visible ? "visible" : "")">
+    <div class="chatbox-header d-flex justify-content-between" @onclick="() => ToggleChatbox()" data-test-id="chatbox-header">
+        <div class="d-flex">
+            🗨
+            <div class="title">
+                Chat
+            </div>
+        </div>
+        <div class="d-flex">
+            @if (restartable)
+            {
+                <div class="restart" @onclick="ClearChat" @onclick:stopPropagation="true">
+                    ↻
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            {
+                <div class="gear ml-3" @onclick="NavigateToSettingsPage" @onclick:stopPropagation="true">
+                    ⛭
+                </div>
+            }
+        </div>
+    </div>
+    <div data-test-id="chatbox-content" class="chatbox-content @(visible ? "visible" : "")">
+        @foreach (var message in chatMessages)
+        {
+            if (message.Message != null)
+            {
+                <ChatMessage Message="@message.Message" Type="@message.Type"
+                    ChatbotQuestionsList="@message.ChatbotQuestionsList" QuestionClicked="HandleQuestionClicked" />
+            }
+            else
+            {
+                <ChatMessage Type="@message.Type" ChatbotQuestionsList="@message.ChatbotQuestionsList"
+                    QuestionClicked="HandleQuestionClicked" />
+            }
+        }
+        @if (typing)
+        {
+            <ChatMessage Type="bot" Image="images/typingAnimation.gif" />
+        }
+    </div>
+</div>
+
+
+
+@code {
+    public bool visible = false;
+    public bool restartable = false;
+    public bool typing = false;
+    private List<ChatMessage> chatMessages = new List<ChatMessage>();
+
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; } = default!;
+
+    IEnumerable<CMSChatBotQuestion>? ChatbotQuestionsList;
+
+    public class ChatMessage
+    {
+        public string? Message { get; set; }
+        public string Type { get; set; }
+        public IEnumerable<CMSChatBotQuestion>? ChatbotQuestionsList { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetChatbotQuestions();
+        await StartChat();
+    }
+
+    private async Task GetChatbotQuestions()
+    {
+        try
+        {
+            ChatbotQuestionsList = await ChatbotService.GetContent();
+            ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+
+    protected async Task GetFollowUpQuestions(CMSChatBotQuestion question)
+    {
+        //IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
+        List<CMSChatBotQuestion>? followUpQuestions = question.FollowUpQuestions;
+        await ShowQuestions(followUpQuestions);
+    }
+
+    void ToggleChatbox()
+    {
+        visible = !visible;
+    }
+
+    private async Task ClearChat()
+    {
+        while (chatMessages.Last().Type != "questions")
+        {
+            await Task.Delay(100);
+        }
+
+        await StartChat();
+    }
+
+    private async Task StartChat()
+    {
+        restartable = false;
+        await GetChatbotQuestions();
+        chatMessages.Clear();
+        chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", Type = "bot" });
+        StateHasChanged(); // Maybe deleting?
+        await ShowQuestions(ChatbotQuestionsList);
+    }
+
+    private async Task HandleQuestionClicked(CMSChatBotQuestion question)
+    {
+        restartable = false;
+        await ShowBotResponse(question.Answer);
+
+        ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x != question);
+
+        if (question.FollowUpQuestions == null || question.FollowUpQuestions.Count() > 0)
+        {
+            await GetFollowUpQuestions(question);
+        }
+        else
+        {
+
+            await ShowBotResponse("Hebt u verder nog vragen?");
+            if (ChatbotQuestionsList.Count() == 0)
+            {
+                await GetChatbotQuestions();
+            }
+
+            await ShowQuestions(ChatbotQuestionsList);
+        }
+
+        await JSRuntime.InvokeVoidAsync("scrollToBottom");
+    }
+
+    private async Task TypingDelay()
+    {
+        await Task.Delay(250);
+        typing = true;
+        StateHasChanged();
+        await Task.Delay(980);
+        typing = false;
+        StateHasChanged();
+    }
+
+    private async Task ShowBotResponse(string answer)
+    {
+        await TypingDelay();
+        chatMessages.Add(new ChatMessage { Message = answer, Type = "bot" });
+        StateHasChanged();
+        await JSRuntime.InvokeVoidAsync("scrollToBottom");
+    }
+
+    private async Task ShowQuestions(IEnumerable<CMSChatBotQuestion>? questions)
+    {
+        await Task.Delay(450);
+        chatMessages.Add(new ChatMessage { Message = null, Type = "questions", ChatbotQuestionsList = questions });
+        if (chatMessages.Count() > 4)
+        {
+            restartable = true;
+        }
+        StateHasChanged();
+        // do no call this but
+        // await JSRuntime.InvokeVoidAsync("scrollToBottom");
+    }
+
+    private void NavigateToSettingsPage()
+    {
+        NavigationManager.NavigateTo("/admin/chatbot");
+    }
+}

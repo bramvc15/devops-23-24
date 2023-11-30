@@ -1,146 +1,146 @@
-@page "/Contact"
-@inject ContactService contactService
+@page "/contact"
+@inject CMSContactService contactService
+@inject CMSLocationService locationService
 @using BlazorApp.Data
-@using BlazorApp.Services
+@using BlazorApp.Services.CMS
 @using BlazorApp.Models
 @using BlazorApp.Controllers
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+
 <PageTitle>Contact</PageTitle>
+<div class="page-container">
+    <div class="title-layout">
+        <h1>Contact</h1>
+        <a><u>Home</u> > Contact </a>
+    </div>
+    <div class="container mt-4 mp">
+            <div class="form-container">
+                <h1 class="header1">Stel ons een vraag</h1>
 
 
-    <div class="page-container">
-        <div class="title-layout">
-            <h1>Contact</h1>
-            <a><u>Home</u> > Contact </a>
-        </div>
-        <div class="container mt-4">
-            <div class="row">
-                <!-- Left Column for Text -->
-                <div class="col-md-6">
 
-                    <h2>Onze gegevens</h2>
-                     @if (ConObj != null)
-        {
-            @foreach (var h in ConObj)
-            {
-
-            
-                
-                   @((MarkupString)h.Context)
-            
-            }
-        }
-        else
-        {
-
-            <h1>ERROR</h1>
-        }
-                </div>
-
-                <!-- Right Column for Google Maps -->
-                <div class="col-md-6">
-                    <h1 class="mb-4">Stel ons een vraag</h1>
-                    <form action="submit_form.php" method="post" onsubmit="SubmitForm(); return false;">
-                        <!-- Name and First Name -->
+                    @* <EditForm Model="@Model" OnValidSubmit="@SubmitForm" FormName="ContactForm">
+                        <DataAnnotationsValidator />
+                        <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="box" name="name" placeholder="Naam" required @ref="nameInput">
+                                <InputText @bind-Value="Model.Name" placeholder="Naam"  class="form-control" id="box" />
                             </div>
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="box" name="firstName" placeholder="Voornaam" required @ref="firstNameInput">
+                                <InputText @bind-Value="Model.FirstName" placeholder="Voornaam" class="form-control" id="box" />
                             </div>
                         </div>
 
-                        <!-- Email -->
                         <div class="form-group">
-                            <input type="email" class="form-control"id="box"  name="email" placeholder="email" required @ref="emailInput">
+                            <InputText @bind-Value="Model.Email" placeholder="E-mail" class="form-control" id="box" />
                         </div>
 
-                        <!-- Date of Birth -->
                         <div class="form-group">
-                            <input type="date" class="form-control" id="box"  name="dob" placeholder="Geboortedatum" required @ref="dateInput">
+                            <InputDate @bind-Value="Model.DateOfBirth" placeholder="Geboortedatum" class="form-control" id="box" />
                         </div>
 
-                        <!-- Phone Number -->
                         <div class="form-group">
-                            <input type="tel" class="form-control" id="box"  name="phoneNumber"
-                                pattern="[0-9]{10}" placeholder="gsm" required @ref="telInput">
+                            <InputText @bind-Value="Model.PhoneNumber" placeholder="Telefoonnummer" class="form-control" id="box" />
                         </div>
 
-                        <!-- Message -->
                         <div class="form-group">
-                            <textarea class="form-control" id="box"  name="message" rows="4" placeholder="bericht of vraag" required @ref="msgInput"></textarea>
+                            <InputTextArea rows="4" @bind-Value="Model.Message" placeholder="Bericht of vraag" class="form-control" id="box" />
                         </div>
 
-                        <!-- Submit Button -->
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">verstuur</button>
+                            <button type="submit" class="btn btn-primary" data-test-id="contact-submit-button">verstuur</button>
                         </div>
-                    </form>
+                    </EditForm> *@
 
-
-
-
-
-
-
-                </div>
+                <EditForm Model="@contactData" OnValidSubmit="@SubmitForm">
+                    @* <DataAnnotationsValidator /> *@
+                    <div class="divide-container">
+                        <div class="left">
+                            <div class="name-container">
+                                <div class="box">
+                                    <label class='formLabel'>Voornaam</label>
+                                    <InputText @bind-Value="contactData.Name" placeholder="Naam" type='text'/>
+                                    @* <ValidationMessage For="@(() => contactData.Name)" /> *@
+                                </div>
+                                <div class="box">
+                                    <label class='formLabel'>Naam</label>
+                                    <InputText @bind-Value="contactData.LastName" placeholder="Achternaam" type='text'/>
+                                    @* <ValidationMessage For="@(() => contactData.LastName)" /> *@
+                                </div>
+                            </div>
+                            <div class="name-container">
+                                <div class="box">
+                                    <label class='formLabel'>E-mail</label>
+                                    <InputText @bind-Value="contactData.Email" type='text' placeholder='naam@mail.com' />
+                                    @* <ValidationMessage For="@(() => contactData.Email)" /> *@
+                                </div>
+                                <div class="box">
+                                    <label class='formLabel'>GSM</label>
+                                    <InputText @bind-Value="contactData.Phone" type='text' placeholder='0489561475' />
+                                    @* <ValidationMessage For="@(() => contactData.Phone)" /> *@
+                                </div>                     
+                            </div>
+                            <label class='formLabel'>Geboortedatum</label>
+                            <InputDate @bind-Value="contactData.BirthDate" />
+                        </div>
+                        <div class="right">
+                            <div class="leftie">
+                                <label class='formLabel'>Bericht of vraag</label>
+                            </div>
+                            <InputTextArea @bind-Value="contactData.Message" rows="10" placeholder=". . ."/>
+                            @* <ValidationMessage For="@(() => contactData.Message)" /> *@
+                        </div>
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="sendBtn">Verstuur</button>
+                    </div>
+                </EditForm>
             </div>
         </div>
-
     </div>
+    <div class="containerLoc">
+        <h1 class="header2">Locatie</h1>
+        <div class="loc-details-con">
+            <div class="loc-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d160404.48929096633!2d3.549413672523532!3d51.08409896849969!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c370e1339443ad%3A0x40099ab2f4d5140!2sGent!5e0!3m2!1snl!2sbe!4v1696930185595!5m2!1snl!2sbe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="loc-details">
+                <p>*Straatnaam #*</p>
+                <p>Gent 9000</p>
+                <p>België</p>
+                <p>Parkeren mogelijk: ja</p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
 
 
 @code {
     @using System.Net
-    @using System.Net.Mail
 
-    private ElementReference nameInput;
-    private ElementReference firstNameInput;
-    private ElementReference emailInput;
-    private ElementReference dateInput;
-    private ElementReference telInput;
-    private ElementReference msgInput;
+    CMSContact ConObj;
 
-     IEnumerable<ContactM>? ConObj;
+    private ContactData contactData = new ContactData();
     
-      protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        ConObj = await Task.Run(() => contactService.GetContent());
+        ConObj = await contactService.GetContact();
     }
 
-    // Create references for other form fields as needed
-
-    // Define a method to handle the form submission
-    private void SubmitForm()
-    {
-        // Get the values from the form fields
-        var name = nameInput;
-        var firstName = firstNameInput;
-        var email = emailInput.ToString;
-        // Get values from other form fields as needed
-        using (SmtpClient smtpClient = new SmtpClient("your-smtp-server.com"))
+    private async Task SubmitForm()
         {
-            smtpClient.Port = 587;
-            smtpClient.Credentials = new NetworkCredential("your-username", "your-password");
-            smtpClient.EnableSsl = true;
-
-            using (MailMessage mailMessage = new MailMessage("from-email@example.com", "recipient@example.com"))
-            {
-                mailMessage.Subject = "Contact Form Submission";
-                //mailMessage.Body = email;
-
-                try
-                {
-                    smtpClient.Send(mailMessage);
-                    Console.WriteLine("Email sent successfully.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: " + ex.Message);
-                }
-            }
+            Console.WriteLine("test");
         }
-        // Now you can use these values as needed, such as sending them in an email
-    }
+
 }
+
+@* TO DO
+smpt client?
+mail service aanmaken & injecten
+form linken met service *@
 

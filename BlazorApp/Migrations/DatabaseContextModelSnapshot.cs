@@ -22,32 +22,32 @@ namespace BlazorApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BlazorApp.Models.AppointmentTimeSlot", b =>
+            modelBuilder.Entity("Domain.Appointment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("TimeSlot_Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Doctor_Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Duration")
+                    b.Property<string>("Note")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Patient_Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Ref_Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Patient_Id");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppointmentTimeSlots");
+                    b.HasIndex("Ref_Id");
+
+                    b.ToTable("Appointments");
                 });
 
-            modelBuilder.Entity("BlazorApp.Models.Blog", b =>
+            modelBuilder.Entity("Domain.Doctor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,135 @@ namespace BlazorApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Image")
+                    b.Property<string>("Biograph")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Specialization")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Doctors");
+                });
+
+            modelBuilder.Entity("Domain.Patient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BloodType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Patients");
+                });
+
+            modelBuilder.Entity("Domain.ScheduleTimeSlot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppointmentType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Ref_Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Doctor_Id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Ref_Id");
+
+                    b.ToTable("ScheduleTimeSlots");
+                });
+
+            modelBuilder.Entity("Domain.TimeSlot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppointmentType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Ref_Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Doctor_Id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Ref_Id");
+
+                    b.ToTable("TimeSlots");
+                });
+
+            modelBuilder.Entity("Shared.CMSBlog", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<string>("ImageLink")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Text")
@@ -69,42 +197,40 @@ namespace BlazorApp.Migrations
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("BlazorApp.Models.ChatBotQuestion", b =>
+            modelBuilder.Entity("Shared.CMSChatBotQuestion", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Answer")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ChatBotQuestionId")
+                    b.Property<int?>("CMSChatBotQuestionId")
                         .HasColumnType("int");
 
                     b.Property<bool?>("IsFollowUp")
                         .HasColumnType("bit");
 
                     b.Property<string>("Question")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChatBotQuestionId");
+                    b.HasIndex("CMSChatBotQuestionId");
 
                     b.ToTable("ChatBotQuestions");
                 });
 
-            modelBuilder.Entity("BlazorApp.Models.ContactM", b =>
+            modelBuilder.Entity("Shared.CMSContact", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Context")
                         .HasColumnType("nvarchar(max)");
@@ -114,47 +240,13 @@ namespace BlazorApp.Migrations
                     b.ToTable("Contacts");
                 });
 
-            modelBuilder.Entity("BlazorApp.Models.Doctor", b =>
+            modelBuilder.Entity("Shared.CMSHomeHeader", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InfoOpleiding")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InfoOver")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InfoPublicaties")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Specialization")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("BlazorApp.Models.HomeHeader", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Context")
                         .HasColumnType("nvarchar(max)");
@@ -167,13 +259,13 @@ namespace BlazorApp.Migrations
                     b.ToTable("HomeHeaders");
                 });
 
-            modelBuilder.Entity("BlazorApp.Models.LocationM", b =>
+            modelBuilder.Entity("Shared.CMSLocation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Context")
                         .HasColumnType("nvarchar(max)");
@@ -183,65 +275,18 @@ namespace BlazorApp.Migrations
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("BlazorApp.Models.Patient", b =>
+            modelBuilder.Entity("Shared.CMSTreatment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Patients");
-                });
-
-            modelBuilder.Entity("BlazorApp.Models.ScheduleTimeSlot", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Doctor_Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Duration")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ScheduleGroup")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ScheduleTimeSlots");
-                });
-
-            modelBuilder.Entity("BlazorApp.Models.Treatment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImageLink")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -252,14 +297,71 @@ namespace BlazorApp.Migrations
                     b.ToTable("Treatments");
                 });
 
-            modelBuilder.Entity("BlazorApp.Models.ChatBotQuestion", b =>
+            modelBuilder.Entity("Domain.Appointment", b =>
                 {
-                    b.HasOne("BlazorApp.Models.ChatBotQuestion", null)
-                        .WithMany("FollowUpQuestions")
-                        .HasForeignKey("ChatBotQuestionId");
+                    b.HasOne("Domain.TimeSlot", "TimeSlot")
+                        .WithOne("Appointment")
+                        .HasForeignKey("Domain.Appointment", "Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Patient", "Patient")
+                        .WithMany("Appointments")
+                        .HasForeignKey("Ref_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Appointment_Patient");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("TimeSlot");
                 });
 
-            modelBuilder.Entity("BlazorApp.Models.ChatBotQuestion", b =>
+            modelBuilder.Entity("Domain.ScheduleTimeSlot", b =>
+                {
+                    b.HasOne("Domain.Doctor", null)
+                        .WithMany("ScheduleTimeSlots")
+                        .HasForeignKey("Ref_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Doctor_ScheduleTimeSlot");
+                });
+
+            modelBuilder.Entity("Domain.TimeSlot", b =>
+                {
+                    b.HasOne("Domain.Doctor", null)
+                        .WithMany("TimeSlots")
+                        .HasForeignKey("Ref_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Doctor_TimeSlot");
+                });
+
+            modelBuilder.Entity("Shared.CMSChatBotQuestion", b =>
+                {
+                    b.HasOne("Shared.CMSChatBotQuestion", null)
+                        .WithMany("FollowUpQuestions")
+                        .HasForeignKey("CMSChatBotQuestionId");
+                });
+
+            modelBuilder.Entity("Domain.Doctor", b =>
+                {
+                    b.Navigation("ScheduleTimeSlots");
+
+                    b.Navigation("TimeSlots");
+                });
+
+            modelBuilder.Entity("Domain.Patient", b =>
+                {
+                    b.Navigation("Appointments");
+                });
+
+            modelBuilder.Entity("Domain.TimeSlot", b =>
+                {
+                    b.Navigation("Appointment")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shared.CMSChatBotQuestion", b =>
                 {
                     b.Navigation("FollowUpQuestions");
                 });

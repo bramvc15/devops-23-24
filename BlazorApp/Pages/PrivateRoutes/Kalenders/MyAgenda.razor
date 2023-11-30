@@ -1,0 +1,56 @@
+@page "/admin/kalenders/myagenda"
+@using BlazorApp.Auth
+@using BlazorApp.Models
+@using BlazorApp.Components.Modals
+@using BlazorApp.Services
+@inject NavigationManager NavManager
+
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+<div class="admin-container">
+    <div>
+        @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+        {
+            <p>This is a brand new page!</p>
+            <p>This is a brand new page!</p>
+            <p>This is a brand new page!</p>
+            <p>This is a brand new page!</p>
+            <p>This is a brand new page!</p>
+            <p>This is a brand new page!</p>
+            <p>This is a brand new page!</p>
+
+        }
+        else
+        {
+            <p>You are not authorized to access this page. Please log in.</p>
+            <p><a href="/login">Click here to LOGIN.</a></p>
+        }
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    private IEnumerable<TimeSlotDTO> ListOfTimeSlots;
+    private List<ScheduleTimeSlotDTO> MondayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> TuesdayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> WednesdayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> ThursdayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> FridayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> SaturdayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> SundayList = new List<ScheduleTimeSlotDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+        {
+            NavManager.NavigateTo("/login");
+        }
+
+        // ListOfScheduleTimeSlots = await ScheduleTimeSlotService.GetScheduleTimeSlotsByDoctorId(0);
+
+        // Add each time slot to the appropriate list
+
+    }
+}

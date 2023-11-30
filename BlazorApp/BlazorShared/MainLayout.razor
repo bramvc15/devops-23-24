@@ -1,0 +1,35 @@
+﻿@using BlazorApp.Auth;
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+
+<PageTitle>BlazorApp</PageTitle>
+<div>
+        <NavMenu />
+
+    <main>
+        <div >
+           @Body
+           @if(!NavigationManager.Uri.Contains("admin") && !NavigationManager.Uri.Contains("login"))
+           {
+               <Chatbox />
+           }
+        </div>
+    </main>
+
+    <div>
+        @* hier moet de footer komen !!!!!!!!!!!  *@
+        <Footer />
+    </div>
+
+</div>
+
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!BlitzWareAuthService.AuthService.Initialized)
+            BlitzWareAuthService.AuthService.Initialize();
+    }
+}

@@ -19,7 +19,9 @@
 
 	<link href="_content/Blazorise/blazorise.css" rel="stylesheet" />
 	<link href="_content/Blazorise.Bootstrap/blazorise.bootstrap.css" rel="stylesheet" />
-
+    <link href="_content/Syncfusion.Blazor/styles/fabric.css" rel="stylesheet"/>
+    <link href="_content/Syncfusion.Blazor.Themes/bootstrap5.css" rel="stylesheet" />
+    <script src="_content/Syncfusion.Blazor.Core/scripts/syncfusion-blazor.min.js" type="text/javascript"></script>
 </head>
 <body>
     <component type="typeof(App)" render-mode="ServerPrerendered" />
@@ -37,12 +39,6 @@
 
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/TinyMCE.Blazor/tinymce-blazor.js"></script>
-    <script>function scrollToBottom() {
-            var objDiv = document.getElementsByClassName("chatbox-content")[0];
-            objDiv.scrollTo({
-                top: objDiv.scrollHeight,
-                behavior: 'smooth'
-            });
-        }</script>
+    <script src="scripts/scrollToBottom.js"></script>
 </body>
 </html>

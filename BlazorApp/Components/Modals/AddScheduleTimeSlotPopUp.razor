@@ -1,0 +1,175 @@
+@using BlazorApp.Data
+@using BlazorApp.Services.Core
+@using Shared
+@inject ScheduleTimeSlotService scheduleTimeSlotService
+@inject DatabaseContext databaseContext
+
+<div>
+    <div class="buttons">
+        <Button Color="Color.Primary" Clicked="@ShowModal">Voeg tijdslot toe</Button>
+    </div>
+    <Modal @ref="modalRef">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>Tijdslot toevoegen</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <h6 style="color:red">@exceptionMessage</h6>
+            <Validations @ref="validations" Mode="ValidationMode.Auto">
+                <ModalBody>
+                    <Validation Validator="ValidateAppointmentType">
+                        <Field>
+                            <FieldLabel>Afspraak type</FieldLabel>
+                            <Select TValue="int" @bind-SelectedValue="@selectedAppointmentType">
+                                <SelectItem Value="0">-- Maak een keuze --</SelectItem>
+                                <SelectItem Value="15">@Enums.AppointmentType.Consultation</SelectItem>
+                                <SelectItem Value="60">@Enums.AppointmentType.Operation</SelectItem>
+                            </Select>
+                        </Field>
+                    </Validation>
+                    <Validation Validator="ValidateDayOfWeek">
+                        <Field>
+                            <FieldLabel>Dag van de week</FieldLabel>
+                            <Select TValue="int" @bind-SelectedValue="@selectedDayOfWeek">
+                                <SelectItem Value="0">-- Maak een keuze --</SelectItem>
+                                <SelectItem Value="1">Maandag</SelectItem>
+                                <SelectItem Value="2">Dinsdag</SelectItem>
+                                <SelectItem Value="3">Woensdag</SelectItem>
+                                <SelectItem Value="4">Donderdag</SelectItem>
+                                <SelectItem Value="5">Vrijdag</SelectItem>
+                                <SelectItem Value="6">Zaterdag</SelectItem>
+                                <SelectItem Value="7">Zondag</SelectItem>
+                            </Select>
+                        </Field>
+                    </Validation>
+                    <Validation Validator="ValidateStartEndTime">
+                        <Field>
+                            <FieldLabel>Start uur</FieldLabel>
+                            <TimeEdit TValue="TimeSpan?" @bind-Time="@selectedStartTime" />
+                        </Field>
+                        <Field>
+                            <FieldLabel>Eind uur</FieldLabel>
+                            <TimeEdit TValue="TimeSpan?" @bind-Time="@selectedEndTime" />
+                        </Field>
+                        <h6 style="color:red">@errorMessage</h6>
+                    </Validation>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                    <Button Color="Color.Primary" Clicked="@CreateScheduleTimeSlot">Maak</Button>
+                </ModalFooter>
+            </Validations>
+        </ModalContent>
+    </Modal>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<ScheduleTimeSlotDTO> OnScheduleTimeSlotAdded { get; set; }
+
+    private Validations validations;
+    private string errorMessage = string.Empty;
+    private string exceptionMessage = string.Empty;
+
+    private TimeSpan? selectedStartTime = new TimeSpan(12, 0, 0);
+    private TimeSpan? selectedEndTime = new TimeSpan(12, 0, 0);
+    private int selectedAppointmentType;
+    private int selectedDayOfWeek;
+
+    private Modal? modalRef;
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    void ValidateAppointmentType(ValidatorEventArgs e)
+    {
+        if (selectedAppointmentType == 0)
+            e.Status = ValidationStatus.Error;
+        else
+            e.Status = ValidationStatus.Success;
+    }
+
+    void ValidateDayOfWeek(ValidatorEventArgs e)
+    {
+        if (selectedDayOfWeek == 0)
+            e.Status = ValidationStatus.Error;
+        else
+            e.Status = ValidationStatus.Success;
+    }
+
+    void ValidateStartEndTime(ValidatorEventArgs e)
+    {
+        if (selectedEndTime < selectedStartTime)
+        {
+            e.Status = ValidationStatus.Error;
+            errorMessage = "Het eind uur kan niet voor het begin uur liggen!";
+        }
+        else if (selectedEndTime == selectedStartTime)
+        {
+            e.Status = ValidationStatus.Error;
+            errorMessage = "Het eind uur kan niet gelijk zijn aan het begin uur!";
+        }
+        else
+        {
+            e.Status = ValidationStatus.Success;
+            errorMessage = string.Empty;
+        }
+    }
+
+    private async Task CreateScheduleTimeSlot()
+    {
+        exceptionMessage = string.Empty;
+        if (await validations.ValidateAll())
+        {
+            var appointmentType = selectedAppointmentType == 15 ? Enums.AppointmentType.Consultation : Enums.AppointmentType.Operation;
+
+            DayOfWeek dayOfWeek;
+            if (selectedDayOfWeek == 1)
+                dayOfWeek = DayOfWeek.Monday;
+            else if (selectedDayOfWeek == 2)
+                dayOfWeek = DayOfWeek.Tuesday;
+            else if (selectedDayOfWeek == 3)
+                dayOfWeek = DayOfWeek.Wednesday;
+            else if (selectedDayOfWeek == 4)
+                dayOfWeek = DayOfWeek.Thursday;
+            else if (selectedDayOfWeek == 5)
+                dayOfWeek = DayOfWeek.Friday;
+            else if (selectedDayOfWeek == 6)
+                dayOfWeek = DayOfWeek.Saturday;
+            else
+                dayOfWeek = DayOfWeek.Sunday;
+
+            DateTime dateTime = DateTime.MinValue + (selectedStartTime ?? TimeSpan.Zero);
+
+            var duration = selectedEndTime!.Value - selectedStartTime!.Value;
+            int durationInMinutes = (int)duration.TotalMinutes;
+
+            try
+            {
+                ScheduleTimeSlotDTO slot = new()
+                {
+                    AppointmentType = appointmentType,
+                    DayOfWeek = dayOfWeek,
+                    DateTime = dateTime,
+                    Duration = durationInMinutes
+                };
+                ScheduleTimeSlotDTO newSlot = await scheduleTimeSlotService.CreateScheduleTimeSlot(slot, 0);
+                await OnScheduleTimeSlotAdded.InvokeAsync(newSlot);
+            }
+            catch (InvalidOperationException ex)
+            {
+                exceptionMessage = ex.Message;
+                return;
+            }
+
+            modalRef?.Hide();
+        }
+    }
+}

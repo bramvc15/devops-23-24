@@ -1,18 +1,13 @@
 <div>
     <div class="field grid-container">
-
         <h2 class="grid-title">@Title</h2>
         <p class="grid-text">@((MarkupString)@Text)</p>
-        <a href="/ActuaDetail/@Id" class="grid-hyper">lees verder</a>
-        <img class="grid-image" src=@Image>
+        <a href="/actua-detail/@Id" class="grid-hyper">lees verder</a>
+        <img class="grid-image" src="@Image">
     </div>
-
 </div>
 
-
 @code {
-
-
     [Parameter]
     public string Title { get; set; }
 
@@ -23,5 +18,6 @@
     public string Image { get; set; }
 
     [Parameter]
-    public int Id { get; set; }
+    public int? Id { get; set; }
+
 }

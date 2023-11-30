@@ -1,7 +1,13 @@
-﻿@page "/DoctorDetail/{DoctorId:int}"
+﻿@page "/docter-info/{DoctorId:int}"
 @using BlazorApp.Models
 @using BlazorApp.Services
+@using BlazorApp.Services.Core
+@using Shared
+@using BlazorApp.BlazorShared
 @inject DoctorService doctorService
+
+<PageTitle>Doctor Detail</PageTitle>
+
 <div class="content-container">
 
     <div class="content-wrapper">
@@ -9,14 +15,14 @@
         {
             <div class="imageBackWrapper">
                 <div class="exitDoctorDetail">
-                    <NavLink class="backArrownav" href="/onsTeam">
+                    <NavLink class="backArrownav" href="/ons-team">
                         <p class="lastText">
-                            <img src="images/BackArrow.png" class="backArrow" alt="icon" />
+                            <img src="images/BackArrow.png" class="backArrow" alt="icon" data-test-id="doctordetail-back-button" />
                         </p>
                     </NavLink>
                 </div>
                 <div class="info-Img-wrapper">
-                    <img src=@Doctor.Image alt="Doctor Image" class="doctor-image" />
+                    <img src=@Doctor.ImageLink alt="Doctor Image" class="doctor-image" />
                 </div>
             </div>
 
@@ -31,14 +37,26 @@
                 </ul>
                 <div id="biography">
                     <h3>Over @Doctor.Name</h3>
-                    <p>@Doctor.InfoOver</p>
+                    <h4>Geslacht</h4>
+                    <p>@Doctor.Gender</p>
+                    <p>@Doctor.Specialization</p>
                     <h3>Opleiding en Training</h3>
-                    <p>@Doctor.InfoOpleiding</p>
-                    <h3>Publicaties en Erkenningen</h3>
-                    <p>@Doctor.InfoPublicaties</p>
+                    <p>@Doctor.Biograph</p>
+                    
                 </div>
 
             </div>
+        } else {
+                <div class="imageBackWrapper">
+                <div class="exitDoctorDetail">
+                    <NavLink class="backArrownav" href="/ons-team">
+                        <p class="lastText">
+                            <img src="images/BackArrow.png" class="backArrow" alt="icon" data-test-id="doctordetail-back-button" />
+                        </p>
+                    </NavLink>
+                </div>
+                </div>
+            <p>Sorry, deze dokter werd niet gevonden.</p>
         }
     </div>
 </div>
@@ -46,10 +64,10 @@
 @code {
     [Parameter]
     public int DoctorId { get; set; }
-    Doctor? Doctor;
+    DoctorDTO? Doctor;
 
     protected override async Task OnInitializedAsync()
     {
-        Doctor = await Task.Run(() => doctorService.GetDoctorById(DoctorId));
+        Doctor = await doctorService.GetDoctor(DoctorId);
     }
 }

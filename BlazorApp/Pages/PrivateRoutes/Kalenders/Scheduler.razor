@@ -1,0 +1,193 @@
+@page "/admin/kalenders/scheduler"
+@using BlazorApp.Auth
+@using BlazorApp.Components.Modals
+@using BlazorApp.Services.Core
+@inject NavigationManager NavManager
+@inject ScheduleTimeSlotService ScheduleTimeSlotService
+
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+<div class="admin container">
+    <div>
+        @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+        {
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <h1>Scheduler</h1>
+            <p>Here you can view and edit your schedule.</p>
+            <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" />
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Saturday</th>
+                        <th>Sunday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var listsByDay = new Dictionary<string, List<ScheduleTimeSlotDTO>>
+                        {
+                            { "Monday", MondayList },
+                            { "Tuesday", TuesdayList },
+                            { "Wednesday", WednesdayList },
+                            { "Thursday", ThursdayList },
+                            { "Friday", FridayList },
+                            { "Saturday", SaturdayList },
+                            { "Sunday", SundayList }
+                        };
+
+                        int maxCount = listsByDay.Values.Max(list => list.Count);
+
+                        for (int i = 0; i < maxCount; i++)
+                        {
+                            <tr>
+                                @foreach (var day in listsByDay.Keys)
+                                {
+                                    var list = listsByDay[day];
+                                    <td>
+                                        @if (i < list.Count)
+                                        {
+                                            var endTime = list[i].DateTime;
+                                            <div>
+                                                <p>@list[i].AppointmentType</p>
+                                                <p>@($"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}")</p>
+                                                <p>@($"{list[i].Duration} minutes")</p>
+                                                <br />
+                                                <Button Color="Color.Primary" @onclick="() => EditScheduleTimeSlot(list[i].Id)">
+                                                    <Icon Name="IconName.Edit" />
+                                                </Button>
+                                                <Button Color="Color.Danger" @onclick="() => DeleteScheduleTimeSlot(list[i].Id)">
+                                                    <Icon Name="IconName.Delete" />
+                                                </Button>
+                                            </div>
+                                        }
+
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>You are not authorized to access this page. Please log in.</p>
+            <p><a href="/login">Click here to LOGIN.</a></p>
+        }
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    private IEnumerable<ScheduleTimeSlotDTO> ListOfScheduleTimeSlots;
+    private List<ScheduleTimeSlotDTO> MondayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> TuesdayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> WednesdayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> ThursdayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> FridayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> SaturdayList = new List<ScheduleTimeSlotDTO>();
+    private List<ScheduleTimeSlotDTO> SundayList = new List<ScheduleTimeSlotDTO>();
+
+    private async Task HandleScheduleTimeSlotAdded(ScheduleTimeSlotDTO newSlot)
+    {
+        ListOfScheduleTimeSlots.Append(newSlot);
+
+        switch (newSlot.DayOfWeek)
+        {
+            case DayOfWeek.Monday:
+                MondayList.Add(newSlot);
+                break;
+            case DayOfWeek.Tuesday:
+                TuesdayList.Add(newSlot);
+                break;
+            case DayOfWeek.Wednesday:
+                WednesdayList.Add(newSlot);
+                break;
+            case DayOfWeek.Thursday:
+                ThursdayList.Add(newSlot);
+                break;
+            case DayOfWeek.Friday:
+                FridayList.Add(newSlot);
+                break;
+            case DayOfWeek.Saturday:
+                SaturdayList.Add(newSlot);
+                break;
+            case DayOfWeek.Sunday:
+                SundayList.Add(newSlot);
+                break;
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task EditScheduleTimeSlot(int? id)
+    {
+        Console.WriteLine($"Edit button clicked for ScheduleTimeSlot with Id: {id}");
+    }
+
+    private async Task DeleteScheduleTimeSlot(int? id)
+    {
+        Console.WriteLine($"Delete button clicked for ScheduleTimeSlot with Id: {id}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+        {
+            NavManager.NavigateTo("/login");
+        }
+
+        DoctorDTO doc = new()
+        {
+            Id = 2,
+            Biograph = "aa",
+            Gender = Enums.Gender.Other,
+            ImageLink = "aa",
+            IsAvailable = true,
+            Name = "aa",
+            Specialization = "aa"
+        };
+        ListOfScheduleTimeSlots = await ScheduleTimeSlotService.GetScheduleTimeSlots(doc);
+
+        // Add each time slot to the appropriate list
+        foreach (ScheduleTimeSlotDTO scheduleTimeSlot in ListOfScheduleTimeSlots)
+        {
+            switch (scheduleTimeSlot.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    MondayList.Add(scheduleTimeSlot);
+                    break;
+                case DayOfWeek.Tuesday:
+                    TuesdayList.Add(scheduleTimeSlot);
+                    break;
+                case DayOfWeek.Wednesday:
+                    WednesdayList.Add(scheduleTimeSlot);
+                    break;
+                case DayOfWeek.Thursday:
+                    ThursdayList.Add(scheduleTimeSlot);
+                    break;
+                case DayOfWeek.Friday:
+                    FridayList.Add(scheduleTimeSlot);
+                    break;
+                case DayOfWeek.Saturday:
+                    SaturdayList.Add(scheduleTimeSlot);
+                    break;
+                case DayOfWeek.Sunday:
+                    SundayList.Add(scheduleTimeSlot);
+                    break;
+            }
+        }
+
+    }
+}

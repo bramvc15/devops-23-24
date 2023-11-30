@@ -2,10 +2,9 @@
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @using System.Text.Json.Serialization;
-@using BlazorApp.Services
-@using BlazorApp.Models
+@using BlazorApp.Services.CMS
 @using BlazorApp.Controllers
-@inject HomeHeaderService homeHeaderService
+@inject CMSHomeHeaderService homeHeaderService
 @inject DatabaseContext databaseContext
 
 <div>
@@ -13,24 +12,12 @@
         <Button Color="Color.Primary" Clicked="@ShowModal">Wijzig</Button>
     </div>
     <div>
-        @if (HomObj2 != null)
-        {
-            @foreach (var h in HomObj2)
-            {
+        @if (homeHeader != null) {
+            <h1>@homeHeader.Title</h1>
 
-                <h1>@h.Title</h1>
-                
-                   @((MarkupString)h.Context)
-            
-            }
-        }
-        else
-        {
-
-            <h1>title</h1>
-            <p>
-                context
-            </p>
+            @((MarkupString)homeHeader.Context!)
+        } else {
+            <p>Loading...</p>
         }
     </div>
     <Modal @ref="modalRef">
@@ -45,9 +32,34 @@
                     <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
                 </Field>
                 <Field>
-                    <FieldLabel>Beschrijving</FieldLabel>
-                    @* rich *@
-                    <RichTextEditor @ref="richTextEditRef" />
+                    <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
+                                  PlaceHolder="Beschrijving..." ReadOnly="@readOnly" SubmitOnEnter="false"
+                                  EnterPressed="@OnSave" ToolbarPosition="Placement.Bottom">
+                        <Editor>@newDescription</Editor>
+                        <Toolbar>
+                            <RichTextEditToolbarGroup>
+                                <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
+                                <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
+                                <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
+                                    <RichTextEditToolbarSelectItem Value="small" />
+                                    <RichTextEditToolbarSelectItem Selected />
+                                    <RichTextEditToolbarSelectItem Value="large" />
+                                    <RichTextEditToolbarSelectItem Value="huge">Very Big</RichTextEditToolbarSelectItem>
+                                </RichTextEditToolbarSelect>
+                                <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
+                                <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
+                            </RichTextEditToolbarGroup>
+                            <!-- Custom toolbar content -->
+                            <RichTextEditToolbarGroup Float="Float.End">
+                                <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
+                                    <Icon Name="IconName.InfoCircle" />
+                                </Button>
+                                <Button Clicked="@OnSave">
+                                    <Icon Name="IconName.Save" />
+                                </Button>
+                            </RichTextEditToolbarGroup>
+                        </Toolbar>
+                    </RichTextEdit>
                 </Field>
             </ModalBody>
             <ModalFooter>
@@ -56,20 +68,26 @@
             </ModalFooter>
         </ModalContent>
     </Modal>
-    <p>The value of the title field is: @newTitle</p>
-     @plainTextContent <!-- Plain text content -->
+    <p>De waarde van het title field is: @newTitle</p>
+    @plainTextContent <!-- Plain text content -->
 
 </div>
 
 @code {
+    protected new RichTextEdit richTextEditRef;
+    protected bool readOnly;
+    protected string contentAsHtml;
+    protected string contentAsDeltaJson;
+    protected string contentAsText;
+    protected string savedContent;
 
-    protected RichTextEditor? richTextEditRef;
     protected string? content;
-    HomeHeader? header;
-    int headerId; 
+    CMSHomeHeader? header;
+    int headerId;
     string? newTitle;
+    string? newDescription;
 
-    string? plainTextContent; 
+    string? plainTextContent;
     string? context;
 
     private Modal? modalRef;
@@ -84,21 +102,39 @@
         return modalRef?.Hide();
     }
 
-    private void UpdateTitle()
+    public async Task OnContentChanged()
     {
+        contentAsHtml = await richTextEditRef.GetHtmlAsync();
+        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
+        contentAsText = await richTextEditRef.GetTextAsync();
+    }
 
-        plainTextContent = richTextEditRef?.contentAsText;
-        content = richTextEditRef?.contentAsHtml;
-        homeHeaderService.UpdateHeaderTitle(newTitle , content);
+    public async Task OnSave()
+    {
+        savedContent = await richTextEditRef.GetHtmlAsync();
+        await richTextEditRef.ClearAsync();
+    }
 
+    private async Task UpdateTitle()
+    {
+        content = await richTextEditRef.GetHtmlAsync();
+        CMSHomeHeader header = new()
+        {
+            Id = homeHeader.Id,
+            Title = newTitle,
+            Context = content
+        };
+        await homeHeaderService.UpdateHomeHeader(header);
         modalRef?.Hide();
     }
 
-
-    IEnumerable<HomeHeader>? HomObj2;
+    CMSHomeHeader? homeHeader;
 
     protected override async Task OnInitializedAsync()
     {
-        HomObj2 = await Task.Run(() => homeHeaderService.GetContent());
+        homeHeader = await homeHeaderService.GetHomeHeader();
+        newTitle = homeHeader.Title;
+        newDescription = homeHeader.Context;
+        await richTextEditRef.SetHtmlAsync(newDescription);
     }
 }

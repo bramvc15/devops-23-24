@@ -9,6 +9,7 @@ namespace BlazorApp.Auth
         private static readonly IConfiguration config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .AddEnvironmentVariables()
+            .AddUserSecrets<BlitzWareAuthService>()
             .Build();
 
         public BlitzWareAuthService()

@@ -1,0 +1,37 @@
+.DoctorStepContainer {
+  text-align: center;
+
+  align-content: center;
+}
+
+.doctorbox {
+  display: flex;
+  justify-content: center; /* Center the items horizontally */
+  flex-wrap: wrap;
+  max-width: 70%;
+  margin-right: 15%;
+  margin-left: 15%;
+}
+
+.center {
+  flex: 1 0 calc(25% - 20px); /* 25% to fit four items in one row, subtracting margin */
+  margin: 10px; /* Adjust the margin to control space between items */
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+}
+
+/* Additional styling for DoctorCard */
+.DoctorCard {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: box-shadow 0.3s ease; /* Add a smooth transition effect */
+}
+
+.center:hover .DoctorCard {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow on hover */
+}
+
+.click {
+  border: none;
+  background-color: transparent;
+}
