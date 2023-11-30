@@ -3,11 +3,7 @@
 @using BlazorApp.Services.Core
 @inject DoctorService doctorService
 <div class="DoctorStepContainer">
-    <h3>DoctorStep</h3>
-
-    <div class="headerBox">
-        <p class="header">2. Bij wie wens je een afspraak te maken?</p>
-    </div>
+    
     <div class="doctorbox">
         @if (DocObj != null)
         {
@@ -16,7 +12,7 @@
                 @if (doc != null)
                 {
                                 <div class="center">
-                                    <button @onclick="(e) => SelectDoctor(doc.Id)">
+                                    <button class="click" @onclick="(e) => SelectDoctor(doc.Id)" >
                                         <DoctorCard ImageSrc=@doc.ImageLink Name=@doc.Name Specialization=@doc.Specialization />
                                     </button>
                                 </div>

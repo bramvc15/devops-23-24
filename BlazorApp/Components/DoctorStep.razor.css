@@ -21,7 +21,6 @@
 
 /* Additional styling for DoctorCard */
 .DoctorCard {
-  border: 1px solid #ddd; /* Add a border to the doctor card */
   padding: 10px;
   border-radius: 8px;
   background-color: #fff;
@@ -30,4 +29,9 @@
 
 .center:hover .DoctorCard {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow on hover */
+}
+
+.click {
+  border: none;
+  background-color: transparent;
 }
