@@ -129,15 +129,15 @@
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
-    
-    CMSContact? contact;
-    CMSLocation? location;
+
+    CMSContact contact;
+    CMSLocation location;
 
     public ContactModel? Model { get; set; }
-    
-      protected override async Task OnInitializedAsync()
+
+    protected override async Task OnInitializedAsync()
     {
-        
+
         Model = new ContactModel();
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
@@ -165,7 +165,7 @@
 
     private void SubmitForm()
     {
-    
+
     }
 
 }

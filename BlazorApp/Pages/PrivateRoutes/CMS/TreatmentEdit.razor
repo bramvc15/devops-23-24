@@ -112,8 +112,8 @@ else
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
-    IEnumerable<CMSTreatment> treatments;
-    CMSTreatment Treatment;
+    private IEnumerable<CMSTreatment> treatments;
+    private CMSTreatment Treatment;
 
     protected override async Task OnInitializedAsync()
     {
@@ -150,6 +150,7 @@ else
 
     private async Task<Task?> ShowModal(CMSTreatment treatment)
     {
+        Treatment = treatment;
         id = treatment.Id;
         newName = treatment.Name;
         newDescription = treatment.Description;
@@ -168,6 +169,7 @@ else
         content = await richTextEditRef.GetHtmlAsync();
         CMSTreatment treatment = new()
         {
+            Id = Treatment.Id,
             Name = newName,
             Description = content,
             ImageLink = newImage

@@ -163,7 +163,7 @@ namespace BlazorApp.Data
             #region Location
             var location = new CMSLocation
             {
-                Context = "Ergens in GENT, best via de E40 binnen rijden"
+                Context = "Onze vestiging is gelegen in 9040 Gent, op de Antwerpsesteenweg 1022."
 
             };
             #endregion
@@ -171,7 +171,7 @@ namespace BlazorApp.Data
             #region Contact
             var contact = new CMSContact
             {
-                Context = "wij zijn mensen en geen ALiens ookal zijn we oogartsen"
+                Context = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus turpis nunc, ut euismod nisi molestie rhoncus. Donec id mattis nibh. Pellentesque et laoreet odio. Cras vehicula aliquam molestie. Mauris vestibulum elit posuere pellentesque aliquet. In ut ipsum et dolor lacinia interdum convallis a tortor. Donec ut sodales nisi, eget porttitor nisi. Suspendisse bibendum neque in nisi facilisis, ac efficitur velit euismod. Curabitur tempus ut arcu tristique blandit. Cras tincidunt scelerisque justo, quis malesuada urna ultrices id. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean vehicula justo interdum mauris fringilla vulputate."
 
             };
             #endregion

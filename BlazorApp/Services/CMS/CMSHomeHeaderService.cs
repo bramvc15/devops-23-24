@@ -24,10 +24,13 @@ namespace BlazorApp.Services.CMS
 
         public async Task<CMSHomeHeader> UpdateHomeHeader(CMSHomeHeader homeHeader)
         {
-            _homeHeaders.Update(homeHeader);
+            CMSHomeHeader header = await _homeHeaders.FindAsync(homeHeader.Id);
+            header.Title = homeHeader.Title != null ? homeHeader.Title : header.Title;
+            header.Context = homeHeader.Context != null ? homeHeader.Context : header.Context;
+            _homeHeaders.Update(header);
             await _ctx.SaveChangesAsync();
 
-            return homeHeader; 
+            return header; 
         }
     }
 }

@@ -24,7 +24,9 @@ namespace BlazorApp.Services.CMS
 
         public async Task<CMSLocation> UpdateLocation(CMSLocation newLocation)
         {
-            _locations.Update(newLocation);
+            CMSLocation loc = await _locations.FindAsync(newLocation.Id);
+            loc.Context = newLocation.Context != null ? newLocation.Context : loc.Context;
+            _locations.Update(loc);
             await _ctx.SaveChangesAsync();
 
             return newLocation;
