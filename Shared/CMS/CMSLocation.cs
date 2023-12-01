@@ -1,4 +1,4 @@
-namespace Shared;
+namespace Shared.CMS;
 
 public class CMSLocation
 {

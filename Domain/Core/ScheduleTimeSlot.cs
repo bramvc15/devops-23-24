@@ -1,4 +1,5 @@
-﻿namespace Domain;
+﻿using Shared.Enums;
+namespace Domain;
 
 public class ScheduleTimeSlot : Entity
 {

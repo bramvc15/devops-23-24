@@ -1,5 +1,5 @@
-using Enums;
-namespace Shared;
+using Shared.Enums;
+namespace Shared.DTO;
 
 public class DoctorDTO
 {

@@ -1,6 +1,7 @@
 using BlazorApp.Data;
 using Microsoft.EntityFrameworkCore;
-using Shared;
+using Shared.DTO;
+using Shared.Enums;
 using Domain;
 
 namespace Services.Core
@@ -25,7 +26,7 @@ namespace Services.Core
                 var scheduleTimeSlotDTOs = doctorEntity.ScheduleTimeSlots.Select(s => new ScheduleTimeSlotDTO
                 {
                     Id = s.Id,
-                    AppointmentType = (Enums.AppointmentType) s.AppointmentType,
+                    AppointmentType = (AppointmentType) s.AppointmentType,
                     DateTime = s.DateTime,
                     Duration = s.Duration,
                     DayOfWeek = s.DayOfWeek,
@@ -45,7 +46,7 @@ namespace Services.Core
                 .Include(d => d.ScheduleTimeSlots)
                 .FirstOrDefaultAsync(d => d.Id == docId);
 
-            var newDomainSTS = new ScheduleTimeSlot((Domain.AppointmentType)newSTS.AppointmentType, newSTS.DateTime, newSTS.Duration, newSTS.DayOfWeek);
+            var newDomainSTS = new ScheduleTimeSlot((AppointmentType)newSTS.AppointmentType, newSTS.DateTime, newSTS.Duration, newSTS.DayOfWeek);
 
             if (doctorEntity != null)
             {
@@ -56,7 +57,7 @@ namespace Services.Core
 
                     response.Duration = newDomainSTS.Duration;
                     response.DayOfWeek = newDomainSTS.DayOfWeek;
-                    response.AppointmentType = (Enums.AppointmentType)newDomainSTS.AppointmentType;
+                    response.AppointmentType = (AppointmentType)newDomainSTS.AppointmentType;
                     response.DateTime = newDomainSTS.DateTime;
                     response.Id = newDomainSTS.Id;
                 }
@@ -77,7 +78,7 @@ namespace Services.Core
         {
             ScheduleTimeSlotDTO response = new ScheduleTimeSlotDTO();
 
-            ScheduleTimeSlot updatedDomainSTS = new ScheduleTimeSlot((Domain.AppointmentType) updatedSTS.AppointmentType, updatedSTS.DateTime, updatedSTS.Duration, updatedSTS.DayOfWeek);
+            ScheduleTimeSlot updatedDomainSTS = new ScheduleTimeSlot((AppointmentType) updatedSTS.AppointmentType, updatedSTS.DateTime, updatedSTS.Duration, updatedSTS.DayOfWeek);
 
             var doctorEntity = await _DBContext.Doctors
                 .Include(d => d.ScheduleTimeSlots)
@@ -102,7 +103,7 @@ namespace Services.Core
                         response.Id = scheduleTimeSlotToUpdate.Id;
                         response.Duration = scheduleTimeSlotToUpdate.Duration;
                         response.DayOfWeek = scheduleTimeSlotToUpdate.DayOfWeek;
-                        response.AppointmentType = (Enums.AppointmentType) scheduleTimeSlotToUpdate.AppointmentType;
+                        response.AppointmentType = (AppointmentType) scheduleTimeSlotToUpdate.AppointmentType;
                         response.DateTime = scheduleTimeSlotToUpdate.DateTime;
                     }
                     else

@@ -1,4 +1,5 @@
 using Ardalis.GuardClauses;
+using Shared.Enums;
 using System.Text.RegularExpressions;
 
 namespace Domain;

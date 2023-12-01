@@ -32,7 +32,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Lander\\Documents\\HoGent\\3de Jaar\\DevOps\\devops-23-24-net-g07\\Shared\\Shared.csproj": {
+                "projectPath": "C:\\Users\\Lander\\Documents\\HoGent\\3de Jaar\\DevOps\\devops-23-24-net-g07\\Shared\\Shared.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

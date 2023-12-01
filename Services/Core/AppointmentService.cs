@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using BlazorApp.Data;
-using Shared;
+using Shared.DTO;
+using Shared.Enums;
 using Domain;
 
 namespace Services.Core
@@ -34,8 +35,8 @@ namespace Services.Core
                         Email = a.Patient.Email,
                         PhoneNumber = a.Patient.PhoneNumber,
                         DateOfBirth = a.Patient.DateOfBirth,
-                        Gender = (Enums.Gender) a.Patient.Gender,
-                        BloodType = (Enums.BloodType) a.Patient.BloodType,
+                        Gender = (Gender) a.Patient.Gender,
+                        BloodType = (BloodType) a.Patient.BloodType,
                     }
                 });
 

@@ -1,5 +1,6 @@
 using Domain;
-using Shared;
+using Shared.DTO;
+using Shared.CMS;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Data

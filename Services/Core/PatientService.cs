@@ -1,6 +1,7 @@
 using BlazorApp.Data;
 using Microsoft.EntityFrameworkCore;
-using Shared;
+using Shared.Enums;
+using Shared.DTO;
 using Domain;
 
 namespace Services.Core
@@ -29,8 +30,8 @@ namespace Services.Core
                     Email = patient.Email,
                     PhoneNumber = patient.PhoneNumber,
                     DateOfBirth = patient.DateOfBirth,
-                    Gender = (Enums.Gender) patient.Gender,
-                    BloodType = (Enums.BloodType) patient.BloodType,
+                    Gender = (Gender) patient.Gender,
+                    BloodType = (BloodType) patient.BloodType,
                 };
 
                 response.Add(convertedPatient);
@@ -45,7 +46,7 @@ namespace Services.Core
 
             try
             {
-                Patient newDomainPatient = new Patient(patient.Name, patient.Email, patient.PhoneNumber, patient.DateOfBirth, (Domain.Gender) patient.Gender, (Domain.BloodType) patient.BloodType);
+                Patient newDomainPatient = new Patient(patient.Name, patient.Email, patient.PhoneNumber, patient.DateOfBirth, (Gender) patient.Gender, (BloodType) patient.BloodType);
 
                 _DBContext.Patients.Add(newDomainPatient);
                 await _DBContext.SaveChangesAsync();
@@ -55,8 +56,8 @@ namespace Services.Core
                 response.Email = newDomainPatient.Email;
                 response.PhoneNumber = newDomainPatient.PhoneNumber;
                 response.DateOfBirth = newDomainPatient.DateOfBirth;
-                response.Gender = (Enums.Gender) newDomainPatient.Gender;
-                response.BloodType = (Enums.BloodType) newDomainPatient.BloodType;
+                response.Gender = (Gender) newDomainPatient.Gender;
+                response.BloodType = (BloodType) newDomainPatient.BloodType;
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
@@ -74,7 +75,7 @@ namespace Services.Core
 
                 if (existingPatient != null)
                 {
-                    existingPatient.UpdatePatient(patient.Name, patient.Email, patient.PhoneNumber, patient.DateOfBirth, (Domain.Gender) patient.Gender, (Domain.BloodType) patient.BloodType);
+                    existingPatient.UpdatePatient(patient.Name, patient.Email, patient.PhoneNumber, patient.DateOfBirth, (Gender) patient.Gender, (BloodType) patient.BloodType);
                     await _DBContext.SaveChangesAsync();
 
                     response = new PatientDTO 
@@ -84,8 +85,8 @@ namespace Services.Core
                         Email = existingPatient.Email,
                         PhoneNumber = existingPatient.PhoneNumber,
                         DateOfBirth = existingPatient.DateOfBirth,
-                        Gender = (Enums.Gender) existingPatient.Gender,
-                        BloodType = (Enums.BloodType) existingPatient.BloodType,
+                        Gender = (Gender) existingPatient.Gender,
+                        BloodType = (BloodType) existingPatient.BloodType,
                     };
                 }
                 else

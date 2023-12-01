@@ -1,6 +1,7 @@
 using BlazorApp.Data;
 using Microsoft.EntityFrameworkCore;
-using Shared;
+using Shared.DTO;
+using Shared.Enums;
 using Domain;
 
 namespace Services.Core
@@ -30,7 +31,7 @@ namespace Services.Core
                     Id = doctor.Id,
                     Name = doctor.Name,
                     Specialization = doctor.Specialization,
-                    Gender = (Enums.Gender) doctor.Gender,
+                    Gender = (Gender) doctor.Gender,
                     Biograph = doctor.Biograph,
                     IsAvailable = doctor.IsAvailable,
                     ImageLink = doctor.ImageLink,
@@ -51,7 +52,7 @@ namespace Services.Core
                 Biograph = doctor.Biograph,
                 IsAvailable = doctor.IsAvailable,
                 ImageLink = doctor.ImageLink,
-                Gender = (Enums.Gender)doctor.Gender,
+                Gender = (Gender)doctor.Gender,
                 Id = doctor.Id,
                 Name = doctor.Name,
                 Specialization = doctor.Specialization,
@@ -67,7 +68,7 @@ namespace Services.Core
 
             try
             {
-                Doctor newDomainDoctor = new Doctor(newDoctor.Name, newDoctor.Specialization, (Domain.Gender) newDoctor.Gender, newDoctor.Biograph);
+                Doctor newDomainDoctor = new Doctor(newDoctor.Name, newDoctor.Specialization, (Gender) newDoctor.Gender, newDoctor.Biograph);
 
                 _doctors.Add(newDomainDoctor);
                 await _DBContext.SaveChangesAsync();
@@ -75,7 +76,7 @@ namespace Services.Core
                 response.Id = newDomainDoctor.Id;
                 response.Name = newDomainDoctor.Name;
                 response.Specialization = newDomainDoctor.Specialization;
-                response.Gender = (Enums.Gender) newDomainDoctor.Gender;
+                response.Gender = (Gender) newDomainDoctor.Gender;
                 response.Biograph = newDomainDoctor.Biograph;
                 response.IsAvailable = newDomainDoctor.IsAvailable;
                 response.ImageLink = newDomainDoctor.ImageLink;
@@ -97,7 +98,7 @@ namespace Services.Core
 
                 if (existingDoctor != null)
                 {
-                    existingDoctor.UpdateDoctor(updatedDoctor.Name, updatedDoctor.Specialization, (Domain.Gender)updatedDoctor.Gender, updatedDoctor.Biograph, updatedDoctor.IsAvailable, updatedDoctor.ImageLink);
+                    existingDoctor.UpdateDoctor(updatedDoctor.Name, updatedDoctor.Specialization, (Gender)updatedDoctor.Gender, updatedDoctor.Biograph, updatedDoctor.IsAvailable, updatedDoctor.ImageLink);
 
                     await _DBContext.SaveChangesAsync();
 
@@ -106,7 +107,7 @@ namespace Services.Core
                         Id = existingDoctor.Id,
                         Name = existingDoctor.Name,
                         Specialization = existingDoctor.Specialization,
-                        Gender = (Enums.Gender)existingDoctor.Gender,
+                        Gender = (Gender)existingDoctor.Gender,
                         Biograph = existingDoctor.Biograph,
                         IsAvailable = existingDoctor.IsAvailable,
                         ImageLink = existingDoctor.ImageLink,

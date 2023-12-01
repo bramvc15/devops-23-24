@@ -1,6 +1,7 @@
 ﻿using BlazorApp.Data;
 using Microsoft.EntityFrameworkCore;
-using Shared;
+using Shared.DTO;
+using Shared.Enums;
 using Domain;
 using Azure;
 
@@ -29,7 +30,7 @@ namespace Services.Core
                 var timeSlotDTOs = doctorEntity.TimeSlots.Select(ts => new TimeSlotDTO
                 {
                     Id = ts.Id,
-                    AppointmentType = (Enums.AppointmentType)ts.AppointmentType,
+                    AppointmentType = (AppointmentType)ts.AppointmentType,
                     DateTime = ts.DateTime,
                     Duration = ts.Duration,
                     AppointmentDTO = ts.Appointment != null ? new AppointmentDTO
@@ -44,8 +45,8 @@ namespace Services.Core
                             Email = ts.Appointment.Patient.Email,
                             PhoneNumber = ts.Appointment.Patient.PhoneNumber,
                             DateOfBirth = ts.Appointment.Patient.DateOfBirth,
-                            Gender = (Enums.Gender)ts.Appointment.Patient.Gender,
-                            BloodType = (Enums.BloodType)ts.Appointment.Patient.BloodType,
+                            Gender = (Gender)ts.Appointment.Patient.Gender,
+                            BloodType = (BloodType)ts.Appointment.Patient.BloodType,
                         }
                     } : null
                 });
@@ -68,7 +69,7 @@ namespace Services.Core
                 .Include(d => d.TimeSlots)
                 .FirstOrDefaultAsync(d => d.Id == docId);
 
-            var newDomainTS = new TimeSlot((Domain.AppointmentType)timeSlot.AppointmentType, timeSlot.DateTime, timeSlot.Duration);
+            var newDomainTS = new TimeSlot((AppointmentType)timeSlot.AppointmentType, timeSlot.DateTime, timeSlot.Duration);
 
             if (doctorEntity != null)
             {
@@ -78,7 +79,7 @@ namespace Services.Core
                     await _DBContext.SaveChangesAsync();
 
                     response.Duration = newDomainTS.Duration;
-                    response.AppointmentType = (Enums.AppointmentType)newDomainTS.AppointmentType;
+                    response.AppointmentType = (AppointmentType)newDomainTS.AppointmentType;
                     response.DateTime = newDomainTS.DateTime;
                     response.Id = newDomainTS.Id;
                 }
@@ -99,7 +100,7 @@ namespace Services.Core
         {
             TimeSlotDTO response = new TimeSlotDTO();
 
-            TimeSlot updatedDomainTimeSlot = new TimeSlot((Domain.AppointmentType)updatedTimeSlot.AppointmentType, updatedTimeSlot.DateTime, updatedTimeSlot.Duration);
+            TimeSlot updatedDomainTimeSlot = new TimeSlot((AppointmentType)updatedTimeSlot.AppointmentType, updatedTimeSlot.DateTime, updatedTimeSlot.Duration);
 
             var doctorEntity = await _DBContext.Doctors
                 .Include(d => d.TimeSlots)
@@ -125,7 +126,7 @@ namespace Services.Core
 
                         response.Id = timeSlotToUpdate.Id;
                         response.Duration = timeSlotToUpdate.Duration;
-                        response.AppointmentType = (Enums.AppointmentType)timeSlotToUpdate.AppointmentType;
+                        response.AppointmentType = (AppointmentType)timeSlotToUpdate.AppointmentType;
                         response.DateTime = timeSlotToUpdate.DateTime;
                         response.AppointmentDTO = timeSlotToUpdate.Appointment != null ? new AppointmentDTO
                         {
@@ -139,8 +140,8 @@ namespace Services.Core
                                 Email = timeSlotToUpdate.Appointment.Patient.Email,
                                 PhoneNumber = timeSlotToUpdate.Appointment.Patient.PhoneNumber,
                                 DateOfBirth = timeSlotToUpdate.Appointment.Patient.DateOfBirth,
-                                Gender = (Enums.Gender)timeSlotToUpdate.Appointment.Patient.Gender,
-                                BloodType = (Enums.BloodType)timeSlotToUpdate.Appointment.Patient.BloodType,
+                                Gender = (Gender)timeSlotToUpdate.Appointment.Patient.Gender,
+                                BloodType = (BloodType)timeSlotToUpdate.Appointment.Patient.BloodType,
                             }
                         } : null;
 

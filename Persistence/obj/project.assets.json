@@ -19,7 +19,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "Ardalis.GuardClauses": "4.2.0"
+          "Ardalis.GuardClauses": "4.2.0",
+          "Shared": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Domain.dll": {}

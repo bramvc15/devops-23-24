@@ -1,7 +1,7 @@
 using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
-using Shared;
+using Shared.CMS;
 
 namespace Services.CMS
 {

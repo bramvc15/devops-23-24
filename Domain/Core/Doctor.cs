@@ -1,4 +1,5 @@
 using Ardalis.GuardClauses;
+using Shared.Enums;
 
 namespace Domain;
 

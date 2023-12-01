@@ -1,4 +1,4 @@
-namespace Shared;
+namespace Shared.DTO;
 
 public class AppointmentDTO
 {
