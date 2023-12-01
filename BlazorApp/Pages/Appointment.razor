@@ -4,9 +4,12 @@
 @using BlazorApp.Models
 @using BlazorApp.Controllers
 @inherits ComponentBase
+@inject AppointmentService appointmentService
 @inject DoctorService doctorService
+@inject PatientService patientService
 @using Microsoft.AspNetCore.Components.Forms
 @using Shared
+@using Enums
 @using BlazorApp.BlazorShared
 
 <PageTitle>Afspraak maken</PageTitle>
@@ -16,17 +19,17 @@
         <h1>Afspraak maken</h1>
         <a><u>Home</u> > Afspraak maken </a>
     </div>
+    @* <div class="treatments" style="display: @(showTreatment ? "block" : "none")">
+        <div class="headerBox">
+            <p class="header">1. Waarvoor wilt u een afspraak maken?</p>
+        </div>
+        <TreatmentStep OnTreatmentSelected="HandleTreatmentSelected" />
+    </div> *@
     <div class="doctors" style="display: @(showDoctors ? "block" : "none")">
         <div class="headerBox">
             <p class="header">2. Bij wie wens je een afspraak te maken?</p>
         </div>
         <DoctorStep OnDoctorSelected="HandleDoctorSelected" />
-    </div>
-    <div class="treatments" style="display: @(showTreatment ? "block" : "none")">
-        <div class="headerBox">
-            <p class="header">1. Waarvoor wilt u een afspraak maken?</p>
-        </div>
-        <TreatmentStep OnTreatmentSelected="HandleTreatmentSelected" />
     </div>
     <div class="afspraak-plannen" style="display: @(showAfspraak ? "block" : "none")">
         <AppointmentStep OnDateChosen="HandleTimeChosen" />
@@ -75,11 +78,20 @@
         showContact = !showContact;
     }
 
-    private async Task HandleClientData()
+    private async Task HandleClientData(PatientDTO patient)
     {
         showContact = !showContact;
         showSucces = !showSucces;
+        
+        await MakeAppointment(patient);
     }
 
+    private async Task MakeAppointment(PatientDTO patient)
+    {
+        PatientDTO createdPatient = await patientService.CreatePatient(patient);
+
+        int patientId = createdPatient.Id ?? 0;
+        await appointmentService.CreateAppointment(1, patientId, "reden", "note");
+    }
 
 }

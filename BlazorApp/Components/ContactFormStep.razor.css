@@ -1,6 +1,6 @@
 ﻿.formbox {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 50% 50%;
     gap: 50px;
     margin-top: 20px;
 }

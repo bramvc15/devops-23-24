@@ -1,6 +1,6 @@
 ﻿@using BlazorApp.Services
 @using BlazorApp.Models
-
+@using Enums
 
 <EditForm Model="@clientData" OnValidSubmit="@SubmitClientData">
     <DataAnnotationsValidator />
@@ -38,15 +38,6 @@
                     <ValidationMessage For="@(() => clientData.BirthDate)" />
                 </div>
             </div>
-            <div class="coll">
-                <div class="la">
-                    <label class='formLabel' for="Reason">Reden voor consultatie</label>
-                </div>
-                <div class='formInput'>
-                    <InputTextArea id="Reason" @bind-Value="clientData.Reason" type='text' placeholder='Reden voor consultatie' />
-                    <ValidationMessage For="@(() => clientData.Reason)" />
-                </div>
-            </div>
         </div>
         <div class="btnBox">
             <button type="submit" class="submitBtn">Verzenden</button>
@@ -55,14 +46,24 @@
 </EditForm>
 @code {
     [Parameter]
-    public EventCallback<ClientData> OnContactSubmitted { get; set; }
+    public EventCallback<PatientDTO> OnContactSubmitted { get; set; }
 
     private ClientData clientData = new ClientData();
 
 
     private async Task SubmitClientData()
     {
-        OnContactSubmitted.InvokeAsync(clientData);
-        Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.BirthDate);
+        PatientDTO patientDTO = new PatientDTO {
+            Name = clientData.Name,
+            Email = clientData.Email,
+            PhoneNumber = clientData.Phone,
+            DateOfBirth = clientData.BirthDate,
+            Gender = Gender.Male, // placeholder
+            BloodType = BloodType.APositive // placeholder
+        };
+        
+        Console.WriteLine(patientDTO.Name + " " + patientDTO.Email + " " + patientDTO.PhoneNumber + " " + patientDTO.DateOfBirth);
+        OnContactSubmitted.InvokeAsync(patientDTO);
+        //Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.BirthDate);
     }
 }
