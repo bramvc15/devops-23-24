@@ -31,9 +31,11 @@
         </div>
         <DoctorStep OnDoctorSelected="HandleDoctorSelected" />
     </div>
-    <div class="afspraak-plannen" style="display: @(showAfspraak ? "block" : "none")">
-        <AppointmentStep OnDateChosen="HandleTimeChosen" />
-    </div>
+    @if(SelectedDoctor != null) {
+        <div class="afspraak-plannen" style="display: @(showAfspraak ? "block" : "none")">
+            <AppointmentStep OnDateChosen="HandleTimeChosen" Doctor=SelectedDoctor />
+        </div>
+    }
     <div class="contact-info" style="display: @(showContact ? "block" : "none")">
         <div class="headerBox">
             <p class="header">4. Vul uw contactgegevens in</p>
@@ -49,7 +51,7 @@
 @code {
 
     private String SelectedTreatment = "";
-    private int? DoctorId = 0;
+    private DoctorDTO SelectedDoctor;
 
     private bool showDoctors = true;
     private bool showTreatment = false;
@@ -65,9 +67,10 @@
     }
 
 
-    private void HandleDoctorSelected(int? doctorId)
+    private async Task HandleDoctorSelected(int? doctorId)
     {
-        DoctorId = doctorId;
+        SelectedDoctor = await doctorService.GetDoctor(doctorId ?? 0);
+
         showDoctors = !showDoctors;
         showAfspraak = !showAfspraak;
     }

@@ -16,6 +16,7 @@
 </div>
 <div class="afspraakbox">
     <div class="temp">
+        <b>Selected Doctor is: @Doctor.Name</b>
         <SfCalendar TValue="DateTime?" @bind-Value="@SelectedDate">
             <CalendarEvents TValue="DateTime?" OnRenderDayCell="CustomDates"></CalendarEvents>
         </SfCalendar>
@@ -54,6 +55,9 @@
 
     [Parameter]
     public IEnumerable<TimeSlotDTO> TimeSlotObj { get; set; }
+
+    [Parameter]
+    public DoctorDTO Doctor { get; set; }
 
     public DateTime? SelectedDate { get; set; } = DateTime.Now;
     public string SelectedValue { get; set; } = DateTime.Now.ToString("M/d/yyyy");
