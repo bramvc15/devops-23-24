@@ -1,120 +1,64 @@
+using Ardalis.GuardClauses;
 using System.Text.RegularExpressions;
 
 namespace Domain;
 
 public class Patient : Entity
 {
-    #region Fields
-    private string _name;
-    private string _email;
-    private string _phoneNumber;
-    private DateTime _dateOfBirth;
-    private Gender _gender;
-    private BloodType _bloodType;
-    private readonly List<Appointment> _appointments = new();
-    #endregion
-
     #region Properties
+    private string name;
+    private string email;
+    private string phoneNumber;
+    private DateTime dateOfBirth;
+    private Gender gender;
+    private BloodType bloodType;
+
     public string Name {
-        get 
-        {
-            return _name;
-        }
-        private set
-        {
-            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Name cannot be empty"); 
-            _name = value;
-        }
+        get => name;
+        private set => name = Guard.Against.NullOrWhiteSpace(value, nameof(Name));
     }
     public string Email {
-        get 
-        {
-            return _email;
-        }
+        get => email;
         private set
-        { 
-            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Email cannot be empty");
-
+        {
             if (!IsValidEmail(value))
             {
                 throw new ArgumentException("Invalid email format");
             }
 
-            _email = value;
+            email = Guard.Against.NullOrWhiteSpace(value, nameof(Email));
         }
     }
     public string PhoneNumber {
-        get 
-        {
-            return _phoneNumber;
-        }
+        get => phoneNumber;
         private set
-        { 
-            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Phone number cannot be empty");
-
+        {
             if (!IsValidPhoneNumber(value))
             {
-                throw new ArgumentException("Invalid phone number format");
+                throw new ArgumentException("Invalid phonenumber format");
             }
-
-            _phoneNumber = value;
+            
+            phoneNumber = Guard.Against.NullOrWhiteSpace(value, nameof(PhoneNumber));
         }
     }
-    public DateTime DateOfBirth {
-        get 
-        {
-            return _dateOfBirth;
-        }
-        private set
-        { 
-            if (value == default(DateTime)) throw new ArgumentNullException("Date of birth cannot be empty");
-
-            if (value > DateTime.Now)
-            {
-                throw new ArgumentException("Date of birth cannot be in the future");
-            }
-
-            if (DateTime.Now.Year - value.Year > 150)
-            {
-                throw new ArgumentException("Date of birth is too far in the past");
-            }
-
-            _dateOfBirth = value;
-        }
-    }
-    public Gender Gender
-    {
-        get
-        {
-            return _gender;
-        }
+    public DateTime DateOfBirth { 
+        get => dateOfBirth;
         private set
         {
-            if (!Enum.IsDefined(typeof(Gender), value))
-            {
-                throw new ArgumentException("Invalid Gender value");
-            }
-
-            _gender = value;
+            Guard.Against.Default(value, nameof(DateOfBirth));
+            Guard.Against.OutOfRange(value, nameof(DateOfBirth), DateTime.Now.AddYears(-150), DateTime.Now);
+            dateOfBirth = value;
         }
     }
-    public BloodType BloodType
-    {
-        get
-        {
-            return _bloodType;
-        }
-        private set
-        {
-            if (!Enum.IsDefined(typeof(BloodType), value))
-            {
-                throw new ArgumentException("Invalid BloodType value");
-            }
-
-            _bloodType = value;
-        }
+    public Gender Gender {
+        get => gender;
+        private set => gender = Guard.Against.EnumOutOfRange(value, nameof(Gender));
     }
-    public List<Appointment> Appointments { get { return _appointments; } }
+    public BloodType BloodType { 
+        get => bloodType;
+        private set => bloodType = Guard.Against.EnumOutOfRange(value, nameof(BloodType));
+    }
+    public List<Appointment> Appointments { get; set; }
     #endregion
 
     #region Constructors
@@ -122,64 +66,16 @@ public class Patient : Entity
     private Patient() { }
 
     public Patient(string name, string email, string phoneNumber, DateTime dateOfBirth, Gender gender, BloodType bloodType) {
-        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("Name cannot be empty");
-        _name = name;
-
-        if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException("Email cannot be empty");
-
-        if (!IsValidEmail(email))
-        {
-            throw new ArgumentException("Invalid email format");
-        }
-        _email = email;
-
-        if (string.IsNullOrWhiteSpace(phoneNumber)) throw new ArgumentNullException("Phone number cannot be empty");
-
-        if (!IsValidPhoneNumber(phoneNumber))
-        {
-            throw new ArgumentException("Invalid phone number format");
-        }
-        _phoneNumber = phoneNumber;
-
-        if (dateOfBirth == default(DateTime)) throw new ArgumentNullException("Date of birth cannot be empty");
-
-        if (dateOfBirth > DateTime.Now)
-        {
-            throw new ArgumentException("Date of birth cannot be in the future");
-        }
-
-        if (DateTime.Now.Year - dateOfBirth.Year > 150)
-        {
-            throw new ArgumentException("Date of birth is too far in the past");
-        }
-        _dateOfBirth = dateOfBirth;
-
-        if (!Enum.IsDefined(typeof(Gender), gender))
-        {
-            throw new ArgumentException("Invalid Gender value");
-        }
-        _gender = gender;
-
-        if (!Enum.IsDefined(typeof(BloodType), bloodType))
-        {
-            throw new ArgumentException("Invalid BloodType value");
-        }
-        _bloodType = bloodType;
+        Name = name;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        DateOfBirth = dateOfBirth;
+        Gender = gender;
+        BloodType = bloodType;
     }
     #endregion
 
     #region Methods
-    public IEnumerable<Appointment> GetAppointments()
-    {
-        return _appointments;
-    }
-
-    public void MakeAppointment(string reason, string note, Doctor doctor, TimeSlot timeSlot)
-    {
-        Appointment appointment = doctor.GetTimeSlots().FirstOrDefault(timeSlot).CreateAppointment(this, reason, note);
-        _appointments.Add(appointment);
-    }
-
     public void UpdatePatient(string name, string email, string phoneNumber, DateTime dateOfBirth, Gender gender, BloodType bloodType)
     {
         Name = name;
@@ -188,6 +84,13 @@ public class Patient : Entity
         DateOfBirth = dateOfBirth;
         Gender = gender;
         BloodType = bloodType;
+    }
+
+    public void MakeAppointment(string reason, string note, Doctor doctor, TimeSlot timeSlot)
+    {
+        // TODO bound to change
+        Appointment appointment = doctor.GetTimeSlots().FirstOrDefault(timeSlot).CreateAppointment(this, reason, note);
+        Appointments.Add(appointment);
     }
     #endregion
 
