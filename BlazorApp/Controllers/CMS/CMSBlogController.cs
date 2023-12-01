@@ -1,4 +1,4 @@
-using BlazorApp.Services.CMS;
+using Services.CMS;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
 

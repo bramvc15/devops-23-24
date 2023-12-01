@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using BlazorApp.Services.Core;
+using Services.Core;
 using Shared;
 
 namespace BlazorApp.Controllers.core;

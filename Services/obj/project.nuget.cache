@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "V3fu4vJ1N2TqLis5PaHXfW2bYCzwWnJ0ypEx94xzdVvnEOwT2OEb7Uf7qRg97qicQdCIGUyy1B/U6Z7o4f5TOg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Lander\\Documents\\HoGent\\3de Jaar\\DevOps\\devops-23-24-net-g07\\Services\\Services.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Lander\\.nuget\\packages\\ardalis.guardclauses\\4.2.0\\ardalis.guardclauses.4.2.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -2,7 +2,7 @@ using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
 using Shared;
-using BlazorApp.Services.CMS;
+using Services.CMS;
 using Microsoft.EntityFrameworkCore;
 using static System.Reflection.Metadata.BlobBuilder;
 
