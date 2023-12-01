@@ -1,11 +1,13 @@
 using Ardalis.GuardClauses;
+
 namespace Domain;
 
 public class Appointment : Entity
 {
     #region Properties
-    private string reason = default;
-    public string Reason {
+    private string reason;
+    public string Reason
+    {
         get => reason;
         private set => reason = Guard.Against.NullOrWhiteSpace(value, nameof(Reason));
     }

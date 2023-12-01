@@ -1,219 +1,159 @@
+using Ardalis.GuardClauses;
+
 namespace Domain;
 
 public class Doctor : Entity
 {
-    #region Fields
-    private string _name;
-    private string _specialization;
-    private Gender _gender;
-    private readonly List<TimeSlot> _timeSlots = new();
-    private readonly List<ScheduleTimeSlot> _scheduleTimeSlots = new();
-    #endregion
-
     #region Properties
-    public string Name {
-        get 
-        {
-            return _name;
-        }
-        private set
-        { 
-            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Name cannot be empty"); 
-            _name = value;
-        }
+    private string name;
+    private string specialization;
+    private Gender gender;
+    public string Name
+    {
+        get => name;
+        private set => name = Guard.Against.NullOrWhiteSpace(value, nameof(Name));
     }
-    public string Specialization {
-        get 
-        { 
-            return _specialization;
-        }
-        private set
-        { 
-            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Specialization cannot be empty"); 
-            _specialization = value;
-        }
+    public string Specialization
+    {
+        get => specialization;
+        private set => specialization = Guard.Against.NullOrWhiteSpace(value, nameof(Specialization));
     }
-    public Gender Gender {
-        get
-        {
-            return _gender;
-        }
-        private set
-        {
-            if (!Enum.IsDefined(typeof(Gender), value))
-            {
-                throw new ArgumentException("Invalid gender value");
-            }
-
-            _gender = value;
-        }
+    public Gender Gender
+    {
+        get => gender;
+        private set => Guard.Against.EnumOutOfRange(value, nameof(Gender));
     }
-    public string Biograph { get; private set; } = "This doctor has not written a biograph yet.";
-    public bool IsAvailable { get; private set; } = true;
-    public string ImageLink { get; private set; } = string.Empty;
-    public List<TimeSlot> TimeSlots { get { return _timeSlots; } }
-    public List<ScheduleTimeSlot> ScheduleTimeSlots { get { return _scheduleTimeSlots; } }
+    public string? Biograph { get; private set; }
+    public bool IsAvailable { get; set; } = true;
+    public string ImageLink { get; set; } = string.Empty;
+    public List<ScheduleTimeSlot> ScheduleTimeSlots { get; set; }
+    public List<TimeSlot> TimeSlots { get; set; }
     #endregion
 
     #region Constructors
     // Database Constructor
     private Doctor() { }
 
-    public Doctor(string name, string specialization, Gender gender, string biograph = null) {
-        if (string.IsNullOrEmpty(name))
-        {
-            throw new ArgumentNullException("Name cannot be empty");
-        }
-
-        if (!string.IsNullOrWhiteSpace(biograph)) {
-            Biograph = biograph;
-        }
-        if (string.IsNullOrWhiteSpace(specialization)) {
-            throw new ArgumentNullException("Specialization cannot be empty");
-        }
-
-        if (!Enum.IsDefined(typeof(Gender), gender)) {
-            throw new ArgumentException("Invalid gender value");
-        }
-
-        _name = name;
-        _specialization = specialization;
-        _gender = gender;
-        
+    public Doctor(string name, string specialization, Gender gender, string? biograph = default)
+    {
+        Name = name;
+        Specialization = specialization;
+        Gender = gender;
     }
     #endregion
 
     #region Methods
+    public void UpdateDoctor(string name, string specialization, Gender gender, string? biograph)
+    {
+        Name = name;
+        Specialization = specialization;
+        Gender = gender;
+        Biograph = biograph;
+    }
+
     public void AddScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot)
     {
-        if (IsValidScheduleTimeSlot(scheduleTimeSlot, _scheduleTimeSlots)) {
-            _scheduleTimeSlots.Add(scheduleTimeSlot);
-        } 
+        if (IsValidScheduleTimeSlot(scheduleTimeSlot))
+        {
+            ScheduleTimeSlots.Add(scheduleTimeSlot);
+        }
         else
         {
-            throw new ArgumentException("The given schedule time slot overlaps with a existing schedule time slot");
+            throw new ArgumentException("The given scheduletimeslot overlaps with a existing scheduletimeslot");
         }
-    }
-
-    public IEnumerable<ScheduleTimeSlot> GetScheduleTimeSlots()
-    {
-        return _scheduleTimeSlots;
-    }
-
-    public void UpdateScheduleTimeSlot(ScheduleTimeSlot oldScheduleTimeSlot, ScheduleTimeSlot newScheduleTimeSlot)
-    {
-        if (_scheduleTimeSlots.Contains(oldScheduleTimeSlot))
-        {
-             _scheduleTimeSlots.FirstOrDefault(oldScheduleTimeSlot).UpdateScheduleTimeSlot(newScheduleTimeSlot);
-        }
-        else
-        { 
-            throw new ArgumentException("The schedule time slot does not exist in the schedule.");
-        }
-    }
-
-
-    public void DeleteScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot)
-    {
-        _scheduleTimeSlots.Remove(scheduleTimeSlot);
     }
 
     public void AddTimeSlot(TimeSlot timeSlot)
     {
-        if (IsValidTimeSlot(timeSlot, _timeSlots))
+        if (IsValidTimeSlot(timeSlot))
         {
-            _timeSlots.Add(timeSlot);
+            TimeSlots.Add(timeSlot);
         }
         else
         {
-            throw new ArgumentException("The given schedule time slot overlaps with a existing schedule time slot");
+            throw new ArgumentException("The given timeslot overlaps with a existing scheduletimeslot");
         }
     }
 
-    public IEnumerable<TimeSlot> GetTimeSlots()
+    public void UpdateScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot, DateTime dateTime, int duration, DayOfWeek dayOfWeek)
     {
-        return _timeSlots;
-    }
-
-    public void UpdateTimeSlot(TimeSlot oldTimeSlot, TimeSlot newTimeSlot)
-    {
-        if (_timeSlots.Contains(oldTimeSlot))
+        if (ScheduleTimeSlots.Contains(scheduleTimeSlot))
         {
-             _timeSlots.FirstOrDefault(oldTimeSlot).UpdateTimeSlot(newTimeSlot);
+            ScheduleTimeSlots.Remove(scheduleTimeSlot);
+            scheduleTimeSlot.UpdateScheduleTimeSlot(DateTime dateTime, int duration, DayOfWeek dayOfWeek);
+
+            AddScheduleTimeSlot(scheduleTimeSlot);
         }
         else
-        { 
-            throw new ArgumentException("The time slot does not exist.");
+        {
+            throw new ArgumentException("The scheduletimeslot does not exist in the schedule of this doctor.");
         }
     }
 
-    public void DeleteTimeSlot(TimeSlot timeSlot)
+    public void UpdateTimeSlot(TimeSlot timeSlot, AppointmentType appointmentType, DateTime dateTime, int duration)
     {
-        _timeSlots.Remove(timeSlot);
+        if (TimeSlots.Contains(timeSlot))
+        {
+            TimeSlots.Remove(timeSlot);
+            timeSlot.UpdateTimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration);
+
+            AddTimeSlot(timeSlot);
+        }
+        else
+        {
+            throw new ArgumentException("The timeslot does not exist for this doctor.");
+        }
     }
 
-    public bool IsDoctorAvailable()
+    public void CreateAppointment(Patient patient, TimeSlot timeSlot, string reason, string note)
     {
-        if (IsAvailable) return true;
-        else return false;
+        if (TimeSlots.Contains(timeSlot))
+        {
+            if (IsAvailable == true && timeSlot.Appointment == null)
+            {
+                TimeSlot newTimeSlot = TimeSlots.FirstOrDefault(timeSlot);
+                TimeSlots.Remove(timeSlot);
+
+                newTimeSlot.CreateAppointment(patient, reason, note);
+            }
+            else
+            {
+                throw new ArgumentException("This timeslot is not available.");
+            }
+        }
+        else
+        {
+            throw new ArgumentException("This timeslot does not exist for this doctor.");
+        }
+    }
+
+    public void UpdateAppointment(TimeSlot timeSlot, string reason, string note)
+    {
+        // TODO
+    }
+
+    public void DeleteAppointment(TimeSlot timeSlot)
+    {
+        // TODO
     }
 
     public bool HasAvailableTimeSlots()
     {
-        foreach (var timeSlot in _timeSlots) 
+        foreach (var timeSlot in TimeSlots)
         {
-            if (timeSlot.IsTimeSlotAvailable())
+            if (timeSlot.Appointment == null)
             {
                 return true;
             }
         }
         return false;
     }
-
-    public void CreateAppointmentForPatient(Patient patient, TimeSlot timeSlot, string reason, string note)
-    {
-        if (_timeSlots.Contains(timeSlot))
-        {
-            if (timeSlot.IsTimeSlotAvailable())
-            {
-                timeSlot.CreateAppointment(patient, reason, note);
-            }
-            else
-            {
-                throw new ArgumentException("This time slot is not available.");
-            }
-        }
-        else
-        {
-            throw new ArgumentException("This time slot does not exist.");
-        }
-    }
-
-    public void SetImageLink(string imageLink)
-    {
-        ImageLink = imageLink;
-    }
-
-    public void SetAvailability(bool availability)
-    {
-        IsAvailable = availability;
-    }
-
-    public void UpdateDoctor(string name, string specialization, Gender gender, string biograph, bool isAvailable, string imageLink)
-    {
-        Name = name;
-        Specialization = specialization;
-        Gender = gender;
-        Biograph = biograph;
-        IsAvailable = isAvailable;
-        ImageLink = imageLink;
-    }
     #endregion
 
     #region ValidationMethods
-    private static bool IsValidScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot, List<ScheduleTimeSlot> li)
+    private bool IsValidScheduleTimeSlot(ScheduleTimeSlot scheduleTimeSlot)
     {
-        foreach (var existingSlot in li)
+        foreach (var existingSlot in ScheduleTimeSlots)
         {
             // Check for overlap: new slot start should not be between existing slot's start and end
             if (scheduleTimeSlot.DateTime >= existingSlot.DateTime &&
@@ -232,9 +172,9 @@ public class Doctor : Entity
         return true;
     }
 
-    private static bool IsValidTimeSlot(TimeSlot timeSlot, List<TimeSlot> li)
+    private bool IsValidTimeSlot(TimeSlot timeSlot)
     {
-        foreach (var existingSlot in li)
+        foreach (var existingSlot in TimeSlots)
         {
             // Check for overlap: new slot start should not be between existing slot's start and end
             if (timeSlot.DateTime >= existingSlot.DateTime &&
