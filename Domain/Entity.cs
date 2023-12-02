@@ -3,7 +3,6 @@
 public abstract class Entity
 {
     public int Id { get; init; }
-    public int Ref_Id { get; set; }
 
     protected Entity()
     {
