@@ -38,6 +38,15 @@
                     <ValidationMessage For="@(() => clientData.BirthDate)" />
                 </div>
             </div>
+            <div class="coll">
+                <div class="la">
+                    <label class='formLabel' for="Reason">Reden voor consultatie</label>
+                </div>
+                <div class='formInput'>
+                    <InputTextArea id="Reason" @bind-Value="clientData.Reason" type='text' placeholder='Reden voor consultatie' />
+                    <ValidationMessage For="@(() => clientData.Reason)" />
+                </div>
+            </div>
         </div>
         <div class="btnBox">
             <button type="submit" class="submitBtn">Verzenden</button>
@@ -47,6 +56,9 @@
 @code {
     [Parameter]
     public EventCallback<PatientDTO> OnContactSubmitted { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnReasonSubmitted { get; set; }
 
     private ClientData clientData = new ClientData();
 
@@ -63,6 +75,8 @@
         };
         
         Console.WriteLine(patientDTO.Name + " " + patientDTO.Email + " " + patientDTO.PhoneNumber + " " + patientDTO.DateOfBirth);
+
+        OnReasonSubmitted.InvokeAsync(clientData.Reason);
         OnContactSubmitted.InvokeAsync(patientDTO);
         //Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.BirthDate);
     }

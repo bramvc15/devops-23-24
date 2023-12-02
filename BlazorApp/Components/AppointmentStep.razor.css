@@ -15,6 +15,32 @@
     padding: 10px 0px 10px;
 }
 
+.dateselector-btn {
+    height: 50px;
+    background-color: #93C5BB;
+    color: white;
+    border: 0;
+}
+
+.card {
+    background-color: transparent;
+    border: 0;
+    padding: 2px
+}
+
+.timeslot {
+    height: 50px;
+    background-color: #93C5BB;
+    color: white;
+    border-radius: 10px;
+    border: 0;
+    transition: 300ms ease-in-out;
+}
+
+.timeslot:hover {
+    background-color: rgb(131, 182, 176);
+}
+
 .e-calendar .e-content .e-cell.personal-appointment span.e-day,
 .e-calendar .e-content td:hover.e-cell.personal-appointment span.e-day,
 .e-calendar .e-content td.e-selected.e-focused-date.e-cell.personal-appointment span.e-day {

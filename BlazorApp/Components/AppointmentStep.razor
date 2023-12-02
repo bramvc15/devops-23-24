@@ -9,22 +9,27 @@
 @using Shared
 @using BlazorApp.BlazorShared
 
-<button @onclick="() => ChooseDate(DateTime.Now)">Choose Time</button>
+<div class="afspraakbox container">
+    <div class="dateselector d-flex justify-content-center">
+        <button class="dateselector-btn" @onclick="DecreaseDate">🠜</button>
+        <InputDate @bind-Value="@_selectedDate" @onchange="filterTimeSlots"></InputDate>
+        <button class="dateselector-btn" @onclick="IncreaseDate">🠞</button>
+    </div>
 
-<div class="headerBox">
-    <p class="header">3. Kies een tijdslot</p>
-</div>
-<div class="afspraakbox">
-    <div class="temp">
-        <b>Selected Doctor is: @Doctor.Name</b>
-        <SfCalendar TValue="DateTime?" @bind-Value="@SelectedDate">
-            <CalendarEvents TValue="DateTime?" OnRenderDayCell="CustomDates"></CalendarEvents>
-        </SfCalendar>
-        <button class="butTemp" @onclick="() => ChooseDate(DateTime.Now)">temp</button>
-    </div>
-    <div class="display-date">
-        <span class="example-label">Selected date is: <b>@SelectedValue</b></span>
-    </div>
+
+        <b>Beschikbare tijdslots voor dokter @Doctor.Name op @_selectedDate.ToString("dd/MM/yyyy")</b>
+
+        @if(FilteredTimeSlots != null && FilteredTimeSlots.Count() > 0)
+        {
+            @foreach (var timeSlot in FilteredTimeSlots)
+            {
+                <div class="card">
+                    <button class="timeslot" @onclick="() => ChooseDate(timeSlot.Id)">@timeSlot.DateTime.ToString("HH:mm") ➜  @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")</button>
+                </div>
+            }
+        } else {
+            <p>Er zijn geen tijdslots beschikbaar op deze datum.</p>
+        }
 </div>
 
 <style>
@@ -51,23 +56,56 @@
 
 @code {
     [Parameter]
-    public EventCallback<DateTime> OnDateChosen { get; set; }
+    public EventCallback<int?> OnTimeSlotSelected { get; set; }
 
     [Parameter]
     public IEnumerable<TimeSlotDTO> TimeSlotObj { get; set; }
 
+    private IEnumerable<TimeSlotDTO> FilteredTimeSlots { get; set; }
+
     [Parameter]
     public DoctorDTO Doctor { get; set; }
+
+    private DateTime _selectedDate;
 
     public DateTime? SelectedDate { get; set; } = DateTime.Now;
     public string SelectedValue { get; set; } = DateTime.Now.ToString("M/d/yyyy");
     public DateTime? CurrentDate { get; set; } = DateTime.Now;
 
-    private async Task ChooseDate(DateTime date)
+    private async Task ChooseDate(int? timeSlotId)
     {
         // Simulate choosing a time
-        await OnDateChosen.InvokeAsync(date);
+        await OnTimeSlotSelected.InvokeAsync(timeSlotId);
+
+        Console.WriteLine("TimeSlotId: " + timeSlotId);
     }
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        _selectedDate = DateTime.Now;
+        TimeSlotObj = await timeSlotService.GetTimeSlots(Doctor);
+        TimeSlotObj = TimeSlotObj.Where(x => x.AppointmentDTO == null);
+        filterTimeSlots();
+    }
+
+    private void DecreaseDate()
+    {
+        _selectedDate = _selectedDate.AddDays(-1);
+        filterTimeSlots();
+    }
+
+    private void IncreaseDate()
+    {
+        _selectedDate = _selectedDate.AddDays(1);
+        filterTimeSlots();
+    }
+
+    private void filterTimeSlots()
+    {
+        FilteredTimeSlots = TimeSlotObj.Where(x => x.DateTime.Date == _selectedDate.Date);
+    }
+
 
     public void CustomDates(RenderDayCellEventArgs args)
     {

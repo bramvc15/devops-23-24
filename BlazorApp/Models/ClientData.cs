@@ -19,6 +19,10 @@ namespace BlazorApp.Models
         [Required (ErrorMessage = "Geboortedatum is verplicht")]
         [DateNotInFuture(ErrorMessage = "Geboortedatum mag niet in de toekomst liggen")]
         public DateTime BirthDate { get; set; }
+
+        [Required (ErrorMessage = "Reden voor consultatie is verplicht")]
+        [StringLength(250, ErrorMessage = "Reden is te lang")]
+        public string Reason { get; set; }
     }
 }
 

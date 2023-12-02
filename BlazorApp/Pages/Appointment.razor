@@ -7,6 +7,7 @@
 @inject AppointmentService appointmentService
 @inject DoctorService doctorService
 @inject PatientService patientService
+@inject TimeSlotService timeSlotService
 @using Microsoft.AspNetCore.Components.Forms
 @using Shared
 @using Enums
@@ -33,18 +34,25 @@
     </div>
     @if(SelectedDoctor != null) {
         <div class="afspraak-plannen" style="display: @(showAfspraak ? "block" : "none")">
-            <AppointmentStep OnDateChosen="HandleTimeChosen" Doctor=SelectedDoctor />
+            <AppointmentStep OnTimeSlotSelected="HandleTimeChosen" Doctor=SelectedDoctor />
         </div>
     }
     <div class="contact-info" style="display: @(showContact ? "block" : "none")">
         <div class="headerBox">
             <p class="header">4. Vul uw contactgegevens in</p>
         </div>
-        <ContactFormStep OnContactSubmitted="HandleClientData" />
+        <ContactFormStep OnContactSubmitted="HandleClientData" OnReasonSubmitted="HandleReasonSubmitted"/>
     </div>
     <div class="succes" style="display: @(showSucces ? "flex" : "none")">
-        <p>Afspraak is succesvol gemaakt!</p>
-        <a href="" class="bck">Ga terug</a>
+    @if(SelectedDoctor != null && SelectedTimeSlotDTO != null) {
+        <div class="succes-card">
+            <h1>Succes!</h1>
+            <p>Uw afspraak met dokter @SelectedDoctor.Name is bevestigd!</p>
+            <p>Uw afspraak is op @SelectedTimeSlotDTO.DateTime.ToString("dd/MM/yyyy") om @SelectedTimeSlotDTO.DateTime.ToString("HH:mm")</p>
+            <br>
+            <a href="" class="bck">Ga terug</a>
+        </div>
+    }
     </div>
 </div>
 
@@ -52,6 +60,9 @@
 
     private String SelectedTreatment = "";
     private DoctorDTO SelectedDoctor;
+    private int? SelectedTimeSlotId;
+    private TimeSlotDTO SelectedTimeSlotDTO;
+    private string Reason = "";
 
     private bool showDoctors = true;
     private bool showTreatment = false;
@@ -75,8 +86,12 @@
         showAfspraak = !showAfspraak;
     }
 
-    private void HandleTimeChosen()
+    private async Task HandleTimeChosen(int? timeSlotId)
     {
+        SelectedTimeSlotId = timeSlotId;
+        IEnumerable<TimeSlotDTO> timeSlots = await timeSlotService.GetTimeSlots(SelectedDoctor);
+        SelectedTimeSlotDTO = timeSlots.FirstOrDefault(ts => ts.Id == timeSlotId);
+
         showAfspraak = !showAfspraak;
         showContact = !showContact;
     }
@@ -85,8 +100,13 @@
     {
         showContact = !showContact;
         showSucces = !showSucces;
-        
+
         await MakeAppointment(patient);
+    }
+
+    private async Task HandleReasonSubmitted(string reason)
+    {
+        Reason = reason;
     }
 
     private async Task MakeAppointment(PatientDTO patient)
@@ -94,7 +114,8 @@
         PatientDTO createdPatient = await patientService.CreatePatient(patient);
 
         int patientId = createdPatient.Id ?? 0;
-        await appointmentService.CreateAppointment(1, patientId, "reden", "note");
+        
+        await appointmentService.CreateAppointment((int)SelectedTimeSlotId, patientId, Reason, "note");
     }
 
 }
