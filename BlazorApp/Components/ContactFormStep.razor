@@ -55,7 +55,7 @@
 </EditForm>
 @code {
     [Parameter]
-    public EventCallback<PatientDTO> OnContactSubmitted { get; set; }
+    public EventCallback<ClientData> OnContactSubmitted { get; set; }
 
     [Parameter]
     public EventCallback<string> OnReasonSubmitted { get; set; }
@@ -73,11 +73,7 @@
             Gender = Gender.Male, // placeholder
             BloodType = BloodType.APositive // placeholder
         };
-        
-        Console.WriteLine(patientDTO.Name + " " + patientDTO.Email + " " + patientDTO.PhoneNumber + " " + patientDTO.DateOfBirth);
 
-        OnReasonSubmitted.InvokeAsync(clientData.Reason);
-        OnContactSubmitted.InvokeAsync(patientDTO);
-        //Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.BirthDate);
+        OnContactSubmitted.InvokeAsync(clientData);
     }
 }

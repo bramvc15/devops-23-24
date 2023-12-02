@@ -44,7 +44,7 @@
         <div class="headerBox">
             <p class="header">3. Vul uw contactgegevens in</p>
         </div>
-        <ContactFormStep OnContactSubmitted="HandleClientData" OnReasonSubmitted="HandleReasonSubmitted"/>
+        <ContactFormStep OnContactSubmitted="HandleClientData"/>
     </div>
     <div class="succes" style="display: @(showSucces ? "flex" : "none")">
     @if(SelectedDoctor != null && SelectedTimeSlotDTO != null) {
@@ -99,19 +99,23 @@
         showContact = !showContact;
     }
 
-    private async Task HandleClientData(PatientDTO patient)
+    private async Task HandleClientData(ClientData clientData)
     {
         showContact = !showContact;
         showSucces = !showSucces;
 
-        await MakeAppointment(patient);
+        PatientDTO patientDTO = new PatientDTO {
+            Name = clientData.Name,
+            Email = clientData.Email,
+            PhoneNumber = clientData.Phone,
+            DateOfBirth = clientData.BirthDate,
+            Gender = Gender.Male, // placeholder
+            BloodType = BloodType.APositive // placeholder
+        };
+        Reason = clientData.Reason;
+        await MakeAppointment(patientDTO);
     }
-
-    private async Task HandleReasonSubmitted(string reason)
-    {
-        Reason = reason;
-    }
-
+    
     private async Task MakeAppointment(PatientDTO patient)
     {
         PatientDTO createdPatient = await patientService.CreatePatient(patient);

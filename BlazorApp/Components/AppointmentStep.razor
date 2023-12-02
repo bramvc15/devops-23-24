@@ -10,6 +10,13 @@
 @using BlazorApp.BlazorShared
 
 <div class="afspraakbox container">
+    @* <div class="temp">
+        <b>Selected Doctor is: @Doctor.Name</b>
+        <SfCalendar TValue="DateTime?" @bind-Value="@SelectedDate">
+            <CalendarEvents TValue="DateTime?" OnRenderDayCell="CustomDates"></CalendarEvents>
+        </SfCalendar>
+        <button class="butTemp" @onclick="() => ChooseDate(DateTime.Now)">temp</button>
+    </div> *@
     <div class="dateselector d-flex flex-column justify-content-center">
         <div class="selector text-center">
             <button class="dateselector-btn" @onclick="() => ChangeDate(-1)">🠜</button>
