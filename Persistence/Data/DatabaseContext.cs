@@ -1,5 +1,6 @@
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Data.Configuration;
 
 namespace Persistence.Data
 {
@@ -28,58 +29,10 @@ namespace Persistence.Data
         // ModelChanges on persist
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // ignore Ref_Id in Doctor (don't persist)
-            //modelBuilder.Entity<Doctor>().Ignore(d => d.Ref_Id);
-
-            // ignore Ref_Id in Patient (don't persist)
-            //modelBuilder.Entity<Patient>().Ignore(p => p.Ref_Id);
-
-            // relation Patient One-To-Many Appointment
-            modelBuilder.Entity<Appointment>()
-                .Property<int>("Id")
-                .HasColumnName("Patient_Id");
-
-            modelBuilder.Entity<Appointment>()
-                .HasOne(a => a.Patient)
-                .WithMany(p => p.Appointments)
-                .HasForeignKey(a => a.Id)
-                .HasConstraintName("FK_Appointment_Patient");
-
-            // relation Doctor One-To-Many TimeSlot
-            modelBuilder.Entity<TimeSlot>()
-                .Property<int>("Id")
-                .HasColumnName("Doctor_Id");
-
-            modelBuilder.Entity<Doctor>()
-                .HasMany(d => d.TimeSlots)
-                .WithOne()
-                .HasForeignKey(d => d.Id)
-                .HasConstraintName("FK_Doctor_TimeSlot")
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // relation TimeSlot One-To-One Appointment
-            modelBuilder.Entity<Appointment>()
-                .Property<int>("Id")
-                .HasColumnName("TimeSlot_Id");
-
-            modelBuilder.Entity<TimeSlot>()
-                .HasOne(t => t.Appointment)
-                .WithOne(a => a.TimeSlot)
-                .HasForeignKey<Appointment>(t => t.Id)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // relation Doctor One-To-Many ScheduleTimeSlot
-            modelBuilder.Entity<ScheduleTimeSlot>()
-                .Property<int>("Id")
-                .HasColumnName("Doctor_Id");
-
-            modelBuilder.Entity<Doctor>()
-                .HasMany(d => d.ScheduleTimeSlots)
-                .WithOne()
-                .HasForeignKey(d => d.Id)
-                .HasConstraintName("FK_Doctor_ScheduleTimeSlot")
-                .OnDelete(DeleteBehavior.Cascade);
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new AppointmentEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DoctorEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new TimeSlotEntityTypeConfiguration());
         }
     }
 }
