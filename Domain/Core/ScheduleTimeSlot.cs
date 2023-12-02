@@ -1,6 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using Shared.Enums;
-using System.Xml.Linq;
 
 namespace Domain;
 
@@ -8,7 +6,6 @@ public class ScheduleTimeSlot : Entity
 {
     #region Properties
     private int duration;
-    private AppointmentType appointmentType;
     private DateTime dateTime;
     private DayOfWeek dayOfWeek;
 
@@ -24,10 +21,6 @@ public class ScheduleTimeSlot : Entity
             duration = value;
         }
     } 
-    public AppointmentType AppointmentType {
-        get => appointmentType;
-        private set => appointmentType = Guard.Against.EnumOutOfRange<AppointmentType>(value, nameof(AppointmentType), "Invalid AppointmentType");
-    }
     public DateTime DateTime {
         get => dateTime;
         private set => dateTime = Guard.Against.Null(value, nameof(DateTime), "DateTime cannot be null");
@@ -43,9 +36,8 @@ public class ScheduleTimeSlot : Entity
     // Database Constructor
     private ScheduleTimeSlot() { }
 
-    public ScheduleTimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration, DayOfWeek dayOfWeek)
+    public ScheduleTimeSlot(DateTime dateTime, int duration, DayOfWeek dayOfWeek)
     {
-        AppointmentType = appointmentType;
         DateTime = dateTime;
         Duration = duration;
         DayOfWeek = dayOfWeek;
@@ -53,12 +45,11 @@ public class ScheduleTimeSlot : Entity
     #endregion
 
     #region Methods
-    public void UpdateScheduleTimeSlot(ScheduleTimeSlot newScheduleTimeSlot)
+    public void UpdateScheduleTimeSlot(DateTime dateTime, DayOfWeek dayOfWeek, int duration)
     {
-        AppointmentType = newScheduleTimeSlot.appointmentType;
-        DateTime = newScheduleTimeSlot.dateTime;
-        Duration = newScheduleTimeSlot.duration;
-        DayOfWeek = newScheduleTimeSlot.dayOfWeek;
+        DateTime = dateTime;
+        Duration = duration;
+        DayOfWeek = dayOfWeek;
     }
     #endregion
 }

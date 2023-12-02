@@ -38,9 +38,7 @@ public class TimeSlot : Entity
             dateTime = value;
         }
     }
-    public Appointment Appointment { 
-        get => appointment;
-    }
+    public Appointment? Appointment { get; set; }
     #endregion
 
     #region Constructors
@@ -52,17 +50,10 @@ public class TimeSlot : Entity
         AppointmentType = appointmentType;
         DateTime = dateTime;
         Duration = duration;
-        //Appointment = null;
     }
     #endregion
 
     #region Methods
-    public bool IsTimeSlotAvailable()
-    {
-        // Useless?
-        return Appointment == null;
-    }
-
     public Appointment CreateAppointment(Patient patient, string reason, string note)
     {
         appointment = new Appointment(patient, reason, note);
@@ -74,17 +65,11 @@ public class TimeSlot : Entity
         appointment = newAppointment;
     }
 
-    public void DeleteAppointment()
+    public void UpdateTimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration)
     {
-        if (appointment == null) throw new ArgumentException("Appointment does not exist");
-        appointment = null;
-    }
-
-    public void UpdateTimeSlot(TimeSlot newTimeSlot)
-    {
-        AppointmentType = newTimeSlot.AppointmentType;
-        DateTime = newTimeSlot.DateTime;
-        Duration = newTimeSlot.Duration;
+        AppointmentType = appointmentType;
+        DateTime = dateTime;
+        Duration = duration;
     }
     #endregion
 }

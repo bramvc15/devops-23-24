@@ -81,7 +81,7 @@ public class Doctor : Entity
         if (ScheduleTimeSlots.Contains(scheduleTimeSlot))
         {
             ScheduleTimeSlots.Remove(scheduleTimeSlot);
-            scheduleTimeSlot.UpdateScheduleTimeSlot(DateTime dateTime, int duration, DayOfWeek dayOfWeek);
+            scheduleTimeSlot.UpdateScheduleTimeSlot(dateTime, dayOfWeek, duration);
 
             AddScheduleTimeSlot(scheduleTimeSlot);
         }
@@ -96,7 +96,7 @@ public class Doctor : Entity
         if (TimeSlots.Contains(timeSlot))
         {
             TimeSlots.Remove(timeSlot);
-            timeSlot.UpdateTimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration);
+            timeSlot.UpdateTimeSlot(appointmentType, dateTime, duration);
 
             AddTimeSlot(timeSlot);
         }
@@ -130,13 +130,69 @@ public class Doctor : Entity
 
     public void UpdateAppointment(TimeSlot timeSlot, string reason, string note)
     {
-        // TODO
+        if (TimeSlots.Contains(timeSlot))
+        {
+            if (timeSlot.Appointment != null)
+            {
+                TimeSlot newTimeSlot = TimeSlots.FirstOrDefault(timeSlot);
+                newTimeSlot.Appointment.UpdateAppointment(reason, note);
+            }
+            else
+            {
+                throw new ArgumentException("This timeslot has no appointment.");
+            }
+        }
+        else
+        {
+            throw new ArgumentException("This timeslot does not exist for this doctor.");
+        }
     }
 
     public void DeleteAppointment(TimeSlot timeSlot)
     {
-        // TODO
+        if (TimeSlots.Contains(timeSlot))
+        {
+            if (timeSlot.Appointment != null)
+            {
+                TimeSlot newTimeSlot = TimeSlots.FirstOrDefault(timeSlot);
+                newTimeSlot.Appointment = null;
+            }
+            else
+            {
+                throw new ArgumentException("This timeslot has no appointment.");
+            }
+        }
+        else
+        {
+            throw new ArgumentException("This timeslot does not exist for this doctor.");
+        }
     }
+
+    /* TODO
+    public void ConvertScheduleToTimeSlots(DateTime startOfWeek1, int amountOfWeeks)
+    {
+        var start = startOfWeek1;
+
+        for (int i = 0; i < amountOfWeeks; i++)
+        {
+            foreach (var scheduleTimeSlot in ScheduleTimeSlots)
+            {
+                // Calculate the days until the target day of the week
+                int daysUntilTarget = ((int)scheduleTimeSlot.DayOfWeek - (int)start.DayOfWeek + 7) % 7;
+
+                // Set the start time for the time slot
+                var startTimeSlot = start.AddDays(daysUntilTarget).Date + scheduleTimeSlot.DateTime.TimeOfDay;
+
+                // Create a new TimeSlot using the calculated start time, duration, and appointment type
+                DateTime correctDateTime = startTimeSlot;
+                TimeSlots.Add(new TimeSlot(AppointmentType.Consultation, correctDateTime, scheduleTimeSlot.Duration));
+            }
+
+            // Move to the next week
+            start = start.AddDays(7).Date; // Move to the next week at the start of the day
+        }
+    }
+    */
 
     public bool HasAvailableTimeSlots()
     {
