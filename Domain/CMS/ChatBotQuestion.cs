@@ -31,7 +31,7 @@ public class ChatBotQuestion : Entity
     public List<ChatBotQuestion> FollowUpQuestions
     {
         get => followUpQuestions;
-        private set => followUpQuestions = Guard.Against.Null(value, nameof(FollowUpQuestions));
+        private set => followUpQuestions = value;
     }
     #endregion
 
@@ -39,7 +39,7 @@ public class ChatBotQuestion : Entity
     // Database Constructor
     private ChatBotQuestion() { }
 
-    public ChatBotQuestion(string question, string answer, bool isFollowUp, List<ChatBotQuestion> list)
+    public ChatBotQuestion(string question, string answer, bool isFollowUp, List<ChatBotQuestion>? list = default)
     {
         Question = question;
         Answer = answer;
