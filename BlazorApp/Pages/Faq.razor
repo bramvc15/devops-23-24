@@ -8,8 +8,6 @@
         <a><u>Home</u> > FAQ </a>
     </div>
     <div class="faq-container">
-        @* faq component *@
-        
         @* @if (DocObj != null)
             {
                 @foreach (var q in QuestionObj)
@@ -17,7 +15,8 @@
                     <div class="question-container">
                         @if (q != null)
                         {
-                            <QuestionFAQ />
+                            <QuestionFAQ Question=@q.question Answer=@q.answer/>
+                            <span class="line"></span>
                         }
                     </div>
                 }
@@ -27,11 +26,11 @@
                 <p>QuestionObj is null.</p>
             } *@
 
-        <QuestionFAQ />
+        <QuestionFAQ Question="la question" Answer="la reponse"/>
         <span class="line"></span>
-        <QuestionFAQ />
+        <QuestionFAQ Question="the question" Answer="the response"/>
         <span class="line"></span>
-        <QuestionFAQ />
+        <QuestionFAQ Question="de vraag" Answer="het antwoord"/>
         <span class="line"></span>
     </div>
 </div>
