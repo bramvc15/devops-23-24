@@ -12,6 +12,7 @@ namespace Persistence.Data.Configuration
             builder.HasOne(t => t.Appointment)
                 .WithOne(a => a.TimeSlot)
                 .HasForeignKey<Appointment>(a => a.Id)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

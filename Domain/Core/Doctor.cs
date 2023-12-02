@@ -114,7 +114,7 @@ public class Doctor : Entity
         {
             if (IsAvailable == true && timeSlot.Appointment == null)
             {
-                TimeSlots.FirstOrDefault(timeSlot).CreateAppointment(patient, reason, note);
+                timeSlot.CreateAppointment(patient, reason, note);
             }
             else
             {

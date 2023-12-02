@@ -17,9 +17,9 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,17 +32,17 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Question = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsFollowUp = table.Column<bool>(type: "bit", nullable: true),
-                    CMSChatBotQuestionId = table.Column<int>(type: "int", nullable: true)
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsFollowUp = table.Column<bool>(type: "bit", nullable: false),
+                    ChatBotQuestionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ChatBotQuestions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChatBotQuestions_ChatBotQuestions_CMSChatBotQuestionId",
-                        column: x => x.CMSChatBotQuestionId,
+                        name: "FK_ChatBotQuestions_ChatBotQuestions_ChatBotQuestionId",
+                        column: x => x.ChatBotQuestionId,
                         principalTable: "ChatBotQuestions",
                         principalColumn: "Id");
                 });
@@ -53,7 +53,7 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Context = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Context = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,7 +69,7 @@ namespace Persistence.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Specialization = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    Biograph = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Biograph = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -84,8 +84,8 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Context = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Context = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,7 +98,7 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Context = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Context = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,9 +129,9 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -145,17 +145,16 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Duration = table.Column<int>(type: "int", nullable: false),
-                    AppointmentType = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DayOfWeek = table.Column<int>(type: "int", nullable: false),
-                    Doctor_Id = table.Column<int>(type: "int", nullable: false)
+                    DoctorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ScheduleTimeSlots", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Doctor_ScheduleTimeSlot",
-                        column: x => x.Doctor_Id,
+                        name: "FK_ScheduleTimeSlots_Doctors_DoctorId",
+                        column: x => x.DoctorId,
                         principalTable: "Doctors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -170,14 +169,14 @@ namespace Persistence.Migrations
                     Duration = table.Column<int>(type: "int", nullable: false),
                     AppointmentType = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Doctor_Id = table.Column<int>(type: "int", nullable: false)
+                    DoctorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TimeSlots", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Doctor_TimeSlot",
-                        column: x => x.Doctor_Id,
+                        name: "FK_TimeSlots_Doctors_DoctorId",
+                        column: x => x.DoctorId,
                         principalTable: "Doctors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -187,47 +186,47 @@ namespace Persistence.Migrations
                 name: "Appointments",
                 columns: table => new
                 {
-                    TimeSlot_Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Patient_Id = table.Column<int>(type: "int", nullable: false)
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PatientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Appointments", x => x.TimeSlot_Id);
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Appointment_Patient",
-                        column: x => x.Patient_Id,
+                        name: "FK_Appointments_Patients_PatientId",
+                        column: x => x.PatientId,
                         principalTable: "Patients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Appointments_TimeSlots_TimeSlot_Id",
-                        column: x => x.TimeSlot_Id,
+                        name: "FK_Appointments_TimeSlots_Id",
+                        column: x => x.Id,
                         principalTable: "TimeSlots",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointments_Patient_Id",
+                name: "IX_Appointments_PatientId",
                 table: "Appointments",
-                column: "Patient_Id");
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatBotQuestions_CMSChatBotQuestionId",
+                name: "IX_ChatBotQuestions_ChatBotQuestionId",
                 table: "ChatBotQuestions",
-                column: "CMSChatBotQuestionId");
+                column: "ChatBotQuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ScheduleTimeSlots_Doctor_Id",
+                name: "IX_ScheduleTimeSlots_DoctorId",
                 table: "ScheduleTimeSlots",
-                column: "Doctor_Id");
+                column: "DoctorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TimeSlots_Doctor_Id",
+                name: "IX_TimeSlots_DoctorId",
                 table: "TimeSlots",
-                column: "Doctor_Id");
+                column: "DoctorId");
         }
 
         /// <inheritdoc />

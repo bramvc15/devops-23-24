@@ -8,7 +8,6 @@ public class TimeSlot : Entity
     private int duration;
     private AppointmentType appointmentType;
     private DateTime dateTime;
-    private Appointment appointment;
 
     public int Duration {
         get => duration;
@@ -56,13 +55,8 @@ public class TimeSlot : Entity
     #region Methods
     public Appointment CreateAppointment(Patient patient, string reason, string note)
     {
-        appointment = new Appointment(patient, reason, note);
-        return appointment;
-    }
-
-    public void UpdateAppointment(Appointment newAppointment)
-    {
-        appointment = newAppointment;
+        Appointment = new Appointment(patient, reason, note);
+        return Appointment;
     }
 
     public void UpdateTimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration)
