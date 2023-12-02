@@ -10,15 +10,24 @@
 @using BlazorApp.BlazorShared
 
 <div class="afspraakbox container">
-    <div class="dateselector d-flex justify-content-center">
-        <button class="dateselector-btn" @onclick="DecreaseDate">🠜</button>
-        <InputDate @bind-Value="@_selectedDate" @onchange="filterTimeSlots"></InputDate>
-        <button class="dateselector-btn" @onclick="IncreaseDate">🠞</button>
+    <div class="dateselector d-flex flex-column justify-content-center">
+        <div class="selector text-center">
+            <button class="dateselector-btn" @onclick="() => ChangeDate(-1)">🠜</button>
+            <InputDate @bind-Value="@SelectedDate" ></InputDate>
+            <button class="dateselector-btn" @onclick="() => ChangeDate(1)">🠞</button>
+        </div>
+        <div class="daybuttons text-center">
+            <button class="daybutton" @onclick="() => ChangeDateButtons(0)">Vandaag</button>
+            <button class="daybutton" @onclick="() => ChangeDateButtons(1)">Morgen</button>
+            <button class="daybutton" @onclick="() => ChangeDateButtons(2)">Overmorgen</button>
+            <button class="daybutton" @onclick="FirstAvailableDate">Volgende beschikbare dag</button>
+        </div>
     </div>
 
-
-        <b>Beschikbare tijdslots voor dokter @Doctor.Name op @_selectedDate.ToString("dd/MM/yyyy")</b>
-
+        <diV class="text-center">
+            <b>Beschikbare tijdslots bij @Doctor.Name op @SelectedDate.ToString("dd/MM/yyyy")</b>
+        </diV>
+        <div class="timeslots">
         @if(FilteredTimeSlots != null && FilteredTimeSlots.Count() > 0)
         {
             @foreach (var timeSlot in FilteredTimeSlots)
@@ -28,8 +37,11 @@
                 </div>
             }
         } else {
-            <p>Er zijn geen tijdslots beschikbaar op deze datum.</p>
+            <div class="unavailable">
+                Geen tijdslots beschikbaar op deze datum
+            </div>
         }
+        </div>
 </div>
 
 <style>
@@ -66,11 +78,24 @@
     [Parameter]
     public DoctorDTO Doctor { get; set; }
 
+
+    public DateTime SelectedDate
+    {
+        get => _selectedDate;
+        set
+        {
+            if (_selectedDate != value)
+            {
+                _selectedDate = value;
+                FilterTimeSlots(); // Call the filtering method whenever SelectedDate changes
+            }
+        }
+    }
+
     private DateTime _selectedDate;
 
-    public DateTime? SelectedDate { get; set; } = DateTime.Now;
     public string SelectedValue { get; set; } = DateTime.Now.ToString("M/d/yyyy");
-    public DateTime? CurrentDate { get; set; } = DateTime.Now;
+    public DateTime CurrentDate { get; set; }
 
     private async Task ChooseDate(int? timeSlotId)
     {
@@ -84,26 +109,36 @@
     protected override async Task OnInitializedAsync()
     {
         _selectedDate = DateTime.Now;
+        SelectedDate = DateTime.Now;
+        CurrentDate = DateTime.Now;
         TimeSlotObj = await timeSlotService.GetTimeSlots(Doctor);
         TimeSlotObj = TimeSlotObj.Where(x => x.AppointmentDTO == null);
-        filterTimeSlots();
+        FilterTimeSlots();
     }
 
-    private void DecreaseDate()
+    private void ChangeDate(int days)
     {
-        _selectedDate = _selectedDate.AddDays(-1);
-        filterTimeSlots();
+        SelectedDate = SelectedDate.AddDays(days);
     }
 
-    private void IncreaseDate()
+    private void ChangeDateButtons(int days)
     {
-        _selectedDate = _selectedDate.AddDays(1);
-        filterTimeSlots();
+        SelectedDate = CurrentDate.AddDays(days);
     }
 
-    private void filterTimeSlots()
+    private void FirstAvailableDate()
     {
-        FilteredTimeSlots = TimeSlotObj.Where(x => x.DateTime.Date == _selectedDate.Date);
+        SelectedDate = TimeSlotObj.Min(x => x.DateTime);
+    }
+
+    private void FilterTimeSlots()
+    {
+        if (TimeSlotObj != null)
+        {
+            Console.WriteLine("SelectedDate: " + SelectedDate);
+            FilteredTimeSlots = TimeSlotObj.Where(x => x.DateTime.Date == SelectedDate.Date).ToList();
+            StateHasChanged(); // Ensure to trigger a re-render after updating FilteredTimeSlots
+        }
     }
 
 
