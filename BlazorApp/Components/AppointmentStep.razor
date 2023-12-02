@@ -87,7 +87,7 @@
             if (_selectedDate != value)
             {
                 _selectedDate = value;
-                FilterTimeSlots(); // Call the filtering method whenever SelectedDate changes
+                FilterTimeSlots();
             }
         }
     }
@@ -99,10 +99,7 @@
 
     private async Task ChooseDate(int? timeSlotId)
     {
-        // Simulate choosing a time
         await OnTimeSlotSelected.InvokeAsync(timeSlotId);
-
-        Console.WriteLine("TimeSlotId: " + timeSlotId);
     }
     
 
@@ -128,16 +125,16 @@
 
     private void FirstAvailableDate()
     {
-        SelectedDate = TimeSlotObj.Min(x => x.DateTime);
+        if(TimeSlotObj.Count() > 0)
+            SelectedDate = TimeSlotObj.Min(x => x.DateTime);
     }
 
     private void FilterTimeSlots()
     {
         if (TimeSlotObj != null)
         {
-            Console.WriteLine("SelectedDate: " + SelectedDate);
             FilteredTimeSlots = TimeSlotObj.Where(x => x.DateTime.Date == SelectedDate.Date).ToList();
-            StateHasChanged(); // Ensure to trigger a re-render after updating FilteredTimeSlots
+            StateHasChanged();
         }
     }
 
