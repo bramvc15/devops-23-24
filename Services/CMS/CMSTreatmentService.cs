@@ -1,7 +1,6 @@
-using BlazorApp.Data;
-using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Shared.DTO.CMS;
+using Persistence.Data;
 
 namespace Services.CMS
 {

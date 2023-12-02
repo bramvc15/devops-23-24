@@ -1,9 +1,8 @@
-﻿using BlazorApp.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Shared.Enums;
 using Domain;
-using Azure;
 using Shared.DTO.Core;
+using Persistence.Data;
 
 namespace Services.Core
 {
