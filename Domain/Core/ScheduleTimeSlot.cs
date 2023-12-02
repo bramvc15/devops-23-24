@@ -1,77 +1,41 @@
-﻿using Shared.Enums;
+﻿using Ardalis.GuardClauses;
+using Shared.Enums;
+using System.Xml.Linq;
+
 namespace Domain;
 
 public class ScheduleTimeSlot : Entity
 {
-    #region Fields
-    private int _duration;
-    private AppointmentType _appointmentType;
-    private DateTime _dateTime;
-    private DayOfWeek _dayOfWeek;
-    #endregion
-
     #region Properties
-    public int Duration {
-        get
-        {
-            return _duration;
-        }
+    private int duration;
+    private AppointmentType appointmentType;
+    private DateTime dateTime;
+    private DayOfWeek dayOfWeek;
+
+    public int Duration
+    {
+        get => duration;
         private set
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException("Duration cannot be null");
-            }
-            if (value <= 0) throw new ArgumentException("Duration cannot be less than or equal to 0");
-            if (value > 1440)
-            {
-                throw new ArgumentException("Duration cannot be longer than 24 hours");
-            }
-            _duration = value;
+            Guard.Against.Null(value, nameof(value), "Duration cannot be null");
+            Guard.Against.NegativeOrZero(value, nameof(value), "Duration cannot be less than or equal to 0");
+            Guard.Against.OutOfRange(value, nameof(value), 1, 1440, "Duration must be between 1 and 1440 minutes");
+
+            duration = value;
         }
     } 
     public AppointmentType AppointmentType {
-        get
-        {
-            return _appointmentType;
-        }
-        private set
-        {
-            if (!Enum.IsDefined(typeof(AppointmentType), value))
-            {
-                throw new ArgumentException("Invalid AppointmentType");
-            }
-            _appointmentType = value;
-        }
+        get => appointmentType;
+        private set => appointmentType = Guard.Against.EnumOutOfRange<AppointmentType>(value, nameof(value), "Invalid AppointmentType");
     }
     public DateTime DateTime {
-        get
-        {
-            return _dateTime;
-        }
-        private set
-        {
-            if (value == null)
-            {
-                throw new ArgumentNullException("DateTime cannot be null");
-            }
-            _dateTime = value;
-        }
+        get => dateTime;
+        private set => dateTime = Guard.Against.Null(value, nameof(value), "DateTime cannot be null");
     }
     public DayOfWeek DayOfWeek
     {
-        get
-        {
-            return _dayOfWeek;
-        }
-        private set
-        {
-            if (!Enum.IsDefined(typeof(DayOfWeek), value))
-            {
-                throw new ArgumentException("The given DayOfWeek does not exist");
-            }
-            _dayOfWeek = value;
-        }
+        get => dayOfWeek;
+        private set => dayOfWeek = Guard.Against.EnumOutOfRange<DayOfWeek>(value, nameof(value), "The given DayOfWeek does not exist");
     }
     #endregion
 
@@ -85,13 +49,13 @@ public class ScheduleTimeSlot : Entity
         {
             throw new ArgumentException("Invalid AppointmentType");
         }
-        _appointmentType = appointmentType;
+        this.appointmentType = appointmentType;
 
         if (dateTime == null)
         {
             throw new ArgumentNullException("DateTime cannot be null");
         }
-        _dateTime = dateTime;
+        this.dateTime = dateTime;
 
         if (duration == null)
         {
@@ -105,23 +69,23 @@ public class ScheduleTimeSlot : Entity
         {
             throw new ArgumentException("Duration cannot be longer than 24 hours");
         }
-        _duration = duration;
+        this.duration = duration;
 
         if (!Enum.IsDefined(typeof(DayOfWeek), dayOfWeek))
         {
             throw new ArgumentException("The given DayOfWeek does not exist");
         }
-        _dayOfWeek = dayOfWeek;
+        this.dayOfWeek = dayOfWeek;
     }
     #endregion
 
     #region Methods
     public void UpdateScheduleTimeSlot(ScheduleTimeSlot newScheduleTimeSlot)
     {
-        _appointmentType = newScheduleTimeSlot._appointmentType;
-        _dateTime = newScheduleTimeSlot._dateTime;
-        _duration = newScheduleTimeSlot._duration;
-        _dayOfWeek = newScheduleTimeSlot._dayOfWeek;
+        appointmentType = newScheduleTimeSlot.appointmentType;
+        dateTime = newScheduleTimeSlot.dateTime;
+        duration = newScheduleTimeSlot.duration;
+        dayOfWeek = newScheduleTimeSlot.dayOfWeek;
     }
     #endregion
 }
