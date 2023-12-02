@@ -25,7 +25,7 @@
     </div>
 
         <diV class="text-center">
-            <b>Beschikbare tijdslots bij @Doctor.Name op @SelectedDate.ToString("dd/MM/yyyy")</b>
+            <b>Beschikbare tijdslots bij @Doctor.Name op @SelectedDate.ToString("dddd, dd MMMM", new System.Globalization.CultureInfo("nl-NL")):</b>
         </diV>
         <div class="timeslots">
         @if(FilteredTimeSlots != null && FilteredTimeSlots.Count() > 0)
