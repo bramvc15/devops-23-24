@@ -23,8 +23,8 @@ namespace Persistence.Data
             
             Doctor doctor2 = new("Dr. Smith", "Eye Specialist", Gender.Male, "Dit is Dr. Smith zijn Bio.");
 
-            doctor1.SetImageLink("https://images.healthshots.com/healthshots/en/uploads/2022/07/02195043/doctor-stress.jpg");
-            doctor2.SetImageLink("https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*");
+            // doctor1.SetImageLink("https://images.healthshots.com/healthshots/en/uploads/2022/07/02195043/doctor-stress.jpg");
+            // doctor2.SetImageLink("https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*");
 
             var doctors = new Doctor[]
             {
@@ -44,54 +44,54 @@ namespace Persistence.Data
 
             #region ScheduleTimeSlots
             // Monday
-            ScheduleTimeSlot scheduleTimeSlot1 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot2 = new(AppointmentType.Operation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot3 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot4 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot5 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot6 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot7 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot8 = new(AppointmentType.Operation, new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot9 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot1 = new(new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot2 = new(new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot3 = new(new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot4 = new(new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot5 = new(new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot6 = new(new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot7 = new(new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot8 = new(new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Monday);
+            ScheduleTimeSlot scheduleTimeSlot9 = new(new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Monday);
 
             // Tuesday
-            ScheduleTimeSlot scheduleTimeSlot10 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot11 = new(AppointmentType.Operation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot12 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot13 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot14 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot15 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot16 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot17 = new(AppointmentType.Operation, new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot18 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Tuesday);
+            ScheduleTimeSlot scheduleTimeSlot10 = new(new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Tuesday);
+            ScheduleTimeSlot scheduleTimeSlot11 = new(new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Tuesday);
+            ScheduleTimeSlot scheduleTimeSlot12 = new(new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Tuesday);
+            ScheduleTimeSlot scheduleTimeSlot13 = new(new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Tuesday);
+            ScheduleTimeSlot scheduleTimeSlot14 = new(new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Tuesday);
+            ScheduleTimeSlot scheduleTimeSlot15 = new(new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Tuesday);
+            ScheduleTimeSlot scheduleTimeSlot16 = new(new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Tuesday);
+            ScheduleTimeSlot scheduleTimeSlot17 = new(new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Tuesday);
+            ScheduleTimeSlot scheduleTimeSlot18 = new(new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Tuesday);
 
             // Wednesday
-            ScheduleTimeSlot scheduleTimeSlot19 = new(AppointmentType.Operation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Wednesday);
-            ScheduleTimeSlot scheduleTimeSlot20 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Wednesday);
-            ScheduleTimeSlot scheduleTimeSlot21 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Wednesday);
-            ScheduleTimeSlot scheduleTimeSlot22 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Wednesday);
+            ScheduleTimeSlot scheduleTimeSlot19 = new(new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Wednesday);
+            ScheduleTimeSlot scheduleTimeSlot20 = new(new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Wednesday);
+            ScheduleTimeSlot scheduleTimeSlot21 = new(new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Wednesday);
+            ScheduleTimeSlot scheduleTimeSlot22 = new(new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Wednesday);
 
             // Thursday
-            ScheduleTimeSlot scheduleTimeSlot23 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot24 = new(AppointmentType.Operation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot25 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot26 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot27 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot28 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot29 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot30 = new(AppointmentType.Operation, new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot31 = new (AppointmentType.Consultation, new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Thursday);
+            ScheduleTimeSlot scheduleTimeSlot23 = new(new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Thursday);
+            ScheduleTimeSlot scheduleTimeSlot24 = new(new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Thursday);
+            ScheduleTimeSlot scheduleTimeSlot25 = new(new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Thursday);
+            ScheduleTimeSlot scheduleTimeSlot26 = new(new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Thursday);
+            ScheduleTimeSlot scheduleTimeSlot27 = new(new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Thursday);
+            ScheduleTimeSlot scheduleTimeSlot28 = new(new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Thursday);
+            ScheduleTimeSlot scheduleTimeSlot29 = new(new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Thursday);
+            ScheduleTimeSlot scheduleTimeSlot30 = new(new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Thursday);
+            ScheduleTimeSlot scheduleTimeSlot31 = new(new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Thursday);
 
             // Friday
-            ScheduleTimeSlot scheduleTimeSlot32 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot33 = new(AppointmentType.Operation, new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot34 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot35 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot36 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot37 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot38 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot39 = new(AppointmentType.Operation, new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot40 = new(AppointmentType.Consultation, new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Friday);
+            ScheduleTimeSlot scheduleTimeSlot32 = new(new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Friday);
+            ScheduleTimeSlot scheduleTimeSlot33 = new(new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Friday);
+            ScheduleTimeSlot scheduleTimeSlot34 = new(new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Friday);
+            ScheduleTimeSlot scheduleTimeSlot35 = new(new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Friday);
+            ScheduleTimeSlot scheduleTimeSlot36 = new(new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Friday);
+            ScheduleTimeSlot scheduleTimeSlot37 = new(new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Friday);
+            ScheduleTimeSlot scheduleTimeSlot38 = new(new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Friday);
+            ScheduleTimeSlot scheduleTimeSlot39 = new(new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Friday);
+            ScheduleTimeSlot scheduleTimeSlot40 = new(new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Friday);
 
             var scheduleTimeSlots = new ScheduleTimeSlot[]
             {
@@ -137,6 +137,7 @@ namespace Persistence.Data
 
             #region Appointments
 
+            /*
             Appointment appointment1 = new(patient2, "Reason: Normal Consultation", "");
             Appointment appointment2 = new(patient2, "Reason: Normal Operation", "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren.");
 
@@ -144,10 +145,11 @@ namespace Persistence.Data
             {
                 appointment1, appointment2,
             };
+            */
 
 
-            //doctor2.CreateAppointmentForPatient(patient2, timeSlot1, "Reason: Normal Consultation", "");
-            //doctor2.CreateAppointmentForPatient(patient2, timeSlot2, "Reason: Normal Operation", "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren.");
+            doctor2.CreateAppointment(patient2, timeSlot1, "Reason: Normal Consultation", "");
+            doctor2.CreateAppointment(patient2, timeSlot2, "Reason: Normal Operation", "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren.");
             #endregion
 
             // CMS

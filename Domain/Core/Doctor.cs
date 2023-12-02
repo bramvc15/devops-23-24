@@ -40,6 +40,8 @@ public class Doctor : Entity
         Name = name;
         Specialization = specialization;
         Gender = gender;
+        ScheduleTimeSlots = new List<ScheduleTimeSlot>();
+        TimeSlots = new List<TimeSlot>();
     }
     #endregion
 
@@ -112,10 +114,7 @@ public class Doctor : Entity
         {
             if (IsAvailable == true && timeSlot.Appointment == null)
             {
-                TimeSlot newTimeSlot = TimeSlots.FirstOrDefault(timeSlot);
-                TimeSlots.Remove(timeSlot);
-
-                newTimeSlot.CreateAppointment(patient, reason, note);
+                TimeSlots.FirstOrDefault(timeSlot).CreateAppointment(patient, reason, note);
             }
             else
             {

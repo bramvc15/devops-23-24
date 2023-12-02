@@ -33,7 +33,7 @@ public class TimeSlot : Entity
         {
             Guard.Against.Null(value, nameof(DateTime), "DateTime cannot be null");
             Guard.Against.Default(value, nameof(DateTime), "DateTime cannot be the default value");
-            Guard.Against.OutOfRange(value, nameof(DateTime), DateTime.MinValue, DateTime.Now, "DateTime cannot be in the past");
+            Guard.Against.OutOfRange(value, nameof(DateTime), DateTime.Now, DateTime.Now.AddYears(20), "DateTime cannot be in the past");
 
             dateTime = value;
         }

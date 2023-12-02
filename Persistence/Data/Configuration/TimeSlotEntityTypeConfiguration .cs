@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Metadata;
 
 namespace Persistence.Data.Configuration
 {
@@ -9,7 +10,8 @@ namespace Persistence.Data.Configuration
         public void Configure(EntityTypeBuilder<TimeSlot> builder)
         {
             builder.HasOne(t => t.Appointment)
-                .WithOne()
+                .WithOne(a => a.TimeSlot)
+                .HasForeignKey<Appointment>(a => a.Id)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

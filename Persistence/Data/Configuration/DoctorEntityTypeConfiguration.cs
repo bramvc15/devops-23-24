@@ -11,6 +11,7 @@ namespace Persistence.Data.Configuration
             builder.HasMany(d => d.ScheduleTimeSlots)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasMany(d => d.TimeSlots)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
