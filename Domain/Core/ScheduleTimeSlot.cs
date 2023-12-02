@@ -45,37 +45,10 @@ public class ScheduleTimeSlot : Entity
 
     public ScheduleTimeSlot(AppointmentType appointmentType, DateTime dateTime, int duration, DayOfWeek dayOfWeek)
     {
-        if (!Enum.IsDefined(typeof(AppointmentType), appointmentType))
-        {
-            throw new ArgumentException("Invalid AppointmentType");
-        }
-        this.appointmentType = appointmentType;
-
-        if (dateTime == null)
-        {
-            throw new ArgumentNullException("DateTime cannot be null");
-        }
-        this.dateTime = dateTime;
-
-        if (duration == null)
-        {
-            throw new ArgumentNullException("Duration cannot be null");
-        }
-        if (duration <= 0)
-        {
-            throw new ArgumentException("Duration cannot be less than or equal to 0");
-        }
-        if (duration > 1440)
-        {
-            throw new ArgumentException("Duration cannot be longer than 24 hours");
-        }
-        this.duration = duration;
-
-        if (!Enum.IsDefined(typeof(DayOfWeek), dayOfWeek))
-        {
-            throw new ArgumentException("The given DayOfWeek does not exist");
-        }
-        this.dayOfWeek = dayOfWeek;
+        AppointmentType = appointmentType;
+        DateTime = dateTime;
+        Duration = duration;
+        DayOfWeek = dayOfWeek;
     }
     #endregion
 
