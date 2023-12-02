@@ -55,10 +55,10 @@ public class ScheduleTimeSlot : Entity
     #region Methods
     public void UpdateScheduleTimeSlot(ScheduleTimeSlot newScheduleTimeSlot)
     {
-        appointmentType = newScheduleTimeSlot.appointmentType;
-        dateTime = newScheduleTimeSlot.dateTime;
-        duration = newScheduleTimeSlot.duration;
-        dayOfWeek = newScheduleTimeSlot.dayOfWeek;
+        AppointmentType = newScheduleTimeSlot.appointmentType;
+        DateTime = newScheduleTimeSlot.dateTime;
+        Duration = newScheduleTimeSlot.duration;
+        DayOfWeek = newScheduleTimeSlot.dayOfWeek;
     }
     #endregion
 }

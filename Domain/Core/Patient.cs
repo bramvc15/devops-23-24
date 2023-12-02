@@ -90,7 +90,7 @@ public class Patient : Entity
     public void MakeAppointment(string reason, string note, Doctor doctor, TimeSlot timeSlot)
     {
         // TODO bound to change
-        Appointment appointment = doctor.GetTimeSlots().FirstOrDefault(timeSlot).CreateAppointment(this, reason, note);
+        Appointment appointment = doctor.TimeSlots.FirstOrDefault(timeSlot).CreateAppointment(this, reason, note);
         Appointments.Add(appointment);
     }
     #endregion
