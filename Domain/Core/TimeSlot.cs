@@ -14,9 +14,9 @@ public class TimeSlot : Entity
         get => duration;
         private set
         {
-            Guard.Against.Null(value, nameof(value), "Duration cannot be null");
-            Guard.Against.NegativeOrZero(value, nameof(value), "Duration cannot be less than or equal to 0");
-            Guard.Against.OutOfRange(value, nameof(value), 1, 1440, "Duration must be between 1 and 1440 minutes");
+            Guard.Against.Null(value, nameof(Duration), "Duration cannot be null");
+            Guard.Against.NegativeOrZero(value, nameof(Duration), "Duration cannot be less than or equal to 0");
+            Guard.Against.OutOfRange(value, nameof(Duration), 1, 1440, "Duration must be between 1 and 1440 minutes");
 
             duration = value;
         }
@@ -24,16 +24,16 @@ public class TimeSlot : Entity
     public AppointmentType AppointmentType
     {
         get => appointmentType;
-        private set => appointmentType = Guard.Against.EnumOutOfRange<AppointmentType>(value, nameof(value), "Invalid AppointmentType");
+        private set => appointmentType = Guard.Against.EnumOutOfRange<AppointmentType>(value, nameof(AppointmentType), "Invalid AppointmentType");
     }
     public DateTime DateTime
     {
         get => dateTime;
         private set
         {
-            Guard.Against.Null(value, nameof(value), "DateTime cannot be null");
-            Guard.Against.Default(value, nameof(value), "DateTime cannot be the default value");
-            Guard.Against.OutOfRange(value, nameof(value), DateTime.MinValue, DateTime.Now, "DateTime cannot be in the past");
+            Guard.Against.Null(value, nameof(DateTime), "DateTime cannot be null");
+            Guard.Against.Default(value, nameof(DateTime), "DateTime cannot be the default value");
+            Guard.Against.OutOfRange(value, nameof(DateTime), DateTime.MinValue, DateTime.Now, "DateTime cannot be in the past");
 
             dateTime = value;
         }

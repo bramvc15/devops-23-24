@@ -1,7 +1,7 @@
 using Domain;
 using Shared.DTO;
-using Shared.CMS;
 using Microsoft.EntityFrameworkCore;
+using Shared.DTO.CMS;
 
 namespace Persistence.Data
 {
@@ -20,12 +20,12 @@ namespace Persistence.Data
         public DbSet<ScheduleTimeSlot> ScheduleTimeSlots { get; set; }
 
         // CMS Tables
-        public DbSet<CMSBlog> Blogs { get; set; }
-        public DbSet<CMSChatBotQuestion> ChatBotQuestions { get; set; }
-        public DbSet<CMSContact> Contacts { get; set; }
-        public DbSet<CMSHomeHeader> HomeHeaders { get; set; }
-        public DbSet<CMSLocation> Locations { get; set; }
-        public DbSet<CMSTreatment> Treatments { get; set; }
+        public DbSet<BlogDTO> Blogs { get; set; }
+        public DbSet<ChatBotQuestionDTO> ChatBotQuestions { get; set; }
+        public DbSet<ContactDTO> Contacts { get; set; }
+        public DbSet<HomeHeaderDTO> HomeHeaders { get; set; }
+        public DbSet<LocationDTO> Locations { get; set; }
+        public DbSet<TreatmentDTO> Treatments { get; set; }
 
         // ModelChanges on persist
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,10 +1,10 @@
-namespace Shared.CMS;
+namespace Shared.DTO.CMS;
 
-public class CMSChatBotQuestion
+public class ChatBotQuestionDTO
 {
     public int? Id { get; set; }
     public string? Question { get; set; }
     public string? Answer { get; set; }
     public bool? IsFollowUp { get; set; }
-    public List<CMSChatBotQuestion>? FollowUpQuestions { get; set; }
+    public List<ChatBotQuestionDTO>? FollowUpQuestions { get; set; }
 }

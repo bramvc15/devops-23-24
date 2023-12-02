@@ -1,6 +1,6 @@
-namespace Shared.CMS;
+namespace Shared.DTO.CMS;
 
-public class CMSBlog
+public class BlogDTO
 {
     public int? Id { get; set; }
     public string? Title { get; set; }

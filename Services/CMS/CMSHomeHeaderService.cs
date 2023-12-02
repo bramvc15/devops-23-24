@@ -1,7 +1,7 @@
 using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
-using Shared.CMS;
+using Shared.DTO.CMS;
 
 namespace Services.CMS
 {
@@ -15,16 +15,16 @@ namespace Services.CMS
             _homeHeaders = ctx.HomeHeaders;
         }
 
-        private readonly DbSet<CMSHomeHeader> _homeHeaders;
+        private readonly DbSet<HomeHeaderDTO> _homeHeaders;
 
-        public async Task<CMSHomeHeader> GetHomeHeader()
+        public async Task<HomeHeaderDTO> GetHomeHeader()
         {
             return await _homeHeaders.FirstOrDefaultAsync();
         }
 
-        public async Task<CMSHomeHeader> UpdateHomeHeader(CMSHomeHeader homeHeader)
+        public async Task<HomeHeaderDTO> UpdateHomeHeader(HomeHeaderDTO homeHeader)
         {
-            CMSHomeHeader header = await _homeHeaders.FindAsync(homeHeader.Id);
+            HomeHeaderDTO header = await _homeHeaders.FindAsync(homeHeader.Id);
             header.Title = homeHeader.Title != null ? homeHeader.Title : header.Title;
             header.Context = homeHeader.Context != null ? homeHeader.Context : header.Context;
             _homeHeaders.Update(header);

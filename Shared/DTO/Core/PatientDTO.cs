@@ -1,5 +1,5 @@
 using Shared.Enums;
-namespace Shared.DTO;
+namespace Shared.DTO.Core;
 
 public class PatientDTO
 {

@@ -1,6 +1,6 @@
-namespace Shared.CMS;
+namespace Shared.DTO.CMS;
 
-public class CMSTreatment
+public class TreatmentDTO
 {
     public int? Id { get; set; }
     public string? Name { get; set; }

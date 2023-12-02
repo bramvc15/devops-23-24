@@ -1,6 +1,6 @@
 using BlazorApp.Data;
 using Microsoft.EntityFrameworkCore;
-using Shared.CMS;
+using Shared.DTO.CMS;
 
 namespace Services.CMS
 {
@@ -14,16 +14,16 @@ namespace Services.CMS
             _contacts = ctx.Contacts;
         }
 
-        private readonly DbSet<CMSContact> _contacts;
+        private readonly DbSet<ContactDTO> _contacts;
 
-        public async Task<CMSContact> GetContact()
+        public async Task<ContactDTO> GetContact()
         {
             return await _contacts.FirstOrDefaultAsync();
         }
 
-        public async Task<CMSContact> UpdateContact(CMSContact newCMS)
+        public async Task<ContactDTO> UpdateContact(ContactDTO newCMS)
         {
-            CMSContact con = await _contacts.FindAsync(newCMS.Id);
+            ContactDTO con = await _contacts.FindAsync(newCMS.Id);
             con.Context = newCMS.Context != null ? newCMS.Context : con.Context;
             _contacts.Update(newCMS);
             await _ctx.SaveChangesAsync();

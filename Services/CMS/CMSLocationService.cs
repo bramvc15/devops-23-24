@@ -1,7 +1,7 @@
 using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
-using Shared.CMS;
+using Shared.DTO.CMS;
 
 namespace Services.CMS
 {
@@ -15,16 +15,16 @@ namespace Services.CMS
             _locations = ctx.Locations;
         }
 
-        private readonly DbSet<CMSLocation> _locations;
+        private readonly DbSet<LocationDTO> _locations;
 
-        public async Task<CMSLocation> GetLocation()
+        public async Task<LocationDTO> GetLocation()
         {
             return await _locations.FirstOrDefaultAsync();
         }
 
-        public async Task<CMSLocation> UpdateLocation(CMSLocation newLocation)
+        public async Task<LocationDTO> UpdateLocation(LocationDTO newLocation)
         {
-            CMSLocation loc = await _locations.FindAsync(newLocation.Id);
+            LocationDTO loc = await _locations.FindAsync(newLocation.Id);
             loc.Context = newLocation.Context != null ? newLocation.Context : loc.Context;
             _locations.Update(loc);
             await _ctx.SaveChangesAsync();

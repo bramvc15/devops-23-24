@@ -1,7 +1,7 @@
 using BlazorApp.Data;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Shared.CMS;
+using Shared.DTO.CMS;
 
 namespace Services.CMS
 {
@@ -15,9 +15,9 @@ namespace Services.CMS
             _blogs = ctx.Blogs;
         }
 
-        private readonly DbSet<CMSBlog> _blogs;
+        private readonly DbSet<BlogDTO> _blogs;
 
-        public async Task<(IEnumerable<CMSBlog> blogs, int totalPages)> GetBlogs(int page = 1, int pageSize = 5)
+        public async Task<(IEnumerable<BlogDTO> blogs, int totalPages)> GetBlogs(int page = 1, int pageSize = 5)
         {
             var totalCount = _blogs.Count();
             var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
@@ -30,11 +30,11 @@ namespace Services.CMS
             return (blogsPerPage, totalPages);
             //return await _blogs.ToListAsync(); // zonder pagination
         }
-        public async Task<CMSBlog> GetBlog(int BlogId)
+        public async Task<BlogDTO> GetBlog(int BlogId)
         {
             var blog = await _blogs.FindAsync(BlogId);
 
-            CMSBlog dto = new()
+            BlogDTO dto = new()
             {
                Id = blog.Id,
                ImageLink = blog.ImageLink,
@@ -44,7 +44,7 @@ namespace Services.CMS
 
             return dto;
         }
-        public async Task<CMSBlog> CreateBlog(CMSBlog newBlog)
+        public async Task<BlogDTO> CreateBlog(BlogDTO newBlog)
         {
             _blogs.Add(newBlog);
             await _ctx.SaveChangesAsync();
@@ -52,7 +52,7 @@ namespace Services.CMS
             return newBlog;
         }
 
-        public async Task<CMSBlog> UpdateBlog(CMSBlog updatedBlog)
+        public async Task<BlogDTO> UpdateBlog(BlogDTO updatedBlog)
         {
             _blogs.Update(updatedBlog);
             await _ctx.SaveChangesAsync();
@@ -60,7 +60,7 @@ namespace Services.CMS
             return updatedBlog;
         }
 
-        public async Task DeleteBlog(CMSBlog blogToDelete)
+        public async Task DeleteBlog(BlogDTO blogToDelete)
         {
             _blogs.Remove(blogToDelete);
             await _ctx.SaveChangesAsync();

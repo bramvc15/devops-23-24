@@ -1,7 +1,7 @@
 using BlazorApp.Data;
 using BlazorApp.Models;
 using Microsoft.EntityFrameworkCore;
-using Shared.CMS;
+using Shared.DTO.CMS;
 
 namespace Services.CMS
 {
@@ -15,14 +15,14 @@ namespace Services.CMS
             _treatments = ctx.Treatments;
         }
 
-        private readonly DbSet<CMSTreatment> _treatments;
+        private readonly DbSet<TreatmentDTO> _treatments;
 
-        public async Task<IEnumerable<CMSTreatment>> GetTreatments()
+        public async Task<IEnumerable<TreatmentDTO>> GetTreatments()
         {
             return await _treatments.ToListAsync();
         }
 
-        public async Task<CMSTreatment> CreateTreatment(CMSTreatment newTreatment)
+        public async Task<TreatmentDTO> CreateTreatment(TreatmentDTO newTreatment)
         {
             _treatments.Add(newTreatment);
             await _ctx.SaveChangesAsync();
@@ -30,9 +30,9 @@ namespace Services.CMS
             return newTreatment;
         }
 
-        public async Task<CMSTreatment> UpdateTreatment(CMSTreatment updatedTreatment)
+        public async Task<TreatmentDTO> UpdateTreatment(TreatmentDTO updatedTreatment)
         {
-            CMSTreatment treatment = await _treatments.FindAsync(updatedTreatment.Id);
+            TreatmentDTO treatment = await _treatments.FindAsync(updatedTreatment.Id);
             treatment.Name = updatedTreatment.Name != null ? updatedTreatment.Name : treatment.Name;
             treatment.Description = updatedTreatment.Description != null ? updatedTreatment.Description : treatment.Description;
             treatment.ImageLink = updatedTreatment.ImageLink != null ? updatedTreatment.ImageLink : treatment.ImageLink;
@@ -42,7 +42,7 @@ namespace Services.CMS
             return updatedTreatment;
         }
 
-        public async Task DeleteTreatment(CMSTreatment treatmentToDelete)
+        public async Task DeleteTreatment(TreatmentDTO treatmentToDelete)
         {
             _treatments.Remove(treatmentToDelete);
             await _ctx.SaveChangesAsync();

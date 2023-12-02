@@ -1,6 +1,6 @@
-namespace Shared.CMS;
+namespace Shared.DTO.CMS;
 
-public class CMSHomeHeader
+public class HomeHeaderDTO
 {
     public int? Id { get; set; }
     public string? Title { get; set; }

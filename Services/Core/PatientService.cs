@@ -1,8 +1,8 @@
 using BlazorApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Shared.Enums;
-using Shared.DTO;
 using Domain;
+using Shared.DTO.Core;
 
 namespace Services.Core
 {
