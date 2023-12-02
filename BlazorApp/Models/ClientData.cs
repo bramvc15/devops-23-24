@@ -7,9 +7,9 @@ namespace BlazorApp.Models
         [Required (ErrorMessage = "Naam is verplicht")]
         [StringLength(30, ErrorMessage = "Naam is te lang")]
         public string Name { get; set; }
-
+        
         [Required (ErrorMessage = "Email is verplicht")]
-        [EmailAddress(ErrorMessage = "Email is niet geldig")]
+        [RegularExpression(@"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Incorrect email formaat.")]
         public string Email { get; set; }
 
         [Required (ErrorMessage = "Telefoon is verplicht")]
