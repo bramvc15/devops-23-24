@@ -15,6 +15,59 @@
     padding: 10px 0px 10px;
 }
 
+.dateselector-btn {
+    height: 50px;
+    background-color: #93C5BB;
+    color: white;
+    border: 0;
+    transition: 150ms ease-in-out;
+    border-radius: 3px;
+}
+
+.dateselector-btn:hover {
+    background-color: rgb(131, 182, 176);
+}
+
+.card {
+    background-color: transparent;
+    border: 0;
+    padding: 2px
+}
+
+.timeslot {
+    height: 40px;
+    background-color: #93C5BB;
+    color: white;
+    border-radius: 10px;
+    border: 0;
+    transition: 150ms ease-in-out;
+}
+
+.daybutton {
+    border-radius: 15px;
+    background-color: #033878;
+    transition: 150ms ease-in-out;
+    border: 0;
+    color: white;
+    padding: 3px 10px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.daybutton:hover {
+    background-color: #235ea5;
+}
+
+.unavailable {
+    text-align: center;
+    padding-top: 10%;
+    font-size: larger;
+}
+
+.timeslot:hover {
+    background-color: rgb(131, 182, 176);
+}
+
 .e-calendar .e-content .e-cell.personal-appointment span.e-day,
 .e-calendar .e-content td:hover.e-cell.personal-appointment span.e-day,
 .e-calendar .e-content td.e-selected.e-focused-date.e-cell.personal-appointment span.e-day {
