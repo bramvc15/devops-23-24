@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Enums;
 namespace BlazorApp.Models
 {
     public class ClientData
@@ -23,6 +24,9 @@ namespace BlazorApp.Models
         [Required (ErrorMessage = "Reden voor consultatie is verplicht")]
         [StringLength(250, ErrorMessage = "Reden is te lang")]
         public string Reason { get; set; }
+
+        [Required (ErrorMessage = "Geslacht is verplicht")]
+        public Gender SelectedGender { get; set;}
     }
 }
 

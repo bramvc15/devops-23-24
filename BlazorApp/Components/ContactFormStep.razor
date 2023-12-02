@@ -21,6 +21,17 @@
                     <InputText id="Email" @bind-Value="clientData.Email" type='text' placeholder='john@mail.com' />
                     <ValidationMessage For="@(() => clientData.Email)" />
                 </div>
+                    <div class="la">
+                    <label class='formLabel' for="Gender">Geslacht</label>
+                </div>
+                <div class='formInput'>
+                    <select id="Gender" @bind="clientData.SelectedGender" class="gender-select">
+                        <option value="@Enums.Gender.Male">Man</option>
+                        <option value="@Enums.Gender.Female">Vrouw</option>
+                        <option value="@Enums.Gender.Other">Andere</option>
+                    </select>
+                    <ValidationMessage For="@(() => clientData.SelectedGender)" />
+                </div>
             </div>
             <div class="coll">
                 <div class="la">
@@ -65,15 +76,6 @@
 
     private async Task SubmitClientData()
     {
-        PatientDTO patientDTO = new PatientDTO {
-            Name = clientData.Name,
-            Email = clientData.Email,
-            PhoneNumber = clientData.Phone,
-            DateOfBirth = clientData.BirthDate,
-            Gender = Gender.Male, // placeholder
-            BloodType = BloodType.APositive // placeholder
-        };
-
         OnContactSubmitted.InvokeAsync(clientData);
     }
 }
