@@ -1,6 +1,4 @@
-using Domain;
-using System;
-using Xunit;
+using Shared.Enums;
 
 namespace Domain.Tests;
 
@@ -25,22 +23,14 @@ public class AppointmentTest
 	{
 		Assert.Equal(_appointment.Reason, "Reason: Operation on both eyes");
 		Assert.Equal(_appointment.Note, "Note: patient is known to act weird");
-		Assert.Equal(_appointment.GetPatient(), _patient);
+		Assert.Equal(_appointment.Patient, _patient);
 	}
 
 	[Fact]
 	public void Appointment_Constructor_EmptyReason_ThrowsException()
 	{
 		Patient newPatient = new Patient("New Patient", "patient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-		Assert.Throws<ArgumentNullException>(() => new Appointment(newPatient, "", "Note: this is a note."));
-	}
-
-	[Fact]
-	public void Appointment_Constructor_ValidParametersWithoutNote()
-	{
-		Patient newPatient = new Patient("New Patient", "patient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-		Appointment newAppointment = new Appointment(newPatient, "Reason: new reason", "");
-		Assert.Equal(newAppointment.Note, "This appointment has no additional note.");
+		Assert.Throws<ArgumentException>(() => new Appointment(newPatient, "", "Note: this is a note."));
 	}
 
 	[Fact]
@@ -48,27 +38,15 @@ public class AppointmentTest
 	{
 		Assert.Throws<ArgumentNullException>(() => new Appointment((Patient) null, "Reason: new reason", ""));
 	}
-    #endregion
-
-    #region Method tests
-    [Fact]
-	public void Appointment_HasPatient_IsTrue()
-	{
-		Assert.True(_appointment.HasPatient());
-	}
-
-	[Fact]
-	public void Appointment_ChangePatient()
-	{
-		Patient newPatient = new Patient("New Patient", "patient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-		_appointment.ChangePatient(newPatient);
-		Assert.Equal(_appointment.GetPatient(), newPatient);
-	}
-
-	[Fact]
-	public void Appointment_ChangeInvalidPatient_ThrowsException()
-	{
-		Assert.Throws<ArgumentNullException>(() => _appointment.ChangePatient(null));
-	}
 	#endregion
+
+	#region Method Tests
+	[Fact]
+	public void Appointment_UpdateAppointment()
+	{
+		_appointment.UpdateAppointment("New String", "New Note");
+		Assert.Equal(_appointment.Reason, "New String");
+        Assert.Equal(_appointment.Note, "New Note");
+    }
+    #endregion
 }

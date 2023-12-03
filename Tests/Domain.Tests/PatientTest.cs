@@ -1,6 +1,5 @@
-using Domain;
-using System;
-using Xunit;
+using Shared.Enums;
+using System.ComponentModel;
 
 namespace Domain.Tests;
 
@@ -32,13 +31,13 @@ public class PatientTest
     [Fact]
     public void Patient_Constructor_EmptyName_ThrowsException()
     {
-        Assert.Throws<ArgumentNullException>(() => new Patient("", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive));
+        Assert.Throws<ArgumentException>(() => new Patient("", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive));
     }
 
     [Fact]
     public void Patient_Constructor_EmptyEmail_ThrowsException()
     {
-        Assert.Throws<ArgumentNullException>(() => new Patient("Rino Petereyns", "", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive));
+        Assert.Throws<ArgumentException>(() => new Patient("Rino Petereyns", "", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive));
     }
 
     [Fact]
@@ -50,41 +49,19 @@ public class PatientTest
     [Fact]
     public void Patient_Constructor_InvalidBirthDate_ThrowsException()
     {
-        Assert.Throws<ArgumentException>(() => new Patient("Rino Petereyns", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(1000, 6, 28), Gender.Male, BloodType.OPositive));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Patient("Rino Petereyns", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(1000, 6, 28), Gender.Male, BloodType.OPositive));
     }
 
     [Fact]
     public void Patient_Constructor_InvalidGender_ThrowsException()
     {
-        Assert.Throws<ArgumentException>(() => new Patient("Rino Petereyns", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), (Gender)100, BloodType.OPositive));
+        Assert.Throws<InvalidEnumArgumentException>(() => new Patient("Rino Petereyns", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), (Gender)100, BloodType.OPositive));
     }
 
     [Fact]
     public void Patient_Constructor_InvalidBloodType_ThrowsException()
     {
-        Assert.Throws<ArgumentException>(() => new Patient("Rino Petereyns", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, (BloodType)100));
-    }
-    #endregion
-
-    #region Method tests
-    [Fact]
-    public void Patient_MakeAppointment()
-    {
-        Doctor newDoctor = new Doctor("Dr. Doofenshmirtz", "Evil-Specialization", Gender.Other);
-        TimeSlot newTimeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60);
-        newDoctor.AddTimeSlot(newTimeSlot);
-        _patient.MakeAppointment("Reason: example", "Note: example", newDoctor, newTimeSlot);
-
-        Assert.Equal(newDoctor.GetTimeSlots().FirstOrDefault().IsTimeSlotAvailable(), false);
-    }
-
-    public void Patient_GetAppointments()
-    {
-        Doctor newDoctor = new Doctor("Dr. Doofenshmirtz", "Evil-Specialization", Gender.Other);
-        TimeSlot newTimeSlot = new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60);
-        newDoctor.AddTimeSlot(newTimeSlot);
-        _patient.MakeAppointment("Reason: example", "Note: example", newDoctor, newTimeSlot); ;
-        Assert.Single(_patient.GetAppointments());
+        Assert.Throws<InvalidEnumArgumentException>(() => new Patient("Rino Petereyns", "rinopetereyns@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, (BloodType)100));
     }
     #endregion
 }

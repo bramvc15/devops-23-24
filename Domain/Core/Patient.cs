@@ -85,13 +85,7 @@ public class Patient : Entity
         DateOfBirth = dateOfBirth;
         Gender = gender;
         BloodType = bloodType;
-    }
-
-    public void MakeAppointment(string reason, string note, Doctor doctor, TimeSlot timeSlot)
-    {
-        // TODO bound to change
-        Appointment appointment = doctor.TimeSlots.FirstOrDefault(timeSlot).CreateAppointment(this, reason, note);
-        Appointments.Add(appointment);
+        Appointments = new List<Appointment>();
     }
     #endregion
 

@@ -108,13 +108,13 @@ public class Doctor : Entity
         }
     }
 
-    public void CreateAppointment(Patient patient, TimeSlot timeSlot, string reason, string note)
+    public Appointment CreateAppointment(Patient patient, TimeSlot timeSlot, string reason, string note)
     {
         if (TimeSlots.Contains(timeSlot))
         {
             if (IsAvailable == true && timeSlot.Appointment == null)
             {
-                timeSlot.CreateAppointment(patient, reason, note);
+                return TimeSlots.FirstOrDefault(timeSlot).CreateAppointment(patient, reason, note);
             }
             else
             {
@@ -133,7 +133,7 @@ public class Doctor : Entity
         {
             if (timeSlot.Appointment != null)
             {
-                timeSlot.Appointment.UpdateAppointment(reason, note);
+                TimeSlots.FirstOrDefault(timeSlot).Appointment.UpdateAppointment(reason, note);
             }
             else
             {
@@ -152,8 +152,7 @@ public class Doctor : Entity
         {
             if (timeSlot.Appointment != null)
             {
-                TimeSlot newTimeSlot = TimeSlots.FirstOrDefault(timeSlot);
-                newTimeSlot.Appointment = null;
+                TimeSlots.FirstOrDefault(timeSlot).Appointment = null;
             }
             else
             {
