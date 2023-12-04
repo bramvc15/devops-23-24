@@ -279,7 +279,7 @@ namespace BlazorApp.Data
                 new CMSChatBotQuestion
                 {
                     Question = "Hoe maak ik een afspraak?",
-                    Answer = "<p>Rechtsbovenaan de pagina kan u op de knop <a href='http://127.0.0.1:5046/Afspraak' rel='noopener noreferrer' target='_blank'>'Maak een afspraak'</a> klikken. U wordt dan doorverwezen naar een pagina waar u een afspraak kan maken.</p>",
+                    Answer = "<p>Rechtsbovenaan de pagina kan u op de knop <a href='/Afspraak' rel='noopener noreferrer' target='_blank'>'Maak een afspraak'</a> klikken. U wordt dan doorverwezen naar een pagina waar u een afspraak kan maken.</p>",
                 },
             };
             #endregion
