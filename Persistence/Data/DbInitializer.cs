@@ -160,48 +160,48 @@ namespace Persistence.Data
             {
                 new ChatBotQuestion(
                     "Hoeveel kost een behandeling?",
-                    "In welke behandeling bent u geïnteresseerd?",
+                    "<p>In welke behandeling bent u geïnteresseerd?</p>",
                     false,
                     new List<ChatBotQuestion>
                     {
                         new ChatBotQuestion(
                             "Ooglidcorrectie",
-                            "Over welk soort ooglidcorrectie gaat het?",
+                            "<p>Over welk soort ooglidcorrectie gaat het?</p>",
                             true,
                             new List<ChatBotQuestion>
                             {
                                 new ChatBotQuestion(
                                     "Bovenooglidcorrectie",
-                                    "Een bovenooglidcorrectie kost 1250 euro.",
+                                    "<p>Een bovenooglidcorrectie kost 1250 euro.</p>",
                                     true
                                 ),
                                 new ChatBotQuestion(
                                     "Onderooglidcorrectie",
-                                    "Een onderooglidcorrectie kost 1000 euro.",
+                                    "<p>Een onderooglidcorrectie kost 1000 euro.</p>",
                                     true
                                 ),
                             }
                         ),
                         new ChatBotQuestion(
                             "Cataractoperatie",
-                            "Een cataractoperatie kost tussen de 800 en 1500 euro.", 
+                            "<p>Een cataractoperatie kost tussen de 800 en 1500 euro.</p>", 
                             true
                         ),
                         new ChatBotQuestion(
                             "Straaloperatie",
-                            "Een straaloperatie kost tussen de 1250 en 2000 euro.",
+                            "<p>Een straaloperatie kost tussen de 1250 en 2000 euro.</p>",
                             true
                         ),
                     }
                 ),
                 new ChatBotQuestion(
                     "Waar is de vestiging gelegen?",
-                    "Onze vestiging is gelegen in 9040 Gent, op de Antwerpsesteenweg 1022.",
+                    "<p>Onze vestiging is gelegen in 9040 Gent, op de Antwerpsesteenweg 1022.</p>",
                     false
                 ),
                 new ChatBotQuestion(
                     "Hoe maak ik een afspraak?",
-                    "Rechtsbovenaan de pagina kan u op de knop 'Maak een afspraak' klikken. U wordt dan doorverwezen naar een pagina waar u een afspraak kan maken.",
+                    "<p>Rechtsbovenaan de pagina kan u op de knop <a href='http://127.0.0.1:5046/Afspraak' rel='noopener noreferrer' target='_blank'>'Maak een afspraak'</a> klikken. U wordt dan doorverwezen naar een pagina waar u een afspraak kan maken.</p>",
                     false
                 ),
             };
