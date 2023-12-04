@@ -233,27 +233,27 @@ namespace BlazorApp.Data
                 new CMSChatBotQuestion
                 {
                     Question = "Hoeveel kost een behandeling?",
-                    Answer = "In welke behandeling bent u geïnteresseerd?",
+                    Answer = "<p>In welke behandeling bent u geïnteresseerd?</p>",
                     FollowUpQuestions = new List<CMSChatBotQuestion>
                     {
                         new CMSChatBotQuestion
                         {
                             IsFollowUp = true,
                             Question = "Ooglidcorrectie",
-                            Answer = "Over welk soort ooglidcorrectie gaat het?",
+                            Answer = "<p>Over welk soort ooglidcorrectie gaat het?</p>",
                             FollowUpQuestions = new List<CMSChatBotQuestion>
                             {
                                 new CMSChatBotQuestion
                                 {
                                     IsFollowUp = true,
                                     Question = "Bovenooglidcorrectie",
-                                    Answer = "Een bovenooglidcorrectie kost 1250 euro.",
+                                    Answer = "<p>Een bovenooglidcorrectie kost 1250 euro.</p>",
                                 },
                                 new CMSChatBotQuestion
                                 {
                                     IsFollowUp = true,
                                     Question = "Onderooglidcorrectie",
-                                    Answer = "Een onderooglidcorrectie kost 1000 euro.",
+                                    Answer = "<p>Een onderooglidcorrectie kost 1000 euro.</p>",
                                 },
                             }
                         },
@@ -261,25 +261,25 @@ namespace BlazorApp.Data
                         {
                             IsFollowUp = true,
                             Question = "Cataractoperatie",
-                            Answer = "Een cataractoperatie kost tussen de 800 en 1500 euro.",
+                            Answer = "<p>Een cataractoperatie kost tussen de 800 en 1500 euro.</p>",
                         },
                         new CMSChatBotQuestion
                         {
                             IsFollowUp = true,
                             Question = "Straaloperatie",
-                            Answer = "Een straaloperatie kost tussen de 1250 en 2000 euro.",
+                            Answer = "<p>Een straaloperatie kost tussen de 1250 en 2000 euro.</p>",
                         },
                     }
                 },
                 new CMSChatBotQuestion
                 {
                     Question = "Waar is de vestiging gelegen?",
-                    Answer = "Onze vestiging is gelegen in 9040 Gent, op de Antwerpsesteenweg 1022.",
+                    Answer = "<p>Onze vestiging is gelegen in 9040 Gent, op de Antwerpsesteenweg 1022.</p>",
                 },
                 new CMSChatBotQuestion
                 {
                     Question = "Hoe maak ik een afspraak?",
-                    Answer = "Rechtsbovenaan de pagina kan u op de knop 'Maak een afspraak' klikken. U wordt dan doorverwezen naar een pagina waar u een afspraak kan maken.",
+                    Answer = "<p>Rechtsbovenaan de pagina kan u op de knop <a href='http://127.0.0.1:5046/Afspraak' rel='noopener noreferrer' target='_blank'>'Maak een afspraak'</a> klikken. U wordt dan doorverwezen naar een pagina waar u een afspraak kan maken.</p>",
                 },
             };
             #endregion

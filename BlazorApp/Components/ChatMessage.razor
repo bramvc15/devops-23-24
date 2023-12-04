@@ -15,7 +15,7 @@
             @if (ChatbotQuestionsList == null || visible)
             {
                 <span class="message">
-                    @Message
+                     @((MarkupString)Message)
                 </span>
                 if (Image != null)
                 {

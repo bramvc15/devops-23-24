@@ -32,7 +32,7 @@
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
                 <h5>Antwoord</h5>
-                @Question.Answer
+                @((MarkupString)Question.Answer)
             </div>
             <div class="container">
                 @if (FollowUpQuestions != null && FollowUpQuestions.Count() > 0)

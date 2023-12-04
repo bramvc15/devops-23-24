@@ -21,8 +21,21 @@
                 <TextEdit Placeholder="Vraag die de bezoeker aanklikt" @bind-Text="question" />
             </Field>
             <Field>
-                <FieldLabel>Antwoord</FieldLabel>
-                <TextEdit Placeholder="Antwoord die de chatbot geeft" @bind-Text="answer" />
+                <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
+                                PlaceHolder="Antwoord..." SubmitOnEnter="false"
+                            ToolbarPosition="Placement.Bottom">
+                    <Editor>@answer</Editor>
+                    <Toolbar>
+                        <RichTextEditToolbarGroup>
+                            <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
+                            <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
+                            <RichTextEditToolbarButton Action="RichTextEditAction.Underline" />
+                            <RichTextEditToolbarButton Action="RichTextEditAction.Link" />
+                            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
+                            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
+                        </RichTextEditToolbarGroup>
+                    </Toolbar>
+                </RichTextEdit>
             </Field>
         </ModalBody>
         <ModalFooter>
@@ -37,6 +50,9 @@
     public string Text { get; set; }
 
     private Modal? modalRef;
+
+    protected new RichTextEdit richTextEditRef;
+    protected string savedContent;
 
     string? question;
     string? answer;
@@ -54,12 +70,13 @@
 
     public async Task AddQuestion()
     {
-        if (this.question == null || this.answer == null || this.question == "" || this.answer == "")
+        savedContent = await richTextEditRef.GetHtmlAsync();
+        if (this.question == null || savedContent == null || this.question == "" || savedContent == "")
             return;
 
         CMSChatBotQuestion question = new CMSChatBotQuestion();
         question.Question = this.question;
-        question.Answer = this.answer;
+        question.Answer = this.savedContent;
 
         if (ParentQuestion != null)
             await ChatbotService.AddFollowUpQuestion(ParentQuestion, question);
@@ -71,6 +88,11 @@
         this.answer = null;
 
         HandleRefresh();
+    }
+
+    public async Task OnContentChanged()
+    {
+        savedContent = await richTextEditRef.GetHtmlAsync();
     }
 
     private Task? CloseModal()
