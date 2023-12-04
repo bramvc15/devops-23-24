@@ -1,28 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.CMS;
 using Shared;
+using Shared.DTO.CMS;
 
 namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CMSLocationController : ControllerBase
+public class LocationController : ControllerBase
 {
-    private readonly CMSLocationService _service;
+    private readonly LocationService _service;
 
-    public CMSLocationController(CMSLocationService service)
+    public LocationController(LocationService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public Task<CMSLocation> GetLocation()
+    public Task<LocationDTO> GetLocation()
     {
         return _service.GetLocation();
     }
     
     [HttpPut]
-    public Task<CMSLocation> UpdateLocation([FromBody] CMSLocation request)
+    public Task<LocationDTO> UpdateLocation([FromBody] LocationDTO request)
     {
         return _service.UpdateLocation(request);
     }

@@ -35,8 +35,8 @@ namespace Services.Core
                         Email = a.Patient.Email,
                         PhoneNumber = a.Patient.PhoneNumber,
                         DateOfBirth = a.Patient.DateOfBirth,
-                        Gender = (Gender) a.Patient.Gender,
-                        BloodType = (BloodType) a.Patient.BloodType,
+                        Gender = a.Patient.Gender,
+                        BloodType = a.Patient.BloodType,
                     }
                 });
 
@@ -87,7 +87,7 @@ namespace Services.Core
 
         public async Task<AppointmentDTO> UpdateAppointment(AppointmentDTO updatedAppointment)
         {
-            AppointmentDTO response = new AppointmentDTO();
+            AppointmentDTO response = new();
 
             try
             {
@@ -96,9 +96,9 @@ namespace Services.Core
                 if (existingAppointment != null)
                 {
                     var existingPatient = await _DBContext.Patients.FirstOrDefaultAsync(p => p.Id == updatedAppointment.PatientDTO.Id);
-                    Appointment updatedDomainAppointment = new Appointment(existingPatient, updatedAppointment.Reason, updatedAppointment.Note);
-                    existingAppointment.UpdateAppointment(updatedDomainAppointment);
-                    existingAppointment.ChangePatient(existingPatient);
+                    Appointment updatedDomainAppointment = new(existingPatient, updatedAppointment.Reason, updatedAppointment.Note);
+                    existingAppointment.UpdateAppointment(updatedDomainAppointment.Reason, updatedAppointment.Note);
+                    existingAppointment.Patient = existingPatient;
 
                     await _DBContext.SaveChangesAsync();
 

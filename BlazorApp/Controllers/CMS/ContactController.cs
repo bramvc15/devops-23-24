@@ -1,28 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.CMS;
 using Shared;
+using Shared.DTO.CMS;
 
 namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CMSContactController : ControllerBase
+public class ContactController : ControllerBase
 {
-    private readonly CMSContactService _service;
+    private readonly ContactService _service;
 
-    public CMSContactController(CMSContactService service)
+    public ContactController(ContactService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public Task<CMSContact> GetContact()
+    public Task<ContactDTO> GetContact()
     {
         return _service.GetContact();
     }
 
     [HttpPut]
-    public Task<CMSContact> UpdateContact([FromBody] CMSContact request)
+    public Task<ContactDTO> UpdateContact([FromBody] ContactDTO request)
     {
         return _service.UpdateContact(request);
     }

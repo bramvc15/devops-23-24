@@ -1,4 +1,5 @@
 using Ardalis.GuardClauses;
+using Shared.DTO.CMS;
 using System.Collections;
 using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
@@ -55,6 +56,11 @@ public class ChatBotQuestion : Entity
         Answer = answer;
         IsFollowUp = isFollowUp;
         FollowUpQuestions = list;
+    }
+
+    public static explicit operator ChatBotQuestion(List<ChatBotQuestionDTO>? v)
+    {
+        throw new NotImplementedException();
     }
     #endregion
 }

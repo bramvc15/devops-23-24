@@ -14,7 +14,7 @@ public class Appointment : Entity
 
     public string? Note { get; private set; }
 
-    public Patient Patient { get; }
+    public Patient Patient { get; set; }
 
     // empty reference for patient many-to-one appointment relation for db
     public TimeSlot? TimeSlot { get; private set; } = null!;

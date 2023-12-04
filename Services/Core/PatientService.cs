@@ -23,15 +23,15 @@ namespace Services.Core
 
             foreach (var patient in patients)
             {
-                PatientDTO convertedPatient = new PatientDTO 
+                PatientDTO convertedPatient = new()
                 {
                     Id = patient.Id,
                     Name = patient.Name,
                     Email = patient.Email,
                     PhoneNumber = patient.PhoneNumber,
                     DateOfBirth = patient.DateOfBirth,
-                    Gender = (Gender) patient.Gender,
-                    BloodType = (BloodType) patient.BloodType,
+                    Gender = patient.Gender,
+                    BloodType = patient.BloodType,
                 };
 
                 response.Add(convertedPatient);
@@ -42,11 +42,11 @@ namespace Services.Core
 
         public async Task<PatientDTO> CreatePatient(PatientDTO patient)
         {
-            PatientDTO response = new PatientDTO();
+            PatientDTO response = new();
 
             try
             {
-                Patient newDomainPatient = new Patient(patient.Name, patient.Email, patient.PhoneNumber, patient.DateOfBirth, (Gender) patient.Gender, (BloodType) patient.BloodType);
+                Patient newDomainPatient = new(patient.Name, patient.Email, patient.PhoneNumber, patient.DateOfBirth, patient.Gender, patient.BloodType);
 
                 _DBContext.Patients.Add(newDomainPatient);
                 await _DBContext.SaveChangesAsync();
@@ -56,8 +56,8 @@ namespace Services.Core
                 response.Email = newDomainPatient.Email;
                 response.PhoneNumber = newDomainPatient.PhoneNumber;
                 response.DateOfBirth = newDomainPatient.DateOfBirth;
-                response.Gender = (Gender) newDomainPatient.Gender;
-                response.BloodType = (BloodType) newDomainPatient.BloodType;
+                response.Gender = newDomainPatient.Gender;
+                response.BloodType = newDomainPatient.BloodType;
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
@@ -67,7 +67,7 @@ namespace Services.Core
 
         public async Task<PatientDTO> UpdatePatient(PatientDTO patient)
         {
-            PatientDTO response = new PatientDTO();
+            PatientDTO response = new();
 
             try
             {
@@ -75,7 +75,7 @@ namespace Services.Core
 
                 if (existingPatient != null)
                 {
-                    existingPatient.UpdatePatient(patient.Name, patient.Email, patient.PhoneNumber, patient.DateOfBirth, (Gender) patient.Gender, (BloodType) patient.BloodType);
+                    existingPatient.UpdatePatient(patient.Name, patient.Email, patient.PhoneNumber, patient.DateOfBirth, patient.Gender, patient.BloodType);
                     await _DBContext.SaveChangesAsync();
 
                     response = new PatientDTO 
@@ -85,8 +85,8 @@ namespace Services.Core
                         Email = existingPatient.Email,
                         PhoneNumber = existingPatient.PhoneNumber,
                         DateOfBirth = existingPatient.DateOfBirth,
-                        Gender = (Gender) existingPatient.Gender,
-                        BloodType = (BloodType) existingPatient.BloodType,
+                        Gender = existingPatient.Gender,
+                        BloodType = existingPatient.BloodType,
                     };
                 }
                 else

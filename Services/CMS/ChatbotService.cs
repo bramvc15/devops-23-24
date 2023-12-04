@@ -1,21 +1,26 @@
 using Microsoft.EntityFrameworkCore;
 using Shared.DTO.CMS;
 using Persistence.Data;
+using Domain;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Services.CMS
 {
-    public class CMSChatbotService
+    public class ChatbotService
     {
         private readonly DatabaseContext _ctx;
 
-        public CMSChatbotService(DatabaseContext ctx)
+        public ChatbotService(DatabaseContext ctx)
         {
             _ctx = ctx;
+            _chat = ctx.ChatBotQuestions;
         }
+
+        private readonly DbSet<ChatBotQuestion> _chat;
 
         public async Task<IEnumerable<ChatBotQuestionDTO>> GetContent()
         {
-            return await _ctx.ChatBotQuestions.Include(question => question.FollowUpQuestions).ToListAsync();
+            return (IEnumerable<ChatBotQuestionDTO>)await _chat.Include(question => question.FollowUpQuestions).ToListAsync();
         }
 
         // public IEnumerable<ChatBotQuestion> GetFollowUpQuestions(int? followUpID)
@@ -25,11 +30,21 @@ namespace Services.CMS
 
         public async Task<ChatBotQuestionDTO> AddQuestion(ChatBotQuestionDTO question)
         {
-            _ctx.ChatBotQuestions.Add(question);
+            List<ChatBotQuestion> list = new();
+            if (question.FollowUpQuestions != null)
+            {
+                foreach (var followUpQuestions in question.FollowUpQuestions)
+                {
+                    ChatBotQuestion question = new(followUpQuestions.Question, followUpQuestions.Answer, followUpQuestions.IsFollowUp, followUpQuestions.FollowUpQuestions);
+                    list.Add(followUpQuestions);
+                }
+            }
+
+            _chat.Add(new ChatBotQuestion(question.Question, question.Answer, question.IsFollowUp, question.FollowUpQuestions));
             await _ctx.SaveChangesAsync();
 
             return question;
-        }
+        } 
 
         public async Task AddFollowUpQuestion(ChatBotQuestionDTO parentQuestion, ChatBotQuestionDTO question)
         {

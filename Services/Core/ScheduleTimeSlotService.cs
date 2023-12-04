@@ -15,18 +15,17 @@ namespace Services.Core
             _DBContext = databaseContext;
         }
 
-        public async Task<IEnumerable<ScheduleTimeSlotDTO>> GetScheduleTimeSlots(DoctorDTO doctor)
+        public async Task<IEnumerable<ScheduleTimeSlotDTO>> GetScheduleTimeSlots(int doctorId)
         {
             var doctorEntity = await _DBContext.Doctors
                 .Include(d => d.ScheduleTimeSlots)
-                .FirstOrDefaultAsync(d => d.Id == doctor.Id);
+                .FirstOrDefaultAsync(d => d.Id == doctorId);
 
             if (doctorEntity != null)
             {
                 var scheduleTimeSlotDTOs = doctorEntity.ScheduleTimeSlots.Select(s => new ScheduleTimeSlotDTO
                 {
                     Id = s.Id,
-                    AppointmentType = (AppointmentType) s.AppointmentType,
                     DateTime = s.DateTime,
                     Duration = s.Duration,
                     DayOfWeek = s.DayOfWeek,
@@ -40,13 +39,13 @@ namespace Services.Core
 
         public async Task<ScheduleTimeSlotDTO> CreateScheduleTimeSlot(ScheduleTimeSlotDTO newSTS, int docId)
         {
-            ScheduleTimeSlotDTO response = new ScheduleTimeSlotDTO();
+            ScheduleTimeSlotDTO response = new();
 
             var doctorEntity = await _DBContext.Doctors
                 .Include(d => d.ScheduleTimeSlots)
                 .FirstOrDefaultAsync(d => d.Id == docId);
 
-            var newDomainSTS = new ScheduleTimeSlot((AppointmentType)newSTS.AppointmentType, newSTS.DateTime, newSTS.Duration, newSTS.DayOfWeek);
+            var newDomainSTS = new ScheduleTimeSlot(newSTS.DateTime, newSTS.Duration, newSTS.DayOfWeek);
 
             if (doctorEntity != null)
             {
@@ -57,7 +56,6 @@ namespace Services.Core
 
                     response.Duration = newDomainSTS.Duration;
                     response.DayOfWeek = newDomainSTS.DayOfWeek;
-                    response.AppointmentType = (AppointmentType)newDomainSTS.AppointmentType;
                     response.DateTime = newDomainSTS.DateTime;
                     response.Id = newDomainSTS.Id;
                 }
@@ -76,9 +74,9 @@ namespace Services.Core
 
         public async Task<ScheduleTimeSlotDTO> UpdateScheduleTimeSlot(ScheduleTimeSlotDTO updatedSTS, int docId)
         {
-            ScheduleTimeSlotDTO response = new ScheduleTimeSlotDTO();
+            ScheduleTimeSlotDTO response = new();
 
-            ScheduleTimeSlot updatedDomainSTS = new ScheduleTimeSlot((AppointmentType) updatedSTS.AppointmentType, updatedSTS.DateTime, updatedSTS.Duration, updatedSTS.DayOfWeek);
+            ScheduleTimeSlot updatedDomainSTS = new(updatedSTS.DateTime, updatedSTS.Duration, updatedSTS.DayOfWeek);
 
             var doctorEntity = await _DBContext.Doctors
                 .Include(d => d.ScheduleTimeSlots)
@@ -92,10 +90,10 @@ namespace Services.Core
 
                     if (scheduleTimeSlotToUpdate != null)
                     {
-                        scheduleTimeSlotToUpdate.UpdateScheduleTimeSlot(updatedDomainSTS);
+                        scheduleTimeSlotToUpdate.UpdateScheduleTimeSlot(updatedDomainSTS.DateTime, updatedDomainSTS.DayOfWeek, updatedDomainSTS.Duration);
 
                         // check overlapping
-                        doctorEntity.DeleteScheduleTimeSlot(scheduleTimeSlotToUpdate);
+                        doctorEntity.ScheduleTimeSlots.Remove(scheduleTimeSlotToUpdate);
                         doctorEntity.AddScheduleTimeSlot(scheduleTimeSlotToUpdate);
 
                         await _DBContext.SaveChangesAsync();
@@ -103,7 +101,6 @@ namespace Services.Core
                         response.Id = scheduleTimeSlotToUpdate.Id;
                         response.Duration = scheduleTimeSlotToUpdate.Duration;
                         response.DayOfWeek = scheduleTimeSlotToUpdate.DayOfWeek;
-                        response.AppointmentType = (AppointmentType) scheduleTimeSlotToUpdate.AppointmentType;
                         response.DateTime = scheduleTimeSlotToUpdate.DateTime;
                     }
                     else
@@ -136,7 +133,7 @@ namespace Services.Core
 
                 if (scheduleTimeSlotToRemove != null)
                 {
-                    doctorEntity.DeleteScheduleTimeSlot(scheduleTimeSlotToRemove);
+                    doctorEntity.ScheduleTimeSlots.Remove(scheduleTimeSlotToRemove);
                     await _DBContext.SaveChangesAsync();
                 }
                 else

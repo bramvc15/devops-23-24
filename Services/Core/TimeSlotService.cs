@@ -28,7 +28,7 @@ namespace Services.Core
                 var timeSlotDTOs = doctorEntity.TimeSlots.Select(ts => new TimeSlotDTO
                 {
                     Id = ts.Id,
-                    AppointmentType = (AppointmentType)ts.AppointmentType,
+                    AppointmentType = ts.AppointmentType,
                     DateTime = ts.DateTime,
                     Duration = ts.Duration,
                     AppointmentDTO = ts.Appointment != null ? new AppointmentDTO
@@ -43,8 +43,8 @@ namespace Services.Core
                             Email = ts.Appointment.Patient.Email,
                             PhoneNumber = ts.Appointment.Patient.PhoneNumber,
                             DateOfBirth = ts.Appointment.Patient.DateOfBirth,
-                            Gender = (Gender)ts.Appointment.Patient.Gender,
-                            BloodType = (BloodType)ts.Appointment.Patient.BloodType,
+                            Gender = ts.Appointment.Patient.Gender,
+                            BloodType = ts.Appointment.Patient.BloodType,
                         }
                     } : null
                 });
@@ -61,13 +61,13 @@ namespace Services.Core
 
         public async Task<TimeSlotDTO> CreateTimeSlot(TimeSlotDTO timeSlot, int docId)
         {
-            TimeSlotDTO response = new TimeSlotDTO();
+            TimeSlotDTO response = new();
 
             var doctorEntity = await _DBContext.Doctors
                 .Include(d => d.TimeSlots)
                 .FirstOrDefaultAsync(d => d.Id == docId);
 
-            var newDomainTS = new TimeSlot((AppointmentType)timeSlot.AppointmentType, timeSlot.DateTime, timeSlot.Duration);
+            var newDomainTS = new TimeSlot(timeSlot.AppointmentType, timeSlot.DateTime, timeSlot.Duration);
 
             if (doctorEntity != null)
             {
@@ -77,7 +77,7 @@ namespace Services.Core
                     await _DBContext.SaveChangesAsync();
 
                     response.Duration = newDomainTS.Duration;
-                    response.AppointmentType = (AppointmentType)newDomainTS.AppointmentType;
+                    response.AppointmentType = newDomainTS.AppointmentType;
                     response.DateTime = newDomainTS.DateTime;
                     response.Id = newDomainTS.Id;
                 }
@@ -96,9 +96,9 @@ namespace Services.Core
 
         public async Task<TimeSlotDTO> UpdateTimeSlot(TimeSlotDTO updatedTimeSlot, int docId)
         {
-            TimeSlotDTO response = new TimeSlotDTO();
+            TimeSlotDTO response = new();
 
-            TimeSlot updatedDomainTimeSlot = new TimeSlot((AppointmentType)updatedTimeSlot.AppointmentType, updatedTimeSlot.DateTime, updatedTimeSlot.Duration);
+            TimeSlot updatedDomainTimeSlot = new(updatedTimeSlot.AppointmentType, updatedTimeSlot.DateTime, updatedTimeSlot.Duration);
 
             var doctorEntity = await _DBContext.Doctors
                 .Include(d => d.TimeSlots)
@@ -114,10 +114,10 @@ namespace Services.Core
 
                     if (timeSlotToUpdate != null)
                     {
-                        timeSlotToUpdate.UpdateTimeSlot(updatedDomainTimeSlot);
+                        timeSlotToUpdate.UpdateTimeSlot(updatedDomainTimeSlot.AppointmentType, updatedDomainTimeSlot.DateTime, updatedDomainTimeSlot.Duration);
 
                         // check overlapping
-                        doctorEntity.DeleteTimeSlot(timeSlotToUpdate);
+                        doctorEntity.TimeSlots.Remove(timeSlotToUpdate);
                         doctorEntity.AddTimeSlot(timeSlotToUpdate);
 
                         await _DBContext.SaveChangesAsync();
@@ -178,10 +178,10 @@ namespace Services.Core
                 {
                     if (timeSlotToRemove.Appointment != null)
                     {
-                        timeSlotToRemove.DeleteAppointment();
+                        timeSlotToRemove.Appointment = null;
                     }
 
-                    doctorEntity.DeleteTimeSlot(timeSlotToRemove);
+                    doctorEntity.TimeSlots.Remove(timeSlotToRemove);
                     await _DBContext.SaveChangesAsync();
                 }
                 else

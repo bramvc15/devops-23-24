@@ -1,20 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using Shared.DTO.CMS;
 using Persistence.Data;
+using Domain;
+using Shared.DTO.Core;
+using System.Reflection.Metadata;
 
 namespace Services.CMS
 {
-    public class CMSBlogService
+    public class BlogService
     {
         private readonly DatabaseContext _ctx;
 
-        public CMSBlogService(DatabaseContext ctx)
+        public BlogService(DatabaseContext ctx)
         {
             _ctx = ctx;
             _blogs = ctx.Blogs;
         }
 
-        private readonly DbSet<BlogDTO> _blogs;
+        private readonly DbSet<Blog> _blogs;
 
         public async Task<(IEnumerable<BlogDTO> blogs, int totalPages)> GetBlogs(int page = 1, int pageSize = 5)
         {
@@ -26,7 +29,22 @@ namespace Services.CMS
                 .Take(pageSize)
                 .ToListAsync();
 
-            return (blogsPerPage, totalPages);
+            List<BlogDTO> convertedBlogs = new();
+
+            foreach (var blog in blogsPerPage)
+            {
+                BlogDTO convertedBlog = new()
+                {
+                    Id = blog.Id,
+                    Title = blog.Title,
+                    Text = blog.Text,
+                    ImageLink = blog.ImageLink
+                };
+
+                convertedBlogs.Add(convertedBlog);
+            }
+
+            return (convertedBlogs, totalPages);
             //return await _blogs.ToListAsync(); // zonder pagination
         }
         public async Task<BlogDTO> GetBlog(int BlogId)
@@ -45,7 +63,7 @@ namespace Services.CMS
         }
         public async Task<BlogDTO> CreateBlog(BlogDTO newBlog)
         {
-            _blogs.Add(newBlog);
+            _blogs.Add(new Blog(newBlog.Title, newBlog.Text, newBlog.ImageLink));
             await _ctx.SaveChangesAsync();
 
             return newBlog;
@@ -53,7 +71,9 @@ namespace Services.CMS
 
         public async Task<BlogDTO> UpdateBlog(BlogDTO updatedBlog)
         {
-            _blogs.Update(updatedBlog);
+            Blog blog = await _blogs.FindAsync(updatedBlog.Id);
+            blog.UpdateBlog(updatedBlog.Title, updatedBlog.Text, updatedBlog.ImageLink);
+            _blogs.Update(blog);
             await _ctx.SaveChangesAsync();
 
             return updatedBlog;
@@ -61,7 +81,8 @@ namespace Services.CMS
 
         public async Task DeleteBlog(BlogDTO blogToDelete)
         {
-            _blogs.Remove(blogToDelete);
+            Blog blog = await _blogs.FindAsync(blogToDelete.Id);
+            _blogs.Remove(blog);
             await _ctx.SaveChangesAsync();
         }
     }

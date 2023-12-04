@@ -1,29 +1,31 @@
 using Microsoft.EntityFrameworkCore;
 using Shared.DTO.CMS;
 using Persistence.Data;
+using Domain;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Services.CMS
 {
-    public class CMSTreatmentService
+    public class TreatmentService
     {
         private readonly DatabaseContext _ctx;
 
-        public CMSTreatmentService(DatabaseContext ctx)
+        public TreatmentService(DatabaseContext ctx)
         {
             _ctx = ctx;
             _treatments = ctx.Treatments;
         }
 
-        private readonly DbSet<TreatmentDTO> _treatments;
+        private readonly DbSet<Treatment> _treatments;
 
         public async Task<IEnumerable<TreatmentDTO>> GetTreatments()
         {
-            return await _treatments.ToListAsync();
+            return (IEnumerable<TreatmentDTO>)await _treatments.ToListAsync();
         }
 
         public async Task<TreatmentDTO> CreateTreatment(TreatmentDTO newTreatment)
         {
-            _treatments.Add(newTreatment);
+            _treatments.Add(new Treatment(newTreatment.Name, newTreatment.Description, newTreatment.ImageLink));
             await _ctx.SaveChangesAsync();
 
             return newTreatment;
@@ -31,10 +33,8 @@ namespace Services.CMS
 
         public async Task<TreatmentDTO> UpdateTreatment(TreatmentDTO updatedTreatment)
         {
-            TreatmentDTO treatment = await _treatments.FindAsync(updatedTreatment.Id);
-            treatment.Name = updatedTreatment.Name != null ? updatedTreatment.Name : treatment.Name;
-            treatment.Description = updatedTreatment.Description != null ? updatedTreatment.Description : treatment.Description;
-            treatment.ImageLink = updatedTreatment.ImageLink != null ? updatedTreatment.ImageLink : treatment.ImageLink;
+            Treatment treatment = await _treatments.FindAsync(updatedTreatment.Id);
+            treatment.UpdateTreatment(updatedTreatment.Name, updatedTreatment.Description, updatedTreatment.ImageLink);
             _treatments.Update(treatment);
             await _ctx.SaveChangesAsync();
 
@@ -43,7 +43,8 @@ namespace Services.CMS
 
         public async Task DeleteTreatment(TreatmentDTO treatmentToDelete)
         {
-            _treatments.Remove(treatmentToDelete);
+            Treatment treatment = await _treatments.FindAsync(treatmentToDelete.Id);
+            _treatments.Remove(treatment);
             await _ctx.SaveChangesAsync();
         }
     }

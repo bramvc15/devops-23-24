@@ -1,40 +1,41 @@
 using Services.CMS;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
+using Shared.DTO.CMS;
 
 namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CMSBlogController : ControllerBase
+public class BlogController : ControllerBase
 {
-    private readonly CMSBlogService _service;
+    private readonly BlogService _service;
 
-    public CMSBlogController(CMSBlogService service)
+    public BlogController(BlogService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public Task<(IEnumerable<CMSBlog> blogs, int totalPages)> GetBlogs(int page, int pageSize)
+    public Task<(IEnumerable<BlogDTO> blogs, int totalPages)> GetBlogs(int page, int pageSize)
     {
         return _service.GetBlogs(page, pageSize);
     }
 
     [HttpPost]
-    public Task<CMSBlog> CreateBlog([FromBody] CMSBlog request)
+    public Task<BlogDTO> CreateBlog([FromBody] BlogDTO request)
     {
         return _service.CreateBlog(request);
     }
 
     [HttpPut]
-    public Task<CMSBlog> UpdateBlog([FromBody] CMSBlog request)
+    public Task<BlogDTO> UpdateBlog([FromBody] BlogDTO request)
     {
         return _service.UpdateBlog(request);
     }
 
     [HttpDelete]
-    public Task DeleteBlog([FromBody] CMSBlog request)
+    public Task DeleteBlog([FromBody] BlogDTO request)
     {
         return _service.DeleteBlog(request);
     }

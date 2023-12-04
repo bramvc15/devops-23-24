@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CMS\" />
     <Folder Include="Core\" />
   </ItemGroup>
 
