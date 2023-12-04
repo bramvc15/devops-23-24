@@ -1,100 +1,42 @@
-using System;
+using Ardalis.GuardClauses;
 
 namespace Domain;
 
 public class Appointment : Entity
 {
-    #region Fields
-    private string _reason;
-    private string _note;
-    private Patient _patient;
-    #endregion
-
     #region Properties
-    public string Reason {
-        get
-        {
-            return _reason;
-        }
-        private set
-        {
-            if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("Reason cannot be empty");
-            _reason = value;
-        }
+    private string reason;
+    public string Reason
+    {
+        get => reason;
+        private set => reason = Guard.Against.NullOrWhiteSpace(value, nameof(Reason));
     }
-    public string Note { 
-        get
-        {
-            return _note;
-        }
-        private set
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                _note = "This appointment has no additional note.";
-            }
-            else
-            {
-                _note = value;
-            }
-        }
-    }
-    public Patient Patient { get { return _patient; } }
 
-    // empty reference for one-to-one relation for db
-    public TimeSlot TimeSlot { get; private set; } = null!;
-    #endregion
+    public string? Note { get; private set; }
+
+    public Patient Patient { get; set; }
+
+    // empty reference for patient many-to-one appointment relation for db
+    public TimeSlot? TimeSlot { get; private set; } = null!;
+    #endregion Properties
 
     #region Constructors
     // Database Constructor
     private Appointment() { }
 
-    public Appointment(Patient patient, string reason, string note = null)
+    public Appointment(Patient patient, string reason, string? note = default)
     {
-        if (patient == null)
-        {
-            throw new ArgumentNullException("Patient cannot be empty, a appointment needs a patient");
-        }
-        _patient = patient;
-        if (string.IsNullOrWhiteSpace(reason)) {
-            throw new ArgumentNullException("Reason cannot be empty");
-        }
-        _reason = reason;
-        if (!string.IsNullOrWhiteSpace(note))
-        {
-            Note = note;
-        } 
-        else
-        {
-            Note = "This appointment has no additional note.";
-        }
+        Patient = Guard.Against.Null(patient);
+        Reason = reason;
+        Note = note;
     }
     #endregion
 
     #region Methods
-    public bool HasPatient()
+    public void UpdateAppointment(string reason, string? note)
     {
-        return _patient != null;
-    }
-
-    public void ChangePatient(Patient patient)
-    {
-        if (patient == null)
-        {
-            throw new ArgumentNullException("Patient cannot be empty, a appointment needs a patient");
-        }
-        _patient = patient;
-    }
-
-    public Patient GetPatient()
-    {
-        return _patient;
-    }
-
-    public void UpdateAppointment(Appointment appointment)
-    {
-        Reason = appointment.Reason;
-        Note = appointment.Note;
+        Reason = reason;
+        Note = note;
     }
     #endregion
 }

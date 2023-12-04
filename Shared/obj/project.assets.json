@@ -8,23 +8,23 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\user\\.nuget\\packages\\": {},
+    "C:\\Users\\Lander\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\OneDrive - Hogeschool Gent\\hogent\\3de jaar\\DevOps Project\\project-oogarts\\devops-23-24-net-g07\\Shared\\Shared.csproj",
+      "projectUniqueName": "C:\\Users\\Lander\\Documents\\HoGent\\3de Jaar\\DevOps\\devops-23-24-net-g07\\Shared\\Shared.csproj",
       "projectName": "Shared",
-      "projectPath": "C:\\Users\\user\\OneDrive - Hogeschool Gent\\hogent\\3de jaar\\DevOps Project\\project-oogarts\\devops-23-24-net-g07\\Shared\\Shared.csproj",
-      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\OneDrive - Hogeschool Gent\\hogent\\3de jaar\\DevOps Project\\project-oogarts\\devops-23-24-net-g07\\Shared\\obj\\",
+      "projectPath": "C:\\Users\\Lander\\Documents\\HoGent\\3de Jaar\\DevOps\\devops-23-24-net-g07\\Shared\\Shared.csproj",
+      "packagesPath": "C:\\Users\\Lander\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Lander\\Documents\\HoGent\\3de Jaar\\DevOps\\devops-23-24-net-g07\\Shared\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Lander\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -33,6 +33,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
