@@ -23,8 +23,8 @@ namespace Persistence.Data
             
             Doctor doctor2 = new("Dr. Smith", "Eye Specialist", Gender.Male, "Dit is Dr. Smith zijn Bio.");
 
-            // doctor1.SetImageLink("https://images.healthshots.com/healthshots/en/uploads/2022/07/02195043/doctor-stress.jpg");
-            // doctor2.SetImageLink("https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*");
+            doctor1.ImageLink = "https://images.healthshots.com/healthshots/en/uploads/2022/07/02195043/doctor-stress.jpg";
+            doctor2.ImageLink = "https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*";
 
             var doctors = new Doctor[]
             {
@@ -43,112 +43,75 @@ namespace Persistence.Data
             #endregion
 
             #region ScheduleTimeSlots
-            // Monday
-            ScheduleTimeSlot scheduleTimeSlot1 = new(new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot2 = new(new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot3 = new(new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot4 = new(new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot5 = new(new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot6 = new(new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot7 = new(new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot8 = new(new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Monday);
-            ScheduleTimeSlot scheduleTimeSlot9 = new(new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Monday);
+            var scheduleTimeSlotsDoctor1 = new List<ScheduleTimeSlot>();
+            var scheduleTimeSlotsDoctor2 = new List<ScheduleTimeSlot>();
 
-            // Tuesday
-            ScheduleTimeSlot scheduleTimeSlot10 = new(new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot11 = new(new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot12 = new(new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot13 = new(new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot14 = new(new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot15 = new(new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot16 = new(new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot17 = new(new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Tuesday);
-            ScheduleTimeSlot scheduleTimeSlot18 = new(new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Tuesday);
-
-            // Wednesday
-            ScheduleTimeSlot scheduleTimeSlot19 = new(new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Wednesday);
-            ScheduleTimeSlot scheduleTimeSlot20 = new(new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Wednesday);
-            ScheduleTimeSlot scheduleTimeSlot21 = new(new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Wednesday);
-            ScheduleTimeSlot scheduleTimeSlot22 = new(new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Wednesday);
-
-            // Thursday
-            ScheduleTimeSlot scheduleTimeSlot23 = new(new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot24 = new(new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot25 = new(new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot26 = new(new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot27 = new(new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot28 = new(new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot29 = new(new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot30 = new(new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Thursday);
-            ScheduleTimeSlot scheduleTimeSlot31 = new(new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Thursday);
-
-            // Friday
-            ScheduleTimeSlot scheduleTimeSlot32 = new(new DateTime(1, 1, 1, 8, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot33 = new(new DateTime(1, 1, 1, 9, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot34 = new(new DateTime(1, 1, 1, 10, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot35 = new(new DateTime(1, 1, 1, 11, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot36 = new(new DateTime(1, 1, 1, 13, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot37 = new(new DateTime(1, 1, 1, 14, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot38 = new(new DateTime(1, 1, 1, 15, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot39 = new(new DateTime(1, 1, 1, 16, 0, 0), 45, DayOfWeek.Friday);
-            ScheduleTimeSlot scheduleTimeSlot40 = new(new DateTime(1, 1, 1, 17, 0, 0), 45, DayOfWeek.Friday);
-
-            var scheduleTimeSlots = new ScheduleTimeSlot[]
+            // monday
+            var dateMonday = new DateTime(1, 1, 1, 8, 0, 0);
+            for (int i = 0; i < 40; i++)
             {
-                scheduleTimeSlot1, scheduleTimeSlot2, scheduleTimeSlot3, scheduleTimeSlot4, scheduleTimeSlot5, scheduleTimeSlot6, scheduleTimeSlot7, 
-                scheduleTimeSlot8, scheduleTimeSlot9, scheduleTimeSlot10, scheduleTimeSlot11, scheduleTimeSlot12, scheduleTimeSlot13, scheduleTimeSlot14, 
-                scheduleTimeSlot15, scheduleTimeSlot16, scheduleTimeSlot17, scheduleTimeSlot18, scheduleTimeSlot19, scheduleTimeSlot20, scheduleTimeSlot21,
-                scheduleTimeSlot22, scheduleTimeSlot23, scheduleTimeSlot24, scheduleTimeSlot25, scheduleTimeSlot26, scheduleTimeSlot27, scheduleTimeSlot28,
-                scheduleTimeSlot29, scheduleTimeSlot30, scheduleTimeSlot31, scheduleTimeSlot32, scheduleTimeSlot33, scheduleTimeSlot34, scheduleTimeSlot35,
-                scheduleTimeSlot36, scheduleTimeSlot37, scheduleTimeSlot38, scheduleTimeSlot39, scheduleTimeSlot40,
-            };
+                scheduleTimeSlotsDoctor1.Add(new ScheduleTimeSlot(dateMonday, 15, DayOfWeek.Monday));
+                scheduleTimeSlotsDoctor2.Add(new ScheduleTimeSlot(dateMonday, 15, DayOfWeek.Monday));
+                dateMonday = dateMonday.AddMinutes(15);
+            }
 
-            foreach (var scheduleTimeSlot in scheduleTimeSlots)
+            // tuesday
+            var dateTuesday = new DateTime(1, 1, 1, 8, 0, 0);
+            for (int i = 0; i < 40; i++)
+            {
+                scheduleTimeSlotsDoctor1.Add(new ScheduleTimeSlot(dateTuesday, 15, DayOfWeek.Tuesday));
+                scheduleTimeSlotsDoctor2.Add(new ScheduleTimeSlot(dateTuesday, 15, DayOfWeek.Tuesday));
+                dateTuesday = dateTuesday.AddMinutes(15);
+            }
+
+            // wednesday
+            var dateWednesday = new DateTime(1, 1, 1, 8, 0, 0);
+            for (int i = 0; i < 40; i++)
+            {
+                scheduleTimeSlotsDoctor1.Add(new ScheduleTimeSlot(dateWednesday, 15, DayOfWeek.Wednesday));
+                scheduleTimeSlotsDoctor2.Add(new ScheduleTimeSlot(dateWednesday, 15, DayOfWeek.Wednesday));
+                dateWednesday = dateWednesday.AddMinutes(15);
+            }
+
+            // thursday
+            var dateThursday = new DateTime(1, 1, 1, 8, 0, 0);
+            for (int i = 0; i < 40; i++)
+            {
+                scheduleTimeSlotsDoctor1.Add(new ScheduleTimeSlot(dateThursday, 15, DayOfWeek.Thursday));
+                scheduleTimeSlotsDoctor2.Add(new ScheduleTimeSlot(dateThursday, 15, DayOfWeek.Thursday));
+                dateThursday = dateThursday.AddMinutes(15);
+            }
+
+            // friday
+            var dateFriday = new DateTime(1, 1, 1, 8, 0, 0);
+            for (int i = 0; i < 40; i++)
+            {
+                scheduleTimeSlotsDoctor1.Add(new ScheduleTimeSlot(dateFriday, 15, DayOfWeek.Friday));
+                scheduleTimeSlotsDoctor2.Add(new ScheduleTimeSlot(dateFriday, 15, DayOfWeek.Friday));
+                dateFriday = dateFriday.AddMinutes(15);
+            }
+
+            foreach (var scheduleTimeSlot in scheduleTimeSlotsDoctor1)
             {
                 doctor1.AddScheduleTimeSlot(scheduleTimeSlot);
+            }
+
+            foreach (var scheduleTimeSlot in scheduleTimeSlotsDoctor2)
+            {
                 doctor2.AddScheduleTimeSlot(scheduleTimeSlot);
             }
             #endregion
 
             #region TimeSlots
-
-            TimeSlot timeSlot1 = new(AppointmentType.Consultation, new DateTime(2023, 12, 23, 8, 0, 0), 45);
-            TimeSlot timeSlot2 = new(AppointmentType.Operation, new DateTime(2023, 12, 23, 9, 0, 0), 45);
-            TimeSlot timeSlot3 = new(AppointmentType.Consultation, new DateTime(2023, 12, 23, 10, 0, 0), 45);
-            TimeSlot timeSlot4 = new(AppointmentType.Operation, new DateTime(2023, 12, 23, 11, 0, 0), 45);
-            TimeSlot timeSlot5 = new(AppointmentType.Consultation, new DateTime(2023, 12, 23, 12, 0, 0), 45);
-            TimeSlot timeSlot6 = new(AppointmentType.Operation, new DateTime(2023, 12, 23, 13, 0, 0), 45);
-            TimeSlot timeSlot7 = new(AppointmentType.Consultation, new DateTime(2023, 12, 23, 14, 0, 0), 45);
-            TimeSlot timeSlot8 = new(AppointmentType.Operation, new DateTime(2023, 12, 23, 15, 0, 0), 45);
-            TimeSlot timeSlot9 = new(AppointmentType.Consultation, new DateTime(2023, 12, 23, 16, 0, 0), 45);
-            TimeSlot timeSlot10 = new(AppointmentType.Operation, new DateTime(2023, 12, 23, 17, 0, 0), 45);
-
-            var timeSlots = new TimeSlot[]
-            {
-                timeSlot1, timeSlot2, timeSlot3, timeSlot4, timeSlot5, timeSlot6, timeSlot7, timeSlot8, timeSlot9, timeSlot10,
-            };
-
-            foreach (var timeSlot in timeSlots)
-            {
-                doctor1.AddTimeSlot(timeSlot);
-                doctor2.AddTimeSlot(timeSlot);
-            }
+            doctor1.ConvertScheduleToTimeSlots(new DateTime(2024, 1, 1, 0, 0, 0), 2);
+            doctor2.ConvertScheduleToTimeSlots(new DateTime(2024, 1, 1, 0, 0, 0), 2);
             #endregion
 
             #region Appointments
-
-            /*
-            Appointment appointment1 = new(patient2, "Reason: Normal Consultation", "");
-            Appointment appointment2 = new(patient2, "Reason: Normal Operation", "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren.");
-
-            var appointments = new Appointment[]
-            {
-                appointment1, appointment2,
-            };
-            */
-
-
-            doctor2.CreateAppointment(patient2, timeSlot1, "Reason: Normal Consultation", "");
+            var timeSlot1 = doctor1.TimeSlots[0];
+            var timeSlot2 = doctor2.TimeSlots[0];
+            
+            doctor1.CreateAppointment(patient2, timeSlot1, "Reason: Normal Consultation", "");
             doctor2.CreateAppointment(patient2, timeSlot2, "Reason: Normal Operation", "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren.");
             #endregion
 
@@ -247,9 +210,6 @@ namespace Persistence.Data
             // domain
             context.Doctors.AddRange(doctors);
             context.Patients.AddRange(patients);
-            // context.ScheduleTimeSlots.AddRange(scheduleTimeSlots);
-            // context.TimeSlots.AddRange(timeSlots);
-            // context.Appointments.AddRange(appointments);
 
             // CMS
             context.HomeHeaders.Add(header);

@@ -175,21 +175,21 @@ public class Doctor : Entity
             foreach (var scheduleTimeSlot in ScheduleTimeSlots)
             {
                 DateTime date = start.Date;
-                int hour = scheduleTimeSlot.DateTime.Hour;
-                int minutes = scheduleTimeSlot.DateTime.Minute;
-                int seconds = scheduleTimeSlot.DateTime.Second;
+                double hour = scheduleTimeSlot.DateTime.Hour;
+                double minutes = scheduleTimeSlot.DateTime.Minute;
+                double seconds = scheduleTimeSlot.DateTime.Second;
 
-                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Monday) { date.AddDays(0); }
-                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Tuesday) { date.AddDays(1); }
-                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Wednesday) { date.AddDays(2); }
-                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Thursday) { date.AddDays(3); }
-                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Friday) { date.AddDays(4); }
-                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Saturday) { date.AddDays(5); }
-                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Sunday) { date.AddDays(6); }
+                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Monday) { date = date.AddDays(0); }
+                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Tuesday) { date = date.AddDays(1); }
+                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Wednesday) { date = date.AddDays(2); }
+                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Thursday) { date = date.AddDays(3); }
+                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Friday) { date = date.AddDays(4); }
+                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Saturday) { date = date.AddDays(5); }
+                if (scheduleTimeSlot.DayOfWeek == DayOfWeek.Sunday) { date = date.AddDays(6); }
 
-                date.AddHours(hour);
-                date.AddMinutes(minutes);
-                date.AddSeconds(seconds);
+                date = date.AddHours(hour);
+                date = date.AddMinutes(minutes);
+                date = date.AddSeconds(seconds);
 
                 TimeSlot newTimeSlot = new TimeSlot(AppointmentType.Consultation, date, scheduleTimeSlot.Duration);
                 if (IsValidTimeSlot(newTimeSlot))
