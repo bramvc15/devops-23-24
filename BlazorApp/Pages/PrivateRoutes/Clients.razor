@@ -1,0 +1,79 @@
+@page "/admin/clients"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+@using System.Text.Json
+@using BlazorApp.Data
+@using BlazorApp.Services.Core
+@using Shared
+@using BlazorApp.Controllers
+@inject DatabaseContext databaseContext
+@using Microsoft.AspNetCore.Components
+@inject PatientService patientService
+@using BlazorApp.Auth
+@inject NavigationManager NavManager
+@using BlazorApp.Components.Modals
+
+<PageTitle>Admin - Chat Bot</PageTitle>
+
+<SideNavMenu />
+<div class="content">
+    <div class="container">
+        @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+        {
+            <h1>Clients</h1>
+            @if(patients != null && patients.Count() > 0) {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Naam</th>
+                            <th>Telefoonnummer</th>
+                            <th>Email</th>
+                            <th>Geboortedatum</th>
+                            <th>Geslacht</th>
+                            <th>Bloedgroep</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var patient in patients)
+                        {
+                            <tr>
+                                <td>@patient.Id</td>
+                                <td>@patient.Name</td>
+                                <td>@patient.PhoneNumber</td>
+                                <td>@patient.Email</td>
+                                <td>@patient.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                                <td>@patient.Gender</td>
+                                <td>@patient.BloodType</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+        else
+        {
+            <p>You are not authorized to access this page. Please log in.</p>
+            <p><a href="/login">Click here to LOGIN.</a></p>
+        }
+    </div>
+
+</div>
+@code {
+
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+
+    private IEnumerable<PatientDTO> patients;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            NavManager.NavigateTo("/login");
+        else
+        {
+            patients = await patientService.GetPatients();
+        }
+    }
+
+}
