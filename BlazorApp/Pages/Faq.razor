@@ -1,0 +1,45 @@
+@page "/faq"
+@inherits ComponentBase
+
+<PageTitle>FAQ</PageTitle>
+<div class="faq-page">
+    <div class="title-layout">
+        <h1>FAQ</h1>
+        <a><u>Home</u> > FAQ </a>
+    </div>
+    <div class="faq-container">
+        @* @if (DocObj != null)
+            {
+                @foreach (var q in QuestionObj)
+                {
+                    <div class="question-container">
+                        @if (q != null)
+                        {
+                            <QuestionFAQ Question=@q.question Answer=@q.answer/>
+                            <span class="line"></span>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <p>QuestionObj is null.</p>
+            } *@
+
+        <QuestionFAQ Question="la question" Answer="la reponse"/>
+        <span class="line"></span>
+        <QuestionFAQ Question="the question" Answer="the response"/>
+        <span class="line"></span>
+        <QuestionFAQ Question="de vraag" Answer="het antwoord"/>
+        <span class="line"></span>
+    </div>
+</div>
+
+@* @code {
+    IEnumerable<QuestionDTO>? QuestionObj; !!QUESTIONDTO NOG AAN TE MAKEN!!
+
+    protected override async Task OnInitializedAsync()
+    {
+        QuestionObj = await questionService.GetQuestions(); !!QUESTIONSERVICE NOG AAN TE MAKEN!!
+    }
+} *@

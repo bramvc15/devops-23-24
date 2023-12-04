@@ -1,0 +1,23 @@
+<div class="question" @onclick="() => ToggleAnswer()">> @Question</div>
+@if (ShowAnswer)
+        {
+            <div class="answer">@Answer</div>
+        }
+
+
+@code {
+
+    [Parameter]
+    public string Question { get; set; }
+
+    [Parameter]
+    public string Answer { get; set; }
+
+    [Parameter]
+    public bool ShowAnswer { get; set; } = false;
+
+    public void ToggleAnswer()
+    {
+        ShowAnswer = !ShowAnswer;
+    }
+}
