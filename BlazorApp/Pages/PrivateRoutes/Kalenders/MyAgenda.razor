@@ -3,23 +3,130 @@
 @using BlazorApp.Models
 @using BlazorApp.Components.Modals
 @using BlazorApp.Services
+@using BlazorApp.Services.Core
 @inject NavigationManager NavManager
+
+@inject TimeSlotService timeSlotService
+@inject DoctorService doctorService
 
 <div class="sidebar">
     <SideNavMenu />
 </div>
-<div class="admin-container">
-    <div>
+<div class="content">
+    <div class="container">
         @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
         {
-            <p>This is a brand new page!</p>
-            <p>This is a brand new page!</p>
-            <p>This is a brand new page!</p>
-            <p>This is a brand new page!</p>
-            <p>This is a brand new page!</p>
-            <p>This is a brand new page!</p>
-            <p>This is a brand new page!</p>
-
+            <h1>Agenda</h1>
+            <button class="week-btn" @onclick="() => ChangeWeek(-7)">Vorige week</button>
+            <button class="week-btn" @onclick="() => ChangeWeek(7)">Volgende week</button>
+            <span>@currentWeekStart.ToString("dd/MM/yyyy") - @currentWeekEnd.ToString("dd/MM/yyyy")</span>
+            @if(TimeSlots != null && ListByCurrentWeekDay != null)
+            {
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Maandag</th>
+                            <th>Dinsdag</th>
+                            <th>Woensdag</th>
+                            <th>Donderdag</th>
+                            <th>Vrijdag</th>
+                            <th>Zaterdag</th>
+                            <th>Zondag</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="monday-column ">
+                                <div class="d-flex flex-column">
+                                @if(ListByCurrentWeekDay["Monday"].Count > 0)
+                                {
+                                    foreach (var timeSlot in ListByCurrentWeekDay["Monday"])
+                                    {
+                                        <span>@timeSlot.DateTime.ToString("HH:mm")</span>
+                                    }
+                                }
+                                </div>
+                            </td>
+                            <td class="tuesday-column ">
+                                <div class="d-flex flex-column">
+                                @if(ListByCurrentWeekDay["Tuesday"].Count > 0)
+                                {
+                                    foreach (var timeSlot in ListByCurrentWeekDay["Tuesday"])
+                                    {
+                                        <span>@timeSlot.DateTime.ToString("HH:mm")</span>
+                                    }
+                                }
+                                </div>
+                            </td>
+                            <td class="wednesday-column ">
+                                <div class="d-flex flex-column">
+                                @if(ListByCurrentWeekDay["Wednesday"].Count > 0)
+                                {
+                                    foreach (var timeSlot in ListByCurrentWeekDay["Wednesday"])
+                                    {
+                                        <span>@timeSlot.DateTime.ToString("HH:mm")</span>
+                                    }
+                                }
+                                </div>
+                            </td>
+                            <td class="thursday-column ">
+                                <div class="d-flex flex-column">
+                                @if(ListByCurrentWeekDay["Thursday"].Count > 0)
+                                {
+                                    foreach (var timeSlot in ListByCurrentWeekDay["Thursday"])
+                                    {
+                                        <span>@timeSlot.DateTime.ToString("HH:mm")</span>
+                                    }
+                                }
+                                </div>
+                            </td>
+                            <td class="friday-column ">
+                                <div class="d-flex flex-column">
+                                @if(ListByCurrentWeekDay["Friday"].Count > 0)
+                                {
+                                    foreach (var timeSlot in ListByCurrentWeekDay["Friday"])
+                                    {
+                                        <span>@timeSlot.DateTime.ToString("HH:mm")</span>
+                                    }
+                                }
+                                </div>
+                            </td>
+                            <td class="saturday-column ">
+                                <div class="d-flex flex-column">
+                                @if(ListByCurrentWeekDay["Saturday"].Count > 0)
+                                {
+                                    foreach (var timeSlot in ListByCurrentWeekDay["Saturday"])
+                                    {
+                                        <span>
+                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
+                                        <br/>
+                                            <span class="appointment-subspan">
+                                                @timeSlot.AppointmentDTO.PatientDTO.Name
+                                                <br/>
+                                                @timeSlot.AppointmentDTO.Reason
+                                            </span>
+                                        </span>
+                                    }
+                                }
+                                </div>
+                            </td>
+                            <td class="sunday-column ">
+                                @if(ListByCurrentWeekDay["Sunday"].Count > 0)
+                                {
+                                    foreach (var timeSlot in ListByCurrentWeekDay["Sunday"])
+                                    {
+                                        @timeSlot.DateTime.ToString("HH:mm")
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Geen timeslots gevonden</p>
+            }
         }
         else
         {
@@ -32,25 +139,72 @@
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
-    private IEnumerable<TimeSlotDTO> ListOfTimeSlots;
-    private List<ScheduleTimeSlotDTO> MondayList = new List<ScheduleTimeSlotDTO>();
-    private List<ScheduleTimeSlotDTO> TuesdayList = new List<ScheduleTimeSlotDTO>();
-    private List<ScheduleTimeSlotDTO> WednesdayList = new List<ScheduleTimeSlotDTO>();
-    private List<ScheduleTimeSlotDTO> ThursdayList = new List<ScheduleTimeSlotDTO>();
-    private List<ScheduleTimeSlotDTO> FridayList = new List<ScheduleTimeSlotDTO>();
-    private List<ScheduleTimeSlotDTO> SaturdayList = new List<ScheduleTimeSlotDTO>();
-    private List<ScheduleTimeSlotDTO> SundayList = new List<ScheduleTimeSlotDTO>();
+
+    private IEnumerable<TimeSlotDTO> TimeSlots { get; set; }
+
+    private IEnumerable<TimeSlotDTO> TimeSlotsByWeek { get; set; }
+
+    private DateTime currentWeekStart = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).AddDays(1);
+    private DateTime currentWeekEnd = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).AddDays(7);
+
+    Dictionary<string, List<TimeSlotDTO>> ListByCurrentWeekDay = new Dictionary<string, List<TimeSlotDTO>>
+            {
+                { "Monday", new List<TimeSlotDTO>() },
+                { "Tuesday", new List<TimeSlotDTO>() },
+                { "Wednesday", new List<TimeSlotDTO>() },
+                { "Thursday", new List<TimeSlotDTO>() },
+                { "Friday", new List<TimeSlotDTO>() },
+                { "Saturday", new List<TimeSlotDTO>() },
+                { "Sunday", new List<TimeSlotDTO>() }   
+            };
 
     protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
         {
             NavManager.NavigateTo("/login");
+        } else {
+            DoctorDTO doctor = await doctorService.GetDoctor(2);
+            TimeSlots = await timeSlotService.GetTimeSlots(doctor);
+            TimeSlots = TimeSlots.Where(ts => ts.AppointmentDTO != null);
+
+            TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
+
+            foreach (var timeSlot in TimeSlotsByWeek)
+            {
+                Console.WriteLine(timeSlot.DateTime.DayOfWeek.ToString());
+                ListByCurrentWeekDay[timeSlot.DateTime.DayOfWeek.ToString()].Add(timeSlot);
+            }
+        }
+    }
+
+    private void ChangeWeek(int days)
+    {
+        currentWeekStart = currentWeekStart.AddDays(days);
+        currentWeekEnd = currentWeekEnd.AddDays(days);
+
+        ListByCurrentWeekDay = new Dictionary<string, List<TimeSlotDTO>>
+            {
+                { "Monday", new List<TimeSlotDTO>() },
+                { "Tuesday", new List<TimeSlotDTO>() },
+                { "Wednesday", new List<TimeSlotDTO>() },
+                { "Thursday", new List<TimeSlotDTO>() },
+                { "Friday", new List<TimeSlotDTO>() },
+                { "Saturday", new List<TimeSlotDTO>() },
+                { "Sunday", new List<TimeSlotDTO>() }   
+            };
+        TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
+
+        Console.WriteLine("Current week start: " + currentWeekStart.ToString("dd/MM/yyyy"));
+
+        Console.WriteLine(TimeSlots.Count());
+
+        foreach (var timeSlot in TimeSlotsByWeek)
+        {
+            Console.WriteLine(timeSlot.DateTime.DayOfWeek.ToString());
+            ListByCurrentWeekDay[timeSlot.DateTime.DayOfWeek.ToString()].Add(timeSlot);
         }
 
-        // ListOfScheduleTimeSlots = await ScheduleTimeSlotService.GetScheduleTimeSlotsByDoctorId(0);
-
-        // Add each time slot to the appropriate list
-
+        StateHasChanged();
     }
 }
