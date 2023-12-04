@@ -26,12 +26,12 @@ namespace Services.Core
 
             foreach (var doctor in doctors)
             {
-                DoctorDTO convertedDoctor = new DoctorDTO
+                DoctorDTO convertedDoctor = new()
                 {
                     Id = doctor.Id,
                     Name = doctor.Name,
                     Specialization = doctor.Specialization,
-                    Gender = (Gender) doctor.Gender,
+                    Gender = doctor.Gender,
                     Biograph = doctor.Biograph,
                     IsAvailable = doctor.IsAvailable,
                     ImageLink = doctor.ImageLink,
@@ -49,14 +49,13 @@ namespace Services.Core
 
             DoctorDTO dto = new()
             {
-                Biograph = doctor.Biograph,
-                IsAvailable = doctor.IsAvailable,
-                ImageLink = doctor.ImageLink,
-                Gender = (Gender)doctor.Gender,
                 Id = doctor.Id,
                 Name = doctor.Name,
                 Specialization = doctor.Specialization,
-
+                Gender = doctor.Gender,
+                Biograph = doctor.Biograph,
+                IsAvailable = doctor.IsAvailable,
+                ImageLink = doctor.ImageLink,
             };
 
             return dto;
@@ -64,11 +63,11 @@ namespace Services.Core
 
         public async Task<DoctorDTO> CreateDoctor(DoctorDTO newDoctor)
         {
-            DoctorDTO response = new DoctorDTO();
+            DoctorDTO response = new ();
 
             try
             {
-                Doctor newDomainDoctor = new Doctor(newDoctor.Name, newDoctor.Specialization, (Gender) newDoctor.Gender, newDoctor.Biograph);
+                Doctor newDomainDoctor = new (newDoctor.Name, newDoctor.Specialization, newDoctor.Gender, newDoctor.Biograph);
 
                 _doctors.Add(newDomainDoctor);
                 await _DBContext.SaveChangesAsync();
@@ -76,7 +75,7 @@ namespace Services.Core
                 response.Id = newDomainDoctor.Id;
                 response.Name = newDomainDoctor.Name;
                 response.Specialization = newDomainDoctor.Specialization;
-                response.Gender = (Gender) newDomainDoctor.Gender;
+                response.Gender = newDomainDoctor.Gender;
                 response.Biograph = newDomainDoctor.Biograph;
                 response.IsAvailable = newDomainDoctor.IsAvailable;
                 response.ImageLink = newDomainDoctor.ImageLink;
@@ -90,7 +89,7 @@ namespace Services.Core
 
         public async Task<DoctorDTO> UpdateDoctor(DoctorDTO updatedDoctor)
         {
-            DoctorDTO response = new DoctorDTO();
+            DoctorDTO response = new ();
 
             try
             {
@@ -98,7 +97,9 @@ namespace Services.Core
 
                 if (existingDoctor != null)
                 {
-                    existingDoctor.UpdateDoctor(updatedDoctor.Name, updatedDoctor.Specialization, (Gender)updatedDoctor.Gender, updatedDoctor.Biograph, updatedDoctor.IsAvailable, updatedDoctor.ImageLink);
+                    existingDoctor.UpdateDoctor(updatedDoctor.Name, updatedDoctor.Specialization, updatedDoctor.Gender, updatedDoctor.Biograph);
+                    existingDoctor.IsAvailable = updatedDoctor.IsAvailable;
+                    existingDoctor.ImageLink = updatedDoctor.ImageLink;
 
                     await _DBContext.SaveChangesAsync();
 
@@ -107,7 +108,7 @@ namespace Services.Core
                         Id = existingDoctor.Id,
                         Name = existingDoctor.Name,
                         Specialization = existingDoctor.Specialization,
-                        Gender = (Gender)existingDoctor.Gender,
+                        Gender = existingDoctor.Gender,
                         Biograph = existingDoctor.Biograph,
                         IsAvailable = existingDoctor.IsAvailable,
                         ImageLink = existingDoctor.ImageLink,
@@ -136,6 +137,7 @@ namespace Services.Core
                 var existingDoctor = await _doctors
                     .Include(d => d.TimeSlots)
                         .ThenInclude(t => t.Appointment)
+                    .Include(d => d.ScheduleTimeSlots)
                     .FirstOrDefaultAsync(d => d.Id == doctorToDelete.Id);
 
                 if (existingDoctor != null)
@@ -148,6 +150,11 @@ namespace Services.Core
                             _DBContext.Remove(appointment);
                         }
                         _DBContext.Remove(timeSlot);
+                    }
+
+                    foreach (var scheduleTimeSlot in existingDoctor.ScheduleTimeSlots)
+                    {
+                        _DBContext.Remove(scheduleTimeSlot);
                     }
 
                     _doctors.Remove(existingDoctor);
