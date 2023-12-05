@@ -1,6 +1,8 @@
-@using BlazorApp.Services.CMS
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data; 
 @inject DatabaseContext databaseContext
-@inject CMSBlogService blogService
+@inject BlogService blogService
 
 <div>
     <div class="buttons">
@@ -61,7 +63,7 @@
     {
         plainTextContent = richTextEditRef?.contentAsText;
         content = richTextEditRef?.contentAsHtml;
-        CMSBlog newBlog = new()
+        BlogDTO newBlog = new()
         {
             Title = newTitle,
             Text = content,

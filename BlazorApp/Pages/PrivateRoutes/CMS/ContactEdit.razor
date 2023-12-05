@@ -1,13 +1,13 @@
 @page "/admin/cms/contact"
 @using BlazorApp.Auth
-@using BlazorApp.Data
-@using BlazorApp.Services.CMS
-@using BlazorApp.Controllers
-@using BlazorApp.Components.Modals
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;
+@using BlazorApp.Components.Modals;
 @using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavManager
-@inject CMSContactService contactService
-@inject CMSLocationService locationService
+@inject ContactService contactService
+@inject LocationService locationService
 
 
 <PageTitle>Admin - CMS Contact</PageTitle>
@@ -37,17 +37,17 @@
         <!-- Left Column for Text -->
         <div class="col-md-6">
 
-        <h2>Onze gegevens</h2>
-        @if (contact != null)
-        {
-            @((MarkupString)contact.Context!)
-        }
-        else
-        {
+            <h2>Onze gegevens</h2>
+            @if (contact != null)
+            {
+                <p>@((MarkupString)contact.Context!)</p>
+            }
+            else
+            {
 
-            <h1>ERROR</h1>
-        }
-                </div>
+                <h1>ERROR</h1>
+            }
+        </div>
 
                 <!-- Right Column for Google Maps -->
                 <div class="col-md-6">
@@ -109,7 +109,7 @@
                     <h2>Onze locatie</h2>
                     @if (location != null)
                     {
-                        @((MarkupString)location.Context!)
+                        <p>@((MarkupString)location.Context!)</p>
                     }
                     else
                     {
@@ -130,8 +130,8 @@
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
 
-    CMSContact contact;
-    CMSLocation location;
+    private ContactDTO contact;
+    private LocationDTO location;
 
     public ContactModel? Model { get; set; }
 

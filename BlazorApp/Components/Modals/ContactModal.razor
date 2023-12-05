@@ -1,11 +1,10 @@
-@using BlazorApp.Data
-@using Microsoft.AspNetCore.Components
-@using System.Text.Json
+@using Microsoft.AspNetCore.Components;
+@using System.Text.Json;
 @using System.Text.Json.Serialization;
-@using BlazorApp.Services.CMS
-@using BlazorApp.Models
-@using BlazorApp.Controllers
-@inject CMSContactService contactService
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;
+@inject ContactService contactService
 @inject DatabaseContext databaseContext
 
 <div>
@@ -71,7 +70,7 @@
     protected string contentAsText;
     protected string savedContent;
     protected string? content;
-    CMSContact Contact;
+    private ContactDTO contact;
 
     string? plainTextContent;
     string? context;
@@ -80,8 +79,8 @@
 
     private async Task<Task?> ShowModal()
     {
-        Contact = await contactService.GetContact();
-        context = Contact.Context;
+        contact = await contactService.GetContact();
+        context = contact.Context;
         await richTextEditRef.SetHtmlAsync(context);
         return modalRef?.Show();
     }
@@ -94,12 +93,12 @@
     private async Task UpdateContact()
     {
         content = await richTextEditRef.GetHtmlAsync();
-        CMSContact contact = new()
+        ContactDTO con = new()
         {
-            Id = Contact.Id,
+            Id = contact.Id,
             Context = content
         };
-        await contactService.UpdateContact(contact);
+        await contactService.UpdateContact(con);
         modalRef?.Hide();
     }
 

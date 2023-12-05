@@ -1,11 +1,10 @@
-@using BlazorApp.Data
-@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components;
 @using System.Text.Json
 @using System.Text.Json.Serialization;
-@using BlazorApp.Services.CMS
-@using BlazorApp.Models
-@using BlazorApp.Controllers
-@inject CMSLocationService locationService
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;
+@inject LocationService locationService
 @inject DatabaseContext databaseContext
 
 <div>
@@ -70,7 +69,7 @@
     protected string contentAsText;
     protected string savedContent;
     protected string? content;
-    CMSLocation location;
+    private LocationDTO location;
 
     string? plainTextContent;
     string? context;
@@ -106,7 +105,7 @@
     private async Task UpdateLocation()
     {
         content = await richTextEditRef.GetHtmlAsync();
-        CMSLocation loc = new()
+        LocationDTO loc = new()
         {
             Id = location.Id,
             Context = content

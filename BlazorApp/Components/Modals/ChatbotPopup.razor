@@ -1,13 +1,12 @@
-@using Microsoft.JSInterop
+@using Microsoft.JSInterop;
 @inject IJSRuntime JSRuntime
-@using System.Text.Json
-@using BlazorApp.Data
-@using BlazorApp.Services.CMS
-@using Shared
-@using BlazorApp.Controllers
+@using System.Text.Json;
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;
 @inject DatabaseContext databaseContext
-@using Microsoft.AspNetCore.Components
-@inject CMSChatbotService ChatbotService
+@using Microsoft.AspNetCore.Components;
+@inject ChatbotService chatbotService
 <button class="btn" @onclick="ShowModal">@Text</button>
 <Modal @ref="modalRef">
     <ModalContent Centered>
@@ -58,7 +57,7 @@
     string? answer;
 
     [Parameter]
-    public CMSChatBotQuestion? ParentQuestion { get; set; }
+    public ChatBotQuestionDTO ParentQuestion { get; set; }
 
     [Parameter]
     public EventCallback Refresh { get; set; }
@@ -74,14 +73,14 @@
         if (this.question == null || savedContent == null || this.question == "" || savedContent == "")
             return;
 
-        CMSChatBotQuestion question = new CMSChatBotQuestion();
+        ChatBotQuestionDTO question = new ChatBotQuestionDTO();
         question.Question = this.question;
         question.Answer = this.savedContent;
 
         if (ParentQuestion != null)
-            await ChatbotService.AddFollowUpQuestion(ParentQuestion, question);
+            await chatbotService.AddFollowUpQuestion(ParentQuestion, question);
         else
-            await ChatbotService.AddQuestion(question);
+            await chatbotService.AddQuestion(question);
 
         modalRef?.Hide();
         this.question = null;

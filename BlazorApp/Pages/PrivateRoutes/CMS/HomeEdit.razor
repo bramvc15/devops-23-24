@@ -1,17 +1,17 @@
 @page "/admin/cms/home"
 @inherits EditHeaderPopUp
-@using BlazorApp.Data
-@using BlazorApp.Services
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;
 @using BlazorApp.Controllers
 @using BlazorApp.Components.Modals
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @inject DatabaseContext databaseContext
-@inject CMSBlogService blogService;
-@using BlazorApp.Auth
+@inject BlogService blogService;
+@using BlazorApp.Auth;
 @inject NavigationManager NavManager
 @using Newtonsoft.Json;
-@using BlazorApp.Services.CMS;
 
 <PageTitle>Admin - CMS Home</PageTitle>
 
@@ -48,9 +48,9 @@ BlitzWareAuthService.AuthService.userData.UserSubLevel)
             <div class="buttons" style="margin-left: 20px;">
                 <AddBlogPopUp />
             </div>
-            @if (blog.blogs != null)
+            @if (blogObject.blogs != null)
             {
-                foreach (var b in blog.blogs)
+                foreach (var b in blogObject.blogs)
                 {
                     <ActuaField Title=@b.Title Text=@b.Text Image=@b.ImageLink />
                 }
@@ -60,13 +60,13 @@ BlitzWareAuthService.AuthService.userData.UserSubLevel)
                     <li class="page-item @(currentPage == 1 ? "disabled" : "")">
                         <a class="page-link" @onclick="(() => ChangePage(currentPage - 1))">Vorige</a>
                     </li>
-                    @for (int i = 1; i <= blog.totalPages; i++)
+                    @for (int i = 1; i <= blogObject.totalPages; i++)
                     {
                         <li class="page-item @(i == currentPage ? "active" : "")">
                             <a class="page-link" @onclick="(() => ChangePage(i))">@i</a>
                         </li>
                     }
-                    <li class="page-item @(currentPage == blog.totalPages ? "disabled" : "")">
+                    <li class="page-item @(currentPage == blogObject.totalPages ? "disabled" : "")">
                         <a class="page-link" @onclick="(() => ChangePage(currentPage + 1))">Volgende</a>
                     </li>
                 </ul>
@@ -90,25 +90,25 @@ else
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
-    (IEnumerable<CMSBlog> blogs, int totalPages) blog;
-    int currentPage = 1;
+    private (IEnumerable<BlogDTO> blogs, int totalPages) blogObject;
+    private int currentPage = 1;
 
     protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        blog = await blogService.GetBlogs(currentPage, 5);
+        blogObject = await blogService.GetBlogs(currentPage, 5);
     }
 
     private async Task ChangePage(int page)
     {
-        if (page < 1 || page > blog.totalPages)
+        if (page < 1 || page > blogObject.totalPages)
         {
             return;
         }
 
         currentPage = page;
-        blog = await blogService.GetBlogs(currentPage, 5);
+        blogObject = await blogService.GetBlogs(currentPage, 5);
         StateHasChanged();
     }
 }

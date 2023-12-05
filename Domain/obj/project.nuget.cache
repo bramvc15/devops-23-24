@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "NbOUZIEXmIaUj1pa51RqiBNmFtcnaLM9RR9T9XRR/ICIPsi6Sb8fvGtG7JR/PkXHXg1WB37t8xbYRUxIGrQ+8A==",
+  "dgSpecHash": "x4Z1UPiALaYttZIUXKIiVvUIqeyf/x38iQd0O/+Ywh4YNXYq8t4zF0Pk9fsC9li/NfZniSQQTGtgHpyAaHHcsw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lander\\Documents\\HoGent\\3de Jaar\\DevOps\\devops-23-24-net-g07\\Domain\\Domain.csproj",
+  "projectFilePath": "/Users/landerdekesel/Documents/HoGent/3de Jaar/DevOps/devops-23-24-net-g07/Domain/Domain.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Lander\\.nuget\\packages\\ardalis.guardclauses\\4.2.0\\ardalis.guardclauses.4.2.0.nupkg.sha512"
+    "/Users/landerdekesel/.nuget/packages/ardalis.guardclauses/4.2.0/ardalis.guardclauses.4.2.0.nupkg.sha512"
   ],
   "logs": []
 }

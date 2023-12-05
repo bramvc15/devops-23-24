@@ -1,17 +1,14 @@
 @page "/afspraak"
-@using BlazorApp.Data
-@using BlazorApp.Services.Core
+@using Services.Core;
 @using BlazorApp.Models
-@using BlazorApp.Controllers
 @inherits ComponentBase
 @inject AppointmentService appointmentService
 @inject DoctorService doctorService
 @inject PatientService patientService
 @inject TimeSlotService timeSlotService
-@using Microsoft.AspNetCore.Components.Forms
-@using Shared
-@using Enums
-@using BlazorApp.BlazorShared
+@using Microsoft.AspNetCore.Components.Forms;
+@using Shared.DTO.Core;
+@using Shared.Enums;
 
 <PageTitle>Afspraak maken</PageTitle>
 
@@ -92,7 +89,7 @@
     private async Task HandleTimeChosen(int? timeSlotId)
     {
         SelectedTimeSlotId = timeSlotId;
-        IEnumerable<TimeSlotDTO> timeSlots = await timeSlotService.GetTimeSlots(SelectedDoctor);
+        IEnumerable<TimeSlotDTO> timeSlots = await timeSlotService.GetTimeSlots(SelectedDoctor.Id ?? 0);
         SelectedTimeSlotDTO = timeSlots.FirstOrDefault(ts => ts.Id == timeSlotId);
 
         showAfspraak = !showAfspraak;

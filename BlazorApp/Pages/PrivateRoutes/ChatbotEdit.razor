@@ -1,17 +1,15 @@
 @page "/admin/chatbot"
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
-@using System.Text.Json
-@using BlazorApp.Data
-@using BlazorApp.Services.CMS
-@using Shared
-@using BlazorApp.Controllers
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;
 @inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
-@inject CMSChatbotService ChatbotService
-@using BlazorApp.Auth
+@inject ChatbotService chatbotService
+@using BlazorApp.Auth;
 @inject NavigationManager NavManager
-@using BlazorApp.Components.Modals
+@using BlazorApp.Components.Modals;
 
 <PageTitle>Admin - Chat Bot</PageTitle>
 
@@ -22,9 +20,9 @@
         {
             <h1>Chatbot vragen</h1>
             <div id="accordion">
-                @if (ChatbotQuestionsList != null)
+                @if (chatbotQuestionsList != null)
                 {
-                    foreach (var question in ChatbotQuestionsList)
+                    foreach (var question in chatbotQuestionsList)
                     {
                         <ChatbotAccordion Question=question OnDelete="DeleteChatBotQuestion" />
                     }
@@ -46,7 +44,7 @@
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
 
-    IEnumerable<CMSChatBotQuestion>? ChatbotQuestionsList;
+    private IEnumerable<ChatBotQuestionDTO>? chatbotQuestionsList;
     private bool collapsed = true;
 
     protected override async Task OnInitializedAsync()
@@ -55,8 +53,8 @@
             NavManager.NavigateTo("/login");
         else
         {
-            ChatbotQuestionsList = await ChatbotService.GetContent();
-            ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
+            chatbotQuestionsList = await chatbotService.GetContent();
+            chatbotQuestionsList = chatbotQuestionsList.Where(x => x.IsFollowUp == null);
         }
     }
 
@@ -66,9 +64,9 @@
         StateHasChanged();
     }
 
-    protected async Task DeleteChatBotQuestion(CMSChatBotQuestion question)
+    protected async Task DeleteChatBotQuestion(ChatBotQuestionDTO question)
     {
-        ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.Id != question.Id);
+        chatbotQuestionsList = chatbotQuestionsList.Where(x => x.Id != question.Id);
         StateHasChanged();
     }
 

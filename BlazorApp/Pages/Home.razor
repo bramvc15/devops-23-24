@@ -1,18 +1,13 @@
 @page "/"
-@using System.Text.Json
-@using BlazorApp.Data
-@using BlazorApp.Services.CMS
-@using BlazorApp.Models
-@using BlazorApp.Controllers
-@using BlazorApp.BlazorShared
-@using Shared
-@inject CMSHomeHeaderService homeHeaderService
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;
+@inject HomeHeaderService homeHeaderService
 @inject DatabaseContext databaseContext
-@using Microsoft.AspNetCore.Components
-@inject CMSBlogService blogService
-@using Syncfusion.Blazor.Navigations
-@using Syncfusion.Blazor.Cards
-@using Syncfusion.Blazor.Buttons
+@using Microsoft.AspNetCore.Components;
+@using Syncfusion.Blazor.Navigations;
+@using Syncfusion.Blazor.Cards;
+@using Syncfusion.Blazor.Buttons;
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 //temp
 <PageTitle>Vision Oogcentrum</PageTitle>
@@ -20,9 +15,9 @@
 <div>
     <div class="background-div">
         <div class="overlay">
-            @if(HomObj != null){
-                <h1>@HomObj.Title</h1>
-                <p>@((MarkupString)HomObj.Context)</p>
+            @if(homeHeader != null){
+                <h1>@homeHeader.Title</h1>
+                <p>@((MarkupString)homeHeader.Context)</p>
             }
             else
             {
@@ -81,27 +76,14 @@
 @code {
 
     [Inject] NavigationManager NavigationManager { get; set; }
-    CMSHomeHeader HomObj;
-    (IEnumerable<CMSBlog> blogs, int totalPages) BlogObj;
+    private HomeHeaderDTO homeHeader;
+    (IEnumerable<BlogDTO> blogs, int totalPages) blogs;
     private List<string> indicatorImage = new List<string>() { "Kantoor", "Team", "Interaction", "Oogonderzoek", "Laser" };
     int currentPage = 1;
 
     protected override async Task OnInitializedAsync()
     {
-        HomObj = await homeHeaderService.GetHomeHeader();
-        BlogObj = await blogService.GetBlogs(currentPage, 5);
-    }
-
-    private async Task ChangePage(int page)
-    {
-        if (page < 1 || page > BlogObj.totalPages)
-        {
-            return;
-        }
-
-        currentPage = page;
-        BlogObj = await blogService.GetBlogs(currentPage, 5);
-        StateHasChanged();
+        homeHeader = await homeHeaderService.GetHomeHeader();
     }
 
     private void NavigateToAppointment()

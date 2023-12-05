@@ -1,8 +1,9 @@
 ﻿@page "/actua"
 
-@using BlazorApp.Services.CMS
-@inject CMSBlogService blogService
-@using Syncfusion.Blazor.Navigations
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@inject BlogService blogService
+@using Syncfusion.Blazor.Navigations;
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 
 <div class="wrapper">
@@ -10,15 +11,15 @@
     <div class="col-lg-12 content-wrapper">
         <div class="carousel-sample">
             <SfCarousel CssClass="kb-carousel" AutoPlay="false" ShowPlayButton="true">
-                @if (BlogObj.blogs != null)
+                @if (blogsObject.blogs != null)
                 {
-                    @foreach (var b in BlogObj.blogs)
+                    @foreach (var b in blogsObject.blogs)
                     {
                         <CarouselItem>
                             <div class="country-detail-container">
                                 <div class="col-sm-5 detail-container">
                                     <div class="heading">@b.Title</div>
-                                    <div class="description">@b.Text</div>
+                                    <div class="description">@((MarkupString)b.Text)</div>
                                     <a class="detail" href="/actua-detail/@b.Id" target="_blank">READ MORE</a>
                                 </div>
                                 <div class="col-sm-5 image-container">
@@ -46,11 +47,11 @@
 </div>
 </div>
 @code {
-    (IEnumerable<CMSBlog> blogs, int totalPages) BlogObj;
-    int currentPage = 1;
+    private (IEnumerable<BlogDTO> blogs, int totalPages) blogsObject;
+    private int currentPage = 1;
 
     protected override async Task OnInitializedAsync()
     {
-        BlogObj = await blogService.GetBlogs(currentPage, 5);
+        blogsObject = await blogService.GetBlogs(currentPage, 5);
     }
 }

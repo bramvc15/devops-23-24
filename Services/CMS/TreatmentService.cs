@@ -20,7 +20,22 @@ namespace Services.CMS
 
         public async Task<IEnumerable<TreatmentDTO>> GetTreatments()
         {
-            return (IEnumerable<TreatmentDTO>)await _treatments.ToListAsync();
+            List<Treatment> treatments = await _treatments.ToListAsync();
+            List<TreatmentDTO> convertedTreatments = new();
+
+            foreach (var treatment in treatments)
+            {
+                TreatmentDTO t = new()
+                {
+                    Id = treatment.Id,
+                    Name = treatment.Name,
+                    Description = treatment.Description,
+                    ImageLink = treatment.ImageLink
+                };
+                convertedTreatments.Add(t);
+            }
+
+            return convertedTreatments;
         }
 
         public async Task<TreatmentDTO> CreateTreatment(TreatmentDTO newTreatment)

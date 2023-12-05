@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Enums;
+using Shared.Enums;
 namespace BlazorApp.Models
 {
     public class ClientData

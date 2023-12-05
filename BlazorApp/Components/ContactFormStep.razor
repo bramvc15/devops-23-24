@@ -1,6 +1,5 @@
-﻿@using BlazorApp.Services
-@using BlazorApp.Models
-@using Enums
+﻿@using BlazorApp.Models;
+@using Shared.Enums;
 
 <EditForm Model="@clientData" OnValidSubmit="@SubmitClientData">
     <DataAnnotationsValidator />
@@ -26,9 +25,9 @@
                 </div>
                 <div class='formInput'>
                     <select id="Gender" @bind="clientData.SelectedGender" class="gender-select">
-                        <option value="@Enums.Gender.Male">Man</option>
-                        <option value="@Enums.Gender.Female">Vrouw</option>
-                        <option value="@Enums.Gender.Other">Andere</option>
+                        <option value="@Gender.Male">Man</option>
+                        <option value="@Gender.Female">Vrouw</option>
+                        <option value="@Gender.Other">Andere</option>
                     </select>
                     <ValidationMessage For="@(() => clientData.SelectedGender)" />
                 </div>

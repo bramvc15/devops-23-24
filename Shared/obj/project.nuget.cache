@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "g5mmn7SUgp7B1wi/26MUlnxRLABHgd1cuBea/fQrpQ4cRWu0XnqEXMGgv8DskAi4OvhHYLTpqWuvKsLFlS2xSQ==",
+  "dgSpecHash": "9XSee5GFWmwpsRpzwSM4JE668OWpCP1tUMXCtqidLUlrLk9uUrHFI941njKNqKtDwsldGXHU+UNUSZfUkSPPUw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lander\\Documents\\HoGent\\3de Jaar\\DevOps\\devops-23-24-net-g07\\Shared\\Shared.csproj",
+  "projectFilePath": "/Users/landerdekesel/Documents/HoGent/3de Jaar/DevOps/devops-23-24-net-g07/Shared/Shared.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

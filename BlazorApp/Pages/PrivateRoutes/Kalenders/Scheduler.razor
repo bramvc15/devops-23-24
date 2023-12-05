@@ -1,9 +1,11 @@
 @page "/admin/kalenders/scheduler"
 @using BlazorApp.Auth
 @using BlazorApp.Components.Modals
-@using BlazorApp.Services.Core
+@using Services.Core;
+@using Shared.DTO.Core;
+@using Shared.Enums;
 @inject NavigationManager NavManager
-@inject ScheduleTimeSlotService ScheduleTimeSlotService
+@inject ScheduleTimeSlotService scheduleTimeSlotService
 
 <div class="sidebar">
     <SideNavMenu />
@@ -58,7 +60,6 @@
                                         {
                                             var endTime = list[i].DateTime;
                                             <div>
-                                                <p>@list[i].AppointmentType</p>
                                                 <p>@($"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}")</p>
                                                 <p>@($"{list[i].Duration} minutes")</p>
                                                 <br />
@@ -152,13 +153,13 @@
         {
             Id = 2,
             Biograph = "aa",
-            Gender = Enums.Gender.Other,
+            Gender = Gender.Other,
             ImageLink = "aa",
             IsAvailable = true,
             Name = "aa",
             Specialization = "aa"
         };
-        ListOfScheduleTimeSlots = await ScheduleTimeSlotService.GetScheduleTimeSlots(doc);
+        ListOfScheduleTimeSlots = await scheduleTimeSlotService.GetScheduleTimeSlots(doc.Id ?? 0);
 
         // Add each time slot to the appropriate list
         foreach (ScheduleTimeSlotDTO scheduleTimeSlot in ListOfScheduleTimeSlots)
