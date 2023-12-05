@@ -10,7 +10,7 @@ namespace Persistence.Data
 
         public static void Initialize(DatabaseContext context)
         {
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any())
             {
                 return;
             }
@@ -207,6 +207,23 @@ namespace Persistence.Data
             };
             #endregion
 
+            #region Faqs
+            var faqs = new Faq[]
+            {
+               new Faq("Wat zijn de meest voorkomende oogaandoeningen?", "Veelvoorkomende oogaandoeningen zijn bijziendheid, verziendheid, astigmatisme, cataract, glaucoom, maculadegeneratie en droge ogen."),
+               new Faq("Wat zijn de symptomen van droge ogen?", "Brandend gevoel, jeuk, roodheid, wazig zicht, gevoeligheid voor licht en het gevoel van iets in het oog."),
+               new Faq("Wat is glaucoom en hoe wordt het behandeld?", "Glaucoom beschadigt de oogzenuw en kan behandeld worden met oogdruppels, lasertherapie of chirurgie."),
+               new Faq("Hoe kan ik mijn ogen gezond houden?", "Regelmatige controles, beschermende brillen, een gezond dieet en beperkte schermtijd kunnen helpen."),
+               new Faq("Wat is het verschil tussen bijziendheid en verziendheid?", "Bijziendheid bemoeilijkt het zien van verre objecten, terwijl verziendheid moeilijkheden oplevert bij het zien van dichtbij"),
+               new Faq("Welke leeftijdsgroepen hebben een hoger risico op oogaandoeningen?", "Oogaandoeningen kunnen op elke leeftijd voorkomen, maar staar komt vaker voor bij oudere volwassenen en amblyopie bij jonge kinderen."),
+               new Faq("Wat zijn de risicofactoren voor maculadegeneratie?", "Leeftijd, genetica, roken, UV-blootstelling en levensstijl verhogen het risico."),
+               new Faq("Hoe bescherm ik mijn ogen tegen zonneschade?", "Draag een zonnebril met UV-bescherming, vermijd langdurige blootstelling aan de zon en draag een hoed met een brede rand."),
+               new Faq("Wat zijn de behandelingen voor astigmatisme?", "Brillen, contactlenzen, LASIK of PRK kunnen astigmatisme corrigeren."),
+               new Faq("Hoe vaak moet ik mijn ogen laten controleren?", "Elke twee jaar voor mensen zonder bekende problemen. Vaker voor mensen met oogproblemen of risicofactoren, zoals geadviseerd door een oogarts.")
+            };
+            #endregion
+
+
             // domain
             context.Doctors.AddRange(doctors);
             context.Patients.AddRange(patients);
@@ -218,6 +235,7 @@ namespace Persistence.Data
             context.Blogs.AddRange(blogs);
             context.Treatments.AddRange(treatments);
             context.ChatBotQuestions.AddRange(chatbotQuestions);
+            context.Faqs.AddRange(faqs);
             
             context.SaveChanges();
         }
