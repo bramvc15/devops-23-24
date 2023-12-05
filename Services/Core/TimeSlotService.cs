@@ -15,13 +15,13 @@ namespace Services.Core
             _DBContext = databaseContext;
         }
 
-        public async Task<IEnumerable<TimeSlotDTO>> GetTimeSlots(DoctorDTO doc)
+        public async Task<IEnumerable<TimeSlotDTO>> GetTimeSlots(int docId)
         {
             var doctorEntity = await _DBContext.Doctors
                 .Include(d => d.TimeSlots)
                     .ThenInclude(ts => ts.Appointment)
                         .ThenInclude(a => a.Patient)
-                .FirstOrDefaultAsync(d => d.Id == doc.Id);
+                .FirstOrDefaultAsync(d => d.Id == docId);
 
             if (doctorEntity != null)
             {
