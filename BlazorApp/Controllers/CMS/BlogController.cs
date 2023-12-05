@@ -17,7 +17,7 @@ public class BlogController : ControllerBase
     }
 
     [HttpGet("{page}, {pageSize}")]
-    public Task<IEnumerable<BlogDTO>> GetBlogs(int page, int pageSize)
+    public Task<(IEnumerable<BlogDTO> blogs, int totalPages)> GetBlogs(int page, int pageSize)
     {
         return _service.GetBlogs(page, pageSize);
     }

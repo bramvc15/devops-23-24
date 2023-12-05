@@ -17,7 +17,7 @@ namespace Services.CMS
 
         private readonly DbSet<Blog> _blogs;
 
-        public async Task<IEnumerable<BlogDTO>> GetBlogs(int page = 1, int pageSize = 5)
+        public async Task<(IEnumerable<BlogDTO> blogs, int totalPages)> GetBlogs(int page = 1, int pageSize = 5)
         {
             var totalCount = _blogs.Count();
             var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
@@ -42,7 +42,7 @@ namespace Services.CMS
                 convertedBlogs.Add(convertedBlog);
             }
 
-            return convertedBlogs;
+            return (convertedBlogs, totalPages);
             //return await _blogs.ToListAsync(); // zonder pagination
         }
         public async Task<BlogDTO> GetBlog(int BlogId)
