@@ -1,0 +1,115 @@
+@page "/admin/cms/faq"
+@inherits ComponentBase
+@using Shared.DTO.CMS;
+@using Services.CMS;
+@using Persistence.Data;
+@inject FaqService faqService
+@using BlazorApp.Components.Modals;
+@using Microsoft.AspNetCore.Components;
+@inject DatabaseContext databaseContext
+@using BlazorApp.Auth;
+@inject NavigationManager NavManager
+
+<PageTitle>ADMIN - CMS FAQ</PageTitle>
+
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+
+<div class="faq-page">
+    <div class="title-layout">
+        <h1>FAQ</h1>
+        <a><u>Home</u> > FAQ </a>
+    </div>
+    <div class="faq-container">
+        @if (FaqObj != null)
+            {
+                @foreach (var f in FaqObj)
+                {
+                    <div class="question-container" @onclick="( () => ShowModal(f) )">
+                        @if (f != null)
+                        {
+                            <QuestionFAQ Question=@f.Question Answer=@f.Answer/>
+                            <span class="line"></span>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <p>FaqObj is null.</p>
+            }
+    </div>
+</div>
+<Modal @ref="modalRef">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>Vraag wijzigen</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Vraag</FieldLabel>
+                    <TextEdit Placeholder="Wat is een..." @bind-Text="newQuestion" />
+                </Field>
+                <Field>
+                    <FieldLabel>Antwoord</FieldLabel>
+                    <TextEdit Placeholder="Dit is een..." @bind-Text="newAnswer" />
+                </Field>
+
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                <Button Color="Color.Primary" Clicked="@UpdateFaq">Opslaan</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+
+@code {
+    [Inject]
+    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    private IEnumerable<FaqDTO>? FaqObj;
+    private FaqDTO clickedFaq;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            NavManager.NavigateTo("/login");
+        FaqObj = await faqService.GetFaqs();
+    }
+
+    int? id;
+    string? newQuestion;
+    string? newAnswer;
+
+    private Modal? modalRef;
+
+    private async Task<Task?> ShowModal(FaqDTO Faq)
+    {
+        clickedFaq = Faq;
+        id = Faq.Id;
+        newQuestion = Faq.Question;
+        newAnswer = Faq.Answer;
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async void UpdateFaq()
+    {
+        FaqDTO faq = new()
+        {
+            Id = clickedFaq.Id,
+            Question = newQuestion,
+            Answer = newAnswer
+        };
+        await faqService.UpdateFaq(faq);
+        await HideModal();
+    }
+}
+
+

@@ -79,6 +79,20 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Faqs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Faqs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "HomeHeaders",
                 columns: table => new
                 {
@@ -186,14 +200,14 @@ namespace Persistence.Migrations
                 name: "Appointments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    TimeSlot_Id = table.Column<int>(type: "int", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PatientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.PrimaryKey("PK_Appointments", x => x.TimeSlot_Id);
                     table.ForeignKey(
                         name: "FK_Appointments_Patients_PatientId",
                         column: x => x.PatientId,
@@ -201,8 +215,8 @@ namespace Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Appointments_TimeSlots_Id",
-                        column: x => x.Id,
+                        name: "FK_Appointments_TimeSlots_TimeSlot_Id",
+                        column: x => x.TimeSlot_Id,
                         principalTable: "TimeSlots",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -243,6 +257,9 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contacts");
+
+            migrationBuilder.DropTable(
+                name: "Faqs");
 
             migrationBuilder.DropTable(
                 name: "HomeHeaders");

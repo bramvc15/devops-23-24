@@ -25,7 +25,8 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Appointment", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("TimeSlot_Id");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -147,6 +148,27 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Doctors");
+                });
+
+            modelBuilder.Entity("Domain.Faq", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Faqs");
                 });
 
             modelBuilder.Entity("Domain.HomeHeader", b =>
@@ -305,8 +327,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.TimeSlot", "TimeSlot")
                         .WithOne("Appointment")
                         .HasForeignKey("Domain.Appointment", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Patient", "Patient")
                         .WithMany("Appointments")

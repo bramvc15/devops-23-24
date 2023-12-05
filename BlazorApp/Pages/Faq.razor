@@ -1,21 +1,25 @@
 @page "/faq"
 @inherits ComponentBase
+@using Shared.DTO.CMS;
+@using Services.CMS;
+@inject FaqService faqService
 
 <PageTitle>FAQ</PageTitle>
+
 <div class="faq-page">
     <div class="title-layout">
         <h1>FAQ</h1>
         <a><u>Home</u> > FAQ </a>
     </div>
     <div class="faq-container">
-        @* @if (DocObj != null)
+        @if (FaqObj != null)
             {
-                @foreach (var q in QuestionObj)
+                @foreach (var f in FaqObj)
                 {
                     <div class="question-container">
-                        @if (q != null)
+                        @if (f != null)
                         {
-                            <QuestionFAQ Question=@q.question Answer=@q.answer/>
+                            <QuestionFAQ Question=@f.Question Answer=@f.Answer/>
                             <span class="line"></span>
                         }
                     </div>
@@ -23,23 +27,17 @@
             }
             else
             {
-                <p>QuestionObj is null.</p>
-            } *@
-
-        <QuestionFAQ Question="la question" Answer="la reponse"/>
-        <span class="line"></span>
-        <QuestionFAQ Question="the question" Answer="the response"/>
-        <span class="line"></span>
-        <QuestionFAQ Question="de vraag" Answer="het antwoord"/>
-        <span class="line"></span>
+                <p>FaqObj is null.</p>
+            }
     </div>
 </div>
 
-@* @code {
-    IEnumerable<QuestionDTO>? QuestionObj; !!QUESTIONDTO NOG AAN TE MAKEN!!
+
+@code {
+    IEnumerable<FaqDTO>? FaqObj;
 
     protected override async Task OnInitializedAsync()
     {
-        QuestionObj = await questionService.GetQuestions(); !!QUESTIONSERVICE NOG AAN TE MAKEN!!
+        FaqObj = await faqService.GetFaqs();
     }
-} *@
+}
