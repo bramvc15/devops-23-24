@@ -65,7 +65,7 @@ namespace Services.CMS
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task DeleteQuestion(ChatBotQuestion question)
+        private async Task DeleteQuestion(ChatBotQuestion question)
         {
             await RecursiveDelete(question);
             ChatBotQuestion questionObj = await _ctx.ChatBotQuestions.FindAsync(question.Id);
@@ -80,7 +80,7 @@ namespace Services.CMS
             await DeleteQuestion(question);
         }
 
-        public async Task RecursiveDelete(ChatBotQuestion question)
+        private async Task RecursiveDelete(ChatBotQuestion question)
         {
             if (question.FollowUpQuestions != null)
             {
