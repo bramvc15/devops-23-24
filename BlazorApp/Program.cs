@@ -21,7 +21,7 @@ builder.WebHost.ConfigureKestrel(options => options.Listen(System.Net.IPAddress.
 // Add services to the container.
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionMac"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
 }, ServiceLifetime.Transient);
 
 builder.Services.AddSingleton<BlitzWareAuthService>();
