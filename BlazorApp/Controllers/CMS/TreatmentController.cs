@@ -1,4 +1,3 @@
-using BlazorApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Pages;
 using Shared;

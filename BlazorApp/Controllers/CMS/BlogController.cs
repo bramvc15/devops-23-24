@@ -16,10 +16,16 @@ public class BlogController : ControllerBase
         _service = service;
     }
 
-    [HttpGet]
-    public Task<(IEnumerable<BlogDTO> blogs, int totalPages)> GetBlogs(int page, int pageSize)
+    [HttpGet("{page}, {pageSize}")]
+    public Task<IEnumerable<BlogDTO>> GetBlogs(int page, int pageSize)
     {
         return _service.GetBlogs(page, pageSize);
+    }
+
+    [HttpGet("{blogId}")]
+    public Task<BlogDTO> GetBlogById(int blogId) 
+    {
+        return _service.GetBlog(blogId);
     }
 
     [HttpPost]
@@ -34,9 +40,9 @@ public class BlogController : ControllerBase
         return _service.UpdateBlog(request);
     }
 
-    [HttpDelete]
-    public Task DeleteBlog([FromBody] BlogDTO request)
+    [HttpDelete("{blogId}")]
+    public Task DeleteBlog(int blogId)
     {
-        return _service.DeleteBlog(request);
+        return _service.DeleteBlog(blogId);
     }
 }

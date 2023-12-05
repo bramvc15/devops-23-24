@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Shared.DTO.CMS;
 using Persistence.Data;
 using Domain;
-using Shared.DTO.Core;
-using System.Reflection.Metadata;
 
 namespace Services.CMS
 {
@@ -19,7 +17,7 @@ namespace Services.CMS
 
         private readonly DbSet<Blog> _blogs;
 
-        public async Task<(IEnumerable<BlogDTO> blogs, int totalPages)> GetBlogs(int page = 1, int pageSize = 5)
+        public async Task<IEnumerable<BlogDTO>> GetBlogs(int page = 1, int pageSize = 5)
         {
             var totalCount = _blogs.Count();
             var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
@@ -44,7 +42,7 @@ namespace Services.CMS
                 convertedBlogs.Add(convertedBlog);
             }
 
-            return (convertedBlogs, totalPages);
+            return convertedBlogs;
             //return await _blogs.ToListAsync(); // zonder pagination
         }
         public async Task<BlogDTO> GetBlog(int BlogId)
@@ -63,8 +61,10 @@ namespace Services.CMS
         }
         public async Task<BlogDTO> CreateBlog(BlogDTO newBlog)
         {
-            _blogs.Add(new Blog(newBlog.Title, newBlog.Text, newBlog.ImageLink));
+            Blog blog = new(newBlog.Title, newBlog.Text, newBlog.ImageLink);
+            _blogs.Add(blog);
             await _ctx.SaveChangesAsync();
+            newBlog.Id = blog.Id;
 
             return newBlog;
         }
@@ -79,9 +79,9 @@ namespace Services.CMS
             return updatedBlog;
         }
 
-        public async Task DeleteBlog(BlogDTO blogToDelete)
+        public async Task DeleteBlog(int blogId)
         {
-            Blog blog = await _blogs.FindAsync(blogToDelete.Id);
+            Blog blog = await _blogs.FindAsync(blogId);
             _blogs.Remove(blog);
             await _ctx.SaveChangesAsync();
         }
