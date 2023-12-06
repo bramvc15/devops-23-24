@@ -32,10 +32,12 @@
                     <div class="question-container" >
                         @if (f != null)
                         {
-                            <div class="qf" @onclick="( () => ShowModal(f) )">
-                                <QuestionFAQ Question=@f.Question Answer=@f.Answer/>
+                            <div class="mini-conatainer">
+                                <div class="qf" @onclick="( () => ShowModal(f) )">
+                                    <QuestionFAQ Question=@f.Question Answer=@f.Answer/>
+                                </div>
+                                <button class="deleteFaqButton" @onclick="( () => DeleteFaq(f) )"><strong>X</strong></button>
                             </div>
-                            <button class="deleteFaqButton" @onclick="( () => DeleteFaq(f) )">X</button>
                             <span class="line"></span>
                         }
                     </div>
@@ -49,27 +51,27 @@
 </div>
 
 <Modal @ref="modalRef">
-        <ModalContent Centered>
-            <ModalHeader>
-                <ModalTitle>Vraag wijzigen</ModalTitle>
-                <CloseButton />
-            </ModalHeader>
-            <ModalBody>
-                <Field>
-                    <FieldLabel>Vraag</FieldLabel>
-                    <TextEdit Placeholder="Wat is een..." @bind-Text="newQuestion" />
-                </Field>
-                <Field>
-                    <FieldLabel>Antwoord</FieldLabel>
-                    <TextEdit Placeholder="Dit is een..." @bind-Text="newAnswer" />
-                </Field>
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@UpdateFaq">Opslaan</Button>
-            </ModalFooter>
-        </ModalContent>
-    </Modal>
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Vraag wijzigen</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Vraag</FieldLabel>
+                <TextEdit Placeholder="Wat is een..." @bind-Text="newQuestion" />
+            </Field>
+            <Field>
+                <FieldLabel>Antwoord</FieldLabel>
+                <TextEdit Placeholder="Dit is een..." @bind-Text="newAnswer" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateFaq">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
 
 @code {
     [Inject]

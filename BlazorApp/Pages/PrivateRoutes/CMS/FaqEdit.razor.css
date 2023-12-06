@@ -59,3 +59,20 @@
     width: fit-content;
     height: fit-content;
 }
+
+.mini-conatainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.deleteFaqButton {
+    background-color: rgb(216, 109, 109);
+    border: solid 3px rgb(206, 70, 70);
+    border-radius: 5px;
+    padding: 5px;
+    color: azure;
+    width: 70px;
+}
