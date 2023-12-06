@@ -29,10 +29,13 @@
             {
                 @foreach (var f in FaqObj)
                 {
-                    <div class="question-container" @onclick="( () => ShowModal(f) )">
+                    <div class="question-container" >
                         @if (f != null)
                         {
-                            <QuestionFAQ Question=@f.Question Answer=@f.Answer/>
+                            <div class="qf" @onclick="( () => ShowModal(f) )">
+                                <QuestionFAQ Question=@f.Question Answer=@f.Answer/>
+                            </div>
+                            <button class="deleteFaqButton" @onclick="( () => DeleteFaq(f) )">X</button>
                             <span class="line"></span>
                         }
                     </div>
@@ -111,6 +114,10 @@
         };
         await faqService.UpdateFaq(faq);
         await HideModal();
+    }
+
+    private async void DeleteFaq(FaqDTO f) {
+        await faqService.DeleteFaq(f);
     }
 
 
