@@ -155,3 +155,23 @@ p {
     font-size: 1.3rem;
     margin-bottom: 10px !important;
 }
+
+.changeBtn {
+    border-radius: 7px;
+    height: 50px;
+    width: 150px;
+    border: none;
+    background-color: rgb(55, 218, 33);
+    color: azure;
+    font-weight: bold;
+    margin-top: 20px;
+    border: solid rgb(34, 151, 18);
+    transition: 0.3s;
+}
+
+.changeBtn:hover {
+    background-color: azure;
+    transition: 0.5s;
+    color: rgb(34, 151, 18);
+    border-color: rgb(55, 218, 33);
+}
