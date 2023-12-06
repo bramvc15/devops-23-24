@@ -10,7 +10,7 @@ namespace Persistence.Data
 
         public static void Initialize(DatabaseContext context)
         {
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Contacts.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any())
             {
                 return;
             }
@@ -121,11 +121,7 @@ namespace Persistence.Data
             #endregion
 
             #region Location
-            Location location = new("Onze vestiging is gelegen in 9040 Gent, op de Antwerpsesteenweg 1022.");
-            #endregion
-
-            #region Contact
-            Contact contact = new("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus turpis nunc, ut euismod nisi molestie rhoncus. Donec id mattis nibh. Pellentesque et laoreet odio. Cras vehicula aliquam molestie. Mauris vestibulum elit posuere pellentesque aliquet. In ut ipsum et dolor lacinia interdum convallis a tortor. Donec ut sodales nisi, eget porttitor nisi. Suspendisse bibendum neque in nisi facilisis, ac efficitur velit euismod. Curabitur tempus ut arcu tristique blandit. Cras tincidunt scelerisque justo, quis malesuada urna ultrices id. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean vehicula justo interdum mauris fringilla vulputate.");
+            Location location = new("Antwerpsesteenweg 1022", "9040 Gent", "België", "vision@mail.com", "09 89 78 78 11");
             #endregion
 
             #region Treatments
@@ -231,7 +227,6 @@ namespace Persistence.Data
             // CMS
             context.HomeHeaders.Add(header);
             context.Locations.Add(location);
-            context.Contacts.Add(contact);
             context.Blogs.AddRange(blogs);
             context.Treatments.AddRange(treatments);
             context.ChatBotQuestions.AddRange(chatbotQuestions);

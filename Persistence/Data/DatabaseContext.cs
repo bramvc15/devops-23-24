@@ -21,7 +21,6 @@ namespace Persistence.Data
         // CMS Tables
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<ChatBotQuestion> ChatBotQuestions { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
         public DbSet<HomeHeader> HomeHeaders { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Treatment> Treatments { get; set; }
