@@ -39,7 +39,16 @@ BlitzWareAuthService.AuthService.userData.UserSubLevel)
                 {
                     foreach (var b in blogs)
                     {
-                        <ActuaField Title=@b.Title Text=@b.Text Image=@b.ImageLink />
+                        @if (b != null)
+                        {
+                            <div class="del-con">
+                                <ActuaField Title=@b.Title Text=@b.Text Image=@b.ImageLink Id=@b.Id/>
+                                <div class="btn-con">
+                                    <button class="deleteBlogButton" @onclick="( () => DeleteBlog(b) )"><strong>X</strong></button>
+                                </div>
+                            </div>
+                            
+                        }
                     }
                 }
             </div>
@@ -67,6 +76,10 @@ else
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
         blogs = await blogService.GetBlogs();
+    }
+
+    private async void DeleteBlog(BlogDTO b) {
+        await blogService.DeleteBlog(b);
     }
 
 }

@@ -56,9 +56,9 @@ namespace Services.CMS
             return updatedBlog;
         }
 
-        public async Task DeleteBlog(BlogDTO blogToDelete)
+        public async Task DeleteBlog(BlogDTO blogd)
         {
-            Blog blog = await _blogs.FindAsync(blogToDelete.Id);
+            Blog blog = await _blogs.FindAsync(blogd.Id);
             _blogs.Remove(blog);
             await _ctx.SaveChangesAsync();
         }
