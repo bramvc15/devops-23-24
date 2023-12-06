@@ -57,3 +57,55 @@
     font-size: 18px; /* Grootte van de tekst aanpassen naar wens */
     margin-bottom: 0px;
 }
+
+.headBox {
+    margin-bottom: 20px;
+    color: rgb(22, 44, 104);
+    
+    text-align: center;
+    
+    font-weight: 800;
+    font-size: 2rem;
+}
+
+.formLabel {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 20px;
+    color: rgb(22, 44, 104);
+}
+
+.cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.loginBtn {
+    background-color: rgb(22, 44, 104);
+    color: white;
+    border: 1px solid rgb(22, 44, 104);
+    border-radius: 5px;
+    padding: 6px 20px;
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    width: fit-content;
+    transition: 0.3s;
+}
+
+.loginBtn:hover {
+    background-color: white;
+    color: rgb(22, 44, 104);
+    border: solid 1px rgb(22, 44, 104);
+    border-radius: 5px;
+    padding: 6px 20px;
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    width: fit-content;
+    transition: 0.3s;
+}
