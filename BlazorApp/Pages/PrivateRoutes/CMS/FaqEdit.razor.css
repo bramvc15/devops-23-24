@@ -48,4 +48,31 @@
     background-color: rgb(80, 92, 125);
 }
 
+.addFaq {
+    padding-top: 30px;
+    padding-left: 120px;
+    width: 100%;
+    height: fit-content;
+}
 
+.qf {
+    width: fit-content;
+    height: fit-content;
+}
+
+.mini-conatainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.deleteFaqButton {
+    background-color: rgb(216, 109, 109);
+    border: solid 3px rgb(206, 70, 70);
+    border-radius: 5px;
+    padding: 5px;
+    color: azure;
+    width: 70px;
+}
