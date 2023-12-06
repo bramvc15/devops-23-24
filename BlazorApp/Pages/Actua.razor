@@ -13,9 +13,9 @@
     <div class="center">
         <div class="wrapper">
         <SfCarousel AutoPlay="false" ShowPlayButton="false">
-            @if (blogsObject.blogs != null)
+            @if (blogs != null)
                 {
-                    @foreach (var b in blogsObject.blogs)
+                    @foreach (var b in blogs)
                         {
                         <CarouselItem>
                             <div class="center">
@@ -37,11 +37,10 @@
     </div>
 </div>
 @code {
-    private (IEnumerable<BlogDTO> blogs, int totalPages) blogsObject;
-    private int currentPage = 1;
+    private IEnumerable<BlogDTO> blogs;
 
     protected override async Task OnInitializedAsync()
     {
-        blogsObject = await blogService.GetBlogs(currentPage, 5);
+        blogs = await blogService.GetBlogs();
     }
 }

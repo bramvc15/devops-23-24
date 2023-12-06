@@ -35,31 +35,14 @@ BlitzWareAuthService.AuthService.userData.UserSubLevel)
                 <AddBlogPopUp />
             </div>
             <div class="actua-box">
-                @if (blogObject.blogs != null)
+                @if (blogs != null)
                 {
-                    foreach (var b in blogObject.blogs)
+                    foreach (var b in blogs)
                     {
                         <ActuaField Title=@b.Title Text=@b.Text Image=@b.ImageLink />
                     }
                 }
             </div>
-
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item @(currentPage == 1 ? "disabled" : "")">
-                        <a class="page-link" @onclick="(() => ChangePage(currentPage - 1))">Vorige</a>
-                    </li>
-                    @for (int i = 1; i <= blogObject.totalPages; i++)
-                    {
-                        <li class="page-item @(i == currentPage ? "active" : "")">
-                            <a class="page-link" @onclick="(() => ChangePage(i))">@i</a>
-                        </li>
-                    }
-                    <li class="page-item @(currentPage == blogObject.totalPages ? "disabled" : "")">
-                        <a class="page-link" @onclick="(() => ChangePage(currentPage + 1))">Volgende</a>
-                    </li>
-                </ul>
-            </nav>
     </div>
 </div>
 }
@@ -77,25 +60,13 @@ else
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
-    private (IEnumerable<BlogDTO> blogs, int totalPages) blogObject;
-    private int currentPage = 1;
+    private IEnumerable<BlogDTO>? blogs;
 
     protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
-        blogObject = await blogService.GetBlogs(currentPage, 5);
+        blogs = await blogService.GetBlogs();
     }
 
-    private async Task ChangePage(int page)
-    {
-        if (page < 1 || page > blogObject.totalPages)
-        {
-            return;
-        }
-
-        currentPage = page;
-        blogObject = await blogService.GetBlogs(currentPage, 5);
-        StateHasChanged();
-    }
 }
