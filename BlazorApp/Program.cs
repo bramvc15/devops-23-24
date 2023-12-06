@@ -33,7 +33,6 @@ builder.Services.AddScoped<HomeHeaderService>();
 builder.Services.AddScoped<BlogService>();
 builder.Services.AddScoped<LocationService>();
 builder.Services.AddScoped<ChatbotService>();
-builder.Services.AddScoped<ContactService>();
 builder.Services.AddScoped<TreatmentService>();
 builder.Services.AddScoped<DoctorService>();
 builder.Services.AddScoped<ScheduleTimeSlotService>();

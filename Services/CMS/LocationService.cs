@@ -24,7 +24,11 @@ namespace Services.CMS
             LocationDTO locationDTO = new()
             {
                 Id = location.Id,
-                Context = location.Context
+                Straat = location.Straat,
+                Stad = location.Stad,
+                Land = location.Land,
+                Email = location.Email,
+                Telefoon = location.Telefoon
             };
 
             return locationDTO;
@@ -33,7 +37,7 @@ namespace Services.CMS
         public async Task<LocationDTO> UpdateLocation(LocationDTO updatedLocation)
         {
             Location loc = await _locations.FindAsync(updatedLocation.Id);
-            loc.UpdateLocation(loc.Context);
+            loc.UpdateLocation(updatedLocation.Straat, updatedLocation.Stad, updatedLocation.Land, updatedLocation.Email, updatedLocation.Telefoon);
             _locations.Update(loc);
             await _ctx.SaveChangesAsync();
 

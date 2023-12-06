@@ -5,12 +5,40 @@ namespace Domain;
 public class Location : Entity
 {
     #region Properties
-    private string context;
+    private string straat;
+    private string stad;
+    private string land;
+    private string email;
+    private string telefoon;
 
-    public string Context
+    public string Straat
     {
-        get => context;
-        private set => context = Guard.Against.NullOrWhiteSpace(value, nameof(Context));
+        get => straat;
+        private set => straat = Guard.Against.NullOrWhiteSpace(value, nameof(Straat));
+    }
+
+    public string Stad
+    {
+        get => stad;
+        private set => stad = Guard.Against.NullOrWhiteSpace(value, nameof(Stad));
+    }
+
+    public string Land
+    {
+        get => land;
+        private set => land = Guard.Against.NullOrWhiteSpace(value, nameof(Land));
+    }
+
+    public string Email
+    {
+        get => email;
+        private set => email = Guard.Against.NullOrWhiteSpace(value, nameof(Email));
+    }
+
+    public string Telefoon
+    {
+        get => telefoon;
+        private set => telefoon = Guard.Against.NullOrWhiteSpace(value, nameof(Telefoon));
     }
     #endregion
 
@@ -18,16 +46,24 @@ public class Location : Entity
     // Database Constructor
     private Location() { }
 
-    public Location(string context)
+    public Location(string straat, string stad, string land, string email, string telefoon)
     {
-        Context = context;
+        Straat = straat;
+        Stad = stad;
+        Land = land;
+        Email = email;
+        Telefoon = telefoon;
     }
     #endregion
 
     #region Methods
-    public void UpdateLocation(string context)
+    public void UpdateLocation(string straat, string stad, string land, string email, string telefoon)
     {
-        Context = context;
+        Straat = straat;
+        Stad = stad;
+        Land = land;
+        Email = email;
+        Telefoon = telefoon;
     }
     #endregion
 }

@@ -16,6 +16,12 @@
     <SideNavMenu />
 </div>
 
+@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
+BlitzWareAuthService.AuthService.appData.AdminRoleLevel
+==
+BlitzWareAuthService.AuthService.userData.UserSubLevel)
+{
+
 <div class="faq-page">
     <div class="title-layout">
         <h1>FAQ</h1>
@@ -72,6 +78,17 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
+
+}
+else
+{
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6">
+            <p>U heeft geen toegang tot deze pagina.</p>
+        </div>
+    </div>
+}
+
 
 @code {
     [Inject]

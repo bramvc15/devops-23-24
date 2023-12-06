@@ -5,21 +5,19 @@
 
 <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
     <div>
-        <h3>Login</h3>
+        <h3 class="headBox">Login</h3>
 
         <p data-test-id="login-message">@message</p>
 
         <EditForm Model="login" OnValidSubmit="LoginUser" style="max-width:500px;">
             <DataAnnotationsValidator />
             <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
-            <div class="mb-2">
-                <InputText class="form-control" @bind-Value="login.username" placeholder="Naam" data-test-id="login-username"></InputText>
-            </div>
-            <div class="mb-2">
-                <InputText type="password" class="form-control" @bind-Value="login.password" placeholder="Wachtwoord" data-test-id="login-password"></InputText>
-            </div>
-            <div class="mb-2 text-right">
-                <button class="btn btn-secondary" disabled="@isDisabled" data-test-id="login-button">Login</button>
+            <div class="cont">
+                    <label class='formLabel'>Gebruikersnaam</label>
+                    <InputText @bind-Value="login.username" placeholder="Naam" data-test-id="login-username"></InputText>
+                    <label class='formLabel'>Paswoord</label>
+                    <InputText type="password" @bind-Value="login.password" placeholder="Wachtwoord" data-test-id="login-password"></InputText>
+                    <button class="loginBtn" disabled="@isDisabled" data-test-id="login-button">Login</button>
             </div>
         </EditForm>
     </div>
