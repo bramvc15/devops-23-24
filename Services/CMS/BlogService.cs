@@ -7,6 +7,7 @@ namespace Services.CMS
 {
     public class BlogService
     {
+
         private readonly DatabaseContext _ctx;
 
         public BlogService(DatabaseContext ctx)
@@ -17,54 +18,30 @@ namespace Services.CMS
 
         private readonly DbSet<Blog> _blogs;
 
-        public async Task<(IEnumerable<BlogDTO> blogs, int totalPages)> GetBlogs(int page = 1, int pageSize = 5)
+        public async Task<IEnumerable<BlogDTO>> GetBlogs()
         {
-            var totalCount = _blogs.Count();
-            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
-            var blogsPerPage = await _blogs
-                .OrderByDescending(blog => blog.Id)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
+            List<Blog> blogs = await _blogs.ToListAsync();
             List<BlogDTO> convertedBlogs = new();
 
-            foreach (var blog in blogsPerPage)
+            foreach (var blog in blogs)
             {
-                BlogDTO convertedBlog = new()
+                BlogDTO b = new()
                 {
                     Id = blog.Id,
                     Title = blog.Title,
                     Text = blog.Text,
-                    ImageLink = blog.ImageLink
+                    ImageLink = blog.ImageLink,
                 };
-
-                convertedBlogs.Add(convertedBlog);
+                convertedBlogs.Add(b);
             }
 
-            return (convertedBlogs, totalPages);
-            //return await _blogs.ToListAsync(); // zonder pagination
+            return convertedBlogs;
         }
-        public async Task<BlogDTO> GetBlog(int BlogId)
-        {
-            var blog = await _blogs.FindAsync(BlogId);
 
-            BlogDTO dto = new()
-            {
-               Id = blog.Id,
-               ImageLink = blog.ImageLink,
-               Text = blog.Text,
-               Title = blog.Title
-            };
-
-            return dto;
-        }
         public async Task<BlogDTO> CreateBlog(BlogDTO newBlog)
         {
-            Blog blog = new(newBlog.Title, newBlog.Text, newBlog.ImageLink);
-            _blogs.Add(blog);
+            _blogs.Add(new Blog(newBlog.Title, newBlog.Text, newBlog.ImageLink));
             await _ctx.SaveChangesAsync();
-            newBlog.Id = blog.Id;
 
             return newBlog;
         }
@@ -79,9 +56,9 @@ namespace Services.CMS
             return updatedBlog;
         }
 
-        public async Task DeleteBlog(int blogId)
+        public async Task DeleteBlog(BlogDTO blogd)
         {
-            Blog blog = await _blogs.FindAsync(blogId);
+            Blog blog = await _blogs.FindAsync(blogd.Id);
             _blogs.Remove(blog);
             await _ctx.SaveChangesAsync();
         }
