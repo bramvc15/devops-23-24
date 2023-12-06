@@ -44,16 +44,46 @@ BlitzWareAuthService.AuthService.userData.UserSubLevel)
                             <div class="del-con">
                                 <ActuaField Title=@b.Title Text=@b.Text Image=@b.ImageLink Id=@b.Id/>
                                 <div class="btn-con">
+                                    <button class="editBlogButton" @onclick="( () => ShowModal(b) )"><strong>Edit</strong></button>
                                     <button class="deleteBlogButton" @onclick="( () => DeleteBlog(b) )"><strong>X</strong></button>
                                 </div>
                             </div>
-                            
+                        
                         }
                     }
                 }
             </div>
     </div>
 </div>
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Blog updaten</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Titel</FieldLabel>
+                <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
+            </Field>
+            <Field>
+                <FieldLabel>Text</FieldLabel>
+                @* rich *@
+                <RichTextEdit @ref="richTextEditRef" />
+            </Field>
+            <Field>
+                <FieldLabel>Afbeelding</FieldLabel>
+                <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImageLink" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateBlog">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 }
 else
 {
@@ -70,12 +100,69 @@ else
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
     private IEnumerable<BlogDTO>? blogs;
+    private BlogDTO clickedBlog;
 
     protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
             NavManager.NavigateTo("/login");
         blogs = await blogService.GetBlogs();
+    }
+
+    int? id;
+    string? newTitle;
+    string? newText;
+    string? newImageLink;
+    protected new RichTextEdit richTextEditRef;
+    protected bool readOnly;
+    protected string contentAsHtml;
+    protected string contentAsDeltaJson;
+    protected string contentAsText;
+    protected string savedContent;
+
+    public async Task OnContentChanged()
+    {
+        contentAsHtml = await richTextEditRef.GetHtmlAsync();
+        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
+        contentAsText = await richTextEditRef.GetTextAsync();
+    }
+
+    public async Task OnSave()
+    {
+        savedContent = await richTextEditRef.GetHtmlAsync();
+        await richTextEditRef.ClearAsync();
+    }
+
+    private Modal? modalRef;
+
+    private async Task<Task?> ShowModal(BlogDTO blog)
+    {
+        clickedBlog = blog;
+        id = blog.Id;
+        newTitle = blog.Title;
+        newText = blog.Text;
+        newImageLink = blog.ImageLink;
+        await richTextEditRef.SetHtmlAsync(newText);
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async void UpdateBlog()
+    {
+        savedContent = await richTextEditRef.GetHtmlAsync();
+        BlogDTO blog = new()
+        {
+            Id = clickedBlog.Id,
+            Title = newTitle,
+            Text = savedContent,
+            ImageLink = newImageLink
+        };
+        await blogService.UpdateBlog(blog);
+        await HideModal();
     }
 
     private async void DeleteBlog(BlogDTO b) {

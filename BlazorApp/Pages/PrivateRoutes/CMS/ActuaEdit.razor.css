@@ -55,18 +55,20 @@
 .deleteBlogButton {
     background-color: rgb(216, 109, 109);
     border: solid 3px rgb(206, 70, 70);
-    border-radius: 5px;
+    border-radius:  0px 0px 5px 5px;
     padding: 5px;
     color: azure;
     width: 70px;
     height: 70px;
     margin-left: 10px;
+    transition: 0.3s;
 }
 
 .deleteBlogButton:hover {
     background-color: azure;
     color: rgb(216, 109, 109);
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .del-con {
@@ -76,7 +78,26 @@
 
 .btn-con {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
 
+.editBlogButton {
+    background-color: rgb(214, 195, 85);
+    border: solid 3px rgb(165, 140, 0);
+    border-radius: 5px 5px 0px 0px;
+    padding: 5px;
+    color: azure;
+    width: 70px;
+    height: 70px;
+    margin-left: 10px;
+    transition: 0.3s;
+}
+
+.editBlogButton:hover {
+    background-color: azure;
+    color: rgb(214, 195, 85);
+    cursor: pointer;
+    transition: 0.3s;
 }

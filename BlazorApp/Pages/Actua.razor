@@ -21,8 +21,10 @@
                             <div class="center">
                                 <div class="car-container">
                                     <div class="desc-container">
-                                        <div class="heading">@b.Title</div>
-                                        <div class="content">@b.Text</div>
+                                        @if (b != null ) {
+                                            <div class="heading">@((MarkupString)b.Title!)</div>
+                                            <div class="content">@((MarkupString)b.Text!)</div>
+                                        }                             
                                     </div>
                                     <div class="img-container">
                                         <img class="car-Img" src="@b.ImageLink" alt="@b.Title"/>
