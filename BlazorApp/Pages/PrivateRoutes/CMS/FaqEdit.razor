@@ -21,6 +21,10 @@
         <h1>FAQ</h1>
         <a><u>Home</u> > FAQ </a>
     </div>
+    <div class="addFaq">
+        @* <button class="addFaqButton" onclick="@CreateFaq">Nieuwe FAQ</button> *@
+        <AddFaqPopUp />
+    </div>
     <div class="faq-container">
         @if (FaqObj != null)
             {
@@ -41,30 +45,29 @@
             }
     </div>
 </div>
+
 <Modal @ref="modalRef">
-        <ModalContent Centered>
-            <ModalHeader>
-                <ModalTitle>Vraag wijzigen</ModalTitle>
-                <CloseButton />
-            </ModalHeader>
-            <ModalBody>
-                <Field>
-                    <FieldLabel>Vraag</FieldLabel>
-                    <TextEdit Placeholder="Wat is een..." @bind-Text="newQuestion" />
-                </Field>
-                <Field>
-                    <FieldLabel>Antwoord</FieldLabel>
-                    <TextEdit Placeholder="Dit is een..." @bind-Text="newAnswer" />
-                </Field>
-
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@UpdateFaq">Opslaan</Button>
-            </ModalFooter>
-        </ModalContent>
-    </Modal>
-
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Vraag wijzigen</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Vraag</FieldLabel>
+                <TextEdit Placeholder="Wat is een..."  />
+            </Field>
+            <Field>
+                <FieldLabel>Antwoord</FieldLabel>
+                <TextEdit Placeholder="Dit is een..."  />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateFaq">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
 
 @code {
     [Inject]
@@ -110,6 +113,8 @@
         await faqService.UpdateFaq(faq);
         await HideModal();
     }
+
+
 }
 
 

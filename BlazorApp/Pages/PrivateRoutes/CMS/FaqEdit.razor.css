@@ -48,4 +48,11 @@
     background-color: rgb(80, 92, 125);
 }
 
+.addFaq {
+    padding-top: 30px;
+    padding-left: 120px;
+    width: 100%;
+    height: fit-content;
+}
+
 

@@ -1,0 +1,59 @@
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data; 
+@inject DatabaseContext databaseContext
+@inject FaqService faqService
+
+<button class="addFaqButton" onclick="@ShowModal">Nieuwe FAQ</button>
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Faq aanmaken</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Nieuwe vraag</FieldLabel>
+                <TextEdit Placeholder="Wat is een..." @bind-Text="newQuestion" />
+            </Field>
+            <Field>
+                <FieldLabel>Nieuw antwoord</FieldLabel>
+                <TextEdit Placeholder="Dit is een..." @bind-Text="newAnswer" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@CreateFaq">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+
+@code {
+    string? newQuestion;
+    string? newAnswer;
+
+    private Modal? modalRef;
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async Task CreateFaq()
+    {
+        FaqDTO newFaq = new()
+        {
+            Question = newQuestion,
+            Answer = newAnswer
+        };
+        await faqService.CreateFaq(newFaq);
+        modalRef?.Hide();
+    }
+}
