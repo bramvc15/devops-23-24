@@ -20,7 +20,30 @@ namespace Services.CMS
 
         public async Task<IEnumerable<ChatBotQuestionDTO>> GetContent()
         {
-            return (IEnumerable<ChatBotQuestionDTO>)await _chat.Include(question => question.FollowUpQuestions).ToListAsync();
+            IEnumerable<ChatBotQuestion> chatbotQuestions = await _chat.Include(question => question.FollowUpQuestions).ToListAsync();
+            List<ChatBotQuestionDTO> chatbotQuestionsDTO = new List<ChatBotQuestionDTO>();
+
+            foreach (var question in chatbotQuestions)
+            {
+                ChatBotQuestionDTO questionDTO = MapToDTO(question);
+                chatbotQuestionsDTO.Add(questionDTO);
+            }
+
+            return chatbotQuestionsDTO;
+        }
+
+        private ChatBotQuestionDTO MapToDTO(ChatBotQuestion question)
+        {
+            ChatBotQuestionDTO questionDTO = new ChatBotQuestionDTO
+            {
+                Id = question.Id,
+                Question = question.Question,
+                Answer = question.Answer,
+                IsFollowUp = question.IsFollowUp,
+                FollowUpQuestions = question.FollowUpQuestions.Select(q => MapToDTO(q)).ToList()
+            };
+
+            return questionDTO;
         }
 
         // public IEnumerable<ChatBotQuestion> GetFollowUpQuestions(int? followUpID)
