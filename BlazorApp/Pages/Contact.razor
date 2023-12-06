@@ -1,5 +1,4 @@
 @page "/contact"
-@inject ContactService contactService
 @inject LocationService locationService
 @using Services.CMS;
 @using Shared.DTO.CMS;
@@ -17,11 +16,6 @@
     <div class="container mt-4 mp">
         <div class="form-container">
             <h1 class="header1">Stel ons een vraag</h1>
-            @if (contact != null)
-            {
-                <p>@((MarkupString)contact.Context!)</p>
-            }
-
 
 
             @* <EditForm Model="@Model" OnValidSubmit="@SubmitForm" FormName="ContactForm">
@@ -114,8 +108,6 @@
                 {
                     <p>@((MarkupString)location.Context!)</p>
                 }
-                <p>Antwerpsesteenweg 1022</p>
-                <p>9040 Gent</p>
                 <p>België</p>
                 <br>
                 <p>Telefoon: *09 123 45 67*</p>
@@ -133,14 +125,12 @@
 
 
 @code {
-    private ContactDTO contact;
     private LocationDTO location;
 
     private ContactData contactData = new ContactData();
 
     protected override async Task OnInitializedAsync()
     {
-        contact = await contactService.GetContact();
         location = await locationService.GetLocation();
     }
 
