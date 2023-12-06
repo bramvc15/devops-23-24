@@ -73,6 +73,10 @@
     protected async Task HandleRefresh()
     {
         await OnInitializedAsync();
+
+        IEnumerable<ChatBotQuestionDTO> questions = await chatbotService.GetContent();
+        Question = questions.FirstOrDefault(x => x.Id == Question.Id);
+        FollowUpQuestions = Question.FollowUpQuestions;
         StateHasChanged();
     }
 

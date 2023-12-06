@@ -87,7 +87,7 @@
         try
         {
             ChatbotQuestionsList = await chatbotService.GetContent();
-            ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == null);
+            ChatbotQuestionsList = ChatbotQuestionsList.Where(x => x.IsFollowUp == false);
         }
         catch (Exception e)
         {

@@ -54,7 +54,7 @@
         else
         {
             chatbotQuestionsList = await chatbotService.GetContent();
-            chatbotQuestionsList = chatbotQuestionsList.Where(x => x.IsFollowUp == null);
+            chatbotQuestionsList = chatbotQuestionsList.Where(x => x.IsFollowUp == false);
         }
     }
 

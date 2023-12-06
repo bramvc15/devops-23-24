@@ -58,9 +58,12 @@ public class ChatBotQuestion : Entity
         FollowUpQuestions = list;
     }
 
-    public static explicit operator ChatBotQuestion(List<ChatBotQuestionDTO>? v)
+    public void AddFollowUpQuestion(ChatBotQuestion question)
     {
-        throw new NotImplementedException();
+        if(FollowUpQuestions == null)
+            FollowUpQuestions = new List<ChatBotQuestion>();
+            
+        FollowUpQuestions.Add(question);
     }
     #endregion
 }
