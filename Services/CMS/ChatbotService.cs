@@ -18,6 +18,7 @@ namespace Services.CMS
 
         private readonly DbSet<ChatBotQuestion> _chat;
 
+        #region Public Methods
         public async Task<IEnumerable<ChatBotQuestionDTO>> GetContent()
         {
             IEnumerable<ChatBotQuestion> chatbotQuestions = await _chat.Include(question => question.FollowUpQuestions).ToListAsync();
@@ -30,6 +31,45 @@ namespace Services.CMS
             }
 
             return chatbotQuestionsDTO;
+        }
+
+        public async Task<ChatBotQuestionDTO> AddQuestion(ChatBotQuestionDTO question)
+        {
+            ChatBotQuestion newQuestion = new(question.Question, question.Answer, question.IsFollowUp, null);
+
+            _chat.Add(newQuestion);
+            await _ctx.SaveChangesAsync();
+
+            return question;
+        } 
+
+        public async Task AddFollowUpQuestion(ChatBotQuestionDTO parentQuestion, ChatBotQuestionDTO question)
+        {
+            question.IsFollowUp = true;
+            ChatBotQuestion questionObj = await _ctx.ChatBotQuestions.FindAsync(parentQuestion.Id);
+
+            questionObj.AddFollowUpQuestion(new ChatBotQuestion(question.Question, question.Answer, question.IsFollowUp, null));
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task DeleteById(int? id)
+        {
+            ChatBotQuestion question = await _ctx.ChatBotQuestions.FindAsync(id);
+            await DeleteQuestion(question);
+        }
+        #endregion
+
+        #region Private Methods
+        private async Task RecursiveDelete(ChatBotQuestion question)
+        {
+            if (question.FollowUpQuestions != null)
+            {
+                foreach (ChatBotQuestion followUpQuestion in question.FollowUpQuestions)
+                {
+                    await RecursiveDelete(followUpQuestion);
+                    _ctx.ChatBotQuestions.Remove(followUpQuestion);
+                }
+            }
         }
 
         private ChatBotQuestionDTO MapToDTO(ChatBotQuestion question)
@@ -46,48 +86,6 @@ namespace Services.CMS
             return questionDTO;
         }
 
-        // public IEnumerable<ChatBotQuestion> GetFollowUpQuestions(int? followUpID)
-        // {
-        //     return _ctx.ChatBotQuestions.Where(question => question.FollowUpID == followUpID).ToList();
-        // }
-
-        public async Task<ChatBotQuestionDTO> AddQuestion(ChatBotQuestionDTO question)
-        {
-            ChatBotQuestion questionObj = await _ctx.ChatBotQuestions.FindAsync(question.Id);
-
-            List<ChatBotQuestion> list = new();
-            if (questionObj.FollowUpQuestions != null)
-            {
-                foreach (var followUpQuestions in questionObj.FollowUpQuestions)
-                {
-                    ChatBotQuestion newQuestion = new(followUpQuestions.Question, followUpQuestions.Answer, followUpQuestions.IsFollowUp, followUpQuestions.FollowUpQuestions);
-                    list.Add(newQuestion);
-                }
-            }
-
-            _chat.Add(new ChatBotQuestion(questionObj.Question, questionObj.Answer, questionObj.IsFollowUp, questionObj.FollowUpQuestions));
-            await _ctx.SaveChangesAsync();
-
-            return question;
-        } 
-
-        public async Task AddFollowUpQuestion(ChatBotQuestionDTO parentQuestion, ChatBotQuestionDTO question)
-        {
-            question.IsFollowUp = true;
-
-            if (parentQuestion.FollowUpQuestions == null) parentQuestion.FollowUpQuestions = new List<ChatBotQuestionDTO>();
-
-            parentQuestion.FollowUpQuestions.Add(question);
-            await EditQuestion(parentQuestion);
-        }
-
-        public async Task EditQuestion(ChatBotQuestionDTO question)
-        {
-            ChatBotQuestion questionObj = await _ctx.ChatBotQuestions.FindAsync(question.Id);
-            _ctx.ChatBotQuestions.Update(questionObj);
-            await _ctx.SaveChangesAsync();
-        }
-
         private async Task DeleteQuestion(ChatBotQuestion question)
         {
             await RecursiveDelete(question);
@@ -96,23 +94,6 @@ namespace Services.CMS
             _ctx.ChatBotQuestions.Remove(questionObj);
             await _ctx.SaveChangesAsync();
         }
-
-        public async Task DeleteById(int? id)
-        {
-            ChatBotQuestion question = await _ctx.ChatBotQuestions.FindAsync(id);
-            await DeleteQuestion(question);
-        }
-
-        private async Task RecursiveDelete(ChatBotQuestion question)
-        {
-            if (question.FollowUpQuestions != null)
-            {
-                foreach (ChatBotQuestion followUpQuestion in question.FollowUpQuestions)
-                {
-                    await RecursiveDelete(followUpQuestion);
-                    _ctx.ChatBotQuestions.Remove(followUpQuestion);
-                }
-            }
-        }
+        #endregion
     }
 }
