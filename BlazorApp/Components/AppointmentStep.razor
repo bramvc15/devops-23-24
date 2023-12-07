@@ -1,13 +1,10 @@
-@using BlazorApp.Data
-@using BlazorApp.Services.Core
-@using BlazorApp.Models
-@using BlazorApp.Controllers
-@using BlazorApp.Auth
-@using BlazorApp.Components.Modals
+@using Services.Core;
+@using Persistence.Data;
+@using BlazorApp.Auth;
+@using BlazorApp.Components.Modals;
 @inject TimeSlotService timeSlotService
 @inject DatabaseContext databaseContext
-@using Shared
-@using BlazorApp.BlazorShared
+@using Shared.DTO.Core;
 
 <div class="afspraakbox container">
     @* <div class="temp">
@@ -115,7 +112,7 @@
         _selectedDate = DateTime.Now;
         SelectedDate = DateTime.Now;
         CurrentDate = DateTime.Now;
-        TimeSlotObj = await timeSlotService.GetTimeSlots(Doctor);
+        TimeSlotObj = await timeSlotService.GetTimeSlots(Doctor.Id ?? 0);
         TimeSlotObj = TimeSlotObj.Where(x => x.AppointmentDTO == null);
         FilterTimeSlots();
     }

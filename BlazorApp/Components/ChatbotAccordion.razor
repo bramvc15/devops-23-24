@@ -1,16 +1,12 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
-@using System.Text.Json
-@using BlazorApp.Data
-@using BlazorApp.Services.CMS
-@using BlazorApp.Services
-@using Shared
-@using BlazorApp.Models
-@using BlazorApp.Controllers
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;
 @inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
-@inject CMSChatbotService ChatbotService
-@using BlazorApp.Components.Modals
+@inject ChatbotService chatbotService
+@using BlazorApp.Components.Modals;
 
 <div class="card @(collapsed ? "" : "border border-dark")">
     <div class="card-header d-flex justify-content-between" id="headingOne" @onclick=this.Collapse>
@@ -53,19 +49,19 @@
     private bool collapsed = true;
 
     [Parameter]
-    public CMSChatBotQuestion Question { get; set; }
+    public ChatBotQuestionDTO Question { get; set; }
 
     [Parameter]
-    public EventCallback<CMSChatBotQuestion> OnDelete { get; set; }
+    public EventCallback<ChatBotQuestionDTO> OnDelete { get; set; }
 
-    IEnumerable<CMSChatBotQuestion>? FollowUpQuestions;
+    IEnumerable<ChatBotQuestionDTO> FollowUpQuestions;
 
     protected override void OnInitialized()
     {
         FollowUpQuestions = Question.FollowUpQuestions;
     }
 
-    private async Task DeleteChatBotQuestion(CMSChatBotQuestion question)
+    private async Task DeleteChatBotQuestion(ChatBotQuestionDTO question)
     {
         await OnDelete.InvokeAsync(question);
         if (FollowUpQuestions.Contains(question))
@@ -77,13 +73,17 @@
     protected async Task HandleRefresh()
     {
         await OnInitializedAsync();
+
+        IEnumerable<ChatBotQuestionDTO> questions = await chatbotService.GetContent();
+        Question = questions.FirstOrDefault(x => x.Id == Question.Id);
+        FollowUpQuestions = Question.FollowUpQuestions;
         StateHasChanged();
     }
 
     private async Task DeleteQuestion()
     {
         await DeleteChatBotQuestion(Question);
-        await ChatbotService.DeleteById(Question.Id);
+        await chatbotService.DeleteById(Question.Id);
     }
 
     public void Collapse()

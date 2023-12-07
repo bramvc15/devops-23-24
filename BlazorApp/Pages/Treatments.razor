@@ -1,7 +1,7 @@
 @page "/behandelingen"
-@using Shared
-@using BlazorApp.Services.CMS
-@inject CMSTreatmentService TreatmentService
+@using Shared.DTO.CMS;
+@using Services.CMS;
+@inject TreatmentService treatmentService
 
 <PageTitle>Behandelingen</PageTitle>
 
@@ -14,9 +14,9 @@
 
         <div class="container mt-40">
             <div class="row ">
-                @if (TreatmentObj != null)
+                @if (treatments != null)
                 {
-                    foreach (var treatment in TreatmentObj)
+                    foreach (var treatment in treatments)
                     {
                         <div class="col-md-4 d-flex flex-fill">
                             <TreatmentCard ImageSrc=@treatment.ImageLink Title=@treatment.Name
@@ -37,10 +37,10 @@
         NavigationManager.NavigateTo(@currentPage + $"/{page}");
     }
 
-    IEnumerable<CMSTreatment> TreatmentObj;
+    private IEnumerable<TreatmentDTO> treatments;
 
     protected override async Task OnInitializedAsync()
     {
-        TreatmentObj = await TreatmentService.GetTreatments();
+        treatments = await treatmentService.GetTreatments();
     }
 }

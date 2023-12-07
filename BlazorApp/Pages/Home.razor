@@ -1,28 +1,23 @@
 @page "/"
-@using System.Text.Json
-@using BlazorApp.Data
-@using BlazorApp.Services.CMS
-@using BlazorApp.Models
-@using BlazorApp.Controllers
-@using BlazorApp.BlazorShared
-@using Shared
-@inject CMSHomeHeaderService homeHeaderService
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;
+@inject HomeHeaderService homeHeaderService
 @inject DatabaseContext databaseContext
-@using Microsoft.AspNetCore.Components
-@inject CMSBlogService blogService
-@using Syncfusion.Blazor.Navigations
-@using Syncfusion.Blazor.Cards
-@using Syncfusion.Blazor.Buttons
+@using Microsoft.AspNetCore.Components;
+@using Syncfusion.Blazor.Navigations;
+@using Syncfusion.Blazor.Cards;
+@using Syncfusion.Blazor.Buttons;
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
-//temp
+
 <PageTitle>Vision Oogcentrum</PageTitle>
 
 <div>
     <div class="background-div">
         <div class="overlay">
-            @if(HomObj != null){
-                <h1>@HomObj.Title</h1>
-                <p>@((MarkupString)HomObj.Context)</p>
+            @if(homeHeader != null){
+                <h1>@homeHeader.Title</h1>
+                <p>@((MarkupString)homeHeader.Context)</p>
             }
             else
             {
@@ -44,26 +39,14 @@
                 <div class="carousel-sample">
                     <SfCarousel AnimationEffect="CarouselAnimationEffect.Fade" CssClass="templateCarousel">
                         <ChildContent>
+                        @foreach (var image in indicatorImage)
+                        {
                             <CarouselItem>
                                 <figure class="img-container">
-                                    <img src="https://www.shoot.be/wp-content/uploads/2019/12/DSC0341.jpg" alt="cardinal" style="height:100%;width:100%;" />
+                                    <img src="@UriHelper.ToAbsoluteUri($"Images/{image}.jpg")" alt="@image" style="height:100%;width:100%;" />
                                 </figure>
                             </CarouselItem>
-                            <CarouselItem>
-                                <figure class="img-container">
-                                    <img src="https://www.bartheirweg.com/sites/default/files/styles/portoflio_xs/public/2021-12/_dsc5618-hdr.jpg?itok=-hNocSkF" alt="hunei" style="height:100%;width:100%;" />
-                                </figure>
-                            </CarouselItem>
-                            <CarouselItem>
-                                <figure class="img-container">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKj9c437mMC0lOqg8J6cOJrLJrwFFWSX6hakT1kyZpIw&s" alt="costa-rica" style="height:100%;width:100%;" />
-                                </figure>
-                            </CarouselItem>
-                            <CarouselItem>
-                                <figure class="img-container">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipFO-QDXfQzqKJXrUCiYtKMTFRblnJp0o5yXielaAEQ&s" alt="kaohsiung" style="height:100%;width:100%;" />
-                                </figure>
-                            </CarouselItem>
+                        }
                         </ChildContent>
                         <PreviousButtonTemplate>
                             <SfButton CssClass="e-flat e-outline nav-btn" title="Previous">
@@ -81,122 +64,26 @@
                         </NextButtonTemplate>
                         <IndicatorsTemplate>
                             <div class="indicator">
-                                <img src="https://www.dwanimations.nl/wp-content/uploads/2016/05/Cam-1-close-up-fb.jpg" alt="image" style="height:100%;width:100%;" />
+                            <img src="@UriHelper.ToAbsoluteUri($"Images/" + indicatorImage[context.Index] + ".jpg")" alt="image" style="height:100%;width:100%;" />
                             </div>
                         </IndicatorsTemplate>
                     </SfCarousel>
                 </div>
             </div>
         </div>
-        <nav>
-            <ul class="pagination">
-                <li class="page-item @(currentPage == 1 ? "disabled d-none" : "")">
-                    <a class="page-link" @onclick="(() => ChangePage(currentPage - 1))">Vorige</a>
-                </li>
-                @for (int i = 1; i <= BlogObj.totalPages; i++)
-                {
-                    <li class="page-item @(i == currentPage ? "active" : "")">
-                        <a class="page-link" @onclick="(() => ChangePage(i))">@i</a>
-                    </li>
-                }
-                <li class="page-item @(currentPage == BlogObj.totalPages ? "disabled d-none" : "")">
-                    <a class="page-link" @onclick="(() => ChangePage(currentPage + 1))">Volgende</a>
-                </li>
-            </ul>
-        </nav>
     </div>
 
-
-
 @code {
-    private List<string> indicatorImage = new List<string>() { "cardinal", "hunei", "costa-rica", "kaohsiung", "bee-eater" };
-}
-<style>
-    .template-carousel-section .carousel-sample {
-        margin: 0 auto 2em;
-        max-width: 500px;
-        height: 350px;
-    }
 
-    .templateCarousel .e-carousel-items,
-    .templateCarousel .e-carousel-navigators {
-        height: calc(100% - 3rem);
-    }
-
-        .templateCarousel .e-carousel-navigators .e-previous,
-        .templateCarousel .e-carousel-navigators .e-next,
-        .templateCarousel .e-carousel-navigators .nav-btn {
-            padding: 0;
-        }
-
-            .templateCarousel .e-carousel-navigators .nav-btn:active,
-            .templateCarousel .e-carousel-navigators .nav-btn:focus,
-            .templateCarousel .e-carousel-navigators .nav-btn:hover {
-                background-color: transparent !important;
-                color: inherit;
-            }
-
-        .templateCarousel .e-carousel-navigators svg {
-            fill: none;
-            stroke: currentColor;
-            stroke-linecap: square;
-            stroke-width: 8px;
-            height: 2rem;
-            vertical-align: middle;
-            width: 2rem;
-        }
-
-        .templateCarousel .e-carousel-navigators .e-previous svg {
-            transform: rotate(180deg);
-        }
-
-    .templateCarousel .e-carousel-indicators .e-indicator-bars .e-indicator-bar .indicator {
-        background-color: #ECECEC;
-        border-radius: 0.25rem;
-        cursor: pointer;
-        height: 3.5rem;
-        margin: 0.5rem;
-        width: 5rem;
-    }
-
-    .templateCarousel .e-carousel-indicators .e-indicator-bars .e-indicator-bar.e-active .indicator {
-        background-color: #3C78EF;
-    }
-
-    @@media screen and (max-width: 480px) {
-        .template-carousel-section .carousel-sample {
-            width: 100%;
-            height: 250px;
-        }
-
-        .templateCarousel .img-container {
-            margin: 12px;
-        }
-    }
-</style>
-
-@code {
     [Inject] NavigationManager NavigationManager { get; set; }
-    CMSHomeHeader HomObj;
-    (IEnumerable<CMSBlog> blogs, int totalPages) BlogObj;
+    private HomeHeaderDTO homeHeader;
+    (IEnumerable<BlogDTO> blogs, int totalPages) blogs;
+    private List<string> indicatorImage = new List<string>() { "Kantoor", "Team", "Interaction", "Oogonderzoek", "Laser" };
     int currentPage = 1;
 
     protected override async Task OnInitializedAsync()
     {
-        HomObj = await homeHeaderService.GetHomeHeader();
-        BlogObj = await blogService.GetBlogs(currentPage, 5);
-    }
-
-    private async Task ChangePage(int page)
-    {
-        if (page < 1 || page > BlogObj.totalPages)
-        {
-            return;
-        }
-
-        currentPage = page;
-        BlogObj = await blogService.GetBlogs(currentPage, 5);
-        StateHasChanged();
+        homeHeader = await homeHeaderService.GetHomeHeader();
     }
 
     private void NavigateToAppointment()

@@ -1,13 +1,12 @@
-@using BlazorApp.Models
-@using BlazorApp.Services;
-@using BlazorApp.Services.Core
+@using Services.Core;
+@using Shared.DTO.Core; 
 @inject DoctorService doctorService
 <div class="DoctorStepContainer">
     
     <div class="doctorbox">
-        @if (DocObj != null)
+        @if (doctors != null)
         {
-            @foreach (var doc in DocObj)
+            @foreach (var doc in doctors)
             {
                 @if (doc != null)
                 {
@@ -34,13 +33,13 @@
     {
         if(id != null)
         {
-            await OnDoctorSelected.InvokeAsync(id); 
+            await OnDoctorSelected.InvokeAsync(id);
         }
     }
 
-    IEnumerable<DoctorDTO>? DocObj;
+    private IEnumerable<DoctorDTO> doctors;
     protected override async Task OnInitializedAsync()
     {
-        DocObj = await doctorService.GetDoctors();
+        doctors = await doctorService.GetDoctors();
     }
 }

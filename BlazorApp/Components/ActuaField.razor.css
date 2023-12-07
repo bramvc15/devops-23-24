@@ -1,111 +1,41 @@
-.text {
-    color: red;
-}
-
-.field {
-
-    top: 0;
-    left: 0;
+.info-container {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    background-color: #d4e8e4;
+    border-radius: 20px;
     width: 100%;
-    height: 12em;
+}
 
+.first {
+    width: 54%;
     display: flex;
     flex-direction: column;
-    justify-content: left;
-    align-items: left;
-    text-align: left;
-
-    color: rgb(22, 44, 104);
-    /* Tekstkleur aanpassen naar wens */
-    background-color: rgba(194, 228, 218, 100);
-
-    margin: 20px;
-    margin-right: 10px;
-    padding-left: 10px;
-
-
-    border-radius: 5px;
-
-
-    overflow-y: auto;
+    margin-left: 3%;
+    margin-right: 4%;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: 1.5fr 0.5fr;
-    /* 2 columns */
-    grid-template-rows: repeat(3, 1fr);
-    /* 3 rows */
-    gap: 0px;
-    /* Adjust the gap between grid items as needed */
-    /*
-    margin-left: 220px;
-    margin-right: 120px;
-    */
+.second {
+    width: 40%;
 }
 
-.grid-title {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
-    grid-column: 1;
-    grid-row: 1;
-}
-
-.grid-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
-    grid-column: 1;
-    grid-row: 2;
-}
-
-.grid-hyper {
-    /* this class puts the hyperlink on the bottom of the cell */
-    grid-column: 1;
-    grid-row: 3;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
-    /* Place the hyperlink at the bottom */
-
-
-}
-
-.field h2 {
-    width: 90%;
-}
-
-
-
-.grid-image {
-
-    grid-column: 2;
-    grid-row: 1/ 4;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
-    margin-top: 4rem;
-
-    width: 250px;
-    height: 200px;
+.image {
+    width: 100%;
+    max-height: 280px;
     object-fit: cover;
-    margin-right: 1rem;
 }
 
-
-.field {
-    width: 95%;
-    /* Width for individual grid items */
-    height: auto;
-    /* Let the content determine the height */
-    background-color: rgba(194, 228, 218, 100);
+.title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
     color: rgb(22, 44, 104);
+    margin-top: 20px;
+}
 
-    border-radius: 5px;
-    overflow-y: auto;
+.text {
+    font-size: 17px;
+    margin-bottom: 20px;
+    color: rgb(22, 44, 104);
+    line-height: 150%;
 }

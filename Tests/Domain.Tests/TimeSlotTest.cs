@@ -1,7 +1,4 @@
-using Domain;
-using System;
-using Xunit;
-
+using Shared.Enums;
 namespace Domain.Tests;
 
 public class TimeSlotTest
@@ -44,25 +41,13 @@ public class TimeSlotTest
     [Fact]
     public void TimeSlot_Constructor_TooLargeDuration_ThrowsException()
     {
-        Assert.Throws<ArgumentException>(() => new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 3000));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new TimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 3000));
     }
 
     [Fact]
     public void TimeSlot_Constructor_DateTimeInPast_ThrowsException()
     {
-        Assert.Throws<ArgumentException>(() => new TimeSlot(AppointmentType.Consultation, new DateTime(2020, 2, 17, 12, 0, 0), 60));
-    }
-
-    [Fact]
-    public void TimeSlot_Constructor_EmptyNameDoctor_ThrowsException()
-    {
-        Assert.Throws<ArgumentException>(() => new TimeSlot(AppointmentType.Consultation, new DateTime(2020, 2, 17, 12, 0, 0), 60));
-    }
-
-    [Fact]
-    public void TimeSlot_Constructor_EmptyNameDoctor_ThrowsException()
-    {
-        Assert.Throws<ArgumentException>(() => new TimeSlot(AppointmentType.Consultation, new DateTime(2020, 2, 17, 12, 0, 0), 60));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new TimeSlot(AppointmentType.Consultation, new DateTime(2020, 2, 17, 12, 0, 0), 60));
     }
     #endregion
 
@@ -71,7 +56,7 @@ public class TimeSlotTest
     public void TimeSlot_UpdateTimeSlot()
     {
         TimeSlot updatedTimeSlot = new TimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 18, 12, 0, 0), 40);
-        _timeSlot.UpdateTimeSlot(updatedTimeSlot);
+        _timeSlot.UpdateTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 18, 12, 0, 0), 40);
 
         Assert.Equal(updatedTimeSlot.AppointmentType, _timeSlot.AppointmentType);
         Assert.Equal(updatedTimeSlot.Duration, _timeSlot.Duration);
@@ -83,20 +68,9 @@ public class TimeSlotTest
     {
         Patient newPatient = new Patient("New Patient", "newPatient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
         _timeSlot.CreateAppointment(newPatient, "Reason: Operation on both eyes", "Note: patient is known to act weird");
-        Assert.Equal(_timeSlot.GetAppointment().GetPatient(), newPatient);
-        Assert.Equal(_timeSlot.GetAppointment().Reason, "Reason: Operation on both eyes");
-        Assert.Equal(_timeSlot.GetAppointment().Note, "Note: patient is known to act weird");
-    }
-
-    [Fact]
-    public void TimeSlot_UpdateAppointment()
-    {
-        Patient newPatient = new Patient("New Patient", "newPatient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
-        Appointment newAppointment = new Appointment(newPatient, "New Reason", "New Note");
-        _timeSlot.UpdateAppointment(newAppointment);
-        Assert.Equal(_timeSlot.GetAppointment().GetPatient(), newPatient);
-        Assert.Equal(_timeSlot.GetAppointment().Reason, "New Reason");
-        Assert.Equal(_timeSlot.GetAppointment().Note, "New Note");
+        Assert.Equal(_timeSlot.Appointment.Patient, newPatient);
+        Assert.Equal(_timeSlot.Appointment.Reason, "Reason: Operation on both eyes");
+        Assert.Equal(_timeSlot.Appointment.Note, "Note: patient is known to act weird");
     }
 
     [Fact]
@@ -104,14 +78,14 @@ public class TimeSlotTest
     {
         Patient newPatient = new Patient("New Patient", "newPatient@fakemail.com", "+1234567890", new DateTime(2001, 6, 28), Gender.Male, BloodType.OPositive);
         _timeSlot.CreateAppointment(newPatient, "Reason: Operation on both eyes", "Note: patient is known to act weird");
-        _timeSlot.DeleteAppointment();
-        Assert.Equal(_timeSlot.GetAppointment(), null);
+        _timeSlot.Appointment = null;
+        Assert.Equal(_timeSlot.Appointment, null);
     }
 
     [Fact]
     public void TimeSlot_IsTimeSlotAvailable()
     {
-        Assert.Equal(_timeSlot.IsTimeSlotAvailable(), true);
+        Assert.Equal(_timeSlot.Appointment == null, true);
     }
     #endregion
 }

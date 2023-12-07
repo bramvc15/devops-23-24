@@ -1,6 +1,7 @@
-@using BlazorApp.Data
-@using BlazorApp.Services.Core
-@using Shared
+@using Services.Core;
+@using Shared.DTO.Core;
+@using Shared.Enums; 
+@using Persistence.Data; 
 @inject ScheduleTimeSlotService scheduleTimeSlotService
 @inject DatabaseContext databaseContext
 
@@ -17,16 +18,6 @@
             <h6 style="color:red">@exceptionMessage</h6>
             <Validations @ref="validations" Mode="ValidationMode.Auto">
                 <ModalBody>
-                    <Validation Validator="ValidateAppointmentType">
-                        <Field>
-                            <FieldLabel>Afspraak type</FieldLabel>
-                            <Select TValue="int" @bind-SelectedValue="@selectedAppointmentType">
-                                <SelectItem Value="0">-- Maak een keuze --</SelectItem>
-                                <SelectItem Value="15">@Enums.AppointmentType.Consultation</SelectItem>
-                                <SelectItem Value="60">@Enums.AppointmentType.Operation</SelectItem>
-                            </Select>
-                        </Field>
-                    </Validation>
                     <Validation Validator="ValidateDayOfWeek">
                         <Field>
                             <FieldLabel>Dag van de week</FieldLabel>
@@ -73,7 +64,6 @@
 
     private TimeSpan? selectedStartTime = new TimeSpan(12, 0, 0);
     private TimeSpan? selectedEndTime = new TimeSpan(12, 0, 0);
-    private int selectedAppointmentType;
     private int selectedDayOfWeek;
 
     private Modal? modalRef;
@@ -86,14 +76,6 @@
     private Task? HideModal()
     {
         return modalRef?.Hide();
-    }
-
-    void ValidateAppointmentType(ValidatorEventArgs e)
-    {
-        if (selectedAppointmentType == 0)
-            e.Status = ValidationStatus.Error;
-        else
-            e.Status = ValidationStatus.Success;
     }
 
     void ValidateDayOfWeek(ValidatorEventArgs e)
@@ -128,8 +110,6 @@
         exceptionMessage = string.Empty;
         if (await validations.ValidateAll())
         {
-            var appointmentType = selectedAppointmentType == 15 ? Enums.AppointmentType.Consultation : Enums.AppointmentType.Operation;
-
             DayOfWeek dayOfWeek;
             if (selectedDayOfWeek == 1)
                 dayOfWeek = DayOfWeek.Monday;
@@ -155,7 +135,6 @@
             {
                 ScheduleTimeSlotDTO slot = new()
                 {
-                    AppointmentType = appointmentType,
                     DayOfWeek = dayOfWeek,
                     DateTime = dateTime,
                     Duration = durationInMinutes

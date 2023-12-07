@@ -1,13 +1,14 @@
 @page "/admin/cms/behandelingen"
 @inherits EditHeaderPopUp
-@using BlazorApp.Data
-@using BlazorApp.Services.CMS
-@using BlazorApp.Components.Modals
-@using Microsoft.AspNetCore.Components
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;  
+@using BlazorApp.Components.Modals;
+@using Microsoft.AspNetCore.Components;
 @inject DatabaseContext databaseContext
-@using BlazorApp.Auth
+@using BlazorApp.Auth;
 @inject NavigationManager NavManager
-@inject CMSTreatmentService treatmentService
+@inject TreatmentService treatmentService
 
 <PageTitle>Admin - CMS Behandelingen</PageTitle>
 
@@ -112,8 +113,8 @@ else
 @code {
     [Inject]
     private BlitzWareAuthService BlitzWareAuthService { get; set; }
-    private IEnumerable<CMSTreatment> treatments;
-    private CMSTreatment Treatment;
+    private IEnumerable<TreatmentDTO> treatments;
+    private TreatmentDTO clickedTreatment;
 
     protected override async Task OnInitializedAsync()
     {
@@ -148,9 +149,9 @@ else
 
     private Modal? modalRef;
 
-    private async Task<Task?> ShowModal(CMSTreatment treatment)
+    private async Task<Task?> ShowModal(TreatmentDTO treatment)
     {
-        Treatment = treatment;
+        clickedTreatment = treatment;
         id = treatment.Id;
         newName = treatment.Name;
         newDescription = treatment.Description;
@@ -167,9 +168,9 @@ else
     private async void UpdateTreatment()
     {
         content = await richTextEditRef.GetHtmlAsync();
-        CMSTreatment treatment = new()
+        TreatmentDTO treatment = new()
         {
-            Id = Treatment.Id,
+            Id = clickedTreatment.Id,
             Name = newName,
             Description = content,
             ImageLink = newImage

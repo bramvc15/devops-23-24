@@ -1,11 +1,6 @@
 @page "/ons-team"
-@using BlazorApp.Data
-@using BlazorApp.Models
-@using BlazorApp.Services.Core
-@using BlazorApp.Controllers
-@using BlazorApp.BlazorShared
-@using Shared
-@using BlazorApp.BlazorShared
+@using Services.Core;
+@using Shared.DTO.Core;
 @inject DoctorService doctorService
 
 <PageTitle>Ons Team</PageTitle>
@@ -20,9 +15,9 @@
 
     <div class="container mt-4">
         <div class="row ">
-            @if (DocObj != null)
+            @if (doctors != null)
             {
-                @foreach (var doc in DocObj)
+                @foreach (var doc in doctors)
                 {
 
                     <div class="col-md-6 col-lg-4">
@@ -45,10 +40,10 @@
 </div>
 
 @code {
-    IEnumerable<DoctorDTO>? DocObj;
+    private IEnumerable<DoctorDTO> doctors;
 
     protected override async Task OnInitializedAsync()
     {
-        DocObj = await doctorService.GetDoctors();
+        doctors = await doctorService.GetDoctors();
     }
 }

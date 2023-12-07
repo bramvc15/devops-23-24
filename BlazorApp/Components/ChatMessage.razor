@@ -1,12 +1,9 @@
-@using System.Text.Json
-@using BlazorApp.Data
-@using BlazorApp.Services.CMS
-@using BlazorApp.Models
-@using BlazorApp.Controllers
-@using Shared
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data;
 @inject DatabaseContext databaseContext
-@using Microsoft.AspNetCore.Components
-@inject CMSChatbotService CMSChatbotService
+@using Microsoft.AspNetCore.Components;
+@inject ChatbotService chatbotService
 
 
 <div class="textBubble-@(Type == "bot" ? "bot" : "user")">
@@ -46,7 +43,7 @@
     public string? Image { get; set; }
 
     [Parameter]
-    public IEnumerable<CMSChatBotQuestion>? ChatbotQuestionsList { get; set; }
+    public IEnumerable<ChatBotQuestionDTO> ChatbotQuestionsList { get; set; }
 
 
     private bool visible = false;
@@ -54,9 +51,9 @@
     private bool isCollapsed = false;
 
     [Parameter]
-    public EventCallback<CMSChatBotQuestion> QuestionClicked { get; set; }
+    public EventCallback<ChatBotQuestionDTO> QuestionClicked { get; set; }
 
-    public async Task DisplayQuestion(CMSChatBotQuestion question)
+    public async Task DisplayQuestion(ChatBotQuestionDTO question)
     {
         Message = question.Question;
         visible = true;

@@ -1,10 +1,10 @@
-@using BlazorApp.Data
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @using System.Text.Json.Serialization;
-@using BlazorApp.Services.CMS
-@using BlazorApp.Controllers
-@inject CMSHomeHeaderService homeHeaderService
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data; 
+@inject HomeHeaderService homeHeaderService
 @inject DatabaseContext databaseContext
 
 <div>
@@ -82,7 +82,7 @@
     protected string savedContent;
 
     protected string? content;
-    CMSHomeHeader? header;
+    private HomeHeaderDTO homeHeader;
     int headerId;
     string? newTitle;
     string? newDescription;
@@ -118,7 +118,7 @@
     private async Task UpdateTitle()
     {
         content = await richTextEditRef.GetHtmlAsync();
-        CMSHomeHeader header = new()
+        HomeHeaderDTO header = new()
         {
             Id = homeHeader.Id,
             Title = newTitle,
@@ -127,8 +127,6 @@
         await homeHeaderService.UpdateHomeHeader(header);
         modalRef?.Hide();
     }
-
-    CMSHomeHeader? homeHeader;
 
     protected override async Task OnInitializedAsync()
     {

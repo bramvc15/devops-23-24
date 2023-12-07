@@ -1,9 +1,6 @@
 ﻿@page "/docter-info/{DoctorId:int}"
-@using BlazorApp.Models
-@using BlazorApp.Services
-@using BlazorApp.Services.Core
-@using Shared
-@using BlazorApp.BlazorShared
+@using Services.Core:
+@using Shared.DTO.Core;
 @inject DoctorService doctorService
 
 <PageTitle>Doctor Detail</PageTitle>
@@ -11,7 +8,7 @@
 <div class="content-container">
 
     <div class="content-wrapper">
-        @if (Doctor != null)
+        @if (doctor != null)
         {
             <div class="imageBackWrapper">
                 <div class="exitDoctorDetail">
@@ -22,7 +19,7 @@
                     </NavLink>
                 </div>
                 <div class="info-Img-wrapper">
-                    <img src=@Doctor.ImageLink alt="Doctor Image" class="doctor-image" />
+                    <img src=@doctor.ImageLink alt="Doctor Image" class="doctor-image" />
                 </div>
             </div>
 
@@ -31,17 +28,17 @@
             <div class="doctor-info">
                 <h2>Dokter informatie</h2>
                 <ul>
-                    <li>Naam: @Doctor.Name</li>
-                    <li>Specialisatie: @Doctor.Specialization</li>
+                    <li>Naam: @doctor.Name</li>
+                    <li>Specialisatie: @doctor.Specialization</li>
 
                 </ul>
                 <div id="biography">
-                    <h3>Over @Doctor.Name</h3>
+                    <h3>Over @doctor.Name</h3>
                     <h4>Geslacht</h4>
-                    <p>@Doctor.Gender</p>
-                    <p>@Doctor.Specialization</p>
+                    <p>@doctor.Gender</p>
+                    <p>@doctor.Specialization</p>
                     <h3>Opleiding en Training</h3>
-                    <p>@Doctor.Biograph</p>
+                    <p>@doctor.Biograph</p>
                     
                 </div>
 
@@ -64,10 +61,10 @@
 @code {
     [Parameter]
     public int DoctorId { get; set; }
-    DoctorDTO? Doctor;
+    private DoctorDTO doctor;
 
     protected override async Task OnInitializedAsync()
     {
-        Doctor = await doctorService.GetDoctor(DoctorId);
+        doctor = await doctorService.GetDoctor(DoctorId);
     }
 }
