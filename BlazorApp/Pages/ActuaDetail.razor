@@ -1,12 +1,11 @@
-﻿﻿@page "/actua-detail/{BlogId:int}"
-
+﻿@page "/actuaDetail/{BlogId:int}"
 @using Services.CMS;
 @using Shared.DTO.CMS;
 @inject BlogService blogService
 
 <div class="blog-wrapper">
     <div class="head">
-        <h1>My Blog</h1>
+        <h1>Blogpost: Laseroperatie voor bijziendheid: de voor- en nadelen</h1>
         <p>Welcome to our blog where we share interesting articles about eye health and vision.</p>
     </div>
 
@@ -20,10 +19,22 @@
             </p>
         </article>
     </div>
+
+    <div class="recommended-section">
+        <h2>Recommended Articles</h2>
+        <ul>
+            @foreach (var recommendedBlog in blog.Take(3)) 
+            {
+                <li><a href="/actuaDetail/@recommendedBlog.Id">recommendedBlog.Title</a></li>
+            }
+        </ul>
+    </div>
 </div>
-@* @code {
+
+
+@code {
     [Parameter] public int BlogId { get; set; }
-    private List<BlogDTO> blog;
+    private IEnumerable<BlogDTO> blog;
 
     protected override async Task OnInitializedAsync() => blog = await blogService.GetBlogs();
-} *@
+}
