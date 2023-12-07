@@ -1,5 +1,4 @@
 @page "/admin/kalenders/myagenda"
-@using BlazorApp.Auth
 @using BlazorApp.Components.Modals
 @using Services.Core;
 @using Shared.DTO.Core;
@@ -9,67 +8,59 @@
 @inject DoctorService doctorService
 @inject AppointmentService appointmentService
 
+@attribute [Authorize(Roles = "Admin, Employee")]
+
 <div class="sidebar">
     <SideNavMenu />
 </div>
 <div class="content">
     <div class="agenda-container">
-        @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+        <h1>Agenda</h1>
+        <SfSchedule TValue="AppointmentData" @bind-SelectedDate="@CurrentDate">
+            <ScheduleEventSettings DataSource="@DataSource"></ScheduleEventSettings>
+            <ScheduleViews>
+                <ScheduleView Option="View.Day"></ScheduleView>
+                <ScheduleView Option="View.Week"></ScheduleView>
+                <ScheduleView Option="View.WorkWeek"></ScheduleView>
+                <ScheduleView Option="View.Month"></ScheduleView>
+                <ScheduleView Option="View.Agenda"></ScheduleView>
+            </ScheduleViews>
+        </SfSchedule>
+        <button class="week-btn" @onclick="() => ChangeWeek(-7)">Vorige week</button>
+        <button class="week-btn" @onclick="() => ChangeWeek(7)">Volgende week</button>
+        <span>@currentWeekStart.ToString("dd/MM/yyyy") - @currentWeekEnd.ToString("dd/MM/yyyy")</span>
+        @if(TimeSlots != null && ListByCurrentWeekDay != null)
         {
-            <h1>Agenda</h1>
-            <SfSchedule TValue="AppointmentData" @bind-SelectedDate="@CurrentDate">
-                <ScheduleEventSettings DataSource="@DataSource"></ScheduleEventSettings>
-                <ScheduleViews>
-                    <ScheduleView Option="View.Day"></ScheduleView>
-                    <ScheduleView Option="View.Week"></ScheduleView>
-                    <ScheduleView Option="View.WorkWeek"></ScheduleView>
-                    <ScheduleView Option="View.Month"></ScheduleView>
-                    <ScheduleView Option="View.Agenda"></ScheduleView>
-                </ScheduleViews>
-            </SfSchedule>
-            <button class="week-btn" @onclick="() => ChangeWeek(-7)">Vorige week</button>
-            <button class="week-btn" @onclick="() => ChangeWeek(7)">Volgende week</button>
-            <span>@currentWeekStart.ToString("dd/MM/yyyy") - @currentWeekEnd.ToString("dd/MM/yyyy")</span>
-            @if(TimeSlots != null && ListByCurrentWeekDay != null)
-            {
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Maandag</th>
-                            <th>Dinsdag</th>
-                            <th>Woensdag</th>
-                            <th>Donderdag</th>
-                            <th>Vrijdag</th>
-                            <th>Zaterdag</th>
-                            <th>Zondag</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            @foreach(var day in ListByCurrentWeekDay)
-                            {
-                                <AgendaAppointment Day="@day.Key" TimeSlots="@day.Value" />
-                            }
-                        </tr>
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <p>Geen timeslots gevonden</p>
-            }
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Maandag</th>
+                        <th>Dinsdag</th>
+                        <th>Woensdag</th>
+                        <th>Donderdag</th>
+                        <th>Vrijdag</th>
+                        <th>Zaterdag</th>
+                        <th>Zondag</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @foreach(var day in ListByCurrentWeekDay)
+                        {
+                            <AgendaAppointment Day="@day.Key" TimeSlots="@day.Value" />
+                        }
+                    </tr>
+                </tbody>
+            </table>
         }
         else
         {
-            <p>You are not authorized to access this page. Please log in.</p>
-            <p><a href="/login">Click here to LOGIN.</a></p>
+            <p>Geen timeslots gevonden</p>
         }
     </div>
 </div>
 
 @code {
-    [Inject]
-    private BlitzWareAuthService BlitzWareAuthService { get; set; }
 
     private IEnumerable<TimeSlotDTO> TimeSlots { get; set; }
 
@@ -111,21 +102,17 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+        
+        DoctorDTO doctor = await doctorService.GetDoctor(2);
+        TimeSlots = await timeSlotService.GetTimeSlots((int)doctor.Id);
+        TimeSlots = TimeSlots.Where(ts => ts.AppointmentDTO != null);
+
+        TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
+
+        foreach (var timeSlot in TimeSlotsByWeek)
         {
-            NavManager.NavigateTo("/login");
-        } else {
-            DoctorDTO doctor = await doctorService.GetDoctor(2);
-            TimeSlots = await timeSlotService.GetTimeSlots((int)doctor.Id);
-            TimeSlots = TimeSlots.Where(ts => ts.AppointmentDTO != null);
-
-            TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
-
-            foreach (var timeSlot in TimeSlotsByWeek)
-            {
-                Console.WriteLine(timeSlot.DateTime.DayOfWeek.ToString());
-                ListByCurrentWeekDay[timeSlot.DateTime.DayOfWeek.ToString()].Add(timeSlot);
-            }
+            Console.WriteLine(timeSlot.DateTime.DayOfWeek.ToString());
+            ListByCurrentWeekDay[timeSlot.DateTime.DayOfWeek.ToString()].Add(timeSlot);
         }
     }
 

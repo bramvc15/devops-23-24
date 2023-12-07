@@ -1,6 +1,5 @@
 @using Services.Core;
 @using Persistence.Data;
-@using BlazorApp.Auth;
 @using BlazorApp.Components.Modals;
 @inject TimeSlotService timeSlotService
 @inject DatabaseContext databaseContext
@@ -168,7 +167,4 @@
             args.CellData.ClassList += " no-time-slot"; // Apply a different CSS class for dates without a TimeSlot
         }
     }
-
-
-
 }
