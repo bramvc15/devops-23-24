@@ -32,7 +32,10 @@
                                             </div>
                                         <div class="col-sm-5 image-container">
                                             <picture>
+                                                @if (blog != null)
+                                                {
                                                 <img src="@blog.ImageLink" alt="@blog.Title" style="height:100%;width:100%;" />
+                                                }
                                             </picture>
                                         </div>
                                     </div>
@@ -48,7 +51,7 @@
 
 </div>
 @code {
-    private IEnumerable<BlogDTO> BlogObjecten;
+    private IEnumerable<BlogDTO> BlogObjecten = new List<BlogDTO>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -111,21 +114,21 @@
         width: 5rem;
     }
 
-        .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled) .e-btn-icon {
-            font-size: 2.4rem;
-        }
+    .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled) .e-btn-icon {
+        font-size: 2.4rem;
+    }
 
-        .kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):hover,
-        .kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):hover,
-        .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):hover,
-        .kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):focus,
-        .kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):focus,
-        .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):focus,
-        .kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):active,
-        .kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):active,
-        .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):active {
-            background-color: #d2e3f8;
-        }
+    .kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):hover,
+    .kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):hover,
+    .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):hover,
+    .kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):focus,
+    .kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):focus,
+    .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):focus,
+    .kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):active,
+    .kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):active,
+    .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):active {
+        background-color: #d2e3f8;
+    }
 
     .kb-carousel .e-carousel-indicators.e-default .e-indicator-bar .e-indicator div {
         background-color: #e5e5e5;
@@ -136,20 +139,85 @@
         background-color: #4d8fe4 !important;
     }
 
-    @@media screen and (max-width: 480px) {
-        .keyboard-carousel-section .carousel-sample {
-            max-height: 400px;
-            max-width: 100%;
+    @@media screen and (max-width: 1400px) {
+        .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
         }
 
+        .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .heading {
+            font-size: 1.5em;
+            color: #1a1a1a;
+            margin: 1rem 0 1.6rem;
+        }
+
+        .col-sm-5{
+            max-width:80%!important;
+        }
         .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description {
-            font-size: 1.25rem;
+            color: #1a1a1a;
+            letter-spacing: 0.2px;
+            line-height: 2.7rem;
+            padding: 0 0 5rem;
+            text-align: justify;
+
         }
 
         .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .image-container {
-            display: none;
+            max-width: 40rem!important; /* Adjust to your needs */
+            max-height: 300px; /* Adjust to your needs */
+
+        }
+
+        .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .image-container img {
+            object-fit: cover;
         }
     }
+
+    @@media screen and (max-width: 1000px) {
+        .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .detail{
+            margin-top: 6rem!important; 
+
+        }
+        .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .heading {
+            font-size: 1.5em;
+            color: #1a1a1a;
+            margin: 1rem 0 1.6rem;
+        }
+
+        .col-sm-5 {
+            max-width: 80% !important;
+        }
+
+        .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description {
+            color: #1a1a1a;
+            letter-spacing: 0.2px;
+            line-height: 2rem!important;
+            text-align: justify;
+            margin: 1rem 0 1.6rem;
+        }
+
+        .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .image-container {
+            max-width: 30rem !important; /* Adjust to your needs */
+            max-height: 200px; /* Adjust to your needs */
+        }
+
+        .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .image-container img {
+            object-fit: cover;
+        }
+    }
+
+
+
 
     #source_link {
         float: right;

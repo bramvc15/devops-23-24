@@ -45,3 +45,36 @@
 
 
 
+@media screen and (max-width: 1400px) {
+    .keyboard-carousel-section .carousel-sample {
+        max-height: 800px; /* Increase the max height */
+        max-width: 100%;
+    }
+
+    .keyboard-carousel-section .carousel-sample {
+        background-color: #f5f9fd;
+        border-radius: 1.5em;
+        margin: 0 auto 2em;
+        max-width: 80%;
+        height: 700px;
+    }
+
+    .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container {
+        flex-direction: column; /* Stack items vertically */
+        justify-content: flex-start; /* Align items to the start */
+        height: 100%; /* Occupy full height */
+        
+    }
+
+    .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description {
+        font-size: 1.25rem;
+        padding: 1rem 0; /* Add padding to the description */
+        max-height: 200px; /* Set a max height for the text */
+        overflow: hidden; /* Hide overflow if text exceeds max height */
+    }
+
+    .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .image-container {
+        order: -1; /* Move the image container to the top */
+        margin-bottom: 1rem; /* Add some space between image and text */
+    }
+}
