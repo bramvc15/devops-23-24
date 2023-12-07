@@ -1,0 +1,22 @@
+* {
+    background: rgb(194,228,218);
+}
+
+.content {
+    height: 100vh;
+    background: rgb(194,228,218);
+}
+
+.container {
+    margin-top: 100px;
+    height: 800px;
+    overflow: scroll;
+}
+
+h1 {
+    color: rgb(22, 44, 104);
+}
+
+table, tr, th, td {
+    background-color: white;
+}
