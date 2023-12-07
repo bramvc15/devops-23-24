@@ -1,40 +1,53 @@
 ﻿@page "/actua-detail/{BlogId:int}"
-@using Services.CMS;
-@using Shared.DTO.CMS;
+@using Services.CMS
+@using Shared.DTO.CMS
 @inject BlogService blogService
 
-<div class="blog-wrapper">
-    <div class="head">
-        <h1>Blogpost: Laseroperatie voor bijziendheid: de voor- en nadelen</h1>
+<div class="main-wrapper">
+    <div class="title-layout">
+        <h1 class="main-title">Blog</h1>
         <p>Welcome to our blog where we share interesting articles about eye health and vision.</p>
     </div>
+    <div class="blog-wrapper">
+        <div class="blog-container">
+            <article class="blog-article">
+                <div class="blog-image-container">
+                    <img class="blog-image" src="@selectedBlog?.ImageLink" alt="Blog Image">
+                </div>
+                <h2 class="blog-title">@selectedBlog?.Title</h2>
+                <p class="blog-intro">Introducing the world of optometry, where precision meets care in the realm of vision. The eye doctor, also known as an optometrist, is a healthcare professional dedicated to the health of our most intricate sense—sight. Beyond prescribing glasses and contact lenses, these experts play a crucial role in safeguarding and enhancing our vision. From comprehensive eye exams to the diagnosis and management of various ocular conditions, the eye doctor's expertise ensures that we navigate the world with clarity and visual well-being. Let's delve into the fascinating world of eye care, where each examination unveils the unique story of our eyes.</p>
+                <p class="blog-text">
+                    @selectedBlog?.Text
+                </p>
+            </article>
+        </div>
 
-    <div class="blog-container">
-        <article>
-            <img class="blog-image" src="https://img.noordhollandsdagblad.nl/0C2g51q-JZ9mGU4zOu75QV09s_I=/731x411/smart/https://cdn-kiosk-api.telegraaf.nl/6e4b1200-ac99-11e7-9e19-111553951722.jpg" alt="Blog Image">
-            <h2>Laseroperatie voor bijziendheid: de voor- en nadelen</h2>
-            <p>
-                Bijziendheid is een veel voorkomende oogafwijking. Het is een refractieafwijking, wat betekent dat het oog niet in staat is om lichtstralen op de juiste manier te breken. Hierdoor ontstaat een wazig beeld.
-                Bijziendheid kan worden gecorrigeerd met een bril of contactlenzen, maar ook met een laseroperatie. In dit artikel lees je meer over de voor- en nadelen van een laseroperatie voor bijziendheid.
-            </p>
-        </article>
-    </div>
-
-    <div class="recommended-section">
-        <h2>Recommended Articles</h2>
-        <ul>
-            @foreach (var recommendedBlog in blog.Take(3)) 
-            {
-                <li><a href="/actuaDetail/@recommendedBlog.Id">recommendedBlog.Title</a></li>
-            }
-        </ul>
+        <div class="recommended-section">
+            <h2 class="recommended-title">Recommended Articles</h2>
+            <ul class="recommended-list">
+                @if (blog != null)
+                {
+                    @foreach (var recommendedBlog in blog.Take(3))
+                    {
+                        <li class="recommended-item">
+                            <img class="recommended-image" src="@recommendedBlog.ImageLink" alt="Recommended Blog Image">
+                            <a class="recommended-link" href="/actua-detail/@recommendedBlog.Id">@recommendedBlog.Title</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
     </div>
 </div>
-
 
 @code {
     [Parameter] public int BlogId { get; set; }
     private IEnumerable<BlogDTO> blog;
+    private BlogDTO selectedBlog;
 
-    protected override async Task OnInitializedAsync() => blog = await blogService.GetBlogs();
+    protected override async Task OnInitializedAsync()
+    {
+        blog = await blogService.GetBlogs();
+        selectedBlog = blog?.FirstOrDefault(b => b.Id == BlogId);
+    }
 }
