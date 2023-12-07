@@ -32,6 +32,7 @@
             <b>Beschikbare tijdslots bij @Doctor.Name op @SelectedDate.ToString("dddd, dd MMMM", new System.Globalization.CultureInfo("nl-NL")):</b>
         </diV>
         <div class="timeslots">
+            <div class="cont-time">
         @if(FilteredTimeSlots != null && FilteredTimeSlots.Count() > 0)
         {
             @foreach (var timeSlot in FilteredTimeSlots)
@@ -45,6 +46,7 @@
                 Geen tijdslots beschikbaar op deze datum
             </div>
         }
+            </div>
         </div>
 </div>
 
