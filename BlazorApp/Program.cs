@@ -4,8 +4,6 @@ using Blazorise.Icons.FontAwesome;
 using Blazorise.RichTextEdit;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
-
-
 using static BlazorApp.Auth.BlitzWareAuth;
 using BlazorApp.Auth;
 using Blazored.LocalStorage;
@@ -13,6 +11,7 @@ using Services.CMS;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Core;
 using Persistence.Data;
+using Auth0.AspNetCore.Authentication;
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF1cWWhIf0x0TXxbf1xzZFRGalhXTnRdUiweQnxTdEZiWH1fcXRRQGJeV0N1WQ==");
 
@@ -23,6 +22,12 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
 }, ServiceLifetime.Transient);
+
+builder.Services
+    .AddAuth0WebAppAuthentication(options => {
+        options.Domain = builder.Configuration["Auth0:Domain"];
+        options.ClientId = builder.Configuration["Auth0:ClientId"];
+    });
 
 builder.Services.AddSingleton<BlitzWareAuthService>();
 builder.Services.AddRazorPages();
@@ -71,8 +76,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

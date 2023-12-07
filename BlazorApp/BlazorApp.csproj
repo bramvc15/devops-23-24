@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
-
   <ItemGroup>
     <Content Remove="appsettings.Development.json" />
   </ItemGroup>
@@ -17,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.0" />
     <PackageReference Include="Blazored.Modal" Version="7.1.0" />
     <PackageReference Include="Blazorise.Bootstrap" Version="1.3.1" />
     <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.3.1" />

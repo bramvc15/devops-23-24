@@ -7,12 +7,12 @@
         <NavMenu />
 
     <main>
-        <div >
-           @Body
-           @if(!NavigationManager.Uri.Contains("admin") && !NavigationManager.Uri.Contains("login"))
-           {
-               <Chatbox />
-           }
+        <div>
+            @Body
+            @if (!NavigationManager.Uri.Contains("admin") && !NavigationManager.Uri.Contains("login"))
+            {
+                <Chatbox />
+            }
         </div>
     </main>
 
@@ -24,12 +24,12 @@
 </div>
 
 @code {
-    [Inject]
-    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    //[Inject]
+    //private BlitzWareAuthService BlitzWareAuthService { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (!BlitzWareAuthService.AuthService.Initialized)
-            BlitzWareAuthService.AuthService.Initialize();
-    }
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    if (!BlitzWareAuthService.AuthService.Initialized)
+    //        BlitzWareAuthService.AuthService.Initialize();
+    //}
 }
