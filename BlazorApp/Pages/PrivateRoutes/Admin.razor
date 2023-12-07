@@ -1,6 +1,8 @@
 @page "/admin"
-@using BlazorApp.Auth
 @inject NavigationManager NavManager
+@using BlazorApp.BlazorShared;
+
+@attribute [Authorize(Roles = "Admin, Employee")]
 
 <PageTitle>Admin - Home</PageTitle>
 
@@ -13,7 +15,8 @@
             <h1>Welkom, @Username!</h1>
             Je bent ingelogd.
             <br />
-            <img src="@Picture">
+            <img style="max-width:100px" src="@Picture">
+            <AccessControl />
         </div>
     </div>
 </div>
@@ -39,14 +42,4 @@
         }
         await base.OnInitializedAsync();
     }
-
-
-    //[Inject]
-    //private BlitzWareAuthService BlitzWareAuthService { get; set; }
-
-    //protected override void OnInitialized()
-    //{
-    //    if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-    //        NavManager.NavigateTo("/login");
-    //}
 }
