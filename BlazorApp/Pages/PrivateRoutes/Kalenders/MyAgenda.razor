@@ -164,7 +164,7 @@
             NavManager.NavigateTo("/login");
         } else {
             DoctorDTO doctor = await doctorService.GetDoctor(2);
-            TimeSlots = await timeSlotService.GetTimeSlots(doctor);
+            TimeSlots = await timeSlotService.GetTimeSlots((int)doctor.Id);
             TimeSlots = TimeSlots.Where(ts => ts.AppointmentDTO != null);
 
             TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
