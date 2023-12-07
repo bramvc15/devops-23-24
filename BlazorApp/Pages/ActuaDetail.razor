@@ -1,4 +1,8 @@
-﻿@page "/actuaDetail"
+﻿﻿@page "/actua-detail/{BlogId:int}"
+
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@inject BlogService blogService
 
 <div class="blog-wrapper">
     <div class="head">
@@ -17,3 +21,9 @@
         </article>
     </div>
 </div>
+@* @code {
+    [Parameter] public int BlogId { get; set; }
+    private List<BlogDTO> blog;
+
+    protected override async Task OnInitializedAsync() => blog = await blogService.GetBlogs();
+} *@

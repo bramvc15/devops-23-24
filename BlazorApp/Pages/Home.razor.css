@@ -44,18 +44,18 @@
     height: calc(100% - 3rem);
 }
 
-    .templateCarousel .e-carousel-navigators .e-previous,
-    .templateCarousel .e-carousel-navigators .e-next,
-    .templateCarousel .e-carousel-navigators .nav-btn {
-        padding: 0;
-    }
+.templateCarousel .e-carousel-navigators .e-previous,
+.templateCarousel .e-carousel-navigators .e-next,
+.templateCarousel .e-carousel-navigators .nav-btn {
+    padding: 0;
+}
 
-        .templateCarousel .e-carousel-navigators .nav-btn:active,
-        .templateCarousel .e-carousel-navigators .nav-btn:focus,
-        .templateCarousel .e-carousel-navigators .nav-btn:hover {
-            background-color: transparent !important;
-            color: inherit;
-        }
+.templateCarousel .e-carousel-navigators .nav-btn:active,
+.templateCarousel .e-carousel-navigators .nav-btn:focus,
+.templateCarousel .e-carousel-navigators .nav-btn:hover {
+    background-color: transparent !important;
+    color: inherit;
+}
 
     .templateCarousel .e-carousel-navigators svg {
         fill: none;
