@@ -6,6 +6,16 @@
 # dotenv files
 .env
 
+
+# Binaries
+bin/
+obj/
+release/
+
+# .NET
+[Dd]ebug/
+[Rr]elease/
+
 # User-specific files
 *.rsuser
 *.suo
