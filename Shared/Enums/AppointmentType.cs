@@ -1,4 +1,4 @@
-﻿namespace Enums;
+﻿namespace Shared.Enums;
 
 public enum AppointmentType
 {

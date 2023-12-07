@@ -1,0 +1,25 @@
+.question {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000000;
+    color: rgb(22, 44, 104);
+    margin-left: 10px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    width: fit-content;
+}
+
+.question:hover {
+    color: rgb(143, 146, 158);
+    cursor: pointer;
+}
+
+.answer {
+    font-size: 1rem;
+    color: #000000;
+    color: rgb(22, 44, 104);
+    margin-left: 10px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+

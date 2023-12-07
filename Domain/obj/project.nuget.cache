@@ -1,15 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "VzPtFfuKi1hWUuocRyXu+5lIERmUT6tXS3arInIqzEAtnULF2H67EHUMZI49ZVE0gpwS2B41qWxIsfitrg+Ejg==",
+  "dgSpecHash": "x4Z1UPiALaYttZIUXKIiVvUIqeyf/x38iQd0O/+Ywh4YNXYq8t4zF0Pk9fsC9li/NfZniSQQTGtgHpyAaHHcsw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\OneDrive - Hogeschool Gent\\hogent\\3de jaar\\DevOps Project\\project-oogarts\\devops-23-24-net-g07\\Domain\\Domain.csproj",
-  "expectedPackageFiles": [],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\user\\OneDrive - Hogeschool Gent\\hogent\\3de jaar\\DevOps Project\\project-oogarts\\devops-23-24-net-g07\\Domain\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "projectFilePath": "/Users/landerdekesel/Documents/HoGent/3de Jaar/DevOps/devops-23-24-net-g07/Domain/Domain.csproj",
+  "expectedPackageFiles": [
+    "/Users/landerdekesel/.nuget/packages/ardalis.guardclauses/4.2.0/ardalis.guardclauses.4.2.0.nupkg.sha512"
+  ],
+  "logs": []
 }

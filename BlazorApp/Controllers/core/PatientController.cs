@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using BlazorApp.Services.Core;
-using Shared;
+using Services.Core;
+using Shared.DTO.Core;
 
 namespace BlazorApp.Controllers.core;
 

@@ -1,6 +1,5 @@
-﻿@using BlazorApp.Services
-@using BlazorApp.Models
-
+﻿@using BlazorApp.Models;
+@using Shared.Enums;
 
 <EditForm Model="@clientData" OnValidSubmit="@SubmitClientData">
     <DataAnnotationsValidator />
@@ -21,6 +20,17 @@
                     <InputText id="Email" @bind-Value="clientData.Email" type='text' placeholder='john@mail.com' />
                     <ValidationMessage For="@(() => clientData.Email)" />
                 </div>
+                    <div class="la">
+                    <label class='formLabel' for="Gender">Geslacht</label>
+                </div>
+                <div class='formInput'>
+                    <select id="Gender" @bind="clientData.SelectedGender" class="gender-select">
+                        <option value="@Gender.Male">Man</option>
+                        <option value="@Gender.Female">Vrouw</option>
+                        <option value="@Gender.Other">Andere</option>
+                    </select>
+                    <ValidationMessage For="@(() => clientData.SelectedGender)" />
+                </div>
             </div>
             <div class="coll">
                 <div class="la">
@@ -38,6 +48,15 @@
                     <ValidationMessage For="@(() => clientData.BirthDate)" />
                 </div>
             </div>
+            <div class="coll">
+                <div class="la">
+                    <label class='formLabel' for="Reason">Reden voor consultatie</label>
+                </div>
+                <div class='formInput'>
+                    <InputTextArea id="Reason" @bind-Value="clientData.Reason" type='text' placeholder='Reden voor consultatie' />
+                    <ValidationMessage For="@(() => clientData.Reason)" />
+                </div>
+            </div>
         </div>
         <div class="btnBox">
             <button type="submit" class="submitBtn">Verzenden</button>
@@ -48,12 +67,14 @@
     [Parameter]
     public EventCallback<ClientData> OnContactSubmitted { get; set; }
 
+    [Parameter]
+    public EventCallback<string> OnReasonSubmitted { get; set; }
+
     private ClientData clientData = new ClientData();
 
 
     private async Task SubmitClientData()
     {
         OnContactSubmitted.InvokeAsync(clientData);
-        Console.WriteLine(clientData.Name + " " + clientData.Email + " " + clientData.Phone + " " + clientData.BirthDate);
     }
 }

@@ -13,7 +13,7 @@ public class ScheduleTimeSlotTest
     #region Init
     public ScheduleTimeSlotTest()
     {
-        _scheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
+        _scheduleTimeSlot = new ScheduleTimeSlot(new DateTime(2024, 2, 17, 12, 0, 0), 60, DayOfWeek.Monday);
     }
     #endregion
 
@@ -21,7 +21,6 @@ public class ScheduleTimeSlotTest
     [Fact]
     public void ScheduleTimeSlot_Constructor_ValidParameters()
     {
-        Assert.Equal(_scheduleTimeSlot.AppointmentType, AppointmentType.Consultation);
         Assert.Equal(_scheduleTimeSlot.DateTime, new DateTime(2024, 2, 17, 12, 0, 0));
         Assert.Equal(_scheduleTimeSlot.DayOfWeek, DayOfWeek.Monday);
         Assert.Equal(_scheduleTimeSlot.Duration, 60);
@@ -30,19 +29,19 @@ public class ScheduleTimeSlotTest
     [Fact]
     public void ScheduleTimeSlot_Constructor_EmptyDuration_ThrowsException()
     {
-        Assert.Throws<ArgumentException>(() => new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 0, DayOfWeek.Monday));
+        Assert.Throws<ArgumentException>(() => new ScheduleTimeSlot(new DateTime(2024, 2, 17, 12, 0, 0), 0, DayOfWeek.Monday));
     }
 
     [Fact]
     public void ScheduleTimeSlot_Constructor_NegativeDuration_ThrowsException()
     {
-        Assert.Throws<ArgumentException>(() => new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), -60, DayOfWeek.Monday));
+        Assert.Throws<ArgumentException>(() => new ScheduleTimeSlot(new DateTime(2024, 2, 17, 12, 0, 0), -60, DayOfWeek.Monday));
     }
 
     [Fact]
     public void ScheduleTimeSlot_Constructor_TooLargeDuration_ThrowsException()
     {
-        Assert.Throws<ArgumentException>(() => new ScheduleTimeSlot(AppointmentType.Consultation, new DateTime(2024, 2, 17, 12, 0, 0), 3000, DayOfWeek.Monday));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new ScheduleTimeSlot(new DateTime(2024, 2, 17, 12, 0, 0), 3000, DayOfWeek.Monday));
     }
     #endregion
 
@@ -50,10 +49,9 @@ public class ScheduleTimeSlotTest
     [Fact]
     public void ScheduleTimeSlot_UpdateScheduleTimeSlot()
     {
-        ScheduleTimeSlot updatedScheduleTimeSlot = new ScheduleTimeSlot(AppointmentType.Operation, new DateTime(2024, 2, 18, 12, 0, 0), 40, DayOfWeek.Friday);
-        _scheduleTimeSlot.UpdateScheduleTimeSlot(updatedScheduleTimeSlot);
+        ScheduleTimeSlot updatedScheduleTimeSlot = new ScheduleTimeSlot(new DateTime(2024, 2, 18, 12, 0, 0), 40, DayOfWeek.Friday);
+        _scheduleTimeSlot.UpdateScheduleTimeSlot(new DateTime(2024, 2, 18, 12, 0, 0), DayOfWeek.Friday, 40);
 
-        Assert.Equal(updatedScheduleTimeSlot.AppointmentType, _scheduleTimeSlot.AppointmentType);
         Assert.Equal(updatedScheduleTimeSlot.Duration, _scheduleTimeSlot.Duration);
         Assert.Equal(updatedScheduleTimeSlot.DateTime, _scheduleTimeSlot.DateTime);
         Assert.Equal(updatedScheduleTimeSlot.DayOfWeek, _scheduleTimeSlot.DayOfWeek);

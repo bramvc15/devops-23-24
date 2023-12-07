@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "Ardalis.GuardClauses/4.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/Ardalis.GuardClauses.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/Ardalis.GuardClauses.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "coverlet.collector/6.0.0": {
         "type": "package",
         "build": {
@@ -1716,16 +1729,53 @@
       "Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Ardalis.GuardClauses": "4.2.0",
+          "Shared": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/Domain.dll": {}
         },
         "runtime": {
           "bin/placeholder/Domain.dll": {}
         }
+      },
+      "Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Shared.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "Ardalis.GuardClauses/4.2.0": {
+      "sha512": "2mDznNQkPRNpTVGrThEVhBTtxBUsCMobLnfOXnhehznwIEDjT0PG+1cedYzVhHHPfzU1OGc/2ubEkFAyoBi4LQ==",
+      "type": "package",
+      "path": "ardalis.guardclauses/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "ardalis.guardclauses.4.2.0.nupkg.sha512",
+        "ardalis.guardclauses.nuspec",
+        "icon.png",
+        "lib/net7.0/Ardalis.GuardClauses.dll",
+        "lib/net7.0/Ardalis.GuardClauses.pdb",
+        "lib/net7.0/Ardalis.GuardClauses.xml",
+        "lib/netstandard2.0/Ardalis.GuardClauses.dll",
+        "lib/netstandard2.0/Ardalis.GuardClauses.pdb",
+        "lib/netstandard2.0/Ardalis.GuardClauses.xml",
+        "lib/netstandard2.1/Ardalis.GuardClauses.dll",
+        "lib/netstandard2.1/Ardalis.GuardClauses.pdb",
+        "lib/netstandard2.1/Ardalis.GuardClauses.xml"
+      ]
+    },
     "coverlet.collector/6.0.0": {
       "sha512": "tW3lsNS+dAEII6YGUX/VMoJjBS1QvsxqJeqLaJXub08y1FSjasFPtQ4UBUsudE9PNrzLjooClMsPtY2cZLdXpQ==",
       "type": "package",
@@ -5522,6 +5572,11 @@
       "type": "project",
       "path": "../../Domain/Domain.csproj",
       "msbuildProject": "../../Domain/Domain.csproj"
+    },
+    "Shared/1.0.0": {
+      "type": "project",
+      "path": "../../Shared/Shared.csproj",
+      "msbuildProject": "../../Shared/Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -5534,34 +5589,33 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Victo\\.nuget\\packages\\": {}
+    "/Users/landerdekesel/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Victo\\Source\\Repos\\devops-23-24-net-g07\\Tests\\Domain.Tests\\Domain.Tests.csproj",
+      "projectUniqueName": "/Users/landerdekesel/Documents/HoGent/3de Jaar/DevOps/devops-23-24-net-g07/Tests/Domain.Tests/Domain.Tests.csproj",
       "projectName": "Domain.Tests",
-      "projectPath": "C:\\Users\\Victo\\Source\\Repos\\devops-23-24-net-g07\\Tests\\Domain.Tests\\Domain.Tests.csproj",
-      "packagesPath": "C:\\Users\\Victo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Victo\\Source\\Repos\\devops-23-24-net-g07\\Tests\\Domain.Tests\\obj\\",
+      "projectPath": "/Users/landerdekesel/Documents/HoGent/3de Jaar/DevOps/devops-23-24-net-g07/Tests/Domain.Tests/Domain.Tests.csproj",
+      "packagesPath": "/Users/landerdekesel/.nuget/packages/",
+      "outputPath": "/Users/landerdekesel/Documents/HoGent/3de Jaar/DevOps/devops-23-24-net-g07/Tests/Domain.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Victo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/landerdekesel/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Victo\\Source\\Repos\\devops-23-24-net-g07\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\Users\\Victo\\Source\\Repos\\devops-23-24-net-g07\\Domain\\Domain.csproj"
+            "/Users/landerdekesel/Documents/HoGent/3de Jaar/DevOps/devops-23-24-net-g07/Domain/Domain.csproj": {
+              "projectPath": "/Users/landerdekesel/Documents/HoGent/3de Jaar/DevOps/devops-23-24-net-g07/Domain/Domain.csproj"
             }
           }
         }
@@ -5608,26 +5662,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.25, 6.0.25]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.25, 6.0.25]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[6.0.25, 6.0.25]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.311/RuntimeIdentifierGraph.json"
       }
     }
   }

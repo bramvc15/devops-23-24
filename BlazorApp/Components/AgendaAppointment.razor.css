@@ -1,0 +1,82 @@
+* {
+    background: rgb(194,228,218);
+}
+
+.content {
+    height: 100vh;
+    background: rgb(194,228,218);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.agenda-container {
+    margin-top: 100px;
+    height: 800px;
+    overflow: scroll;
+    width: 80%;
+}
+
+td {
+    max-width: 30px;
+}
+.btn {
+    background: rgb(77, 156, 132);
+    color: white;
+}
+
+.btn-danger {
+    background: rgb(156, 77, 77);
+    color: white;
+    font-size: 14px;
+}
+
+.btn:hover {
+    background: rgb(74, 134, 116);
+    color: white;
+}
+
+.week-btn {
+    background: rgb(77, 156, 132);
+    color: white;
+    margin: 2px;
+    border: 0;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.week-btn:hover {
+    background: rgb(74, 134, 116);
+    color: white;
+}
+
+h1 {
+    color: rgb(22, 44, 104);
+}
+
+.timeslot {
+    cursor: pointer;
+}
+
+table, th {
+    background-color: white;
+}
+
+span {
+    padding: 3px;
+    background-color: #93C5BB;
+    color: white;
+    border-radius: 15px;
+    margin: 2px;
+    text-align: center;
+}
+
+.appointment-subspan {
+    padding: 3px;
+    background-color: #ffffff;
+    color: black;
+    display: block;
+    border-radius: 15px;
+    margin: 2px;
+    text-align: center;
+}

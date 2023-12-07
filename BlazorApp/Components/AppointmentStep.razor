@@ -1,29 +1,52 @@
-@using BlazorApp.Data
-@using BlazorApp.Services.Core
-@using BlazorApp.Models
-@using BlazorApp.Controllers
-@using BlazorApp.Auth
-@using BlazorApp.Components.Modals
+@using Services.Core;
+@using Persistence.Data;
+@using BlazorApp.Components.Modals;
 @inject TimeSlotService timeSlotService
 @inject DatabaseContext databaseContext
-@using Shared
-@using BlazorApp.BlazorShared
+@using Shared.DTO.Core;
 
-<button @onclick="() => ChooseDate(DateTime.Now)">Choose Time</button>
-
-<div class="headerBox">
-    <p class="header">3. Kies een tijdslot</p>
-</div>
-<div class="afspraakbox">
-    <div class="temp">
+<div class="afspraakbox container">
+    @* <div class="temp">
+        <b>Selected Doctor is: @Doctor.Name</b>
         <SfCalendar TValue="DateTime?" @bind-Value="@SelectedDate">
             <CalendarEvents TValue="DateTime?" OnRenderDayCell="CustomDates"></CalendarEvents>
         </SfCalendar>
         <button class="butTemp" @onclick="() => ChooseDate(DateTime.Now)">temp</button>
+    </div> *@
+    <div class="dateselector d-flex flex-column justify-content-center">
+        <div class="selector text-center">
+            <button class="dateselector-btn" @onclick="() => ChangeDate(-1)">🠜</button>
+            <InputDate @bind-Value="@SelectedDate" ></InputDate>
+            <button class="dateselector-btn" @onclick="() => ChangeDate(1)">🠞</button>
+        </div>
+        <div class="daybuttons text-center">
+            <button class="daybutton" @onclick="() => ChangeDateButtons(0)">Vandaag</button>
+            <button class="daybutton" @onclick="() => ChangeDateButtons(1)">Morgen</button>
+            <button class="daybutton" @onclick="() => ChangeDateButtons(2)">Overmorgen</button>
+            <button class="daybutton" @onclick="FirstAvailableDate">Volgende beschikbare dag</button>
+        </div>
     </div>
-    <div class="display-date">
-        <span class="example-label">Selected date is: <b>@SelectedValue</b></span>
-    </div>
+
+        <diV class="text-center">
+            <b>Beschikbare tijdslots bij @Doctor.Name op @SelectedDate.ToString("dddd, dd MMMM", new System.Globalization.CultureInfo("nl-NL")):</b>
+        </diV>
+        <div class="timeslots">
+            <div class="cont-time">
+        @if(FilteredTimeSlots != null && FilteredTimeSlots.Count() > 0)
+        {
+            @foreach (var timeSlot in FilteredTimeSlots)
+            {
+                <div class="card">
+                    <button class="timeslot" @onclick="() => ChooseDate(timeSlot.Id)">@timeSlot.DateTime.ToString("HH:mm") ➜  @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")</button>
+                </div>
+            }
+        } else {
+            <div class="unavailable">
+                Geen tijdslots beschikbaar op deze datum
+            </div>
+        }
+            </div>
+        </div>
 </div>
 
 <style>
@@ -50,20 +73,76 @@
 
 @code {
     [Parameter]
-    public EventCallback<DateTime> OnDateChosen { get; set; }
+    public EventCallback<int?> OnTimeSlotSelected { get; set; }
 
     [Parameter]
     public IEnumerable<TimeSlotDTO> TimeSlotObj { get; set; }
 
-    public DateTime? SelectedDate { get; set; } = DateTime.Now;
-    public string SelectedValue { get; set; } = DateTime.Now.ToString("M/d/yyyy");
-    public DateTime? CurrentDate { get; set; } = DateTime.Now;
+    private IEnumerable<TimeSlotDTO> FilteredTimeSlots { get; set; }
 
-    private async Task ChooseDate(DateTime date)
+    [Parameter]
+    public DoctorDTO Doctor { get; set; }
+
+
+    public DateTime SelectedDate
     {
-        // Simulate choosing a time
-        await OnDateChosen.InvokeAsync(date);
+        get => _selectedDate;
+        set
+        {
+            if (_selectedDate != value)
+            {
+                _selectedDate = value;
+                FilterTimeSlots();
+            }
+        }
     }
+
+    private DateTime _selectedDate;
+
+    public string SelectedValue { get; set; } = DateTime.Now.ToString("M/d/yyyy");
+    public DateTime CurrentDate { get; set; }
+
+    private async Task ChooseDate(int? timeSlotId)
+    {
+        await OnTimeSlotSelected.InvokeAsync(timeSlotId);
+    }
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        _selectedDate = DateTime.Now;
+        SelectedDate = DateTime.Now;
+        CurrentDate = DateTime.Now;
+        TimeSlotObj = await timeSlotService.GetTimeSlots(Doctor.Id ?? 0);
+        TimeSlotObj = TimeSlotObj.Where(x => x.AppointmentDTO == null);
+        FilterTimeSlots();
+    }
+
+    private void ChangeDate(int days)
+    {
+        SelectedDate = SelectedDate.AddDays(days);
+    }
+
+    private void ChangeDateButtons(int days)
+    {
+        SelectedDate = CurrentDate.AddDays(days);
+    }
+
+    private void FirstAvailableDate()
+    {
+        if(TimeSlotObj.Count() > 0)
+            SelectedDate = TimeSlotObj.Min(x => x.DateTime);
+    }
+
+    private void FilterTimeSlots()
+    {
+        if (TimeSlotObj != null)
+        {
+            FilteredTimeSlots = TimeSlotObj.Where(x => x.DateTime.Date == SelectedDate.Date).ToList();
+            StateHasChanged();
+        }
+    }
+
 
     public void CustomDates(RenderDayCellEventArgs args)
     {
@@ -88,7 +167,4 @@
             args.CellData.ClassList += " no-time-slot"; // Apply a different CSS class for dates without a TimeSlot
         }
     }
-
-
-
 }

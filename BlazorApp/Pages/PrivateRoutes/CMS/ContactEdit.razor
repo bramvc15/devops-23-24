@@ -1,171 +1,191 @@
 @page "/admin/cms/contact"
-@using BlazorApp.Auth
-@using BlazorApp.Data
-@using BlazorApp.Services.CMS
-@using BlazorApp.Controllers
-@using BlazorApp.Components.Modals
-@using System.ComponentModel.DataAnnotations
+@inject LocationService locationService
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using BlazorApp.Models;
+@using BlazorApp.Controllers;
+@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components.Forms;
+@using BlazorApp.Components.Modals;
+@using Persistence.Data;
 @inject NavigationManager NavManager
-@inject CMSContactService contactService
-@inject CMSLocationService locationService
 
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>Admin - CMS Contact</PageTitle>
 
 <div class="sidebar">
     <SideNavMenu />
 </div>
-@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
-                 BlitzWareAuthService.AuthService.appData.AdminRoleLevel
-                 ==
-                 BlitzWareAuthService.AuthService.userData.UserSubLevel)
-{
-    <div class="page-container">
-        <ModalPopUp/>
-        <div class="title-layout">
-           
-            <h1>Contact</h1>
-            <a><u>Home</u> > Contact </a>
-            
-        </div>
-        
-        <div class="container mt-4">
- <ContactModal/>
-            
-        <div class="row">
-                
-        <!-- Left Column for Text -->
-        <div class="col-md-6">
 
-        <h2>Onze gegevens</h2>
-        @if (contact != null)
-        {
-            @((MarkupString)contact.Context!)
-        }
-        else
-        {
+<div class="page-container">
+    <div class="title-layout">
+        <h1>Contact</h1>
+        <a><u>Home</u> > Contact </a>
+    </div>
+    <div class="container mt-4 mp">
+        <div class="form-container">
+            <h1 class="header1">Stel ons een vraag</h1>
 
-            <h1>ERROR</h1>
-        }
-                </div>
-
-                <!-- Right Column for Google Maps -->
-                <div class="col-md-6">
-                    <h1 class="mb-4">Stel ons een vraag</h1>
-                    <EditForm Model="@Model" OnValidSubmit="@SubmitForm" FormName="ContactForm">
-                        <DataAnnotationsValidator />
-                        <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
-                        <!-- Name and First Name -->
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <InputText @bind-Value="Model.Name" placeholder="Naam"  class="form-control" id="box" />
+            <EditForm Model="@contactData" OnValidSubmit="@SubmitForm">
+                @* <DataAnnotationsValidator /> *@
+                <div class="divide-container">
+                    <div class="left">
+                        <div class="name-container">
+                            <div class="box">
+                                <label class='formLabel'>Voornaam</label>
+                                <InputText @bind-Value="contactData.Name" placeholder="Naam" type='text' />
+                                @* <ValidationMessage For="@(() => contactData.Name)" /> *@
                             </div>
-                            <div class="form-group col-md-6">
-                                <InputText @bind-Value="Model.FirstName" placeholder="Voornaam" class="form-control" id="box" />
+                            <div class="box">
+                                <label class='formLabel'>Naam</label>
+                                <InputText @bind-Value="contactData.LastName" placeholder="Achternaam" type='text' />
+                                @* <ValidationMessage For="@(() => contactData.LastName)" /> *@
                             </div>
                         </div>
-
-                        <!-- Email -->
-                        <div class="form-group">
-                            <InputText @bind-Value="Model.Email" placeholder="E-mail" class="form-control" id="box" />
+                        <div class="name-container">
+                            <div class="box">
+                                <label class='formLabel'>E-mail</label>
+                                <InputText @bind-Value="contactData.Email" type='text' placeholder='naam@mail.com' />
+                                @* <ValidationMessage For="@(() => contactData.Email)" /> *@
+                            </div>
+                            <div class="box">
+                                <label class='formLabel'>GSM</label>
+                                <InputText @bind-Value="contactData.Phone" type='text' placeholder='0489561475' />
+                                @* <ValidationMessage For="@(() => contactData.Phone)" /> *@
+                            </div>
                         </div>
-
-                        <!-- Date of Birth -->
-                        <div class="form-group">
-                            <InputDate @bind-Value="Model.DateOfBirth" placeholder="Geboortedatum" class="form-control" id="box" />
+                        <label class='formLabel'>Geboortedatum</label>
+                        <InputDate @bind-Value="contactData.BirthDate" />
+                    </div>
+                    <div class="right">
+                        <div class="leftie">
+                            <label class='formLabel'>Bericht of vraag</label>
                         </div>
-
-                        <!-- Phone Number -->
-                        <div class="form-group">
-                            <InputText @bind-Value="Model.PhoneNumber" placeholder="Telefoonnummer" class="form-control" id="box" />
-                        </div>
-
-                        <!-- Message -->
-                        <div class="form-group">
-                            <InputTextArea rows="4" @bind-Value="Model.Message" placeholder="Bericht of vraag" class="form-control" id="box" />
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">verstuur</button>
-                        </div>
-                    </EditForm>
-
-
-
-
-
-
-
+                        <InputTextArea @bind-Value="contactData.Message" rows="10" placeholder=". . ." />
+                        @* <ValidationMessage For="@(() => contactData.Message)" /> *@
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="container mt-4">
-            <ModalPopUp />
-            <div class="row">
-                <!-- Left Column for Text -->
-                <div class="col-md-6">
-                    <h2>Onze locatie</h2>
-                    @if (location != null)
-                    {
-                        @((MarkupString)location.Context!)
-                    }
-                    else
-                    {
-
-                        <h1>ERROR</h1>
-                    }
+                <div class="btn-container">
+                    <button type="submit" class="sendBtn">Verstuur</button>
                 </div>
-
-                <!-- Right Column for Google Maps -->
-                <div class="col-md-6">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d160404.48929096633!2d3.549413672523532!3d51.08409896849969!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c370e1339443ad%3A0x40099ab2f4d5140!2sGent!5e0!3m2!1snl!2sbe!4v1696930185595!5m2!1snl!2sbe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-            </div>
+            </EditForm>
         </div>
     </div>
-}
+</div>
+<div class="containerLoc">
+    <h1 class="header2">Locatie</h1>
+    <div class="loc-details-con">
+        <div class="loc-wrapper">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2047.9370463549672!2d3.7806270106539936!3d51.07552655239289!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c376fd48f2d687%3A0x1773eb5790d0402b!2sAntwerpsesteenweg%201022%2C%209040%20Gent!5e0!3m2!1sen!2sbe!4v1701706907842!5m2!1sen!2sbe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="loc-details">
+            @if (location != null)
+            {
+                <p>@((MarkupString)location.Straat!)</p>
+                <p>@((MarkupString)location.Stad!)</p>
+                <p>@((MarkupString)location.Land!)</p>
+                <br />
+                <br />
+                <p>@((MarkupString)location.Email!)</p>
+                <p>@((MarkupString)location.Telefoon!)</p>
+            }
+            <br />
+            <br />
+            <button class="changeBtn" @onclick="( () => ShowModal() )">Wijzig</button>
+        </div>
+    </div>
+</div>
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Info wijzigen</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Straat</FieldLabel>
+                <TextEdit @bind-Text="newStreet" />
+            </Field>
+            <Field>
+                <FieldLabel>Stad</FieldLabel>
+                <TextEdit @bind-Text="newCity" />
+            </Field>
+            <Field>
+                <FieldLabel>Land</FieldLabel>
+                <TextEdit @bind-Text="newCountry" />
+            </Field>
+            <Field>
+                <FieldLabel>Email</FieldLabel>
+                <TextEdit @bind-Text="newEmail" />
+            </Field>
+            <Field>
+                <FieldLabel>Telefoon</FieldLabel>
+                <TextEdit @bind-Text="newPhone" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateLocation">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+
 @code {
-    [Inject]
-    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    private LocationDTO location;
 
-    CMSContact contact;
-    CMSLocation location;
-
-    public ContactModel? Model { get; set; }
+    private ContactData contactData = new ContactData();
 
     protected override async Task OnInitializedAsync()
     {
-
-        Model = new ContactModel();
-        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-            NavManager.NavigateTo("/login");
-        contact = await contactService.GetContact();
         location = await locationService.GetLocation();
     }
 
-    public class ContactModel
+    int? id;
+    string? newStreet;
+    string? newCity;
+    string? newCountry;
+    string? newEmail;
+    string? newPhone;
+
+    private Modal? modalRef;
+
+    private async Task<Task?> ShowModal()
     {
-        [Required(ErrorMessage = "Naam is verplicht.")]
-        public string Name { get; set; }
-        [Required(ErrorMessage = "Voornaam is verplicht.")]
-        public string FirstName { get; set; }
-        [Required(ErrorMessage = "Email is verplicht.")]
-        [EmailAddress(ErrorMessage = "Voer een geldig emailadres in.")]
-        public string Email { get; set; }
-        [Required(ErrorMessage = "Geboortedatum is verplicht.")]
-        public DateTime DateOfBirth { get; set; }
-        [Required(ErrorMessage = "Telefoonnummer is verplicht.")]
-        [RegularExpression(@"[0-9]{10}", ErrorMessage = "Voer een geldig telefoonnummer in.")]
-        public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "Een bericht is verplicht.")]
-        public string Message { get; set; }
+        id = location.Id;
+        newStreet = location.Straat;
+        newCity = location.Stad;
+        newCountry = location.Land;
+        newEmail = location.Email;
+        newPhone = location.Telefoon;
+        return modalRef?.Show();
     }
 
-    private void SubmitForm()
+    private Task? HideModal()
     {
+        return modalRef?.Hide();
+    }
 
+    private async void UpdateLocation()
+    {
+        LocationDTO loc = new()
+        {
+            Id = location.Id,
+            Straat = newStreet,
+            Stad = newCity,
+            Land = newCountry,
+            Email = newEmail,
+            Telefoon = newPhone
+        };
+        await locationService.UpdateLocation(loc);
+        await HideModal();
+    }
+
+    private async Task SubmitForm()
+    {
+        Console.WriteLine("test");
     }
 
 }

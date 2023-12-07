@@ -1,6 +1,8 @@
 @page "/admin"
-@using BlazorApp.Auth
 @inject NavigationManager NavManager
+@using BlazorApp.BlazorShared;
+
+@attribute [Authorize(Roles = "Admin, Employee")]
 
 <PageTitle>Admin - Home</PageTitle>
 
@@ -10,27 +12,34 @@
 <div class="admin container">
     <div class="row justify-content-center align-items-center" style="height: 100vh;">
         <div class="col-md-6 text-center">
-            @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-            {
-                <h3>Welkom @BlitzWareAuthService.AuthService.userData.Username</h3>
-                <p>Je bent ingelogt.</p>
-            }
-            else
-            {
-                <p>U heeft geen toegang tot deze pagina, gelieve in te loggen.</p>
-                <p><a href="/login">Klik hier om in te loggen.</a></p>
-            }   
+            <h1>Welkom, @Username!</h1>
+            Je bent ingelogd.
+            <br />
+            <img style="max-width:100px" src="@Picture">
+            <AccessControl />
         </div>
     </div>
 </div>
 
 @code {
-    [Inject]
-    private BlitzWareAuthService BlitzWareAuthService { get; set; }
+    private string Username = "Anonymous User";
+    private string Picture = "";
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-            NavManager.NavigateTo("/login");
+        if (authenticationState is not null)
+        {
+            var state = await authenticationState;
+
+            Username = state?.User?.Identity?.Name ?? string.Empty;
+
+            Picture = state?.User.Claims
+                        .Where(c => c.Type.Equals("picture"))
+                        .Select(c => c.Value)
+                        .FirstOrDefault() ?? string.Empty;
+        }
+        await base.OnInitializedAsync();
     }
 }

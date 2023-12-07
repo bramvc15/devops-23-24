@@ -1,95 +1,87 @@
 @page "/admin/kalenders/scheduler"
-@using BlazorApp.Auth
 @using BlazorApp.Components.Modals
-@using BlazorApp.Services.Core
+@using Services.Core;
+@using Shared.DTO.Core;
+@using Shared.Enums;
 @inject NavigationManager NavManager
-@inject ScheduleTimeSlotService ScheduleTimeSlotService
+@inject ScheduleTimeSlotService scheduleTimeSlotService
+
+@attribute [Authorize(Roles = "Admin, Employee")]
 
 <div class="sidebar">
     <SideNavMenu />
 </div>
 <div class="admin container">
     <div>
-        @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-        {
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <h1>Scheduler</h1>
-            <p>Here you can view and edit your schedule.</p>
-            <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" />
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Monday</th>
-                        <th>Tuesday</th>
-                        <th>Wednesday</th>
-                        <th>Thursday</th>
-                        <th>Friday</th>
-                        <th>Saturday</th>
-                        <th>Sunday</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        var listsByDay = new Dictionary<string, List<ScheduleTimeSlotDTO>>
-                        {
-                            { "Monday", MondayList },
-                            { "Tuesday", TuesdayList },
-                            { "Wednesday", WednesdayList },
-                            { "Thursday", ThursdayList },
-                            { "Friday", FridayList },
-                            { "Saturday", SaturdayList },
-                            { "Sunday", SundayList }
-                        };
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h1>Scheduler</h1>
+        <p>Here you can view and edit your schedule.</p>
+        <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" />
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                    <th>Sunday</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var listsByDay = new Dictionary<string, List<ScheduleTimeSlotDTO>>
+                                    {
+                        { "Monday", MondayList },
+                        { "Tuesday", TuesdayList },
+                        { "Wednesday", WednesdayList },
+                        { "Thursday", ThursdayList },
+                        { "Friday", FridayList },
+                        { "Saturday", SaturdayList },
+                        { "Sunday", SundayList }
+                    };
 
-                        int maxCount = listsByDay.Values.Max(list => list.Count);
+                    int maxCount = listsByDay.Values.Max(list => list.Count);
 
-                        for (int i = 0; i < maxCount; i++)
-                        {
-                            <tr>
-                                @foreach (var day in listsByDay.Keys)
-                                {
-                                    var list = listsByDay[day];
-                                    <td>
-                                        @if (i < list.Count)
-                                        {
-                                            var endTime = list[i].DateTime;
-                                            <div>
-                                                <p>@list[i].AppointmentType</p>
-                                                <p>@($"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}")</p>
-                                                <p>@($"{list[i].Duration} minutes")</p>
-                                                <br />
-                                                <Button Color="Color.Primary" @onclick="() => EditScheduleTimeSlot(list[i].Id)">
-                                                    <Icon Name="IconName.Edit" />
-                                                </Button>
-                                                <Button Color="Color.Danger" @onclick="() => DeleteScheduleTimeSlot(list[i].Id)">
-                                                    <Icon Name="IconName.Delete" />
-                                                </Button>
-                                            </div>
-                                        }
+                    for (int i = 0; i < maxCount; i++)
+                    {
+                        <tr>
+                            @foreach (var day in listsByDay.Keys)
+                            {
+                                var list = listsByDay[day];
+                                <td>
+                                    @if (i < list.Count)
+                                    {
+                                        var endTime = list[i].DateTime;
+                                        <div>
+                                            <p>@($"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}")</p>
+                                            <p>@($"{list[i].Duration} minutes")</p>
+                                            <br />
+                                            <Button Color="Color.Primary" @onclick="() => EditScheduleTimeSlot(list[i].Id)">
+                                                <Icon Name="IconName.Edit" />
+                                            </Button>
+                                            <Button Color="Color.Danger" @onclick="() => DeleteScheduleTimeSlot(list[i].Id)">
+                                                <Icon Name="IconName.Delete" />
+                                            </Button>
+                                        </div>
+                                    }
 
-                                    </td>
-                                }
-                            </tr>
-                        }
+                                </td>
+                            }
+                        </tr>
                     }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p>You are not authorized to access this page. Please log in.</p>
-            <p><a href="/login">Click here to LOGIN.</a></p>
-        }
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
 @code {
-    [Inject]
-    private BlitzWareAuthService BlitzWareAuthService { get; set; }
     private IEnumerable<ScheduleTimeSlotDTO> ListOfScheduleTimeSlots;
     private List<ScheduleTimeSlotDTO> MondayList = new List<ScheduleTimeSlotDTO>();
     private List<ScheduleTimeSlotDTO> TuesdayList = new List<ScheduleTimeSlotDTO>();
@@ -143,22 +135,17 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-        {
-            NavManager.NavigateTo("/login");
-        }
-
         DoctorDTO doc = new()
         {
             Id = 2,
             Biograph = "aa",
-            Gender = Enums.Gender.Other,
+            Gender = Gender.Other,
             ImageLink = "aa",
             IsAvailable = true,
             Name = "aa",
             Specialization = "aa"
         };
-        ListOfScheduleTimeSlots = await ScheduleTimeSlotService.GetScheduleTimeSlots(doc);
+        ListOfScheduleTimeSlots = await scheduleTimeSlotService.GetScheduleTimeSlots(doc.Id ?? 0);
 
         // Add each time slot to the appropriate list
         foreach (ScheduleTimeSlotDTO scheduleTimeSlot in ListOfScheduleTimeSlots)

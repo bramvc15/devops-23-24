@@ -2,3 +2,21 @@
     margin-top: 20px;
 }
 
+.add-btn {
+    background-color: rgb(22, 44, 104);
+    border: solid 3px rgb(22, 44, 104);
+    border-radius: 5px;
+    padding: 10px;
+    color: azure;
+    margin-left: 10px;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    background-color: azure;
+    color: rgb(22, 44, 104);
+    cursor: pointer;
+    transition: 0.3s;
+}
+

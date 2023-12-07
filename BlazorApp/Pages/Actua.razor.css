@@ -1,11 +1,20 @@
-﻿.heading {
+﻿/* General styles */
+.heading {
 }
 
+/* Page container styles */
+.page-container {
+    background: linear-gradient(41deg, rgba(194, 228, 218, 1) 0%, rgba(167, 222, 195, 1) 52%, rgba(9, 244, 138, 0.36) 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
 .wrapper {
     margin-top: 10rem;
 }
 
+/* Carousel section styles */
 .keyboard-carousel-section .carousel-sample {
     background-color: #f5f9fd;
     border-radius: 1.5em;
@@ -13,6 +22,9 @@
     max-width: 80%;
     height: 500px;
 }
+
+/* Carousel item styles */
+
 
 .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container {
     align-items: center;
@@ -34,7 +46,7 @@
         font-size: 1rem;
         color: #1a1a1a;
         letter-spacing: 0.2px;
-        line-height: 2.7rem;
+        line-height: 1.7rem;
         padding: 0 0 5rem;
         text-align: justify;
     }
@@ -43,10 +55,10 @@
             text-decoration: underline;
         }
 
+/* Carousel navigator styles */
 .kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled) .e-btn-icon,
 .kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled) .e-btn-icon,
 .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled) .e-btn-icon {
-    color: #4d8fe4;
     font-size: 1.5rem;
     line-height: normal;
 }
@@ -56,22 +68,24 @@
     width: 5rem;
 }
 
-    .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled) .e-btn-icon {
-        font-size: 2.4rem;
-    }
+.kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled) .e-btn-icon {
+    font-size: 2.4rem;
+}
 
-    .kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):hover,
-    .kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):hover,
-    .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):hover,
-    .kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):focus,
-    .kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):focus,
-    .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):focus,
-    .kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):active,
-    .kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):active,
-    .kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):active {
-        background-color: #d2e3f8;
-    }
+/* Carousel navigator hover/focus/active styles */
+.kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):hover,
+.kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):hover,
+.kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):hover,
+.kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):focus,
+.kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):focus,
+.kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):focus,
+.kb-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled):active,
+.kb-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled):active,
+.kb-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled):active {
+    background-color: black;
+}
 
+/* Carousel indicator styles */
 .kb-carousel .e-carousel-indicators.e-default .e-indicator-bar .e-indicator div {
     background-color: #e5e5e5;
     border: 0px !important;
@@ -81,26 +95,13 @@
     background-color: #4d8fe4 !important;
 }
 
-@@media screen and (max-width: 480px) {
-    .keyboard-carousel-section .carousel-sample {
-        max-height: 400px;
-        max-width: 100%;
-    }
-
-    .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description {
-        font-size: 1.25rem;
-    }
-
-    .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .image-container {
-        display: none;
-    }
-}
-
+/* Source link styles */
 #source_link {
     float: right;
     margin-right: 10px;
 }
 
+/* Dark theme styles for carousel section */
 .bootstrap5-dark .keyboard-carousel-section .carousel-sample,
 .fluent-dark .keyboard-carousel-section .carousel-sample,
 .tailwind-dark .keyboard-carousel-section .carousel-sample,
@@ -112,6 +113,7 @@
     background-color: #26292E;
 }
 
+/* Dark theme styles for heading in carousel */
 .bootstrap5-dark .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .heading,
 .fluent-dark .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .heading,
 .tailwind-dark .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .heading,
@@ -122,7 +124,15 @@
 .material3-dark .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .heading {
     color: #bbbbbb;
 }
+/* Increase specificity to override existing styles */
+.keyboard-carousel-section .e-carousel .e-carousel-navigators .e-previous .e-btn:not(:disabled) .e-btn-icon,
+.keyboard-carousel-section .e-carousel .e-carousel-navigators .e-next .e-btn:not(:disabled) .e-btn-icon,
+.keyboard-carousel-section .e-carousel .e-carousel-navigators .e-play-pause .e-btn:not(:disabled) .e-btn-icon {
+    color: black !important; /* Change the color to black */
+}
 
+
+/* Dark theme styles for description in carousel */
 .bootstrap5-dark .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description,
 .fluent-dark .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description,
 .tailwind-dark .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description,
@@ -131,9 +141,10 @@
 .bootstrap-dark .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description,
 .highcontrast .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description,
 .material3-dark .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description {
-    color: #9f9f9f
+    color: #9f9f9f;
 }
 
+/* Dark theme styles for navigators in carousel */
 .bootstrap5-dark .kb-carousel .e-carousel-navigators .e-btn:not(:disabled):hover,
 .bootstrap5-dark .kb-carousel .e-carousel-navigators .e-btn:not(:disabled):focus,
 .fluent-dark .kb-carousel .e-carousel-navigators .e-btn:not(:disabled):hover,
@@ -150,9 +161,10 @@
 .highcontrast .kb-carousel .e-carousel-navigators .e-btn:not(:disabled):focus,
 .material3-dark .kb-carousel .e-carousel-navigators .e-btn:not(:disabled):hover,
 .material3-dark .kb-carousel .e-carousel-navigators .e-btn:not(:disabled):focus {
-    background-color: #4e4e4e;
+    background-color: black;
 }
 
+/* Dark theme styles for navigator icons in carousel */
 .bootstrap5-dark .kb-carousel .e-carousel-navigators .e-btn:not(:disabled) .e-btn-icon,
 .fluent-dark .kb-carousel .e-carousel-navigators .e-btn:not(:disabled) .e-btn-icon,
 .tailwind-dark .kb-carousel .e-carousel-navigators .e-btn:not(:disabled) .e-btn-icon,
@@ -161,9 +173,10 @@
 .bootstrap-dark .kb-carousel .e-carousel-navigators .e-btn:not(:disabled) .e-btn-icon,
 .highcontrast .kb-carousel .e-carousel-navigators .e-btn:not(:disabled) .e-btn-icon,
 .material3-dark .kb-carousel .e-carousel-navigators .e-btn:not(:disabled) .e-btn-icon {
-    color: #dfdfdf;
+    color: black;
 }
 
+/* Dark theme styles for carousel indicators */
 .bootstrap5-dark .kb-carousel .e-carousel-indicators .e-indicator-bar .e-indicator div,
 .fluent-dark .kb-carousel .e-carousel-indicators .e-indicator-bar .e-indicator div,
 .tailwind-dark .kb-carousel .e-carousel-indicators .e-indicator-bar .e-indicator div,
@@ -175,11 +188,18 @@
     background-color: #626262;
 }
 
-.kb-carousel .e-carousel-indicators {
-    margin: 16px;
-}
+/* Responsive styles for carousel on small screens */
+@media screen and (max-width: 480px) {
+    .keyboard-carousel-section .carousel-sample {
+        max-height: 400px;
+        max-width: 100%;
+    }
 
-.kb-carousel .e-carousel-navigators .e-play-pause span.e-play-icon {
-    margin-left: 4px;
-    margin-top: 2px;
+    .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .description {
+        font-size: 1.25rem;
+    }
+
+    .kb-carousel .e-carousel-items .e-carousel-item .country-detail-container .image-container {
+        display: none;
+    }
 }

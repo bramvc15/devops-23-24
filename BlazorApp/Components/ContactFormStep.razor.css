@@ -1,6 +1,6 @@
 ﻿.formbox {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 33% 33% 33%;
     gap: 50px;
     margin-top: 20px;
 }
@@ -14,6 +14,13 @@
 
 .btnBox {
     margin-top: 30px;
+}
+
+.gender-select {
+    background-color: white;
+    border: none;
+    padding: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .submitBtn {
