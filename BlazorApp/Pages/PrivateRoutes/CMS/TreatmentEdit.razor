@@ -2,124 +2,108 @@
 @inherits EditHeaderPopUp
 @using Services.CMS;
 @using Shared.DTO.CMS;
-@using Persistence.Data;  
+@using Persistence.Data;
 @using BlazorApp.Components.Modals;
 @using Microsoft.AspNetCore.Components;
 @inject DatabaseContext databaseContext
-@using BlazorApp.Auth;
 @inject NavigationManager NavManager
 @inject TreatmentService treatmentService
+
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>Admin - CMS Behandelingen</PageTitle>
 
 <div class="sidebar">
     <SideNavMenu />
 </div>
-@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
-BlitzWareAuthService.AuthService.appData.AdminRoleLevel
-==
-BlitzWareAuthService.AuthService.userData.UserSubLevel)
-{
-    <div class="background-div">
-        <div class="overlay">
-            <h1>Behandelingen</h1>
-            <span class="breadcrumbs">
-                Klik op een behandeling om ze te bewerken.
-            </span>
 
-            <div class="container mt-40">
-                <div class="row ">
-                    @if (treatments != null)
+<div class="background-div">
+    <div class="overlay">
+        <h1>Behandelingen</h1>
+        <span class="breadcrumbs">
+            Klik op een behandeling om ze te bewerken.
+        </span>
+
+        <div class="container mt-40">
+            <div class="row ">
+                @if (treatments != null)
+                {
+                    foreach (var treatment in treatments)
                     {
-                        foreach (var treatment in treatments)
-                        {
-                            <div class="col-md-4 d-flex flex-fill">
-                                <TreatmentCard ImageSrc=@treatment.ImageLink Title=@treatment.Name
-                                    OnCardClick="( () => ShowModal(treatment) )" />
-                            </div>
-                        }
+                        <div class="col-md-4 d-flex flex-fill">
+                            <TreatmentCard ImageSrc=@treatment.ImageLink Title=@treatment.Name
+                                           OnCardClick="( () => ShowModal(treatment) )" />
+                        </div>
                     }
-                </div>
+                }
             </div>
         </div>
     </div>
-    <Modal @ref="modalRef">
-        <ModalContent Centered>
-            <ModalHeader>
-                <ModalTitle>Behandeling wijzigen</ModalTitle>
-                <CloseButton />
-            </ModalHeader>
-            <ModalBody>
-                <Field>
-                    <FieldLabel>Naam</FieldLabel>
-                    <TextEdit Placeholder="Naam behandeling..." @bind-Text="newName" />
-                </Field>
-                <Field>
-                    <FieldLabel>Beschrijving</FieldLabel>
-                    @*<RichTextEditor @ref="richTextEditRef" />*@
-                    <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
-                        PlaceHolder="Beschrijving van de behandeling..." ReadOnly="@readOnly" SubmitOnEnter="false"
-                        EnterPressed="@OnSave" ToolbarPosition="Placement.Bottom">
-                        <Editor>@newDescription</Editor>
-                        <Toolbar>
-                            <RichTextEditToolbarGroup>
-                                <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
-                                <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
-                                <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
-                                    <RichTextEditToolbarSelectItem Value="small" />
-                                    <RichTextEditToolbarSelectItem Selected />
-                                    <RichTextEditToolbarSelectItem Value="large" />
-                                    <RichTextEditToolbarSelectItem Value="huge">Very Big</RichTextEditToolbarSelectItem>
-                                </RichTextEditToolbarSelect>
-                                <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
-                                <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
-                            </RichTextEditToolbarGroup>
-                            <!-- Custom toolbar content -->
-                            <RichTextEditToolbarGroup Float="Float.End">
-                                <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
-                                    <Icon Name="IconName.InfoCircle" />
-                                </Button>
-                                <Button Clicked="@OnSave">
-                                    <Icon Name="IconName.Save" />
-                                </Button>
-                            </RichTextEditToolbarGroup>
-                        </Toolbar>
-                    </RichTextEdit>
-                </Field>
-                <Field>
-                    <FieldLabel>Afbeelding</FieldLabel>
-                    <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImage" />
-                </Field>
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@UpdateTreatment">Opslaan</Button>
-            </ModalFooter>
-        </ModalContent>
-    </Modal>
-}
-else
-{
-    <div class="row justify-content-center align-items-center" style="height: 100vh;">
-        <div class="col-md-6">
-            <p>U heeft geen toegang tot deze pagina.</p>
-        </div>
-    </div>
-}
+</div>
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Behandeling wijzigen</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Naam</FieldLabel>
+                <TextEdit Placeholder="Naam behandeling..." @bind-Text="newName" />
+            </Field>
+            <Field>
+                <FieldLabel>Beschrijving</FieldLabel>
+                @*<RichTextEditor @ref="richTextEditRef" />*@
+                <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
+                              PlaceHolder="Beschrijving van de behandeling..." ReadOnly="@readOnly" SubmitOnEnter="false"
+                              EnterPressed="@OnSave" ToolbarPosition="Placement.Bottom">
+                    <Editor>@newDescription</Editor>
+                    <Toolbar>
+                        <RichTextEditToolbarGroup>
+                            <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
+                            <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
+                            <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
+                                <RichTextEditToolbarSelectItem Value="small" />
+                                <RichTextEditToolbarSelectItem Selected />
+                                <RichTextEditToolbarSelectItem Value="large" />
+                                <RichTextEditToolbarSelectItem Value="huge">Very Big</RichTextEditToolbarSelectItem>
+                            </RichTextEditToolbarSelect>
+                            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
+                            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
+                        </RichTextEditToolbarGroup>
+                        <!-- Custom toolbar content -->
+                        <RichTextEditToolbarGroup Float="Float.End">
+                            <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
+                                <Icon Name="IconName.InfoCircle" />
+                            </Button>
+                            <Button Clicked="@OnSave">
+                                <Icon Name="IconName.Save" />
+                            </Button>
+                        </RichTextEditToolbarGroup>
+                    </Toolbar>
+                </RichTextEdit>
+            </Field>
+            <Field>
+                <FieldLabel>Afbeelding</FieldLabel>
+                <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImage" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateTreatment">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
 
 
 
 
 @code {
-    [Inject]
-    private BlitzWareAuthService BlitzWareAuthService { get; set; }
     private IEnumerable<TreatmentDTO> treatments;
     private TreatmentDTO clickedTreatment;
 
     protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-            NavManager.NavigateTo("/login");
         treatments = await treatmentService.GetTreatments();
     }
 

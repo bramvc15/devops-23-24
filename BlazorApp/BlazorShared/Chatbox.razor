@@ -9,7 +9,6 @@
 @using Microsoft.AspNetCore.Components
 @inject ChatbotService chatbotService
 @inject NavigationManager NavigationManager
-@using BlazorApp.Auth
 @inject NavigationManager NavManager
 
 <div class="chatbox-div @(visible ? "visible" : "")">
@@ -27,12 +26,12 @@
                     ↻
                 </div>
             }
-            @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-            {
+            @*@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
+            {*@
                 <div class="gear ml-3" @onclick="NavigateToSettingsPage" @onclick:stopPropagation="true">
                     ⛭
                 </div>
-            }
+            @*}*@
         </div>
     </div>
     <div data-test-id="chatbox-content" class="chatbox-content @(visible ? "visible" : "")">
@@ -63,9 +62,6 @@
     public bool restartable = false;
     public bool typing = false;
     private List<ChatMessage> chatMessages = new List<ChatMessage>();
-
-    [Inject]
-    private BlitzWareAuthService BlitzWareAuthService { get; set; } = default!;
 
     IEnumerable<ChatBotQuestionDTO> ChatbotQuestionsList;
 

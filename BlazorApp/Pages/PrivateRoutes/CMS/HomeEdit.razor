@@ -9,48 +9,32 @@
 @using System.Text.Json
 @inject DatabaseContext databaseContext
 @inject BlogService blogService;
-@using BlazorApp.Auth;
 @inject NavigationManager NavManager
 @using Newtonsoft.Json;
+
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>Admin - CMS Home</PageTitle>
 
 <div class="sidebar">
     <SideNavMenu />
 </div>
-@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token) &&
-BlitzWareAuthService.AuthService.appData.AdminRoleLevel
-==
-BlitzWareAuthService.AuthService.userData.UserSubLevel)
-{
-    <div>
-        <div class="background-div">
-            <div class="overlay">
-                <EditHeaderPopUp />
-                <div class="buttons">
-                    <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
-                    <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
-                </div>
+
+<div>
+    <div class="background-div">
+        <div class="overlay">
+            <EditHeaderPopUp />
+            <div class="buttons">
+                <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
+                <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
             </div>
         </div>
     </div>
-}
-else
-{
-    <div class="row justify-content-center align-items-center" style="height: 100vh;">
-        <div class="col-md-6">
-            <p>U heeft geen toegang tot deze pagina.</p>
-        </div>
-    </div>
-}
+</div>
 
 @code {
-    [Inject]
-    private BlitzWareAuthService BlitzWareAuthService { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-            NavManager.NavigateTo("/login");
+
     }
 }
