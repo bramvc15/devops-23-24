@@ -54,6 +54,10 @@ h1 {
     color: rgb(22, 44, 104);
 }
 
+.timeslot {
+    cursor: pointer;
+}
+
 table, th {
     background-color: white;
 }

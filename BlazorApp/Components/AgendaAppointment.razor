@@ -3,7 +3,7 @@
 @inject AppointmentService appointmentService
 
 <td>
-    <div class="d-flex flex-column">
+    <div class="d-flex flex-column timeslot" @onclick="Collapse">
     @if(TimeSlots.Count > 0)
     {
         foreach (var timeSlot in TimeSlots)
@@ -11,12 +11,14 @@
             <span>
                 @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
                 <br/>
-                <span class="appointment-subspan">
-                    @timeSlot.AppointmentDTO.PatientDTO.Name
-                    <br/>
-                    @timeSlot.AppointmentDTO.Reason
-                </span>
-                <button class="btn btn-danger" @onclick="() => CancelAppointment(timeSlot.AppointmentDTO)">Annuleer</button>
+                @if(!collapsed) {
+                    <span class="appointment-subspan">
+                        @timeSlot.AppointmentDTO.PatientDTO.Name
+                        <br/>
+                        @timeSlot.AppointmentDTO.Reason
+                    </span>
+                    <button class="btn btn-danger" @onclick="() => CancelAppointment(timeSlot.AppointmentDTO)">Annuleer</button>
+                }
             </span>
         }
     }
@@ -30,8 +32,15 @@
     [Parameter]
     public string Day { get; set; }
 
+    private bool collapsed = true;
+
     private async Task CancelAppointment(AppointmentDTO appointment)
     {
         await appointmentService.DeleteAppointment(appointment);
+    }
+
+    private void Collapse()
+    {
+        collapsed = !collapsed;
     }
 }
