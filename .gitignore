@@ -7,3 +7,6 @@
 /Shared/obj/Debug/net6.0/Shared.GeneratedMSBuildEditorConfig.editorconfig
 /.gitignore
 /.gitignore
+.vs/
+# Visual Studio Code
+.vscode/
