@@ -12,37 +12,42 @@
     </div>
     <div class="center">
         <div class="wrapper">
-        <SfCarousel AutoPlay="false" ShowPlayButton="false">
-            @if (blogs != null)
-                {
-                    @foreach (var b in blogs)
-                        {
-                        <CarouselItem>
-                            <div class="center">
-                                <div class="car-container">
-                                    <div class="desc-container">
-                                        @if (b != null ) {
-                                            <div class="heading">@((MarkupString)b.Title!)</div>
-                                            <div class="content">@((MarkupString)b.Text!)</div>
-                                        }                             
+            <div class="control-section keyboard-carousel-section">
+                <div class="col-lg-12 content-wrapper">
+                    <div class="carousel-sample">
+                        <SfCarousel CssClass="kb-carousel" AutoPlay="false" ShowPlayButton="true">
+                            @if (BlogObjecten != null)
+                            {
+                                @foreach (var blog in BlogObjecten)
+                                {
+                                    <CarouselItem>
+                                        <div class="country-detail-container">
+                                            <div class="col-sm-5 detail-container">
+                                                <div class="heading">@blog.Title</div>
+                                                <div class="description">@blog.Text</div>
+                                                <a class="detail" href="/actua-detail/@blog.Id" target="_blank">READ MORE</a>
+                                            </div>
+                                        <div class="col-sm-5 image-container">
+                                            <picture>
+                                                <img src="@blog.ImageLink" alt="@blog.Title" style="height:100%;width:100%;" />
+                                            </picture>
+                                        </div>
                                     </div>
-                                    <div class="img-container">
-                                        <img class="car-Img" src="@b.ImageLink" alt="@b.Title"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </CarouselItem>
-                    }
-                }
-            </SfCarousel>
+                                </CarouselItem>
+                            }
+                        }
+                    </SfCarousel>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+</div>
 @code {
-    private IEnumerable<BlogDTO> blogs;
+    private IEnumerable<BlogDTO> BlogObjecten;
 
     protected override async Task OnInitializedAsync()
     {
-        blogs = await blogService.GetBlogs();
+            BlogObjecten = await blogService.GetBlogs();
     }
 }
