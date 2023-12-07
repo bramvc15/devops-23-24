@@ -17,18 +17,30 @@ namespace Persistence.Data
 
             // domain
             #region Doctors
-            Doctor doctor1 = new("Dr. J. Van der Veken", "Eye Specialist", Gender.Male, 
+            Doctor doctor1 = new("Dr. J. Van der Veken", "Eye Specialist", Gender.Female, 
                 "Dr. J. Van der Veken is een ervaren oogarts met een passie voor het verbeteren van het gezichtsvermogen van zijn patiënten. Met jarenlange ervaring in de oogheelkunde, is hij toegewijd aan het bieden van hoogwaardige oogzorg."
                 );
             
             Doctor doctor2 = new("Dr. Smith", "Eye Specialist", Gender.Male, "Dit is Dr. Smith zijn Bio.");
+            Doctor doctor3 = new("Dr. Johnson", "Eye Specialist", Gender.Female, "Dr. Johnson is gespecialiseerd in oogheelkunde en heeft uitgebreide kennis van oogaandoeningen. Ze streeft naar het verbeteren van het zicht en de ooggezondheid van haar patiënten.");
+            Doctor doctor4 = new("Dr. Martinez", "Eye Specialist", Gender.Female, "Dr. Martinez is een ervaren oogarts met een warme benadering van kinderoogzorg. Ze zet zich in voor het bieden van zorg van hoge kwaliteit aan jonge patiënten en hun families.");
+            Doctor doctor5 = new("Dr. White", "Eye Specialist", Gender.Male, "Dr. White is een bekwame oogchirurg met expertise in het behandelen van diverse oogaandoeningen. Hij is vastbesloten om patiënten te helpen hun optimale gezichtsvermogen te bereiken.");
+            Doctor doctor6 = new("Dr. Kim", "Eye Specialist", Gender.Female, "Dr. Kim is een toegewijde oogarts met een passie voor het bevorderen van ooggezondheid. Ze biedt deskundige zorg voor een breed scala aan oogaandoeningen en streeft naar het optimaliseren van het zicht van haar patiënten.");
+            Doctor doctor7 = new("Dr. Garcia", "Eye Specialist", Gender.Male, "Dr. Garcia is een ervaren oogarts met expertise in de behandeling van netvliesaandoeningen. Hij is toegewijd aan het verbeteren van het zicht en de algehele ooggezondheid van zijn patiënten.");
+            Doctor doctor8 = new("Dr. Patel", "Eye Specialist", Gender.Female, "Dr. Patel is gespecialiseerd in oogheelkunde en biedt uitgebreide oogzorg voor vrouwen. Ze is toegewijd aan het ondersteunen van vrouwen in elke fase van hun leven en het bevorderen van hun ooggezondheid.");
 
             doctor1.ImageLink = "https://images.healthshots.com/healthshots/en/uploads/2022/07/02195043/doctor-stress.jpg";
             doctor2.ImageLink = "https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*";
+            doctor3.ImageLink = "https://t3.ftcdn.net/jpg/01/71/31/48/360_F_171314831_xyvTs2T9tWwSN3gO7wZUA08IqHR4Sc7G.jpg";
+            doctor4.ImageLink = "https://t4.ftcdn.net/jpg/03/33/23/89/360_F_333238965_w3D7wxozBonxsxO4VzAxXWAhv2CabaIO.jpg";
+            doctor5.ImageLink = "https://www.shutterstock.com/image-photo/healthcare-medical-staff-concept-portrait-600nw-2281024823.jpg";
+            doctor6.ImageLink = "https://t4.ftcdn.net/jpg/01/46/39/07/360_F_146390715_PlS9g09rPR8BvioEKiDq7Y8WDt2eWRdl.jpg";
+            doctor7.ImageLink = "https://tejedd76pluu.merlincdn.net/resize/700x932//Programlar/Mucize-Doktor/Oyuncular/Mucize-Doktor-act-image-81b7de06-af33-437a-8370-456e0590011f.jpg";
+            doctor8.ImageLink = "https://images.ctfassets.net/szez98lehkfm/7hzmXzE4dz7ybJ7qNm3RHi/7a01a58af9fda017915011dffc8f43ea/MyIC_Article119312?fm=webp";
 
             var doctors = new Doctor[]
             {
-                doctor1, doctor2,
+                doctor1, doctor2,doctor3,doctor4,doctor5,doctor6,doctor7,doctor8
             };
             #endregion
 
