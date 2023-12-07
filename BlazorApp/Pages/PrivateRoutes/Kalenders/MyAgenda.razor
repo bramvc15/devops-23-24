@@ -36,138 +36,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="monday-column ">
-                                <div class="d-flex flex-column">
-                                @if(ListByCurrentWeekDay["Monday"].Count > 0)
-                                {
-                                    foreach (var timeSlot in ListByCurrentWeekDay["Monday"])
-                                    {
-                                        <span>
-                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
-                                        <br/>
-                                            <span class="appointment-subspan">
-                                                @timeSlot.AppointmentDTO.PatientDTO.Name
-                                                <br/>
-                                                @timeSlot.AppointmentDTO.Reason
-                                            </span>
-                                            <button class="btn btn-danger" @onclick="() => CancelAppointment(timeSlot.AppointmentDTO)">Annuleer</button>
-                                        </span>
-                                    }
-                                }
-                                </div>
-                            </td>
-                            <td class="tuesday-column ">
-                                <div class="d-flex flex-column">
-                                @if(ListByCurrentWeekDay["Tuesday"].Count > 0)
-                                {
-                                    foreach (var timeSlot in ListByCurrentWeekDay["Tuesday"])
-                                    {
-                                        <span>
-                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
-                                        <br/>
-                                            <span class="appointment-subspan">
-                                                @timeSlot.AppointmentDTO.PatientDTO.Name
-                                                <br/>
-                                                @timeSlot.AppointmentDTO.Reason
-                                            </span>
-                                        </span>
-                                    }
-                                }
-                                </div>
-                            </td>
-                            <td class="wednesday-column ">
-                                <div class="d-flex flex-column">
-                                @if(ListByCurrentWeekDay["Wednesday"].Count > 0)
-                                {
-                                    foreach (var timeSlot in ListByCurrentWeekDay["Wednesday"])
-                                    {
-                                        <span>
-                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
-                                        <br/>
-                                            <span class="appointment-subspan">
-                                                @timeSlot.AppointmentDTO.PatientDTO.Name
-                                                <br/>
-                                                @timeSlot.AppointmentDTO.Reason
-                                            </span>
-                                        </span>
-                                    }
-                                }
-                                </div>
-                            </td>
-                            <td class="thursday-column ">
-                                <div class="d-flex flex-column">
-                                @if(ListByCurrentWeekDay["Thursday"].Count > 0)
-                                {
-                                    foreach (var timeSlot in ListByCurrentWeekDay["Thursday"])
-                                    {
-                                        <span>
-                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
-                                        <br/>
-                                            <span class="appointment-subspan">
-                                                @timeSlot.AppointmentDTO.PatientDTO.Name
-                                                <br/>
-                                                @timeSlot.AppointmentDTO.Reason
-                                            </span>
-                                        </span>
-                                    }
-                                }
-                                </div>
-                            </td>
-                            <td class="friday-column ">
-                                <div class="d-flex flex-column">
-                                @if(ListByCurrentWeekDay["Friday"].Count > 0)
-                                {
-                                    foreach (var timeSlot in ListByCurrentWeekDay["Friday"])
-                                    {
-                                        <span>
-                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
-                                        <br/>
-                                            <span class="appointment-subspan">
-                                                @timeSlot.AppointmentDTO.PatientDTO.Name
-                                                <br/>
-                                                @timeSlot.AppointmentDTO.Reason
-                                            </span>
-                                        </span>
-                                    }
-                                }
-                                </div>
-                            </td>
-                            <td class="saturday-column ">
-                                <div class="d-flex flex-column">
-                                @if(ListByCurrentWeekDay["Saturday"].Count > 0)
-                                {
-                                    foreach (var timeSlot in ListByCurrentWeekDay["Saturday"])
-                                    {
-                                        <span>
-                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
-                                        <br/>
-                                            <span class="appointment-subspan">
-                                                @timeSlot.AppointmentDTO.PatientDTO.Name
-                                                <br/>
-                                                @timeSlot.AppointmentDTO.Reason
-                                            </span>
-                                        </span>
-                                    }
-                                }
-                                </div>
-                            </td>
-                            <td class="sunday-column ">
-                                @if(ListByCurrentWeekDay["Sunday"].Count > 0)
-                                {
-                                    foreach (var timeSlot in ListByCurrentWeekDay["Sunday"])
-                                    {
-                                        <span>
-                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
-                                        <br/>
-                                            <span class="appointment-subspan">
-                                                @timeSlot.AppointmentDTO.PatientDTO.Name
-                                                <br/>
-                                                @timeSlot.AppointmentDTO.Reason
-                                            </span>
-                                        </span>
-                                    }
-                                }
-                            </td>
+                            @foreach(var day in ListByCurrentWeekDay)
+                            {
+                                <AgendaAppointment Day="@day.Key" TimeSlots="@day.Value" />
+                            }
                         </tr>
                     </tbody>
                 </table>
@@ -255,10 +127,5 @@
         }
 
         StateHasChanged();
-    }
-
-    private async Task CancelAppointment(AppointmentDTO appointment)
-    {
-        await appointmentService.DeleteAppointment(appointment);
     }
 }
