@@ -7,12 +7,13 @@
 
 @inject TimeSlotService timeSlotService
 @inject DoctorService doctorService
+@inject AppointmentService appointmentService
 
 <div class="sidebar">
     <SideNavMenu />
 </div>
 <div class="content">
-    <div class="container">
+    <div class="agenda-container">
         @if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
         {
             <h1>Agenda</h1>
@@ -41,7 +42,16 @@
                                 {
                                     foreach (var timeSlot in ListByCurrentWeekDay["Monday"])
                                     {
-                                        <span>@timeSlot.DateTime.ToString("HH:mm")</span>
+                                        <span>
+                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
+                                        <br/>
+                                            <span class="appointment-subspan">
+                                                @timeSlot.AppointmentDTO.PatientDTO.Name
+                                                <br/>
+                                                @timeSlot.AppointmentDTO.Reason
+                                            </span>
+                                            <button class="btn btn-danger" @onclick="() => CancelAppointment(timeSlot.AppointmentDTO)">Annuleer</button>
+                                        </span>
                                     }
                                 }
                                 </div>
@@ -52,7 +62,15 @@
                                 {
                                     foreach (var timeSlot in ListByCurrentWeekDay["Tuesday"])
                                     {
-                                        <span>@timeSlot.DateTime.ToString("HH:mm")</span>
+                                        <span>
+                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
+                                        <br/>
+                                            <span class="appointment-subspan">
+                                                @timeSlot.AppointmentDTO.PatientDTO.Name
+                                                <br/>
+                                                @timeSlot.AppointmentDTO.Reason
+                                            </span>
+                                        </span>
                                     }
                                 }
                                 </div>
@@ -63,7 +81,15 @@
                                 {
                                     foreach (var timeSlot in ListByCurrentWeekDay["Wednesday"])
                                     {
-                                        <span>@timeSlot.DateTime.ToString("HH:mm")</span>
+                                        <span>
+                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
+                                        <br/>
+                                            <span class="appointment-subspan">
+                                                @timeSlot.AppointmentDTO.PatientDTO.Name
+                                                <br/>
+                                                @timeSlot.AppointmentDTO.Reason
+                                            </span>
+                                        </span>
                                     }
                                 }
                                 </div>
@@ -74,7 +100,15 @@
                                 {
                                     foreach (var timeSlot in ListByCurrentWeekDay["Thursday"])
                                     {
-                                        <span>@timeSlot.DateTime.ToString("HH:mm")</span>
+                                        <span>
+                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
+                                        <br/>
+                                            <span class="appointment-subspan">
+                                                @timeSlot.AppointmentDTO.PatientDTO.Name
+                                                <br/>
+                                                @timeSlot.AppointmentDTO.Reason
+                                            </span>
+                                        </span>
                                     }
                                 }
                                 </div>
@@ -85,7 +119,15 @@
                                 {
                                     foreach (var timeSlot in ListByCurrentWeekDay["Friday"])
                                     {
-                                        <span>@timeSlot.DateTime.ToString("HH:mm")</span>
+                                        <span>
+                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
+                                        <br/>
+                                            <span class="appointment-subspan">
+                                                @timeSlot.AppointmentDTO.PatientDTO.Name
+                                                <br/>
+                                                @timeSlot.AppointmentDTO.Reason
+                                            </span>
+                                        </span>
                                     }
                                 }
                                 </div>
@@ -114,7 +156,15 @@
                                 {
                                     foreach (var timeSlot in ListByCurrentWeekDay["Sunday"])
                                     {
-                                        @timeSlot.DateTime.ToString("HH:mm")
+                                        <span>
+                                        @timeSlot.DateTime.ToString("HH:mm") - @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")
+                                        <br/>
+                                            <span class="appointment-subspan">
+                                                @timeSlot.AppointmentDTO.PatientDTO.Name
+                                                <br/>
+                                                @timeSlot.AppointmentDTO.Reason
+                                            </span>
+                                        </span>
                                     }
                                 }
                             </td>
@@ -205,5 +255,10 @@
         }
 
         StateHasChanged();
+    }
+
+    private async Task CancelAppointment(AppointmentDTO appointment)
+    {
+        await appointmentService.DeleteAppointment(appointment);
     }
 }

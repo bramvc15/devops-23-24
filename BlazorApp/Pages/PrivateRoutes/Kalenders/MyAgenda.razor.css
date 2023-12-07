@@ -5,17 +5,30 @@
 .content {
     height: 100vh;
     background: rgb(194,228,218);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.container {
+.agenda-container {
     margin-top: 100px;
     height: 800px;
     overflow: scroll;
+    width: 80%;
 }
 
+td {
+    max-width: 30px;
+}
 .btn {
     background: rgb(77, 156, 132);
     color: white;
+}
+
+.btn-danger {
+    background: rgb(156, 77, 77);
+    color: white;
+    font-size: 14px;
 }
 
 .btn:hover {
