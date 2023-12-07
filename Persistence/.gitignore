@@ -17,6 +17,8 @@
 bin/
 obj/
 release/
+Debug/
+
 
 # .NET
 [Dd]ebug/
