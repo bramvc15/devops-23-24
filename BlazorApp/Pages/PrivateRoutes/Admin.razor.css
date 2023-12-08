@@ -1,71 +1,50 @@
-.page-container {
-    /*
-    background-color: rgba(194, 228, 218, 1); /* Background color of your choice */
-    
-    background: rgb(194,228,218);
-    background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(9, 244, 138, 0.36) 100%);
-    min-height: 100vh; /* Ensure the container takes at least the full viewport height */
+.admin-container {
+    background: rgb(165, 216, 201);
+    background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(161, 228, 198, 0.36) 100%);
+    min-height: 76.3vh;
     display: flex;
     flex-direction: column;
-
+    align-items: center;
+    margin-top: 10vh;
 }
 
-.background {
-  
-    padding: 20px;
-    
-    /* Add other styles for your content as needed */
+.box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10vh;
 }
 
-.breadcrumb {
-    padding-left: 100px ;
+.admin-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.admin-inf {
+    margin-top: 30px;
     color: rgb(22, 44, 104);
 }
 
-
-.title-layout {
-
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 60%;
-    /*
-    background: rgb(194,228,218);
-    background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(9,246,140,0) 100%);
-    */
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: left;
-    text-align: left;
-    color: rgb(22, 44, 104); /* Tekstkleur aanpassen naar wens */
-    padding-top: 100px;
-    padding-left: 120px;
- 
-  
+h1 {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 
-
-
-.overlay h1 {
-    font-size: 40px; /* Grootte van de titel aanpassen naar wens */
-    margin-bottom: 0px;
+.access-control {
+    margin-top: 10vh;
 }
 
-.overlay p {
-    font-size: 18px; /* Grootte van de tekst aanpassen naar wens */
-    margin-bottom: 0px;
-}
+@media (max-width: 1400px) {
+    .admin-container {
+        margin: 0px !important;
+        height: 86.3vh !important;
+    }
 
-/* JOW */
-.admin {
-    flex: 1;
+    .he {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
 }
-
-/*.sidebar {
-    width: 250px;
-    height: 100vh;
-    position: sticky;
-    top: 0;
-}*/

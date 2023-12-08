@@ -1,8 +1,31 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <a href="logout">Log out</a>
+        <a href="logout" class="logout">Log out</a>
     </Authorized>
     <NotAuthorized>
         <a href="login?redirectUri=/">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
+
+<style>
+    a, a:hover, a:active, a:visited {
+        text-decoration: none !important;
+    }
+
+    .logout {
+        color: white;
+        text-decoration: none;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        background-color: rgb(194, 96, 96);
+        border-radius: 0.5rem;
+        border: rgb(190, 51, 51) 2px solid;
+    }
+
+    .logout:hover {
+        background-color: rgb(190, 51, 51);
+        color: azure;
+        box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
+    }
+</style>

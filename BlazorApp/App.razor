@@ -6,9 +6,17 @@
                     <p>Determining session state, please wait...</p>
                 </Authorizing>
                 <NotAuthorized>
-                    <h1>Sorry</h1>
-                    <p>You're not authorized to reach this page. You need to log in.</p>
-                    <a href="login?redirectUri=/">Log in</a>
+                    <div class="not-auth">
+                        @* <div class="not-auth-container"> *@
+                            <div class="not-auth-info">
+                                <h1><strong>Sorry!</strong></h1>
+                                <p class="na-p">You're not authorized to reach this page. You need to log in.</p>
+                            </div>
+                            <div class="not-auth-button">
+                                <a class="na-button" href="login?redirectUri=/">Log in</a>
+                            </div>
+                        @* </div> *@
+                    </div>
                 </NotAuthorized>
             </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
