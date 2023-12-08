@@ -15,8 +15,8 @@
     <div class="background-div">
         <div class="overlay">
             @if(homeHeader != null){
-                <h1>@homeHeader.Title</h1>
-                <p>@((MarkupString)homeHeader.Context)</p>
+                <h1><strong>@homeHeader.Title</strong></h1>
+                <p class="header-text">@((MarkupString)homeHeader.Context)</p>
             }
             else
             {

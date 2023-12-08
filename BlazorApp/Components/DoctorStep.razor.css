@@ -1,37 +1,36 @@
-.DoctorStepContainer {
-  text-align: center;
-  align-content: center;
-  
-}
-
 .doctorbox {
-  display: flex;
-  justify-content: center; /* Center the items horizontally */
-  flex-wrap: wrap;
-  width: 80%;
-  margin-left: 10%;
-  padding-bottom: 3%;
-  background-color: #d4e8e4;
-}
-
-.center {
-  flex: 1 0 calc(25% - 20px); /* 25% to fit four items in one row, subtracting margin */
-  margin: 10px;
-}
-
-/* Additional styling for DoctorCard */
-.DoctorCard {
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #fff;
-  transition: box-shadow 0.3s ease; /* Add a smooth transition effect */
-}
-
-.center:hover .DoctorCard {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow on hover */
+  display: grid;
+  grid-template-columns: 30% 30% 30%;
+  grid-gap: 30px;
+  margin-left: 7%;  
+  margin-top: 2%;
+  padding-bottom: 2%;
+  background-color: transparent;
 }
 
 .click {
   border: none;
   background-color: transparent;
+}
+
+@media (max-width: 1400px) {
+
+  .doctorbox {
+      display: grid;
+      grid-template-columns: 45% 45%;
+      grid-gap: 30px;
+      margin-left: 7%;  
+      margin-top: 2%;
+      margin-right: 2%;
+  }
+}
+
+@media (max-width: 950px) {
+  
+  .doctorbox {
+      display: flex;
+      flex-direction: column;
+      margin-left: 2%;  
+      margin-top: 2%;
+  }
 }

@@ -36,8 +36,7 @@ a, .btn-link {
 }
 
 .active {
-    /* color: #D4E8E4; */
-    color: #033878 !important;
+    color: #033878;
 }
 
 .valid.modified:not([type=checkbox]) {

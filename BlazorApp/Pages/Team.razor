@@ -11,13 +11,11 @@
         <BindToLocation />
     </div>
 
-    <div class="container mt-4">
-        <div class="row ">
+    <div class="docter-container">
             @if (doctors != null)
             {
                 @foreach (var doc in doctors)
                 {
-
                     <div class="col-md-6 col-lg-4">
                         @if (doc != null)
                         {
@@ -25,15 +23,11 @@
                         }
                     </div>
                 }
-
-
             }
             else
             {
                 <p>DocObj is null.</p>
             }
-
-        </div>
     </div>
 </div>
 

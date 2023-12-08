@@ -1,14 +1,15 @@
 @inherits ComponentBase
 
-<div class="card mb-3"> <!-- Set a fixed width for the card -->
-    <div class="card-body text-center">
-        <img src="@ImageSrc" class="w-50 m-2 rounded" alt="Image" />
+
+<div class="card-container" data-test-id="doctorcard">
+    <div class="img-container">
+         <img src="@ImageSrc" class="docter-img" alt="Image" />
+    </div>
+    <div class="info-container">
         <h5 class="card-title" data-test-id="team-doctor-name">@Name</h5>
-        <p>
+        <p class="card-descr">
             @Specialization
         </p>
-
-        <a href="/docter-info/@DoctorId" class="btn btn-primary custom-button" data-test-id="team-doctor-details-button">Lees meer</a>
     </div>
 </div>
 
