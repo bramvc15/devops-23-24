@@ -18,6 +18,12 @@
 
 # Mono auto generated files
 mono_crash.*
+# Binaries
+bin/
+obj/
+release/
+Debug/
+
 
 # Build results
 [Dd]ebug/
