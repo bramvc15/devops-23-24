@@ -1,11 +1,10 @@
 .card-container {
-    height: 340px;
-    width: 280px;
+    height: 140px;
+    width: 430px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     border-radius: 5px;
     background-color: #d4e8e4;
-    margin: 20px 10px;
 }
 
 .card-container:hover {
@@ -13,8 +12,8 @@
 }
 
 .img-container {
-    height: 45%;
-    width: 100%;
+    height:100%;
+    min-width: 40%;
 }
 
 .docter-img {
@@ -22,7 +21,7 @@
     object-fit: cover;
     height: 100%;
     width: 100%;
-    border-radius: 5px 5px 0 0;
+    border-radius: 5px 0 0 5px;
 }
 
 .info-container {
@@ -34,10 +33,11 @@
 }
 
 .card-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 800;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 20px;
+    margin-left: 10px;
     color: rgb(22, 44, 104);
 }
 
@@ -45,28 +45,7 @@
     font-size: 1.2rem;
     padding-bottom: 20px;
     color: rgb(22, 44, 104);
-}
-
-.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.button {
-    margin-top: 10px;
-    width: 80%;
-    height: 40px;
-    border-radius: 5px;
-    background-color: rgb(22, 44, 104);
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-left: 10px;
 }
 
 a {
