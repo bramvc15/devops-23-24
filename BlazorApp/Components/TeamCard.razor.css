@@ -1,49 +1,74 @@
-.card {
-    border-radius: 15px;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    transition: box-shadow 0.3s ease, background-color 0.3s ease;
-    cursor: pointer;
-    margin-top: 50px;
-    height: 21rem;
-}
-
-.card:hover {
-    box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
-    background-color: #f0f0f0;
-    color: rgb(44, 68, 136);
-}
-
-.w-50 {
-    width: 100px;
-    height: 150px;
-    object-fit: cover;
-}
-
-.custom-button {
-    margin-top: 1rem;
-    background-color: #033878;
-    color: white;
-    padding: 10px 20px;
-    border: none;
+.card-container {
+    height: 340px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
     border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+    background-color: #d4e8e4;
+    margin: 20px 10px;
+}
+
+.card-container:hover {
+    box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
+}
+
+.img-container {
+    height: 45%;
+    width: 100%;
+}
+
+.docter-img {
+    margin: 0 auto;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+}
+
+.info-container {
+    height: 55%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.card-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: rgb(22, 44, 104);
+}
+
+.card-descr {
+    font-size: 1.2rem;
+    padding-bottom: 20px;
+    color: rgb(22, 44, 104);
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button {
+    margin-top: 10px;
+    width: 80%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: rgb(22, 44, 104);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 800;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.custom-button:hover {
-    background-color: #002b5a;
-}
-
-
-
-
-
-.div_image {
-    border: 10px solid black;
-    width: 200px;
-    height: 200px;
+a {
+    text-decoration: none !important;
 }
