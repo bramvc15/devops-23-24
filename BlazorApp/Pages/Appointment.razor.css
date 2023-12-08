@@ -51,8 +51,10 @@
 @media (max-width: 1400px) {
 
   .title-layout {
-      padding-left: 30px;
-  }
+    padding-left: 30px;
+    padding-top: 20px;
+}
+
 
   .headerBox {
     margin-left: 20px;
@@ -64,6 +66,7 @@
   
   .title-layout {
       padding-left: 30px;
+      padding-top: 20px;
   }
 
   .headerBox {
@@ -74,8 +77,10 @@
 
 @media only screen and (max-width: 600px) {
   .title-layout {
-      padding-left: 20px;
-  }
+    padding-left: 30px;
+    padding-top: 20px;
+}
+
 
   .headerBox {
     margin-left: 20px;

@@ -95,13 +95,19 @@
     display: none;
   }
 
-  .mobileNav {
+  /* .mobileNav {
     display: flex;
     background-color: transparent;
     width: 100%;
     height: 40%;
     z-index: 1;
     position: absolute;
+  } */
+
+  nav {
+    z-index: 999;
+    position: fixed;
+    width: 100%;
   }
 
   .bar {
@@ -112,16 +118,24 @@
     border-radius: 10px;
   }
 
+  .toggle-co {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+  }
+
   .toggler {
     height: 40px;
     width: fit-content;
-    margin-left: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+    margin-left: auto;
     margin-right: 20px;
     margin-top: 20px;
+    background-color: transparent;
+
   }
 
   .toggler:hover {
@@ -148,8 +162,8 @@
     z-index: 1;
     height: 30px;
     width: fit-content;
-    margin-left: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-right: 20px;
     right: 0;
   }
 
@@ -169,11 +183,13 @@
   }
 
   .slideDown {
-    height: 100%;
+    height: fit-content;
     width: 100%;
     animation: slideDown 0.3s ease-in-out;
     background-color: #93c5bb;
     border-radius: 0 0 20px 20px;
+    z-index: 1;
+    position: absolute;
   }
 
   @keyframes slideDown {

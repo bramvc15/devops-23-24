@@ -39,7 +39,7 @@ h5 {
 @media only screen and (max-width: 500px) {
     .overlay {
         padding: 20px;
-        padding-top: 100px;
+        padding-top: 20px;
     }
     
     h1 {
@@ -79,27 +79,4 @@ a {
     background-image: url('https://oogarts-lokeren.be/_images/pages/37.jpg'); /* Replace 'path-to-your-image.jpg' with the actual path to your image */
     background-size: cover; /* Adjust the background size as needed */
     background-position: center; /* Center the background image */
-}
-
-
-
-.actuaBox {
-
-   
-    top: 0;
-    left: 0;
-    width: 65%;
-    height: 100%;
-   
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: left;
-    text-align: left;
-    color: rgb(22, 44, 104); /* Tekstkleur aanpassen naar wens */
-  
-    margin-bottom: 200px;
-    margin-left: 120px;
-    margin-right: 120px;
-    
 }
