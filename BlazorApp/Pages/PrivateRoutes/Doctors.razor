@@ -1,4 +1,4 @@
-@page "/admin/patiënten"
+@page "/admin/dokters"
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 @using System.Text.Json
@@ -8,7 +8,7 @@
 @using BlazorApp.Controllers
 @inject DatabaseContext databaseContext
 @using Microsoft.AspNetCore.Components
-@inject PatientService patientService
+@inject DoctorService doctorService
 @inject NavigationManager NavManager
 @using BlazorApp.Components.Modals
 
@@ -19,32 +19,30 @@
 <SideNavMenu />
 <div class="content">
     <div class="container">
-        <h1>Patiënten in het systeem</h1>
-        @if (patients != null && patients.Count() > 0)
+        <h1>Dokters in het systeem</h1>
+        @if (doctors != null && doctors.Count() > 0)
         {
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Id</th>
                         <th>Naam</th>
-                        <th>Telefoonnummer</th>
-                        <th>Email</th>
-                        <th>Geboortedatum</th>
+                        <th>Specialisatie</th>
                         <th>Geslacht</th>
-                        <th>Bloedgroep</th>
+                        <th>Biographie</th>
+                        <th>IsBeschikbaar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var patient in patients)
+                    @foreach (var doctor in doctors)
                     {
                         <tr>
-                            <td>@patient.Id</td>
-                            <td>@patient.Name</td>
-                            <td>@patient.PhoneNumber</td>
-                            <td>@patient.Email</td>
-                            <td>@patient.DateOfBirth.ToString("dd/MM/yyyy")</td>
-                            <td>@patient.Gender</td>
-                            <td>@patient.BloodType</td>
+                            <td>@doctor.Id</td>
+                            <td>@doctor.Name</td>
+                            <td>@doctor.Specialization</td>
+                            <td>@doctor.Gender</td>
+                            <td>@doctor.Biograph</td>
+                            <td>@doctor.IsAvailable</td>
                         </tr>
                     }
                 </tbody>
@@ -54,11 +52,11 @@
 
 </div>
 @code {
-    private IEnumerable<PatientDTO> patients;
+    private IEnumerable<DoctorDTO> doctors;
 
     protected override async Task OnInitializedAsync()
     {
-        patients = await patientService.GetPatients();
+        doctors = await doctorService.GetDoctors();
     }
 
 }
