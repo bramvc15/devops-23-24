@@ -18,7 +18,16 @@
     <div class="agenda-container">
             <h1>Agenda</h1>
             <SfSchedule TValue="AppointmentData" @bind-SelectedDate="@CurrentDate" AllowInline="true">
-                <ScheduleEventSettings DataSource="@DataSource"></ScheduleEventSettings>
+                <ScheduleEventSettings DataSource="@DataSource">
+                    <Template>
+                        <div class="template-wrap">
+                            @{
+                                var data = context as AppointmentData;
+                                <div class="subject"><b>@data.StartTime.ToString("HH:mm") - @data.EndTime.ToString("HH:mm")</b> @data.Subject</div>
+                            }
+                        </div>
+                    </Template>
+                </ScheduleEventSettings>
                 <ScheduleTimeScale Enable="true" SlotCount="1" Interval="15"></ScheduleTimeScale>
                 <ScheduleViews>
                     <ScheduleView Option="View.Day" StartHour="07:00" EndHour="20:00"></ScheduleView>
@@ -43,7 +52,8 @@
     DateTime CurrentDate = DateTime.Now;
     List<AppointmentData> DataSource = new List<AppointmentData>();
 
-    
+
+
     public class AppointmentData
     {
         public int Id { get; set; }
@@ -56,6 +66,7 @@
         public string RecurrenceRule { get; set; }
         public string RecurrenceException { get; set; }
         public Nullable<int> RecurrenceID { get; set; }
+        public string CssClass { get; set; }
     }
 
     private AppointmentData MapToAppointmentData(TimeSlotDTO timeSlot)
@@ -63,10 +74,21 @@
         AppointmentData appointmentData = new AppointmentData
         {
             Id = (int)timeSlot.Id,
-            Subject = timeSlot.AppointmentDTO.PatientDTO.Name,
+            //Subject = timeSlot.AppointmentDTO.PatientDTO.Name,
             StartTime = timeSlot.DateTime,
             EndTime = timeSlot.DateTime.AddMinutes(timeSlot.Duration),
         };
+
+        if(timeSlot.AppointmentDTO != null)
+        {
+            appointmentData.Subject = timeSlot.AppointmentDTO.PatientDTO.Name;
+            appointmentData.CssClass = "occupied";
+        }
+        else
+        {
+            appointmentData.Subject = "Beschikbaar";
+            appointmentData.CssClass = "available";
+        }
 
         return appointmentData;
     }
@@ -76,7 +98,7 @@
     {
         DoctorDTO doctor = await doctorService.GetDoctor(2);
         TimeSlots = await timeSlotService.GetTimeSlots((int)doctor.Id);
-        TimeSlots = TimeSlots.Where(ts => ts.AppointmentDTO != null);
+        //TimeSlots = TimeSlots.Where(ts => ts.AppointmentDTO != null);
 
         foreach (var timeSlot in TimeSlots)
         {
@@ -87,3 +109,19 @@
     }
 
 }
+
+<style>
+    .e-schedule .e-vertical-view .e-all-day-appointment-wrapper .e-appointment.available,
+    .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.available,
+    .e-schedule .e-month-view .e-appointment.available {
+        background: rgba(79, 220, 76, 0.6);
+        border-color: rgba(79, 220, 76, 0.6);
+    }
+
+    .e-schedule .e-vertical-view .e-all-day-appointment-wrapper .e-appointment.occupied,
+    .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.occupied,
+    .e-schedule .e-month-view .e-appointment.occupied {
+        background: #eb4d5b;
+        border-color: #eb4d5b;
+    }
+</style>

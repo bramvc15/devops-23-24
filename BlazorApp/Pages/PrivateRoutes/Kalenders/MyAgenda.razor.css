@@ -1,5 +1,4 @@
 * {
-    background: rgb(194,228,218);
 }
 
 .content {
@@ -75,4 +74,8 @@ span {
     border-radius: 15px;
     margin: 2px;
     text-align: center;
+}
+
+.subject {
+    background-color: transparent;
 }
