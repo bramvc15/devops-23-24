@@ -1,6 +1,7 @@
 @page "/admin/kalenders/myagenda"
 @using Services.Core;
 @using Shared.DTO.Core;
+@using Shared.Enums;
 @inject NavigationManager NavManager
 @using Models
 @inject TimeSlotService timeSlotService
@@ -55,7 +56,12 @@
                                     <tr>
                                         <td class="e-textlabel">Type</td>
                                         <td colspan="4">
-                                            @((context as AppointmentData).TimeSlotDTO.AppointmentType)
+                                            <select @bind="@((context as AppointmentData).TimeSlotDTO.AppointmentType)">
+                                                @foreach (Shared.Enums.AppointmentType type in Enum.GetValues(typeof(Shared.Enums.AppointmentType)))
+                                                {
+                                                    <option value="@type">@type</option>
+                                                }
+                                            </select>
                                         </td>
                                     </tr>
                                     <tr>
@@ -129,7 +135,7 @@
         if(timeSlot.AppointmentDTO != null)
         {
             appointmentData.Subject = timeSlot.AppointmentDTO.PatientDTO.Name;
-            appointmentData.CssClass = "occupied";
+            appointmentData.CssClass = timeSlot.AppointmentType == Shared.Enums.AppointmentType.Consultation ? "occupied-consultation" : "occupied-operation";
             appointmentData.AppointmentDTO = timeSlot.AppointmentDTO;
         }
         else
@@ -175,8 +181,9 @@
             AppointmentData appointmentData = args.ChangedRecords[0];
             TimeSlotDTO timeSlot = TimeSlots.FirstOrDefault(ts => ts.Id == appointmentData.Id);
             timeSlot.AppointmentDTO.Note = appointmentData.AppointmentDTO.Note;
-
+            timeSlot.AppointmentType = appointmentData.TimeSlotDTO.AppointmentType;
             await appointmentService.UpdateAppointment(timeSlot.AppointmentDTO);
+            await timeSlotService.UpdateTimeSlot(timeSlot, SelectedDoctor);
 
             Console.WriteLine(appointmentData.Id);
         }
@@ -199,10 +206,18 @@
         border-color: rgba(79, 220, 76, 0.6);
     }
 
-    .e-schedule .e-vertical-view .e-all-day-appointment-wrapper .e-appointment.occupied,
-    .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.occupied,
-    .e-schedule .e-month-view .e-appointment.occupied {
-        background: #eb4d5b;
-        border-color: #eb4d5b;
+    .e-schedule .e-vertical-view .e-all-day-appointment-wrapper .e-appointment.occupied-consultation,
+    .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.occupied-consultation,
+    .e-schedule .e-month-view .e-appointment.occupied-consultation {
+        background: #3182eb;
+        border-color: #3182eb;
     }
+
+    .e-schedule .e-vertical-view .e-all-day-appointment-wrapper .e-appointment.occupied-operation,
+    .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.occupied-operation,
+    .e-schedule .e-month-view .e-appointment.occupied-operation {
+        background: #f5a442;
+        border-color: #f5a442;
+    }
+
 </style>
