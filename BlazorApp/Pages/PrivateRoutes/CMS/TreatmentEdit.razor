@@ -23,7 +23,17 @@
         <span class="breadcrumbs">
             Klik op een behandeling om ze te bewerken.
         </span>
-
+        <div class="alert-container">
+            <Alert Color="Color.Danger" @bind-Visible="@visible">
+                <AlertDescription>
+                    @message
+                </AlertDescription>
+                <AlertMessage>
+                    @* Gebruiken we niet. *@
+                </AlertMessage>
+                <CloseButton />
+            </Alert>
+        </div>
         <div class="container mt-40">
             <div class="row ">
                 @if (treatments != null)
@@ -98,7 +108,13 @@
 
 
 
-@code {
+ @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private bool visible = false;
+    private string message = string.Empty;
+
     private IEnumerable<TreatmentDTO> treatments;
     private TreatmentDTO clickedTreatment;
 
@@ -151,15 +167,29 @@
 
     private async void UpdateTreatment()
     {
-        content = await richTextEditRef.GetHtmlAsync();
-        TreatmentDTO treatment = new()
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
         {
-            Id = clickedTreatment.Id,
-            Name = newName,
-            Description = content,
-            ImageLink = newImage
-        };
-        await treatmentService.UpdateTreatment(treatment);
+            content = await richTextEditRef.GetHtmlAsync();
+            TreatmentDTO treatment = new()
+                {
+                    Id = clickedTreatment.Id,
+                    Name = newName,
+                    Description = content,
+                    ImageLink = newImage
+                };
+            await treatmentService.UpdateTreatment(treatment);
+        }
+        else
+        {
+            message = "U heeft geen toegang tot bewerken.";
+            visible = true;
+        }
+
         await HideModal();
     }
 }

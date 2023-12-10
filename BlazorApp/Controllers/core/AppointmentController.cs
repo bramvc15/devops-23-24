@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.Core;
 using Shared.DTO.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorApp.Controllers.core;
 
@@ -16,6 +17,7 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public Task<IEnumerable<AppointmentDTO>> GetAppointments([FromBody] PatientDTO pat)
     {
         return _service.GetAppointments(pat);

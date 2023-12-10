@@ -25,6 +25,17 @@
     <div class="addFaq">
         <AddFaqPopUp />
     </div>
+    <div class="alert-container">
+        <Alert Color="Color.Danger" @bind-Visible="@visible">
+            <AlertDescription>
+                @message
+            </AlertDescription>
+            <AlertMessage>
+                @* Gebruiken we niet. *@
+            </AlertMessage>
+            <CloseButton />
+        </Alert>
+    </div>
     <div class="faq-container">
         @if (FaqObj != null)
         {
@@ -76,6 +87,12 @@
 
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private bool visible = false;
+    private string message = string.Empty;
+
     private IEnumerable<FaqDTO>? FaqObj;
     private FaqDTO clickedFaq;
 
@@ -106,19 +123,46 @@
 
     private async void UpdateFaq()
     {
-        FaqDTO faq = new()
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
         {
-            Id = clickedFaq.Id,
-            Question = newQuestion,
-            Answer = newAnswer
-        };
-        await faqService.UpdateFaq(faq);
+            FaqDTO faq = new()
+                {
+                    Id = clickedFaq.Id,
+                    Question = newQuestion,
+                    Answer = newAnswer
+                };
+            await faqService.UpdateFaq(faq);
+        }
+        else
+        {
+            message = "U heeft geen toegang tot bewerken.";
+            visible = true;
+        }
+
         await HideModal();
     }
 
     private async void DeleteFaq(FaqDTO f)
     {
-        await faqService.DeleteFaq(f);
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
+        {
+            await faqService.DeleteFaq(f);
+        }
+        else
+        {
+            message = "U heeft geen toegang tot verwijderen.";
+            visible = true;
+        }
     }
 
 
