@@ -12,12 +12,11 @@
 
 <PageTitle>Vision Oogcentrum</PageTitle>
 
-<div>
     <div class="background-div">
         <div class="overlay">
             @if(homeHeader != null){
-                <h1>@homeHeader.Title</h1>
-                <p>@((MarkupString)homeHeader.Context)</p>
+                <h1><strong>@homeHeader.Title</strong></h1>
+                <p class="header-text">@((MarkupString)homeHeader.Context)</p>
             }
             else
             {
@@ -31,47 +30,48 @@
             </div>
         </div>
     </div>
-</div>
 
-<div>
-        <div class="control-section template-carousel-section">
-            <div class="col-lg-12 content-wrapper">
-                <div class="carousel-sample">
-                    <SfCarousel AnimationEffect="CarouselAnimationEffect.Fade" CssClass="templateCarousel">
-                        <ChildContent>
-                        @foreach (var image in indicatorImage)
-                        {
-                            <CarouselItem>
-                                <figure class="img-container">
-                                    <img src="@UriHelper.ToAbsoluteUri($"Images/{image}.jpg")" alt="@image" style="height:100%;width:100%;" />
-                                </figure>
-                            </CarouselItem>
-                        }
-                        </ChildContent>
-                        <PreviousButtonTemplate>
-                            <SfButton CssClass="e-flat e-outline nav-btn" title="Previous">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
-                                    <path d="m13.5 7.01 13 13m-13 13 13-13"></path>
-                                </svg>
-                            </SfButton>
-                        </PreviousButtonTemplate>
-                        <NextButtonTemplate>
-                            <SfButton CssClass="e-flat e-outline nav-btn" title="Next">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
-                                    <path d="m13.5 7.01 13 13m-13 13 13-13"></path>
-                                </svg>
-                            </SfButton>
-                        </NextButtonTemplate>
-                        <IndicatorsTemplate>
-                            <div class="indicator">
-                            <img src="@UriHelper.ToAbsoluteUri($"Images/" + indicatorImage[context.Index] + ".jpg")" alt="image" style="height:100%;width:100%;" />
-                            </div>
-                        </IndicatorsTemplate>
-                    </SfCarousel>
-                </div>
+
+
+<div class="carousel-container">
+    <div class="control-section template-carousel-section">
+        <div class="col-lg-12 content-wrapper">
+            <div class="carousel-sample">
+                <SfCarousel AnimationEffect="CarouselAnimationEffect.Fade" CssClass="templateCarousel">
+                    <ChildContent>
+                    @foreach (var image in indicatorImage)
+                    {
+                        <CarouselItem>
+                            <figure class="img-container">
+                                <img src="@UriHelper.ToAbsoluteUri($"Images/{image}.jpg")" alt="@image" style="height:100%;width:100%;" />
+                            </figure>
+                        </CarouselItem>
+                    }
+                    </ChildContent>
+                    <PreviousButtonTemplate>
+                        <SfButton CssClass="e-flat e-outline nav-btn" title="Previous">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+                                <path d="m13.5 7.01 13 13m-13 13 13-13"></path>
+                            </svg>
+                        </SfButton>
+                    </PreviousButtonTemplate>
+                    <NextButtonTemplate>
+                        <SfButton CssClass="e-flat e-outline nav-btn" title="Next">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+                                <path d="m13.5 7.01 13 13m-13 13 13-13"></path>
+                            </svg>
+                        </SfButton>
+                    </NextButtonTemplate>
+                    <IndicatorsTemplate>
+                        <div class="indicator">
+                        <img src="@UriHelper.ToAbsoluteUri($"Images/" + indicatorImage[context.Index] + ".jpg")" alt="image" style="height:100%;width:100%;" />
+                        </div>
+                    </IndicatorsTemplate>
+                </SfCarousel>
             </div>
         </div>
     </div>
+</div>
 
 @code {
 

@@ -34,8 +34,23 @@
     padding: 2px
 }
 
+.timeslots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cont-time {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: left;
+}
+
 .timeslot {
     height: 40px;
+    width: 150px;
     background-color: #93C5BB;
     color: white;
     border-radius: 10px;

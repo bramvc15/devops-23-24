@@ -1,0 +1,64 @@
+@page "/admin/clients"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+@using System.Text.Json
+@using Persistence.Data
+@using Services.Core
+@using Shared.DTO.Core
+@using BlazorApp.Controllers
+@inject DatabaseContext databaseContext
+@using Microsoft.AspNetCore.Components
+@inject PatientService patientService
+@inject NavigationManager NavManager
+@using BlazorApp.Components.Modals
+
+@attribute [Authorize(Roles = "Admin, Employee")]
+
+<PageTitle>Admin - Chat Bot</PageTitle>
+
+<SideNavMenu />
+<div class="content">
+    <div class="container">
+        <h1>Clients</h1>
+        @if (patients != null && patients.Count() > 0)
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Naam</th>
+                        <th>Telefoonnummer</th>
+                        <th>Email</th>
+                        <th>Geboortedatum</th>
+                        <th>Geslacht</th>
+                        <th>Bloedgroep</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in patients)
+                    {
+                        <tr>
+                            <td>@patient.Id</td>
+                            <td>@patient.Name</td>
+                            <td>@patient.PhoneNumber</td>
+                            <td>@patient.Email</td>
+                            <td>@patient.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                            <td>@patient.Gender</td>
+                            <td>@patient.BloodType</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>
+@code {
+    private IEnumerable<PatientDTO> patients;
+
+    protected override async Task OnInitializedAsync()
+    {
+        patients = await patientService.GetPatients();
+    }
+
+}

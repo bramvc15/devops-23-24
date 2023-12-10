@@ -101,3 +101,11 @@
     cursor: pointer;
     transition: 0.3s;
 }
+
+@media (max-width: 1050px) {
+    .del-con {
+        display: flex;
+        flex-direction: row;
+        margin-left: 20px;
+    }
+}
