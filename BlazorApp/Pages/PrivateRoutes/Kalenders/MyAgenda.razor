@@ -17,6 +17,14 @@
 <div class="content">
     <div class="agenda-container">
             <h1>Agenda</h1>
+            <Select TValue="int?" SelectedValue="@SelectedDoctor" SelectedValueChanged="@OnSelectedValueChanged" >
+            @if(Doctors != null) {
+                @foreach (var doctor in Doctors)
+                {
+                    <SelectItem TValue="int?" Value="@doctor.Id">@doctor.Name</SelectItem>
+                }
+            }
+            </Select>
             <SfSchedule TValue="AppointmentData" @bind-SelectedDate="@CurrentDate" AllowInline="true">
                 <ScheduleEventSettings DataSource="@DataSource">
                     <Template>
@@ -49,9 +57,10 @@
     private DateTime currentWeekStart = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).AddDays(1);
     private DateTime currentWeekEnd = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).AddDays(7);
 
-    DateTime CurrentDate = DateTime.Now;
-    List<AppointmentData> DataSource = new List<AppointmentData>();
-
+    private DateTime CurrentDate = DateTime.Now;
+    private List<AppointmentData> DataSource = new List<AppointmentData>();
+    private IEnumerable<DoctorDTO> Doctors { get; set; }
+    private int SelectedDoctor { get; set; }
 
 
     public class AppointmentData
@@ -74,7 +83,6 @@
         AppointmentData appointmentData = new AppointmentData
         {
             Id = (int)timeSlot.Id,
-            //Subject = timeSlot.AppointmentDTO.PatientDTO.Name,
             StartTime = timeSlot.DateTime,
             EndTime = timeSlot.DateTime.AddMinutes(timeSlot.Duration),
         };
@@ -93,19 +101,30 @@
         return appointmentData;
     }
 
-
-    protected override async Task OnInitializedAsync()
+    private async Task LoadTimeSlots(int doctorId)
     {
-        DoctorDTO doctor = await doctorService.GetDoctor(2);
-        TimeSlots = await timeSlotService.GetTimeSlots((int)doctor.Id);
-        //TimeSlots = TimeSlots.Where(ts => ts.AppointmentDTO != null);
+        TimeSlots = await timeSlotService.GetTimeSlots(SelectedDoctor);
+        DataSource.Clear();
 
         foreach (var timeSlot in TimeSlots)
         {
             DataSource.Add(MapToAppointmentData(timeSlot));
         }
 
-        TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
+        CurrentDate = DateTime.Now;
+    }
+
+    private async Task OnSelectedValueChanged(int? value)
+    {
+        SelectedDoctor = (int)value;
+        await LoadTimeSlots(SelectedDoctor);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Doctors = await doctorService.GetDoctors();
+        SelectedDoctor = (int)Doctors.FirstOrDefault().Id;
+        await LoadTimeSlots(SelectedDoctor);
     }
 
 }
