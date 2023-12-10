@@ -1,13 +1,13 @@
 @page "/admin/kalenders/myagenda"
-@using BlazorApp.Components.Modals
 @using Services.Core;
 @using Shared.DTO.Core;
 @inject NavigationManager NavManager
-
+@using Models
 @inject TimeSlotService timeSlotService
 @inject DoctorService doctorService
 @inject AppointmentService appointmentService
-
+@using Syncfusion.Blazor.Schedule
+@using BlazorApp.Components.Modals;
 @attribute [Authorize(Roles = "Admin, Employee")]
 
 
@@ -17,7 +17,7 @@
 <div class="content">
     <div class="agenda-container">
             <h1>Agenda</h1>
-            <Select TValue="int?" SelectedValue="@SelectedDoctor" SelectedValueChanged="@OnSelectedValueChanged" >
+            <Select TValue="int?" SelectedValue="@SelectedDoctor" SelectedValueChanged="@OnSelectedValueChanged">
             @if(Doctors != null) {
                 @foreach (var doctor in Doctors)
                 {
@@ -25,15 +25,11 @@
                 }
             }
             </Select>
-            <SfSchedule TValue="AppointmentData" @bind-SelectedDate="@CurrentDate" AllowInline="true">
+            <SfSchedule TValue="AppointmentData" AllowDragAndDrop="false" @ref="@ScheduleRef" @bind-SelectedDate="@CurrentDate" >
+                <ScheduleEvents TValue="AppointmentData" OnEventClick="OnEventClick"></ScheduleEvents>
                 <ScheduleEventSettings DataSource="@DataSource">
                     <Template>
-                        <div class="template-wrap">
-                            @{
-                                var data = context as AppointmentData;
-                                <div class="subject"><b>@data.StartTime.ToString("HH:mm") - @data.EndTime.ToString("HH:mm")</b> @data.Subject</div>
-                            }
-                        </div>
+                        <AppointmentPopup Context="context" OnDeleteAppointment="CancelAppointment" />
                     </Template>
                 </ScheduleEventSettings>
                 <ScheduleTimeScale Enable="true" SlotCount="1" Interval="15"></ScheduleTimeScale>
@@ -50,6 +46,8 @@
 
 @code {
 
+    SfSchedule<AppointmentData> ScheduleRef;
+
     private IEnumerable<TimeSlotDTO> TimeSlots { get; set; }
 
     private IEnumerable<TimeSlotDTO> TimeSlotsByWeek { get; set; }
@@ -58,24 +56,17 @@
     private DateTime currentWeekEnd = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).AddDays(7);
 
     private DateTime CurrentDate = DateTime.Now;
-    private List<AppointmentData> DataSource = new List<AppointmentData>();
+    private List<AppointmentData> DataSource { get; set; }
     private IEnumerable<DoctorDTO> Doctors { get; set; }
     private int SelectedDoctor { get; set; }
+    View CurrentView = View.Week;
 
-
-    public class AppointmentData
+    public async Task OnEventClick(EventClickArgs<AppointmentData> args)
     {
-        public int Id { get; set; }
-        public string Subject { get; set; }
-        public string Location { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public string Description { get; set; }
-        public bool IsAllDay { get; set; }
-        public string RecurrenceRule { get; set; }
-        public string RecurrenceException { get; set; }
-        public Nullable<int> RecurrenceID { get; set; }
-        public string CssClass { get; set; }
+        args.Cancel = true;
+        CurrentAction action = CurrentAction.Save;
+        
+        await ScheduleRef.OpenEditorAsync(args.Event, action); //to open the editor window on event click
     }
 
     private AppointmentData MapToAppointmentData(TimeSlotDTO timeSlot)
@@ -85,12 +76,14 @@
             Id = (int)timeSlot.Id,
             StartTime = timeSlot.DateTime,
             EndTime = timeSlot.DateTime.AddMinutes(timeSlot.Duration),
+            TimeSlotDTO = timeSlot
         };
 
         if(timeSlot.AppointmentDTO != null)
         {
             appointmentData.Subject = timeSlot.AppointmentDTO.PatientDTO.Name;
             appointmentData.CssClass = "occupied";
+            appointmentData.AppointmentDTO = timeSlot.AppointmentDTO;
         }
         else
         {
@@ -105,12 +98,7 @@
     {
         TimeSlots = await timeSlotService.GetTimeSlots(SelectedDoctor);
         DataSource.Clear();
-
-        foreach (var timeSlot in TimeSlots)
-        {
-            DataSource.Add(MapToAppointmentData(timeSlot));
-        }
-
+        DataSource = TimeSlots.Select(MapToAppointmentData).ToList();
         CurrentDate = DateTime.Now;
     }
 
@@ -122,11 +110,20 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DataSource = new List<AppointmentData>();
         Doctors = await doctorService.GetDoctors();
         SelectedDoctor = (int)Doctors.FirstOrDefault().Id;
         await LoadTimeSlots(SelectedDoctor);
     }
 
+    protected async Task CancelAppointment(int id)
+    {
+        TimeSlotDTO timeSlot = TimeSlots.FirstOrDefault(ts => ts.Id == id);
+        await appointmentService.DeleteAppointment(timeSlot.AppointmentDTO);
+        timeSlot.AppointmentDTO = null;
+        await timeSlotService.UpdateTimeSlot(timeSlot, SelectedDoctor);
+        DataSource.Remove(DataSource.FirstOrDefault(ds => ds.Id == id));
+    }
 }
 
 <style>
