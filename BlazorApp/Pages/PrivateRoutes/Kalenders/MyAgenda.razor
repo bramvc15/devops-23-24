@@ -10,53 +10,24 @@
 
 @attribute [Authorize(Roles = "Admin, Employee")]
 
+
 <div class="sidebar">
     <SideNavMenu />
 </div>
 <div class="content">
     <div class="agenda-container">
-        <h1>Agenda</h1>
-        <SfSchedule TValue="AppointmentData" @bind-SelectedDate="@CurrentDate">
-            <ScheduleEventSettings DataSource="@DataSource"></ScheduleEventSettings>
-            <ScheduleViews>
-                <ScheduleView Option="View.Day"></ScheduleView>
-                <ScheduleView Option="View.Week"></ScheduleView>
-                <ScheduleView Option="View.WorkWeek"></ScheduleView>
-                <ScheduleView Option="View.Month"></ScheduleView>
-                <ScheduleView Option="View.Agenda"></ScheduleView>
-            </ScheduleViews>
-        </SfSchedule>
-        <button class="week-btn" @onclick="() => ChangeWeek(-7)">Vorige week</button>
-        <button class="week-btn" @onclick="() => ChangeWeek(7)">Volgende week</button>
-        <span>@currentWeekStart.ToString("dd/MM/yyyy") - @currentWeekEnd.ToString("dd/MM/yyyy")</span>
-        @if(TimeSlots != null && ListByCurrentWeekDay != null)
-        {
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Maandag</th>
-                        <th>Dinsdag</th>
-                        <th>Woensdag</th>
-                        <th>Donderdag</th>
-                        <th>Vrijdag</th>
-                        <th>Zaterdag</th>
-                        <th>Zondag</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        @foreach(var day in ListByCurrentWeekDay)
-                        {
-                            <AgendaAppointment Day="@day.Key" TimeSlots="@day.Value" />
-                        }
-                    </tr>
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p>Geen timeslots gevonden</p>
-        }
+            <h1>Agenda</h1>
+            <SfSchedule TValue="AppointmentData" @bind-SelectedDate="@CurrentDate" AllowInline="true">
+                <ScheduleEventSettings DataSource="@DataSource"></ScheduleEventSettings>
+                <ScheduleTimeScale Enable="true" SlotCount="1" Interval="15"></ScheduleTimeScale>
+                <ScheduleViews>
+                    <ScheduleView Option="View.Day" StartHour="07:00" EndHour="20:00"></ScheduleView>
+                    <ScheduleView Option="View.Week" StartHour="07:00" EndHour="20:00" FirstDayOfWeek="1"></ScheduleView>
+                    <ScheduleView Option="View.WorkWeek" StartHour="07:00" EndHour="20:00"></ScheduleView>
+                    <ScheduleView Option="View.Month" StartHour="07:00" EndHour="20:00"></ScheduleView>
+                    <ScheduleView Option="View.Agenda" StartHour="07:00" EndHour="20:00"></ScheduleView>
+                </ScheduleViews>
+            </SfSchedule>
     </div>
 </div>
 
@@ -69,12 +40,10 @@
     private DateTime currentWeekStart = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).AddDays(1);
     private DateTime currentWeekEnd = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).AddDays(7);
 
-    DateTime CurrentDate = new DateTime(2020, 2, 14);
-    List<AppointmentData> DataSource = new List<AppointmentData>
-    {
-        new AppointmentData { Id = 1, Subject = "Paris", StartTime = new DateTime(2020, 2, 13, 10, 0, 0) , EndTime = new DateTime(2020, 2, 13, 12, 0, 0) },
-        new AppointmentData { Id = 2, Subject = "Germany", StartTime = new DateTime(2020, 2, 15, 10, 0, 0) , EndTime = new DateTime(2020, 2, 15, 12, 0, 0) }
-    };
+    DateTime CurrentDate = DateTime.Now;
+    List<AppointmentData> DataSource = new List<AppointmentData>();
+
+    
     public class AppointmentData
     {
         public int Id { get; set; }
@@ -89,60 +58,32 @@
         public Nullable<int> RecurrenceID { get; set; }
     }
 
-    Dictionary<string, List<TimeSlotDTO>> ListByCurrentWeekDay = new Dictionary<string, List<TimeSlotDTO>>
+    private AppointmentData MapToAppointmentData(TimeSlotDTO timeSlot)
     {
-        { "Monday", new List<TimeSlotDTO>() },
-        { "Tuesday", new List<TimeSlotDTO>() },
-        { "Wednesday", new List<TimeSlotDTO>() },
-        { "Thursday", new List<TimeSlotDTO>() },
-        { "Friday", new List<TimeSlotDTO>() },
-        { "Saturday", new List<TimeSlotDTO>() },
-        { "Sunday", new List<TimeSlotDTO>() }   
-    };
+        AppointmentData appointmentData = new AppointmentData
+        {
+            Id = (int)timeSlot.Id,
+            Subject = timeSlot.AppointmentDTO.PatientDTO.Name,
+            StartTime = timeSlot.DateTime,
+            EndTime = timeSlot.DateTime.AddMinutes(timeSlot.Duration),
+        };
+
+        return appointmentData;
+    }
+
 
     protected override async Task OnInitializedAsync()
     {
-        
         DoctorDTO doctor = await doctorService.GetDoctor(2);
         TimeSlots = await timeSlotService.GetTimeSlots((int)doctor.Id);
         TimeSlots = TimeSlots.Where(ts => ts.AppointmentDTO != null);
 
-        TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
-
-        foreach (var timeSlot in TimeSlotsByWeek)
+        foreach (var timeSlot in TimeSlots)
         {
-            Console.WriteLine(timeSlot.DateTime.DayOfWeek.ToString());
-            ListByCurrentWeekDay[timeSlot.DateTime.DayOfWeek.ToString()].Add(timeSlot);
-        }
-    }
-
-    private void ChangeWeek(int days)
-    {
-        currentWeekStart = currentWeekStart.AddDays(days);
-        currentWeekEnd = currentWeekEnd.AddDays(days);
-
-        ListByCurrentWeekDay = new Dictionary<string, List<TimeSlotDTO>>
-            {
-                { "Monday", new List<TimeSlotDTO>() },
-                { "Tuesday", new List<TimeSlotDTO>() },
-                { "Wednesday", new List<TimeSlotDTO>() },
-                { "Thursday", new List<TimeSlotDTO>() },
-                { "Friday", new List<TimeSlotDTO>() },
-                { "Saturday", new List<TimeSlotDTO>() },
-                { "Sunday", new List<TimeSlotDTO>() }   
-            };
-        TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
-
-        Console.WriteLine("Current week start: " + currentWeekStart.ToString("dd/MM/yyyy"));
-
-        Console.WriteLine(TimeSlots.Count());
-
-        foreach (var timeSlot in TimeSlotsByWeek)
-        {
-            Console.WriteLine(timeSlot.DateTime.DayOfWeek.ToString());
-            ListByCurrentWeekDay[timeSlot.DateTime.DayOfWeek.ToString()].Add(timeSlot);
+            DataSource.Add(MapToAppointmentData(timeSlot));
         }
 
-        StateHasChanged();
+        TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
     }
+
 }
