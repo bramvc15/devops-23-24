@@ -7,6 +7,9 @@
 @inject DoctorService doctorService
 @inject AppointmentService appointmentService
 @using Syncfusion.Blazor.Schedule
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
 @using BlazorApp.Components.Modals;
 @attribute [Authorize(Roles = "Admin, Employee")]
 
@@ -25,11 +28,62 @@
                 }
             }
             </Select>
-            <SfSchedule TValue="AppointmentData" AllowDragAndDrop="false" @ref="@ScheduleRef" @bind-SelectedDate="@CurrentDate" >
-                <ScheduleEvents TValue="AppointmentData" OnEventClick="OnEventClick"></ScheduleEvents>
-                <ScheduleEventSettings DataSource="@DataSource">
+            <SfSchedule TValue="AppointmentData" @ref="@ScheduleRef" @bind-SelectedDate="@CurrentDate" >
+                <ScheduleEvents TValue="AppointmentData" OnActionBegin="OnActionBegin"></ScheduleEvents>
+                    <ScheduleTemplates>
+                        <EditorTemplate>
+                            <table class="custom-event-editor" width="100%" cellpadding="5">
+                                <tbody>
+                                    <tr>
+                                        <td class="e-textlabel">Patiënt</td>
+                                        <td colspan="4">
+                                            @((context as AppointmentData).Subject)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="e-textlabel">Starttijd</td>
+                                        <td colspan="4">
+                                            @((context as AppointmentData).StartTime.ToString("HH:mm"))
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="e-textlabel">Eindtijd</td>
+                                        <td colspan="4">
+                                            @((context as AppointmentData).EndTime.ToString("HH:mm"))
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="e-textlabel">Type</td>
+                                        <td colspan="4">
+                                            @((context as AppointmentData).TimeSlotDTO.AppointmentType)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="e-textlabel">Reden</td>
+                                        <td colspan="4">
+                                            @((context as AppointmentData).AppointmentDTO.Reason)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="e-textlabel">Opmerking</td>
+                                        <td colspan="4">
+                                            <SfTextBox Multiline="true" @bind-Value="@((context as AppointmentData).AppointmentDTO.Note)" Placeholder="Opmerking" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </EditorTemplate>
+                    </ScheduleTemplates>
+                <ScheduleEventSettings DataSource="@DataSource" AllowAdding="false">
                     <Template>
-                        <AppointmentPopup Context="context" OnDeleteAppointment="CancelAppointment" />
+                        <div class="template-wrap d-flex justify-content-between">
+                        @{
+                            var data = context as AppointmentData;
+                            var StartHour = data.StartTime.ToString("HH:mm");
+                            var EndHour = data.EndTime.ToString("HH:mm");
+                            <div class="subject"><b>@StartHour - @EndHour</b> @data.Subject</div>
+                        }
+                        </div>
                     </Template>
                 </ScheduleEventSettings>
                 <ScheduleTimeScale Enable="true" SlotCount="1" Interval="15"></ScheduleTimeScale>
@@ -61,13 +115,6 @@
     private int SelectedDoctor { get; set; }
     View CurrentView = View.Week;
 
-    public async Task OnEventClick(EventClickArgs<AppointmentData> args)
-    {
-        args.Cancel = true;
-        CurrentAction action = CurrentAction.Save;
-        
-        await ScheduleRef.OpenEditorAsync(args.Event, action); //to open the editor window on event click
-    }
 
     private AppointmentData MapToAppointmentData(TimeSlotDTO timeSlot)
     {
@@ -89,6 +136,7 @@
         {
             appointmentData.Subject = "Beschikbaar";
             appointmentData.CssClass = "available";
+            appointmentData.IsReadonly = true;
         }
 
         return appointmentData;
@@ -99,7 +147,6 @@
         TimeSlots = await timeSlotService.GetTimeSlots(SelectedDoctor);
         DataSource.Clear();
         DataSource = TimeSlots.Select(MapToAppointmentData).ToList();
-        CurrentDate = DateTime.Now;
     }
 
     private async Task OnSelectedValueChanged(int? value)
@@ -116,13 +163,31 @@
         await LoadTimeSlots(SelectedDoctor);
     }
 
+    public async void OnActionBegin(ActionEventArgs<AppointmentData> args)
+    {
+        if (args.ActionType == ActionType.EventRemove)   //To check for request type is event delete
+        {
+            AppointmentData appointmentData = args.DeletedRecords[0];
+            await CancelAppointment(appointmentData.Id);
+        } 
+        else if (args.ActionType == ActionType.EventChange)
+        {
+            AppointmentData appointmentData = args.ChangedRecords[0];
+            TimeSlotDTO timeSlot = TimeSlots.FirstOrDefault(ts => ts.Id == appointmentData.Id);
+            timeSlot.AppointmentDTO.Note = appointmentData.AppointmentDTO.Note;
+
+            await appointmentService.UpdateAppointment(timeSlot.AppointmentDTO);
+
+            Console.WriteLine(appointmentData.Id);
+        }
+    }
+
     protected async Task CancelAppointment(int id)
     {
         TimeSlotDTO timeSlot = TimeSlots.FirstOrDefault(ts => ts.Id == id);
         await appointmentService.DeleteAppointment(timeSlot.AppointmentDTO);
         timeSlot.AppointmentDTO = null;
         await timeSlotService.UpdateTimeSlot(timeSlot, SelectedDoctor);
-        DataSource.Remove(DataSource.FirstOrDefault(ds => ds.Id == id));
     }
 }
 

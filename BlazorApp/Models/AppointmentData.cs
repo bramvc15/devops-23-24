@@ -12,5 +12,6 @@ namespace BlazorApp.Models
         public string CssClass { get; set; }
         public AppointmentDTO AppointmentDTO { get; set; }
         public TimeSlotDTO TimeSlotDTO { get; set; }
+        public bool IsReadonly { get; set;}
     }
 }

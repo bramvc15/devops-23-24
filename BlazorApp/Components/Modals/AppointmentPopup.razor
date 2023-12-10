@@ -7,7 +7,7 @@
         var StartHour = data.StartTime.ToString("HH:mm");
         var EndHour = data.EndTime.ToString("HH:mm");
         <div @onclick="ShowModal" class="subject"><b>@StartHour - @EndHour</b> @data.Subject</div>
-        
+
         @if(data.AppointmentDTO != null) {
             <Modal @ref="modalRef" class="modal">
                 <ModalContent Centered>
@@ -22,6 +22,10 @@
                             <b>Opmerking:</b> @data.AppointmentDTO.Note<br />
                             <b>Type:</b> @data.TimeSlotDTO.AppointmentType<br />
                         </div>
+                        <Field>
+                            <FieldLabel>Titel</FieldLabel>
+                            <input type="text" class="form-control" @bind="@data.Subject" />
+                        </Field>
                     </ModalBody>
                     <ModalFooter>
                         <button class="btn btn-danger" @onclick="HandleCancelAppointment">Annuleer</button>
@@ -40,6 +44,7 @@
     public EventCallback<int> OnDeleteAppointment { get; set; }
 
     private Modal? modalRef;
+    private string note;
 
     private Task? ShowModal()
     {
@@ -51,6 +56,13 @@
     protected async Task HandleCancelAppointment()
     {
         await OnDeleteAppointment.InvokeAsync((Context as AppointmentData).Id);
+    }
+
+    protected override void OnInitialized()
+    {
+        var data = Context as AppointmentData;
+        if(data.AppointmentDTO != null)
+            note = data.AppointmentDTO.Note;
     }
 }
 
