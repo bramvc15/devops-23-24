@@ -1,34 +1,59 @@
 @using Models
 @using Microsoft.AspNetCore.Components;
+@using Shared.DTO.Core;
+@using Services.Core;
+@inject PatientService patientService;
+@inject AppointmentService appointmentService;
+@inject TimeSlotService timeSlotService;
 
 <div class="template-wrap d-flex justify-content-between">
     @{
-        var data = Context as AppointmentData;
-        var StartHour = data.StartTime.ToString("HH:mm");
-        var EndHour = data.EndTime.ToString("HH:mm");
-        <div @onclick="ShowModal" class="subject"><b>@StartHour - @EndHour</b> @data.Subject</div>
-
-        @if(data.AppointmentDTO != null) {
             <Modal @ref="modalRef" class="modal">
                 <ModalContent Centered>
                     <ModalHeader>
-                        <ModalTitle>@StartHour - @EndHour</ModalTitle>
+                        <ModalTitle>Maak afspraak</ModalTitle>
                         <CloseButton />
                     </ModalHeader>
                     <ModalBody>
-                        <div class="body">
-                            <b>Patiënt:</b> @data.Subject<br />
-                            <b>Reden:</b> @data.AppointmentDTO.Reason<br />
-                            <b>Opmerking:</b> @data.AppointmentDTO.Note<br />
-                            <b>Type:</b> @data.TimeSlotDTO.AppointmentType<br />
-                        </div>
                         <Field>
-                            <FieldLabel>Titel</FieldLabel>
-                            <input type="text" class="form-control" @bind="@data.Subject" />
+                            <FieldBody>
+                                    <FieldLabel>Patiënt</FieldLabel>
+                                    <Select TValue="int" @bind-SelectedValue="patientId">
+                                    @if(patients != null) {
+                                        @foreach (var patient in patients)
+                                        {
+                                            <SelectItem Value="@patient.Id">@patient.Name</SelectItem>
+                                        }
+                                    }
+                                    </Select>
+                            </FieldBody>
+                        </Field>
+                        <Field>
+                            <FieldBody>
+                                <FieldLabel>Reden</FieldLabel>
+                                <TextEdit Placeholder="Reden" @bind-Text="reason" />
+                            </FieldBody>
+                        </Field>
+                        <Field>
+                            <FieldBody>
+                                <FieldLabel>Opmerking</FieldLabel>
+                                <TextEdit Placeholder="Opmerking" @bind-Text="note" />
+                            </FieldBody>
+                        </Field>
+                        <Field>
+                            <FieldBody>
+                                <FieldLabel>Type</FieldLabel>
+                                <Select TValue="Shared.Enums.AppointmentType" @bind-Value="type">
+                                    @foreach (Shared.Enums.AppointmentType type in Enum.GetValues(typeof(Shared.Enums.AppointmentType)))
+                                    {
+                                        <SelectItem Value="@type">@type</SelectItem>
+                                    }
+                                </Select>
+                            </FieldBody>
                         </Field>
                     </ModalBody>
                     <ModalFooter>
-                        <button class="btn btn-danger" @onclick="HandleCancelAppointment">Annuleer</button>
+                        <Button Color="Color.Primary" Clicked="@CreateAppointment">Maak</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
@@ -37,32 +62,38 @@
 </div>
 
 @code {
-    [Parameter]
-    public object Context { get; set; }
 
     [Parameter]
-    public EventCallback<int> OnDeleteAppointment { get; set; }
+    public TimeSlotDTO TimeSlot { get; set; }
 
     private Modal? modalRef;
-    private string note;
+    private IEnumerable<PatientDTO> patients;
 
-    private Task? ShowModal()
+    private int patientId;
+    private string reason;
+    private string note;
+    private Shared.Enums.AppointmentType type;
+
+    public Task? ShowModal()
     {
         if(modalRef == null)
             return Task.CompletedTask;
         return modalRef?.Show();
     }
 
-    protected async Task HandleCancelAppointment()
+    private async Task CreateAppointment()
     {
-        await OnDeleteAppointment.InvokeAsync((Context as AppointmentData).Id);
+
+        Console.WriteLine(patientId);
+
+        await appointmentService.CreateAppointment((int)TimeSlot.Id, patientId, reason, note);
+        await modalRef?.Hide();
     }
 
-    protected override void OnInitialized()
-    {
-        var data = Context as AppointmentData;
-        if(data.AppointmentDTO != null)
-            note = data.AppointmentDTO.Note;
+    protected override async Task OnInitializedAsync()
+    {   
+        TimeSlot = new TimeSlotDTO();
+        patients = await patientService.GetPatients();
     }
 }
 
