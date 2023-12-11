@@ -105,7 +105,7 @@
                     <ScheduleView Option="View.Agenda" StartHour="07:00" EndHour="20:00"></ScheduleView>
                 </ScheduleViews>
             </SfSchedule>
-            <AppointmentPopup @ref="@AppointmentPopupRef" TimeSlot="SelectedTimeslot" DoctorId="SelectedDoctor" />
+            <AppointmentPopup @ref="@AppointmentPopupRef" TimeSlot="SelectedTimeslot" DoctorId="SelectedDoctor" OnRefresh="LoadTimeSlots"/>
     </div>
 </div>
 
@@ -152,7 +152,7 @@
         return appointmentData;
     }
 
-    private async Task LoadTimeSlots(int doctorId)
+    private async Task LoadTimeSlots()
     {
         TimeSlots = await timeSlotService.GetTimeSlots(SelectedDoctor);
         DataSource.Clear();
@@ -162,7 +162,7 @@
     private async Task OnSelectedValueChanged(int? value)
     {
         SelectedDoctor = (int)value;
-        await LoadTimeSlots(SelectedDoctor);
+        await LoadTimeSlots();
     }
 
     protected override async Task OnInitializedAsync()
@@ -170,7 +170,7 @@
         DataSource = new List<AppointmentData>();
         Doctors = await doctorService.GetDoctors();
         SelectedDoctor = (int)Doctors.FirstOrDefault().Id;
-        await LoadTimeSlots(SelectedDoctor);
+        await LoadTimeSlots();
     }
 
     public async void OnActionBegin(ActionEventArgs<AppointmentData> args)
@@ -179,7 +179,7 @@
         {
             AppointmentData appointmentData = args.DeletedRecords[0];
             await CancelAppointment(appointmentData.Id);
-            LoadTimeSlots(SelectedDoctor);
+            await LoadTimeSlots();
             StateHasChanged();
         } 
         else if (args.ActionType == ActionType.EventChange)
@@ -191,7 +191,7 @@
             await appointmentService.UpdateAppointment(timeSlot.AppointmentDTO);
             await timeSlotService.UpdateTimeSlot(timeSlot, SelectedDoctor);
 
-            Console.WriteLine(appointmentData.Id);
+            await LoadTimeSlots();
         }
     }
 

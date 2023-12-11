@@ -79,6 +79,9 @@
     [Parameter]
     public int DoctorId { get; set; }
 
+    [Parameter]
+    public EventCallback OnRefresh { get; set; }
+
     private Validations validations;
     private Modal? modalRef;
     private IEnumerable<PatientDTO> patients;
@@ -106,6 +109,7 @@
 
         await appointmentService.CreateAppointment((int)TimeSlot.Id, patientId, reason, note);
         await timeSlotService.UpdateTimeSlot(TimeSlot, DoctorId);
+        await OnRefresh.InvokeAsync();
         await modalRef?.Hide();
         }
     }
