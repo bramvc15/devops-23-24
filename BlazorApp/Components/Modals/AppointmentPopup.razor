@@ -14,11 +14,15 @@
                         <ModalTitle>Maak afspraak</ModalTitle>
                         <CloseButton />
                     </ModalHeader>
+                    
+                    <Validations @ref="validations" Mode="ValidationMode.Auto">
                     <ModalBody>
+                    <Validation Validator="@ValidatePatient">
                         <Field>
                             <FieldBody>
                                     <FieldLabel>Patiënt</FieldLabel>
                                     <Select TValue="int" @bind-SelectedValue="patientId">
+                                    <SelectItem Value="0">Selecteer een patiënt</SelectItem>
                                     @if(patients != null) {
                                         @foreach (var patient in patients)
                                         {
@@ -28,6 +32,7 @@
                                     </Select>
                             </FieldBody>
                         </Field>
+                    </Validation>
                         <Field>
                             <FieldBody>
                                 <FieldLabel>Reden</FieldLabel>
@@ -43,7 +48,7 @@
                         <Field>
                             <FieldBody>
                                 <FieldLabel>Type</FieldLabel>
-                                <Select TValue="Shared.Enums.AppointmentType" @bind-Value="type">
+                                <Select TValue="Shared.Enums.AppointmentType" @bind-SelectedValue="type">
                                     @foreach (Shared.Enums.AppointmentType type in Enum.GetValues(typeof(Shared.Enums.AppointmentType)))
                                     {
                                         <SelectItem Value="@type">@type</SelectItem>
@@ -52,6 +57,7 @@
                             </FieldBody>
                         </Field>
                     </ModalBody>
+                    </Validations>
                     <ModalFooter>
                         <Button Color="Color.Primary" Clicked="@CreateAppointment">Maak</Button>
                     </ModalFooter>
@@ -66,6 +72,10 @@
     [Parameter]
     public TimeSlotDTO TimeSlot { get; set; }
 
+    [Parameter]
+    public int DoctorId { get; set; }
+
+    private Validations validations;
     private Modal? modalRef;
     private IEnumerable<PatientDTO> patients;
 
@@ -83,17 +93,27 @@
 
     private async Task CreateAppointment()
     {
-
+        if (await validations.ValidateAll()) {
         Console.WriteLine(patientId);
 
+        TimeSlot.AppointmentType = type;
+
+        Console.WriteLine(TimeSlot.AppointmentType);
+
         await appointmentService.CreateAppointment((int)TimeSlot.Id, patientId, reason, note);
+        await timeSlotService.UpdateTimeSlot(TimeSlot, DoctorId);
         await modalRef?.Hide();
+        }
     }
 
     protected override async Task OnInitializedAsync()
     {   
         TimeSlot = new TimeSlotDTO();
         patients = await patientService.GetPatients();
+    }
+
+    void ValidatePatient(ValidatorEventArgs e) {
+        e.Status = patientId == 0 ? ValidationStatus.Error : ValidationStatus.None;
     }
 }
 
