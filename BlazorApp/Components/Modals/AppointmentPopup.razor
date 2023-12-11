@@ -63,6 +63,7 @@
                     </ModalBody>
                     </Validations>
                     <ModalFooter>
+                        <Button Color="Color.Danger" Clicked="@DeleteTimeSlot">Verwijder tijdsslot</Button>
                         <Button Color="Color.Primary" Clicked="@CreateAppointment">Maak</Button>
                     </ModalFooter>
                 </ModalContent>
@@ -101,17 +102,21 @@
     private async Task CreateAppointment()
     {
         if (await validations.ValidateAll()) {
-        Console.WriteLine(patientId);
 
         TimeSlot.AppointmentType = type;
-
-        Console.WriteLine(TimeSlot.AppointmentType);
 
         await appointmentService.CreateAppointment((int)TimeSlot.Id, patientId, reason, note);
         await timeSlotService.UpdateTimeSlot(TimeSlot, DoctorId);
         await OnRefresh.InvokeAsync();
         await modalRef?.Hide();
         }
+    }
+    
+    private async Task DeleteTimeSlot()
+    {
+        await timeSlotService.DeleteTimeSlot(TimeSlot, DoctorId);
+        await OnRefresh.InvokeAsync();
+        await modalRef?.Hide();
     }
 
     protected override async Task OnInitializedAsync()
