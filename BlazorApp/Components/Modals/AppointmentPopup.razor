@@ -33,18 +33,22 @@
                             </FieldBody>
                         </Field>
                     </Validation>
+                    <Validation Validator="@ValidateReason">
                         <Field>
                             <FieldBody>
                                 <FieldLabel>Reden</FieldLabel>
                                 <TextEdit Placeholder="Reden" @bind-Text="reason" />
                             </FieldBody>
                         </Field>
+                    </Validation>
+                    <Validation Validator="@ValidateNote">
                         <Field>
                             <FieldBody>
                                 <FieldLabel>Opmerking</FieldLabel>
                                 <TextEdit Placeholder="Opmerking" @bind-Text="note" />
                             </FieldBody>
                         </Field>
+                    </Validation>
                         <Field>
                             <FieldBody>
                                 <FieldLabel>Type</FieldLabel>
@@ -114,6 +118,14 @@
 
     void ValidatePatient(ValidatorEventArgs e) {
         e.Status = patientId == 0 ? ValidationStatus.Error : ValidationStatus.None;
+    }
+
+    void ValidateReason(ValidatorEventArgs e) {
+        e.Status = string.IsNullOrEmpty(reason) ? ValidationStatus.Error : ValidationStatus.None;
+    }
+
+    void ValidateNote (ValidatorEventArgs e) {
+        e.Status = string.IsNullOrEmpty(note) ? ValidationStatus.Error : ValidationStatus.None;
     }
 }
 
