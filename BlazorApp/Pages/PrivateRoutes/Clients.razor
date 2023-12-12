@@ -1,4 +1,4 @@
-@page "/admin/patiënten"
+@page "/admin/clients"
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 @using System.Text.Json
@@ -11,54 +11,159 @@
 @inject PatientService patientService
 @inject NavigationManager NavManager
 @using BlazorApp.Components.Modals
+@using Shared.Enums;
 
 @attribute [Authorize(Roles = "Admin, Employee")]
 
-<PageTitle>Admin - Chat Bot</PageTitle>
+<PageTitle>Admin - Clients</PageTitle>
 
 <SideNavMenu />
 <div class="content">
-    <div class="container">
-        <h1>Patiënten in het systeem</h1>
+    <div class="info-container">
+        <h1>Clients in het systeem</h1>
+        <div class="add-button">
+            <AddDoctorPopup />
+        </div>
+        <div class="containerr">
         @if (patients != null && patients.Count() > 0)
         {
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Naam</th>
-                        <th>Telefoonnummer</th>
-                        <th>Email</th>
-                        <th>Geboortedatum</th>
-                        <th>Geslacht</th>
-                        <th>Bloedgroep</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="headers">
+                <p>Id</p>
+                <p>Naam</p>
+                <p>Telefoon</p>
+                <p>Email</p>
+                <p>Geboortedatum</p>
+                <p>Geslacht</p>
+                <p>Bloedgroep</p>
+                <p>Acties</p>
+            </div>
+            <span class="headLine"></span>
                     @foreach (var patient in patients)
                     {
-                        <tr>
-                            <td>@patient.Id</td>
-                            <td>@patient.Name</td>
-                            <td>@patient.PhoneNumber</td>
-                            <td>@patient.Email</td>
-                            <td>@patient.DateOfBirth.ToString("dd/MM/yyyy")</td>
-                            <td>@patient.Gender</td>
-                            <td>@patient.BloodType</td>
-                        </tr>
+                        index++;
+                        <div class="@((index % 2 == 0) ? "even" : "odd") doc-container">
+                            <p>@patient.Id</p>
+                            <p>@patient.Name</p>
+                            <p>@patient.PhoneNumber</p>
+                            <p>@patient.Email</p>
+                            <p>@patient.DateOfBirth.ToString("dd/MM/yyyy")</p>
+                            <p>@patient.Gender</p>
+                            <p>@patient.BloodType</p>
+                            <div class="doc-action-con">
+                                <button class="edit-btn" @onclick="( () => ShowModal(patient) )"><Icon Name="IconName.Edit" /></button>
+                            </div>
+                        </div>
                     }
-                </tbody>
-            </table>
-        }
+                }
+        </div>
     </div>
-
 </div>
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Patient updaten</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Naam</FieldLabel>
+                <TextEdit Placeholder="Geef naam..." @bind-Text="newName" />
+            </Field>
+            <Field>
+                <FieldLabel>Telefoon</FieldLabel>
+                <TextEdit Placeholder="Geef telefoon..." @bind-Text="newPhoneNumber" />
+            </Field>
+            <Field>
+                <FieldLabel>Email</FieldLabel>
+                <TextEdit Placeholder="Geef mail..." @bind-Text="newEmail" />
+            </Field>
+            <Field>
+                <FieldLabel>Geboortedatum</FieldLabel>
+                <input type="datetime-local" @bind="newDateOfBirth"/>
+            </Field>
+            <Field>
+                <FieldLabel>Bloedgroep</FieldLabel>
+                <select @bind="newBloodType">
+                    <option value="APositive">APositive</option>
+                    <option value="ANegative">ANegative</option>
+                    <option value="BPositive">BPositive</option>
+                    <option value="BNegative">BNegative</option>
+                    <option value="ABPositive">ABPositive</option>
+                    <option value="ABNegative">ABNegative</option>
+                    <option value="OPositive">OPositive</option>
+                    <option value="ONegative">ONegative</option>
+                </select>
+            </Field>
+            <Field>
+                <FieldLabel>Gender</FieldLabel>
+                <select @bind="newGender">
+                    <option value="Male">Man</option>
+                    <option value="Female">Vrouw</option>
+                    <option value="Other">Anders</option>
+                </select>
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@UpdatePatient">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 @code {
+    private int index = 0;
     private IEnumerable<PatientDTO> patients;
+    private PatientDTO clickedPatient;
+
+    int? id;
+    string? newName;
+    string? newPhoneNumber;
+    string? newEmail;
+    DateTime newDateOfBirth;
+    Gender newGender;
+    BloodType newBloodType;
+    protected bool readOnly;
+
+    private Modal? modalRef;
 
     protected override async Task OnInitializedAsync()
     {
         patients = await patientService.GetPatients();
+    }
+
+    private async Task<Task?> ShowModal(PatientDTO patient)
+    {
+        clickedPatient = patient;
+        id = patient.Id;
+        newName = patient.Name;
+        newPhoneNumber = patient.PhoneNumber;
+        newEmail = patient.Email;
+        newDateOfBirth = patient.DateOfBirth;
+        newGender = patient.Gender;
+        newBloodType = patient.BloodType;
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async void UpdatePatient()
+    {
+        PatientDTO patient = new()
+        {
+            Id = clickedPatient.Id,
+            Name = newName,
+            PhoneNumber = newPhoneNumber,
+            Email = newEmail,
+            DateOfBirth = newDateOfBirth,
+            Gender = newGender,
+            BloodType = newBloodType
+        };
+        await patientService.UpdatePatient(patient);
+        await HideModal();
     }
 
 }

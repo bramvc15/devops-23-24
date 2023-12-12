@@ -33,7 +33,7 @@
                     <p>Geslacht</p>
                     <p>Biografie</p>
                     <p>IsBeschikbaar</p>
-                    <p>Actions</p>
+                    <p>Acties</p>
                 </div>
                 <span class="headLine"></span>
                 @foreach (var doctor in doctors)
@@ -82,7 +82,7 @@
         <ModalBody>
             <Field>
                 <FieldLabel>Naam</FieldLabel>
-                <TextEdit Placeholder="Geef titel..." @bind-Text="newName" />
+                <TextEdit Placeholder="Geef naam..." @bind-Text="newName" />
             </Field>
             <Field>
                 <FieldLabel>Specialisatie</FieldLabel>
@@ -171,8 +171,8 @@
         await HideModal();
     }
 
-    private async void DeleteDoctor(DoctorDTO d)
+    private async void DeleteDoctor(DoctorDTO p)
     {
-        await doctorService.DeleteDoctor(d);
+        await doctorService.DeleteDoctor(p);
     }
 }
