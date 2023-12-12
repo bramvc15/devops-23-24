@@ -69,7 +69,7 @@ h1 {
   }
   
   .even {
-    background-color: rgb(228, 228, 228)
+    background-color: rgb(228, 228, 228);
   }
 
 .doc-action-con {
@@ -105,6 +105,29 @@ h1 {
     cursor: pointer;
     transition: 0.3s;
     border: azure solid 2px;
+}
+
+.bio {
+    position: relative;
+}
+
+.tooltip-text {
+    display: none;
+}
+
+.bio:hover .tooltip-text {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 150%;
+    transform: translateX(-50%);
+    background-color: rgb(22, 44, 104);
+    color: azure;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    z-index: 1;
 }
 
 @media (max-width: 1400px) {
