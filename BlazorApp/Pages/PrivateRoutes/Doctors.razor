@@ -66,58 +66,9 @@
                         <span class="line"></span>
                     }
              }
-       
         </div>
     </div>
 </div>
-
- @* @if (doctors != null && doctors.Count() > 0)
-        {
-            <table class="table-striped">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Naam</th>
-                        <th>Specialisatie</th>
-                        <th>Geslacht</th>
-                        <th>Biographie</th>
-                        <th>IsBeschikbaar</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var doctor in doctors)
-                    {
-                        <tr>
-                            <td>@doctor.Id</td>
-                            <td>@doctor.Name</td>
-                            <td>@doctor.Specialization</td>
-                            <td>@doctor.Gender</td>
-                            @if (doctor.Biograph == null)
-                            {
-                                <td class="noBio">Geen Bio</td>
-                            } else {
-                                <td class="bio">@doctor.Biograph</td>
-                            }
-                            @if (doctor.IsAvailable == true)
-                            {
-                                <td>Ja</td>
-                            }
-                            else
-                            {
-                                <td>Nee</td>
-                            }
-                            <td>
-                                    <button class="btn btn-primary" @onclick="( () => ShowModal(doctor) )">Bewerken</button>
-                                    <br />
-                                    <br />
-                                    <button class="btn btn-danger" @onclick="() => DeleteDoctor(doctor)">Verwijderen</button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        } *@
 
 <Modal @ref="modalRef">
     <ModalContent Centered>

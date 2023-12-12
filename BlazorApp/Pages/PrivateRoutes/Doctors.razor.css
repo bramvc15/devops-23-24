@@ -26,7 +26,7 @@
 
 h1 {
     color: rgb(22, 44, 104);
-    margin-top: 4%;
+    margin-top: 6%;
     margin-left: 5%;
 }
 
@@ -105,5 +105,104 @@ h1 {
     cursor: pointer;
     transition: 0.3s;
     border: azure solid 2px;
+}
+
+@media (max-width: 1400px) {
+    .info-container {
+        margin-top: 0;
+    }
+    
+}
+
+@media (max-width: 950px) {
+    .headers, .doc-container {
+        grid-template-columns: repeat(7, minmax(100px, 1fr));
+        /* width: fit-content; */
+    }
+
+    .content {
+        z-index: 0;
+        position: absolute;
+    }
+
+    h1 {
+        margin-top: 1.5%;
+        margin-left: 7%;
+        font-size: 1.5rem;
+    }
+
+    .headers p {
+        min-width: fit-content !important;
+        font-size: smaller;
+    }
+
+    .odd, .even {
+        width: fit-content;
+    }
+
+    .info-container {
+        min-width: fit-content !important;
+        margin: 0 !important;
+    }
+
+    .headLine {
+        display: none;
+    }
+
+    .containerr {
+        margin-left: 10%;
+        overflow-x: auto;
+        /* width: fit-content; */
+    }
+
+}
+
+@media (max-width: 600px) {
+    .headLine {
+        display: none;
+    }
+
+    .content {
+        z-index: 0;
+        position: absolute;
+    }
+
+    .info-container {
+        min-width: fit-content !important;
+        margin: 0 !important;
+    }
+
+    h1 {
+        margin-top: 1.5%;
+        margin-left: 10%;
+        font-size: 1.5rem;
+    }
+
+    .headers, .doc-container {
+        grid-template-columns: repeat(7, minmax(100px, 1fr));
+        /* width: fit-content; */
+    }
+
+    .headers p {
+        min-width: fit-content !important;
+        font-size: smaller;
+    }
+
+    .containerr {
+        margin-left: 10%;
+        overflow-x: auto;
+        /* width: fit-content; */
+    }
+
+    .add-button {
+        margin-left: 8%;
+        margin-top: 4%;
+        margin-bottom: 7%;
+    }
+
+    .odd, .even {
+        width: fit-content;
+    }
+    
 }
 
