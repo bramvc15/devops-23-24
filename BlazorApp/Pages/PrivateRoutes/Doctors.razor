@@ -12,14 +12,18 @@
 @inject NavigationManager NavManager
 @using BlazorApp.Components.Modals
 
-@attribute [Authorize(Roles = "Admin, Employee")]
+@attribute [Authorize(Roles = "Admin")]
 
-<PageTitle>Admin - Chat Bot</PageTitle>
+<PageTitle>Admin - Doctors</PageTitle>
 
 <SideNavMenu />
 <div class="content">
-    <div class="container">
+    <div>
         <h1>Dokters in het systeem</h1>
+        <div class="container">
+            <div class="add-button">
+                 <AddDoctorPopup />
+            </div>
         @if (doctors != null && doctors.Count() > 0)
         {
             <table class="table table-striped">
@@ -31,6 +35,7 @@
                         <th>Geslacht</th>
                         <th>Biographie</th>
                         <th>IsBeschikbaar</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,22 +46,57 @@
                             <td>@doctor.Name</td>
                             <td>@doctor.Specialization</td>
                             <td>@doctor.Gender</td>
-                            <td>@doctor.Biograph</td>
-                            <td>@doctor.IsAvailable</td>
+                            @if (doctor.Biograph == null)
+                            {
+                                <td class="noBio">Geen Bio</td>
+                            } else {
+                                <td class="bio">@doctor.Biograph</td>
+                            }
+                            @if (doctor.IsAvailable == true)
+                            {
+                                <td>Ja</td>
+                            }
+                            else
+                            {
+                                <td>Nee</td>
+                            }
+                            <td>
+                                    <button class="btn btn-primary" @onclick="() => UpdateDoctor(doctor.Id)">Bewerken</button>
+                                    <br />
+                                    <br />
+                                    <button class="btn btn-danger" @onclick="() => DeleteDoctor(doctor.Id)">Verwijderen</button>
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
         }
+        </div>
     </div>
-
 </div>
 @code {
     private IEnumerable<DoctorDTO> doctors;
+    private DoctorDTO clickedDoctor;
 
     protected override async Task OnInitializedAsync()
     {
         doctors = await doctorService.GetDoctors();
     }
 
+    private Modal? modalRef;
+    private int? id;
+    private string? newDoctorName;
+    private string? newDoctorSpecialization;
+    private string? newDoctorGender;
+    private string? newDoctorBio;
+
+    public async Task UpdateDoctor(int? id)
+    {
+
+    }
+
+    public async Task DeleteDoctor(int? id)
+    {
+        
+    }
 }

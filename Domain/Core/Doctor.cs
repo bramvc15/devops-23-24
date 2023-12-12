@@ -22,7 +22,7 @@ public class Doctor : Entity
     public Gender Gender
     {
         get => gender;
-        private set => Guard.Against.EnumOutOfRange(value, nameof(Gender));
+        private set => gender = Guard.Against.EnumOutOfRange(value, nameof(Gender));
     }
     public string? Biograph { get; private set; }
     public bool IsAvailable { get; set; } = true;
@@ -40,6 +40,7 @@ public class Doctor : Entity
         Name = name;
         Specialization = specialization;
         Gender = gender;
+        Biograph = biograph;
         ScheduleTimeSlots = new List<ScheduleTimeSlot>();
         TimeSlots = new List<TimeSlot>();
     }
