@@ -11,6 +11,7 @@
 @inject DoctorService doctorService
 @inject NavigationManager NavManager
 @using BlazorApp.Components.Modals
+@using Shared.Enums;
 
 @attribute [Authorize(Roles = "Admin")]
 
@@ -20,10 +21,11 @@
 <div class="content">
     <div>
         <h1>Dokters in het systeem</h1>
-        <div class="container">
             <div class="add-button">
                  <AddDoctorPopup />
             </div>
+        <div class="container">
+            
         @if (doctors != null && doctors.Count() > 0)
         {
             <table class="table table-striped">
@@ -61,10 +63,10 @@
                                 <td>Nee</td>
                             }
                             <td>
-                                    <button class="btn btn-primary" @onclick="() => UpdateDoctor(doctor.Id)">Bewerken</button>
+                                    <button class="btn btn-primary" @onclick="( () => ShowModal(doctor) )">Bewerken</button>
                                     <br />
                                     <br />
-                                    <button class="btn btn-danger" @onclick="() => DeleteDoctor(doctor.Id)">Verwijderen</button>
+                                    <button class="btn btn-danger" @onclick="() => DeleteDoctor(doctor)">Verwijderen</button>
                             </td>
                         </tr>
                     }
@@ -74,6 +76,50 @@
         </div>
     </div>
 </div>
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Dokter updaten</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Naam</FieldLabel>
+                <TextEdit Placeholder="Geef titel..." @bind-Text="newName" />
+            </Field>
+            <Field>
+                <FieldLabel>Specialisatie</FieldLabel>
+                <TextEdit Placeholder="Geef specialisatie..." @bind-Text="newSpecialization" />
+            </Field>
+            <Field>
+                <FieldLabel>Geslacht</FieldLabel>
+                <select @bind="newGender">
+                    <option value="Male">Man</option>
+                    <option value="Female">Vrouw</option>
+                    <option value="Other">Anders</option>
+                </select>
+            </Field>
+            <Field>
+                <FieldLabel>Biografie</FieldLabel>
+                <TextEdit Placeholder="Geef biografie..." @bind-Text="newBio" />
+            </Field>
+            <Field>
+                <FieldLabel>Beschikbaar?</FieldLabel>
+                <input type="checkbox"  @bind="newIsAvailable" />
+            </Field>
+            <Field>
+                <FieldLabel>Afbeelding</FieldLabel>
+                <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImageLink" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateDoctor">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 @code {
     private IEnumerable<DoctorDTO> doctors;
     private DoctorDTO clickedDoctor;
@@ -83,20 +129,60 @@
         doctors = await doctorService.GetDoctors();
     }
 
+    int? id;
+    string? newName;
+    string? newSpecialization;
+    Gender newGender;
+    string? newBio;
+    bool newIsAvailable;
+    string? newImageLink;
+    protected bool readOnly;
+
     private Modal? modalRef;
+
+    private async Task<Task?> ShowModal(DoctorDTO doctor)
+    {
+        clickedDoctor = doctor;
+        id = doctor.Id;
+        newName = doctor.Name;
+        newSpecialization = doctor.Specialization;
+        newGender = doctor.Gender;
+        newBio = doctor.Biograph;
+        newIsAvailable = doctor.IsAvailable;
+        newImageLink = doctor.ImageLink;
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async void UpdateDoctor()
+    {
+        DoctorDTO doctor = new()
+        {
+            Id = clickedDoctor.Id,
+            Name = newName,
+            Specialization = newSpecialization,
+            Gender = newGender,
+            Biograph = newBio,
+            IsAvailable = newIsAvailable,
+            ImageLink = newImageLink
+        };
+        await doctorService.UpdateDoctor(doctor);
+        await HideModal();
+    }
+
+    private async void DeleteDoctor(DoctorDTO d)
+    {
+        await doctorService.DeleteDoctor(d);
+    }
+}
+
+    @* 
     private int? id;
     private string? newDoctorName;
     private string? newDoctorSpecialization;
     private string? newDoctorGender;
-    private string? newDoctorBio;
-
-    public async Task UpdateDoctor(int? id)
-    {
-
-    }
-
-    public async Task DeleteDoctor(int? id)
-    {
-        
-    }
-}
+    private string? newDoctorBio; *@
