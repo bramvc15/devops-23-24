@@ -1,3 +1,7 @@
+.mains {
+    min-height: 100vh;
+}
+
 .buttons {
     margin-top: 20px;
 

@@ -42,7 +42,7 @@
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
+                <Button Color="Color.Primary" Clicked="@CreateBlog">Opslaan</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
@@ -73,7 +73,7 @@
         return modalRef?.Hide();
     }
 
-    private async Task UpdateTitle()
+    private async Task CreateBlog()
     {
         visible = false;
         message = string.Empty;

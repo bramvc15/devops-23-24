@@ -21,7 +21,7 @@ namespace Persistence.Data
                 "Dr. J. Van der Veken is een ervaren oogarts met een passie voor het verbeteren van het gezichtsvermogen van zijn patiënten. Met jarenlange ervaring in de oogheelkunde, is hij toegewijd aan het bieden van hoogwaardige oogzorg."
                 );
             
-            Doctor doctor2 = new("Dr. Smith", "Eye Specialist", Gender.Male, "Dit is Dr. Smith zijn Bio.");
+            Doctor doctor2 = new("Dr. Smith", "Eye Specialist", Gender.Male);
             Doctor doctor3 = new("Dr. Johnson", "Eye Specialist", Gender.Female, "Dr. Johnson is gespecialiseerd in oogheelkunde en heeft uitgebreide kennis van oogaandoeningen. Ze streeft naar het verbeteren van het zicht en de ooggezondheid van haar patiënten.");
             Doctor doctor4 = new("Dr. Martinez", "Eye Specialist", Gender.Female, "Dr. Martinez is een ervaren oogarts met een warme benadering van kinderoogzorg. Ze zet zich in voor het bieden van zorg van hoge kwaliteit aan jonge patiënten en hun families.");
             Doctor doctor5 = new("Dr. White", "Eye Specialist", Gender.Male, "Dr. White is een bekwame oogchirurg met expertise in het behandelen van diverse oogaandoeningen. Hij is vastbesloten om patiënten te helpen hun optimale gezichtsvermogen te bereiken.");
