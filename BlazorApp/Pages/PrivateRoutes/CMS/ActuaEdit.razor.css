@@ -38,6 +38,10 @@
     margin-right: 4%;
 }
 
+.alert-container {
+    margin: 50px 150px 0px 150px;
+}
+
 .actua-box {
     display: flex;
     flex-direction: column-reverse;

@@ -26,6 +26,17 @@
                 <ModalTitle>Header wijziging</ModalTitle>
                 <CloseButton />
             </ModalHeader>
+            <div class="alert-container">
+                <Alert Color="Color.Danger" @bind-Visible="@visible">
+                    <AlertDescription>
+                        @message
+                    </AlertDescription>
+                    <AlertMessage>
+                        @* Gebruiken we niet. *@
+                    </AlertMessage>
+                    <CloseButton />
+                </Alert>
+            </div>
             <ModalBody>
                 <Field>
                     <FieldLabel>Titel</FieldLabel>
@@ -72,6 +83,12 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private bool visible = false;
+    private string message = string.Empty;
+
     protected new RichTextEdit richTextEditRef;
     protected bool readOnly;
     protected string contentAsHtml;
@@ -115,15 +132,28 @@
 
     private async Task UpdateTitle()
     {
-        content = await richTextEditRef.GetHtmlAsync();
-        HomeHeaderDTO header = new()
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
         {
-            Id = homeHeader.Id,
-            Title = newTitle,
-            Context = content
-        };
-        await homeHeaderService.UpdateHomeHeader(header);
-        modalRef?.Hide();
+            content = await richTextEditRef.GetHtmlAsync();
+            HomeHeaderDTO header = new()
+                {
+                    Id = homeHeader.Id,
+                    Title = newTitle,
+                    Context = content
+                };
+            await homeHeaderService.UpdateHomeHeader(header);
+            modalRef?.Hide();
+        }
+        else
+        {
+            message = "U heeft geen toegang tot bewerken.";
+            visible = true;
+        }
     }
 
     protected override async Task OnInitializedAsync()

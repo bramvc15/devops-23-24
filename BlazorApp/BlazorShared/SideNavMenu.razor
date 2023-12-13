@@ -10,25 +10,32 @@
         <li><a href="/admin/kalenders/myagenda">MyAgenda</a></li>
         <li><a href="/admin/kalenders/scheduler">Scheduler</a></li>
     </ul>
-
+   
     <a class="sidebar-item" href="/admin/dokters"><p>Dokters</p> <i class="fa fa-fw fa-user"></i></a>
     <a class="sidebar-item" href="/admin/clients"><p>Patiënten</p> <i class="fa fa-fw fa-user"></i></a>
-    <a class="sidebar-item" href="/admin/chatbot"><p>Chatbox</p> <i class="fa fa-fw fa-comments"></i></a>
 
-    <div class="sidebar-item" @onclick="ToggleCMS" data-test-id="sidebar-cms">
-        <p>CMS</p><i class="fa fa-fw fa-envelope"></i>
-    </div>
+    @if (authenticationState.User.IsInRole("Admin"))
+    {
+        <a class="sidebar-item" href="/admin/chatbot"><p>Chatbox</p> <i class="fa fa-fw fa-comments"></i></a>
 
-    <ul class="sub-items @cmsItemStyle">
-        <li><a href="/admin/cms/home">Home Pagina</a></li>
-        <li><a href="/admin/cms/behandelingen">Behandelingen Pagina</a></li>
-        <li><a href="/admin/cms/contact">Contact Pagina</a></li>
-        <li><a href="/admin/cms/actua">Actua Pagina</a></li>
-        <li><a href="/admin/cms/faq">FAQ Pagina</a></li>
-    </ul>
+        <div class="sidebar-item" @onclick="ToggleCMS" data-test-id="sidebar-cms">
+            <p>CMS</p><i class="fa fa-fw fa-envelope"></i>
+        </div>
+        <ul class="sub-items @cmsItemStyle">
+            <li><a href="/admin/cms/home">Home Pagina</a></li>
+            <li><a href="/admin/cms/behandelingen">Behandelingen Pagina</a></li>
+            <li><a href="/admin/cms/contact">Contact Pagina</a></li>
+            <li><a href="/admin/cms/actua">Actua Pagina</a></li>
+            <li><a href="/admin/cms/faq">FAQ Pagina</a></li>
+        </ul>
+    }
 </div>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private AuthenticationState authenticationState;
+
     private bool isCMSExpanded = false;
 
     private bool isKalendersExpanded = false;
@@ -45,5 +52,10 @@
     private void ToggleKalenders()
     {
         isKalendersExpanded = !isKalendersExpanded;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        authenticationState = await authenticationStateTask;
     }
 }
