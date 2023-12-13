@@ -24,8 +24,20 @@
         <div class="add-button">
             <AddDoctorPopup />
         </div>
+        <div class="alert-container">
+            <Alert Color="Color.Danger" @bind-Visible="@visible">
+                <AlertDescription>
+                    @message
+                </AlertDescription>
+                <AlertMessage>
+                    @* Gebruiken we niet. *@
+                </AlertMessage>
+                <CloseButton />
+            </Alert>
+        </div>
         <div class="containerr">
-             @if (doctors != null && doctors.Count() > 0) {
+            @if (doctors != null && doctors.Count() > 0)
+            {
                 <div class="headers">
                     <p>Id</p>
                     <p>Naam</p>
@@ -37,38 +49,40 @@
                 </div>
                 <span class="headLine"></span>
                 @foreach (var doctor in doctors)
-                    {
-                        index++;
-                        <div class="@((index % 2 == 0) ? "even" : "odd") doc-container">
-                            <p>@doctor.Id</p>
-                            <p>@doctor.Name</p>
-                            <p>@doctor.Specialization</p>
-                            <p>@doctor.Gender</p>
-                            @if (doctor.Biograph == null)
-                            {
-                                <p class="noBio">Geen Bio</p>
-                            } else {
-                                <p class="bio">Hover me
-                                    <p class="tooltip-text">@doctor.Biograph</p>
-                                </p>
+                {
+                    index++;
+                    <div class="@((index % 2 == 0) ? "even" : "odd") doc-container">
+                        <p>@doctor.Id</p>
+                        <p>@doctor.Name</p>
+                        <p>@doctor.Specialization</p>
+                        <p>@doctor.Gender</p>
+                        @if (doctor.Biograph == null)
+                        {
+                            <p class="noBio">Geen Bio</p>
+                        }
+                        else
+                        {
+                            <p class="bio">Hover me
+                            <p class="tooltip-text">@doctor.Biograph</p>
+                            </p>
 
-                            }
-                            @if (doctor.IsAvailable == true)
-                            {
-                                <p>Ja</p>
-                            }
-                            else
-                            {
-                                <p>Nee</p>
-                            }
-                            <div class="doc-action-con">
-                                <button class="edit-btn" @onclick="( () => ShowModal(doctor) )"><Icon Name="IconName.Edit" /></button>
-                                <button class="del-btn" @onclick="() => DeleteDoctor(doctor)"><Icon Name="IconName.Delete" /></button>
-                            </div>
+                        }
+                        @if (doctor.IsAvailable == true)
+                        {
+                            <p>Ja</p>
+                        }
+                        else
+                        {
+                            <p>Nee</p>
+                        }
+                        <div class="doc-action-con">
+                            <button class="edit-btn" @onclick="( () => ShowModal(doctor) )"><Icon Name="IconName.Edit" /></button>
+                            <button class="del-btn" @onclick="() => DeleteDoctor(doctor)"><Icon Name="IconName.Delete" /></button>
                         </div>
-                        <span class="line"></span>
-                    }
-             }
+                    </div>
+                    <span class="line"></span>
+                }
+            }
         </div>
     </div>
 </div>
@@ -117,6 +131,12 @@
 </Modal>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private bool visible = false;
+    private string message = string.Empty;
+
     private int index = 0;
     private IEnumerable<DoctorDTO> doctors;
     private DoctorDTO clickedDoctor;
@@ -157,22 +177,49 @@
 
     private async void UpdateDoctor()
     {
-        DoctorDTO doctor = new()
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
         {
-            Id = clickedDoctor.Id,
-            Name = newName,
-            Specialization = newSpecialization,
-            Gender = newGender,
-            Biograph = newBio,
-            IsAvailable = newIsAvailable,
-            ImageLink = newImageLink
-        };
-        await doctorService.UpdateDoctor(doctor);
+            DoctorDTO doctor = new()
+            {
+                Id = clickedDoctor.Id,
+                Name = newName,
+                Specialization = newSpecialization,
+                Gender = newGender,
+                Biograph = newBio,
+                IsAvailable = newIsAvailable,
+                ImageLink = newImageLink
+            };
+            await doctorService.UpdateDoctor(doctor);
+        }
+        else
+        {
+            message = "U heeft geen toegang tot bewerken.";
+            visible = true;
+        }
+
         await HideModal();
     }
 
     private async void DeleteDoctor(DoctorDTO p)
     {
-        await doctorService.DeleteDoctor(p);
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
+        {
+            await doctorService.DeleteDoctor(p);
+        }
+        else
+        {
+            message = "U heeft geen toegang tot verwijderen.";
+            visible = true;
+        }
     }
 }

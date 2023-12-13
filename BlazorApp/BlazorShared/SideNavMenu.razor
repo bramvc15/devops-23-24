@@ -10,12 +10,12 @@
         <li><a href="/admin/kalenders/myagenda">MyAgenda</a></li>
         <li><a href="/admin/kalenders/scheduler">Scheduler</a></li>
     </ul>
-   
-    <a class="sidebar-item" href="/admin/dokters"><p>Dokters</p> <i class="fa fa-fw fa-user"></i></a>
+
     <a class="sidebar-item" href="/admin/clients"><p>Patiënten</p> <i class="fa fa-fw fa-user"></i></a>
 
     @if (authenticationState.User.IsInRole("Admin"))
     {
+        <a class="sidebar-item" href="/admin/dokters"><p>Dokters</p> <i class="fa fa-fw fa-user"></i></a>
         <a class="sidebar-item" href="/admin/chatbot"><p>Chatbox</p> <i class="fa fa-fw fa-comments"></i></a>
 
         <div class="sidebar-item" @onclick="ToggleCMS" data-test-id="sidebar-cms">
