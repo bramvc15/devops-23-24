@@ -11,7 +11,7 @@ namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+// [Authorize]
 public class NoteController : ControllerBase
 {
     private readonly NoteService _service;
