@@ -12,6 +12,10 @@
     padding-bottom: 3%;
 }
 
+.alert-container {
+    margin: 50px 150px 0px 150px;
+}
+
 .add-button {
     margin-left: 5%;
     margin-right: 4%;
@@ -38,7 +42,7 @@ h1 {
     color: rgb(22, 44, 104);
     width: 100%;
     display: grid;
-    grid-template-columns: 2% 15.21% 15.21% 15.21% 15.21% 15.21% 9% 12.95%;
+    grid-template-columns: 10% 15% 15% 15% 15% 12% 18%;
     text-align: center;
     font-weight: 600;
     font-size: 1.2em;
@@ -57,7 +61,7 @@ h1 {
     font-size: 1.1rem;
     height: fit-content;
     display: grid;
-    grid-template-columns: 2% 15.21% 15.21% 15.21% 15.21% 15.21% 9% 12.95%;
+    grid-template-columns: 10% 15% 15% 15% 15% 12% 18%;
     align-items: center;
     text-align: center;
     padding-bottom: 1%;
@@ -74,7 +78,7 @@ h1 {
 
 .doc-action-con {
     display: flex;
-    align-items: center;
+    flex-direction: row;
     justify-content: center;
     padding: 2px;
 }
@@ -90,10 +94,44 @@ h1 {
     margin-right: 2.5%;
 }
 
-.edit-btn:hover {
+.del-btn {
+    background-color: rgb(216, 109, 109);
+    border: solid 2px rgb(206, 70, 70);
+    border-radius: 4px;
+    width: 35%;
+    padding: 5% 10%;
+    color: azure;
+    transition: 0.3s;
+    margin-left: 2.5%;
+}
+
+.edit-btn:hover, .del-btn:hover {
     cursor: pointer;
     transition: 0.3s;
     border: azure solid 2px;
+}
+
+.bio {
+    position: relative;
+}
+
+.tooltip-text {
+    display: none;
+}
+
+.bio:hover .tooltip-text {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 150%;
+    transform: translateX(-50%);
+    background-color: rgb(22, 44, 104);
+    color: azure;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    z-index: 1;
 }
 
 @media (max-width: 1400px) {
@@ -103,9 +141,10 @@ h1 {
     
 }
 
-@media (max-width: 1150px) {
-    .headLine {
-        display: none;
+@media (max-width: 950px) {
+    .headers, .doc-container {
+        grid-template-columns: repeat(7, minmax(100px, 1fr));
+        /* width: fit-content; */
     }
 
     .content {
@@ -113,70 +152,34 @@ h1 {
         position: absolute;
     }
 
-    .info-container {
-        min-width: fit-content !important;
-        margin: 0 !important;
-    }
-
     h1 {
         margin-top: 1.5%;
-        margin-left: 10%;
+        margin-left: 7%;
         font-size: 1.5rem;
-    }
-
-    .headers {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        width: fit-content;
-        margin-left: 5%;
-        border: 0 2px 0 0 solid rgb(22, 44, 104);
-        background-color: rgb(228, 228, 228);
-    }
-
-    .doc-container {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        width: fit-content;
-        padding: 2%;
-    }
-
-    .doc-container p, .doc-container div {
-        margin-bottom: 24px !important;
     }
 
     .headers p {
         min-width: fit-content !important;
-        margin-bottom: 20% !important;
         font-size: smaller;
-    }
-
-    .containerr {
-        margin-left: 10%;
-        display: flex;
-        flex-direction: row;
-        overflow-x: auto;
-        /* width: fit-content; */
-    }
-
-    .add-button {
-        margin-left: 8%;
-        margin-top: 4%;
-        margin-bottom: 7%;
     }
 
     .odd, .even {
         width: fit-content;
     }
-    .doc-action-con {
-        width: 100%;
-        margin-top: 20px;
+
+    .info-container {
+        min-width: fit-content !important;
+        margin: 0 !important;
     }
 
-    .edit-btn {
-        width: 100%;
-        margin-right: 0;
+    .headLine {
+        display: none;
+    }
+
+    .containerr {
+        margin-left: 10%;
+        overflow-x: auto;
+        /* width: fit-content; */
     }
 
 }
@@ -202,38 +205,18 @@ h1 {
         font-size: 1.5rem;
     }
 
-    .headers {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        width: fit-content;
-        margin-left: 5%;
-        border: 0 2px 0 0 solid rgb(22, 44, 104);
-        background-color: rgb(228, 228, 228);
-    }
-
-    .doc-container {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        width: fit-content;
-        padding: 2%;
-    }
-
-    .doc-container p, .doc-container div {
-        margin-bottom: 24px !important;
+    .headers, .doc-container {
+        grid-template-columns: repeat(7, minmax(100px, 1fr));
+        /* width: fit-content; */
     }
 
     .headers p {
         min-width: fit-content !important;
-        margin-bottom: 20% !important;
         font-size: smaller;
     }
 
     .containerr {
         margin-left: 10%;
-        display: flex;
-        flex-direction: row;
         overflow-x: auto;
         /* width: fit-content; */
     }
@@ -247,14 +230,6 @@ h1 {
     .odd, .even {
         width: fit-content;
     }
-    .doc-action-con {
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    .edit-btn {
-        width: 100%;
-        margin-right: 0;
-    }
+    
 }
 

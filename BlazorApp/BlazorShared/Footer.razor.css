@@ -3,6 +3,7 @@
 .footer-container {
 
     background: rgb(13, 197, 142);
+    max-height: 10vh;
 
 }
 
@@ -11,7 +12,7 @@
     color: #fff;
     display: flex;
     justify-content: space-between;
-    padding: 10px 20px;
+    padding: 20px;
     align-items: center;
 }
 

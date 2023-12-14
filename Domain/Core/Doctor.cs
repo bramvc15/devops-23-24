@@ -22,11 +22,12 @@ public class Doctor : Entity
     public Gender Gender
     {
         get => gender;
-        private set => Guard.Against.EnumOutOfRange(value, nameof(Gender));
+        private set => gender = Guard.Against.EnumOutOfRange(value, nameof(Gender));
     }
     public string? Biograph { get; private set; }
     public bool IsAvailable { get; set; } = true;
     public string ImageLink { get; set; } = string.Empty;
+    public string Auth0Id { get; set; } = string.Empty;
     public List<ScheduleTimeSlot> ScheduleTimeSlots { get; set; }
     public List<TimeSlot> TimeSlots { get; set; }
     #endregion
@@ -40,6 +41,7 @@ public class Doctor : Entity
         Name = name;
         Specialization = specialization;
         Gender = gender;
+        Biograph = biograph;
         ScheduleTimeSlots = new List<ScheduleTimeSlot>();
         TimeSlots = new List<TimeSlot>();
     }

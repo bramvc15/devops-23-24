@@ -1,0 +1,99 @@
+@using Services.Core;
+@using Shared.DTO.Core;
+@using Shared.Enums;
+@using Persistence.Data;
+@inject DatabaseContext databaseContext
+@inject PatientService patientService
+
+<div>
+    <div class="buttons">
+        <button class="add-btn" onclick="@ShowModal">Voeg een patiënt toe</button>
+    </div>
+    <Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Patient updaten</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Naam</FieldLabel>
+                <TextEdit Placeholder="Geef naam..." @bind-Text="newName" />
+            </Field>
+            <Field>
+                <FieldLabel>Telefoon</FieldLabel>
+                <TextEdit Placeholder="Geef telefoon..." @bind-Text="newPhoneNumber" />
+            </Field>
+            <Field>
+                <FieldLabel>Email</FieldLabel>
+                <TextEdit Placeholder="Geef mail..." @bind-Text="newEmail" />
+            </Field>
+            <Field>
+                <FieldLabel>Geboortedatum</FieldLabel>
+                <input type="datetime-local" @bind="newDateOfBirth"/>
+            </Field>
+            <Field>
+                <FieldLabel>Bloedgroep</FieldLabel>
+                <select @bind="newBloodType">
+                    <option value="APositive">APositive</option>
+                    <option value="ANegative">ANegative</option>
+                    <option value="BPositive">BPositive</option>
+                    <option value="BNegative">BNegative</option>
+                    <option value="ABPositive">ABPositive</option>
+                    <option value="ABNegative">ABNegative</option>
+                    <option value="OPositive">OPositive</option>
+                    <option value="ONegative">ONegative</option>
+                </select>
+            </Field>
+            <Field>
+                <FieldLabel>Gender</FieldLabel>
+                <select @bind="newGender">
+                    <option value="Male">Man</option>
+                    <option value="Female">Vrouw</option>
+                    <option value="Other">Anders</option>
+                </select>
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@CreatePatient">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+</div>
+
+@code {
+    string? newName;
+    string? newPhoneNumber;
+    string? newEmail;
+    DateTime newDateOfBirth;
+    Gender newGender;
+    BloodType newBloodType;
+
+    private Modal? modalRef;
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async Task CreatePatient()
+    {
+        PatientDTO newPatient = new()
+            {
+                Name = newName,
+                PhoneNumber = newPhoneNumber,
+                Email = newEmail,
+                DateOfBirth = newDateOfBirth,
+                Gender = newGender,
+                BloodType = newBloodType
+            };
+        await patientService.CreatePatient(newPatient);
+        modalRef?.Hide();
+    }
+}

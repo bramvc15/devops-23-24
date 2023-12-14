@@ -12,6 +12,17 @@
             <ModalTitle>Faq aanmaken</ModalTitle>
             <CloseButton />
         </ModalHeader>
+        <div class="alert-container">
+            <Alert Color="Color.Danger" @bind-Visible="@visible">
+                <AlertDescription>
+                    @message
+                </AlertDescription>
+                <AlertMessage>
+                    @* Gebruiken we niet. *@
+                </AlertMessage>
+                <CloseButton />
+            </Alert>
+        </div>
         <ModalBody>
             <Field>
                 <FieldLabel>Nieuwe vraag</FieldLabel>
@@ -31,6 +42,12 @@
 
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private bool visible = false;
+    private string message = string.Empty;
+
     string? newQuestion;
     string? newAnswer;
 
@@ -48,12 +65,25 @@
 
     private async Task CreateFaq()
     {
-        FaqDTO newFaq = new()
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
         {
-            Question = newQuestion,
-            Answer = newAnswer
-        };
-        await faqService.CreateFaq(newFaq);
-        modalRef?.Hide();
+            FaqDTO newFaq = new()
+                {
+                    Question = newQuestion,
+                    Answer = newAnswer
+                };
+            await faqService.CreateFaq(newFaq);
+            await HideModal();
+        }
+        else
+        {
+            message = "U heeft geen toegang tot creatie.";
+            visible = true;
+        }
     }
 }

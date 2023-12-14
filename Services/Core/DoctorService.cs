@@ -35,6 +35,7 @@ namespace Services.Core
                     Biograph = doctor.Biograph,
                     IsAvailable = doctor.IsAvailable,
                     ImageLink = doctor.ImageLink,
+                    Auth0Id = doctor.Auth0Id
                 };
 
                 convertedDoctors.Add(convertedDoctor);
@@ -56,6 +57,7 @@ namespace Services.Core
                 Biograph = doctor.Biograph,
                 IsAvailable = doctor.IsAvailable,
                 ImageLink = doctor.ImageLink,
+                Auth0Id = doctor.Auth0Id
             };
 
             return dto;
@@ -68,6 +70,7 @@ namespace Services.Core
             try
             {
                 Doctor newDomainDoctor = new (newDoctor.Name, newDoctor.Specialization, newDoctor.Gender, newDoctor.Biograph);
+                newDomainDoctor.Auth0Id = newDoctor.Auth0Id;
 
                 _doctors.Add(newDomainDoctor);
                 await _DBContext.SaveChangesAsync();
@@ -79,6 +82,7 @@ namespace Services.Core
                 response.Biograph = newDomainDoctor.Biograph;
                 response.IsAvailable = newDomainDoctor.IsAvailable;
                 response.ImageLink = newDomainDoctor.ImageLink;
+                response.Auth0Id = newDomainDoctor.Auth0Id;
             }
             catch (Exception ex)
             {

@@ -1,148 +1,240 @@
 @page "/admin/kalenders/myagenda"
-@using BlazorApp.Components.Modals
 @using Services.Core;
 @using Shared.DTO.Core;
+@using Shared.Enums;
 @inject NavigationManager NavManager
-
+@using Models
 @inject TimeSlotService timeSlotService
 @inject DoctorService doctorService
 @inject AppointmentService appointmentService
-
+@using Syncfusion.Blazor.Schedule
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+@using BlazorApp.Components.Modals;
 @attribute [Authorize(Roles = "Admin, Employee")]
+
 
 <div class="sidebar">
     <SideNavMenu />
 </div>
 <div class="content">
     <div class="agenda-container">
-        <h1>Agenda</h1>
-        <SfSchedule TValue="AppointmentData" @bind-SelectedDate="@CurrentDate">
-            <ScheduleEventSettings DataSource="@DataSource"></ScheduleEventSettings>
-            <ScheduleViews>
-                <ScheduleView Option="View.Day"></ScheduleView>
-                <ScheduleView Option="View.Week"></ScheduleView>
-                <ScheduleView Option="View.WorkWeek"></ScheduleView>
-                <ScheduleView Option="View.Month"></ScheduleView>
-                <ScheduleView Option="View.Agenda"></ScheduleView>
-            </ScheduleViews>
-        </SfSchedule>
-        <button class="week-btn" @onclick="() => ChangeWeek(-7)">Vorige week</button>
-        <button class="week-btn" @onclick="() => ChangeWeek(7)">Volgende week</button>
-        <span>@currentWeekStart.ToString("dd/MM/yyyy") - @currentWeekEnd.ToString("dd/MM/yyyy")</span>
-        @if(TimeSlots != null && ListByCurrentWeekDay != null)
-        {
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Maandag</th>
-                        <th>Dinsdag</th>
-                        <th>Woensdag</th>
-                        <th>Donderdag</th>
-                        <th>Vrijdag</th>
-                        <th>Zaterdag</th>
-                        <th>Zondag</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        @foreach(var day in ListByCurrentWeekDay)
-                        {
-                            <AgendaAppointment Day="@day.Key" TimeSlots="@day.Value" />
+            <h1>Agenda</h1>
+            <Select TValue="int?" SelectedValue="@SelectedDoctor" SelectedValueChanged="@OnSelectedValueChanged">
+            @if(Doctors != null) {
+                @foreach (var doctor in Doctors)
+                {
+                    <SelectItem TValue="int?" Value="@doctor.Id">@doctor.Name</SelectItem>
+                }
+            }
+            </Select>
+            <SfSchedule TValue="AppointmentData" @ref="@ScheduleRef" @bind-SelectedDate="@CurrentDate" >
+                <ScheduleEvents TValue="AppointmentData" OnActionBegin="OnActionBegin" OnPopupOpen="OnPopupOpen"></ScheduleEvents>
+                    <ScheduleTemplates>
+                        <EditorTemplate>
+                            <table class="custom-event-editor" width="100%" cellpadding="5">
+                                <tbody>
+                                    @{
+                                        if((context as AppointmentData).AppointmentDTO != null) {
+                                        <tr>
+                                            <td class="e-textlabel">Patiënt</td>
+                                            <td colspan="4">
+                                                @((context as AppointmentData).Subject)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="e-textlabel">Starttijd</td>
+                                            <td colspan="4">
+                                                @((context as AppointmentData).StartTime.ToString("HH:mm"))
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="e-textlabel">Eindtijd</td>
+                                            <td colspan="4">
+                                                @((context as AppointmentData).EndTime.ToString("HH:mm"))
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="e-textlabel">Type</td>
+                                            <td colspan="4">
+                                                <select @bind="@((context as AppointmentData).TimeSlotDTO.AppointmentType)">
+                                                    @foreach (Shared.Enums.AppointmentType type in Enum.GetValues(typeof(Shared.Enums.AppointmentType)))
+                                                    {
+                                                        <option value="@type">@type</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="e-textlabel">Reden</td>
+                                            <td colspan="4">
+                                                @((context as AppointmentData).AppointmentDTO.Reason)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="e-textlabel">Opmerking</td>
+                                            <td colspan="4">
+                                                <SfTextBox Multiline="true" @bind-Value="@((context as AppointmentData).AppointmentDTO.Note)" Placeholder="Opmerking" />
+                                            </td>
+                                        </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </EditorTemplate>
+                    </ScheduleTemplates>
+                <ScheduleEventSettings DataSource="@DataSource" AllowAdding="false">
+                    <Template>
+                        <div class="template-wrap d-flex justify-content-between">
+                        @{
+                            var data = context as AppointmentData;
+                            var StartHour = data.StartTime.ToString("HH:mm");
+                            var EndHour = data.EndTime.ToString("HH:mm");
+                            <div class="subject"><b>@StartHour - @EndHour</b> @data.Subject</div>
                         }
-                    </tr>
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p>Geen timeslots gevonden</p>
-        }
+                        </div>
+                    </Template>
+                </ScheduleEventSettings>
+                <ScheduleTimeScale Enable="true" SlotCount="1" Interval="15"></ScheduleTimeScale>
+                <ScheduleViews>
+                    <ScheduleView Option="View.Day" StartHour="07:00" EndHour="20:00"></ScheduleView>
+                    <ScheduleView Option="View.Week" StartHour="07:00" EndHour="20:00" FirstDayOfWeek="1"></ScheduleView>
+                    <ScheduleView Option="View.WorkWeek" StartHour="07:00" EndHour="20:00"></ScheduleView>
+                    <ScheduleView Option="View.Month" StartHour="07:00" EndHour="20:00"></ScheduleView>
+                    <ScheduleView Option="View.Agenda" StartHour="07:00" EndHour="20:00"></ScheduleView>
+                </ScheduleViews>
+            </SfSchedule>
+            <AppointmentPopup @ref="@AppointmentPopupRef" TimeSlot="SelectedTimeslot" DoctorId="SelectedDoctor" OnRefresh="LoadTimeSlots"/>
     </div>
 </div>
 
 @code {
 
-    private IEnumerable<TimeSlotDTO> TimeSlots { get; set; }
+    SfSchedule<AppointmentData> ScheduleRef;
 
+    private IEnumerable<TimeSlotDTO> TimeSlots { get; set; }
+    private TimeSlotDTO SelectedTimeslot { get; set; }
     private IEnumerable<TimeSlotDTO> TimeSlotsByWeek { get; set; }
 
-    private DateTime currentWeekStart = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).AddDays(1);
-    private DateTime currentWeekEnd = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).AddDays(7);
+    private AppointmentPopup AppointmentPopupRef;
 
-    DateTime CurrentDate = new DateTime(2020, 2, 14);
-    List<AppointmentData> DataSource = new List<AppointmentData>
+    private DateTime CurrentDate = DateTime.Now;
+    private List<AppointmentData> DataSource { get; set; }
+    private IEnumerable<DoctorDTO> Doctors { get; set; }
+    private int SelectedDoctor { get; set; }
+    View CurrentView = View.Week;
+
+
+    private AppointmentData MapToAppointmentData(TimeSlotDTO timeSlot)
     {
-        new AppointmentData { Id = 1, Subject = "Paris", StartTime = new DateTime(2020, 2, 13, 10, 0, 0) , EndTime = new DateTime(2020, 2, 13, 12, 0, 0) },
-        new AppointmentData { Id = 2, Subject = "Germany", StartTime = new DateTime(2020, 2, 15, 10, 0, 0) , EndTime = new DateTime(2020, 2, 15, 12, 0, 0) }
-    };
-    public class AppointmentData
-    {
-        public int Id { get; set; }
-        public string Subject { get; set; }
-        public string Location { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public string Description { get; set; }
-        public bool IsAllDay { get; set; }
-        public string RecurrenceRule { get; set; }
-        public string RecurrenceException { get; set; }
-        public Nullable<int> RecurrenceID { get; set; }
+        AppointmentData appointmentData = new AppointmentData
+        {
+            Id = (int)timeSlot.Id,
+            StartTime = timeSlot.DateTime,
+            EndTime = timeSlot.DateTime.AddMinutes(timeSlot.Duration),
+            TimeSlotDTO = timeSlot
+        };
+
+        if(timeSlot.AppointmentDTO != null)
+        {
+            appointmentData.Subject = timeSlot.AppointmentDTO.PatientDTO.Name;
+            appointmentData.CssClass = timeSlot.AppointmentType == Shared.Enums.AppointmentType.Consultation ? "occupied-consultation" : "occupied-operation";
+            appointmentData.AppointmentDTO = timeSlot.AppointmentDTO;
+        }
+        else
+        {
+            appointmentData.Subject = "Beschikbaar";
+            appointmentData.CssClass = "available";
+            appointmentData.IsReadonly = true;
+        }
+
+        return appointmentData;
     }
 
-    Dictionary<string, List<TimeSlotDTO>> ListByCurrentWeekDay = new Dictionary<string, List<TimeSlotDTO>>
+    private async Task LoadTimeSlots()
     {
-        { "Monday", new List<TimeSlotDTO>() },
-        { "Tuesday", new List<TimeSlotDTO>() },
-        { "Wednesday", new List<TimeSlotDTO>() },
-        { "Thursday", new List<TimeSlotDTO>() },
-        { "Friday", new List<TimeSlotDTO>() },
-        { "Saturday", new List<TimeSlotDTO>() },
-        { "Sunday", new List<TimeSlotDTO>() }   
-    };
+        TimeSlots = await timeSlotService.GetTimeSlots(SelectedDoctor);
+        DataSource.Clear();
+        DataSource = TimeSlots.Select(MapToAppointmentData).ToList();
+    }
+
+    private async Task OnSelectedValueChanged(int? value)
+    {
+        SelectedDoctor = (int)value;
+        await LoadTimeSlots();
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        
-        DoctorDTO doctor = await doctorService.GetDoctor(2);
-        TimeSlots = await timeSlotService.GetTimeSlots((int)doctor.Id);
-        TimeSlots = TimeSlots.Where(ts => ts.AppointmentDTO != null);
+        DataSource = new List<AppointmentData>();
+        Doctors = await doctorService.GetDoctors();
+        SelectedDoctor = (int)Doctors.FirstOrDefault().Id;
+        await LoadTimeSlots();
+    }
 
-        TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
-
-        foreach (var timeSlot in TimeSlotsByWeek)
+    public async void OnActionBegin(ActionEventArgs<AppointmentData> args)
+    {
+        if (args.ActionType == ActionType.EventRemove)
         {
-            Console.WriteLine(timeSlot.DateTime.DayOfWeek.ToString());
-            ListByCurrentWeekDay[timeSlot.DateTime.DayOfWeek.ToString()].Add(timeSlot);
+            AppointmentData appointmentData = args.DeletedRecords[0];
+            await CancelAppointment(appointmentData.Id);
+            await LoadTimeSlots();
+            StateHasChanged();
+        } 
+        else if (args.ActionType == ActionType.EventChange)
+        {
+            AppointmentData appointmentData = args.ChangedRecords[0];
+            TimeSlotDTO timeSlot = TimeSlots.FirstOrDefault(ts => ts.Id == appointmentData.Id);
+            timeSlot.AppointmentDTO.Note = appointmentData.AppointmentDTO.Note;
+            timeSlot.AppointmentType = appointmentData.TimeSlotDTO.AppointmentType;
+            await appointmentService.UpdateAppointment(timeSlot.AppointmentDTO);
+            await timeSlotService.UpdateTimeSlot(timeSlot, SelectedDoctor);
+
+            await LoadTimeSlots();
         }
     }
 
-    private void ChangeWeek(int days)
+    public async Task OnPopupOpen(PopupOpenEventArgs<AppointmentData> args)
     {
-        currentWeekStart = currentWeekStart.AddDays(days);
-        currentWeekEnd = currentWeekEnd.AddDays(days);
-
-        ListByCurrentWeekDay = new Dictionary<string, List<TimeSlotDTO>>
-            {
-                { "Monday", new List<TimeSlotDTO>() },
-                { "Tuesday", new List<TimeSlotDTO>() },
-                { "Wednesday", new List<TimeSlotDTO>() },
-                { "Thursday", new List<TimeSlotDTO>() },
-                { "Friday", new List<TimeSlotDTO>() },
-                { "Saturday", new List<TimeSlotDTO>() },
-                { "Sunday", new List<TimeSlotDTO>() }   
-            };
-        TimeSlotsByWeek = TimeSlots.Where(ts => ts.DateTime >= currentWeekStart && ts.DateTime <= currentWeekEnd);
-
-        Console.WriteLine("Current week start: " + currentWeekStart.ToString("dd/MM/yyyy"));
-
-        Console.WriteLine(TimeSlots.Count());
-
-        foreach (var timeSlot in TimeSlotsByWeek)
+        if (args.Type == PopupType.QuickInfo)
         {
-            Console.WriteLine(timeSlot.DateTime.DayOfWeek.ToString());
-            ListByCurrentWeekDay[timeSlot.DateTime.DayOfWeek.ToString()].Add(timeSlot);
+            if(args.Data.AppointmentDTO == null)
+            {
+                args.Cancel = true;
+                SelectedTimeslot = args.Data.TimeSlotDTO;
+                AppointmentPopupRef.ShowModal();
+            }
         }
+    }
 
-        StateHasChanged();
+    protected async Task CancelAppointment(int id)
+    {
+        TimeSlotDTO timeSlot = TimeSlots.FirstOrDefault(ts => ts.Id == id);
+        await appointmentService.DeleteAppointment(timeSlot.AppointmentDTO);
     }
 }
+
+<style>
+    .e-schedule .e-vertical-view .e-all-day-appointment-wrapper .e-appointment.available,
+    .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.available,
+    .e-schedule .e-month-view .e-appointment.available {
+        background: rgba(79, 220, 76, 0.6);
+        border-color: rgba(79, 220, 76, 0.6);
+    }
+
+    .e-schedule .e-vertical-view .e-all-day-appointment-wrapper .e-appointment.occupied-consultation,
+    .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.occupied-consultation,
+    .e-schedule .e-month-view .e-appointment.occupied-consultation {
+        background: #3182eb;
+        border-color: #3182eb;
+    }
+
+    .e-schedule .e-vertical-view .e-all-day-appointment-wrapper .e-appointment.occupied-operation,
+    .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.occupied-operation,
+    .e-schedule .e-month-view .e-appointment.occupied-operation {
+        background: #f5a442;
+        border-color: #f5a442;
+    }
+
+</style>

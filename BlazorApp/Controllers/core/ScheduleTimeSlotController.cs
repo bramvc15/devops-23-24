@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Core;
 using Services.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorApp.Controllers.core;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ScheduleTimeSlotController : ControllerBase
 {
     private readonly ScheduleTimeSlotService _service;

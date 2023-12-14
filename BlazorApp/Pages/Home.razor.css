@@ -2,7 +2,6 @@
     position: absolute;
     width: 100%;
     height: 500px;
-
 }
 
 .background-image {
@@ -10,7 +9,11 @@
     height: 500px;
 }
 
-
+.overlay p{
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+    max-width:60%;
+}
 .overlay {
     position: relative;
     top: 0;
@@ -25,10 +28,8 @@
     align-items: left;
     text-align: left;
     color: rgb(22, 44, 104);
-    /* Tekstkleur aanpassen naar wens */
     padding: 120px;
     padding-top: 100px;
-    margin-bottom: 200px;
 }
 .template-carousel-section .carousel-sample {
     margin: 0 auto 2em;
@@ -41,18 +42,18 @@
     height: calc(100% - 3rem);
 }
 
-    .templateCarousel .e-carousel-navigators .e-previous,
-    .templateCarousel .e-carousel-navigators .e-next,
-    .templateCarousel .e-carousel-navigators .nav-btn {
-        padding: 0;
-    }
+.templateCarousel .e-carousel-navigators .e-previous,
+.templateCarousel .e-carousel-navigators .e-next,
+.templateCarousel .e-carousel-navigators .nav-btn {
+    padding: 0;
+}
 
-        .templateCarousel .e-carousel-navigators .nav-btn:active,
-        .templateCarousel .e-carousel-navigators .nav-btn:focus,
-        .templateCarousel .e-carousel-navigators .nav-btn:hover {
-            background-color: transparent !important;
-            color: inherit;
-        }
+.templateCarousel .e-carousel-navigators .nav-btn:active,
+.templateCarousel .e-carousel-navigators .nav-btn:focus,
+.templateCarousel .e-carousel-navigators .nav-btn:hover {
+    background-color: transparent !important;
+    color: inherit;
+}
 
     .templateCarousel .e-carousel-navigators svg {
         fill: none;
@@ -90,19 +91,24 @@
     .templateCarousel .img-container {
         margin: 12px;
     }
+
+    .overlay {
+        padding: 40px;
+        margin-bottom: 10px;
+    }
+
+    .header-text {
+        width: 100% + 40px !important;
+    }
 }
 .overlay p {
     width: 75%;
 }
 
 /* Custom button style */
-/* Custom button style with matching colors */
-/* Custom button style with matching background color and a darker text color */
 .custom-button {
     background-color: #f5f5f5;
-    /* Matched background color from the gradient */
     color: rgb(3, 56, 120);
-    /* Darker text color for visibility */
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -122,104 +128,37 @@
     margin-left: 0.3rem;
 }
 
-/* Apply the custom style to the buttons with the "custom-button" class */
 .btn-custom {
     margin: 5px;
 }
 
-
-
 .overlay h1 {
     font-size: 40px;
-    /* Grootte van de titel aanpassen naar wens */
     margin-bottom: 20px;
 }
 
 .overlay p {
     font-size: 18px;
-    /* Grootte van de tekst aanpassen naar wens */
     margin-bottom: 40px;
 }
 
 .buttons {
     margin-top: 20px;
-
-}
-
-.btn {
-    margin: 5px;
-}
-
-.pagination {
-    margin: 0 20px;
 }
 
 .background-div {
+    position: relative;
+    left: 0;
     width: 100%;
-    /* Set the width of your div */
+    color: rgb(22, 44, 104);
     height: 500px;
-    /* Set the height of your div */
     background-image: url('https://oogarts-lokeren.be/_images/pages/37.jpg');
-    /* Replace 'path-to-your-image.jpg' with the actual path to your image */
     background-size: cover;
-    /* Adjust the background size as needed */
     background-position: center;
-    /* Center the background image */
     margin-bottom: 50px;
     height: 500px;
-    background-position: calc(30% + 0px) calc(15% + 0px);
+    background-position: calc(20% + 0px) calc(0% + 0px);
 }
-
-
-.actuaTitle {
-    text-align: center;
-}
-
-.actuaBox {
-    width: 100%;
-    max-width: 1000px;
-    /* Set a maximum width for the content */
-    padding: 20px;
-    border-color: black;
-    /* Added padding for spacing inside the box */
-    background-color: rgba(194, 228, 218, .5);
-    /* Custom background color */
-    margin: 0 auto;
-    /* Center the box horizontally */
-    overflow-y: auto;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Added a subtle box shadow */
-    margin-bottom: 2rem;
-
-    /* Hidden scrollbars */
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-}
-
-/* Hide scrollbars */
-.actuaBox::-webkit-scrollbar {
-    width: 8px;
-}
-
-.actuaBox::-webkit-scrollbar-thumb {
-    background-color: rgba(22, 48, 168, 0.6);
-    /* Custom scrollbar thumb color */
-    border-radius: 8px;
-    /* Rounded scrollbar thumb */
-}
-
-/* Add smooth scrolling on hover for non-touch devices */
-.actuaBox:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(22, 48, 168, 0.9);
-}
-.actuaBox {
-    margin: 0 auto;
-    margin-bottom: 2rem;
-}
-
-    .actuaBox img {
-        height: 100%;
-    }
 
 .carousel {
     width: 40%;
@@ -228,22 +167,30 @@
 
 @media screen and (max-width: 768px) {
     .background-div {
-        height: 500px;
+        height: fit-content;
     }
 
     .overlay {
         padding: 40px;
-        margin-bottom: 100px;
     }
 
     .buttons {
         margin-top: 10px;
     }
+
+    .header-text {
+        width: 100% !important;
+    }
 }
 
 @media (max-width: 1140px) {
     .background-div {
-
         margin-top: 0;
+        height: fit-content;
+    }
+
+    .header-text {
+        width: 100% !important;
     }
 }
+

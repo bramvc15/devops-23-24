@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Core;
 using Shared.DTO.Core;
@@ -24,6 +25,7 @@ public class TimeSlotController : ControllerBase
 
     [HttpPost]
     [Route("{docId}")]
+    [Authorize]
     public Task<TimeSlotDTO> CreateTimeSlot([FromBody] TimeSlotDTO dto, int docId)
     {
         return _service.CreateTimeSlot(dto, docId);
@@ -31,6 +33,7 @@ public class TimeSlotController : ControllerBase
     
     [HttpPut]
     [Route("{docId}")]
+    [Authorize]
     public Task<TimeSlotDTO> UpdateTimeSlot([FromBody] TimeSlotDTO dto, int docId)
     {
         return _service.UpdateTimeSlot(dto, docId);
@@ -38,6 +41,7 @@ public class TimeSlotController : ControllerBase
 
     [HttpDelete]
     [Route("{docId}")]
+    [Authorize]
     public Task DeleteTimeSlot([FromBody] TimeSlotDTO dto, int docId)
     {
         return _service.DeleteTimeSlot(dto, docId);

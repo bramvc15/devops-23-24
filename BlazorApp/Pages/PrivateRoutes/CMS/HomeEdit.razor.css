@@ -1,3 +1,7 @@
+.mains {
+    min-height: 100vh;
+}
+
 .buttons {
     margin-top: 20px;
 
@@ -13,6 +17,10 @@
 .background-image {
     width: 100%;
     height:500px;
+}
+
+.alert-container {
+    margin: 50px 150px 0px 150px;
 }
 
 .overlay {

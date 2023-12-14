@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Core;
 using Shared.DTO.Core;
@@ -6,6 +7,7 @@ namespace BlazorApp.Controllers.core;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PatientController : ControllerBase
 {
     private readonly PatientService _service;
@@ -28,7 +30,7 @@ public class PatientController : ControllerBase
     }
 
     [HttpPut]
-    public Task<PatientDTO> UpdateContent([FromBody] PatientDTO request)
+    public Task<PatientDTO> UpdatePatient([FromBody] PatientDTO request)
     {
         return _service.UpdatePatient(request);
     }

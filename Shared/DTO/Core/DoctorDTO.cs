@@ -10,4 +10,5 @@ public class DoctorDTO
     public string Biograph { get; set; }
     public bool IsAvailable { get; set; }
     public string ImageLink { get; set; }
+    public string Auth0Id { get; set; }
 }

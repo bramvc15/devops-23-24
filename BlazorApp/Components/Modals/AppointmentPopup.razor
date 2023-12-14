@@ -1,0 +1,144 @@
+@using Models
+@using Microsoft.AspNetCore.Components;
+@using Shared.DTO.Core;
+@using Services.Core;
+@inject PatientService patientService;
+@inject AppointmentService appointmentService;
+@inject TimeSlotService timeSlotService;
+
+<div class="template-wrap d-flex justify-content-between">
+    @{
+            <Modal @ref="modalRef" class="modal">
+                <ModalContent Centered>
+                    <ModalHeader>
+                        <ModalTitle>Maak afspraak</ModalTitle>
+                        <CloseButton />
+                    </ModalHeader>
+                    
+                    <Validations @ref="validations" Mode="ValidationMode.Auto">
+                    <ModalBody>
+                    <Validation Validator="@ValidatePatient">
+                        <Field>
+                            <FieldBody>
+                                    <FieldLabel>Patiënt</FieldLabel>
+                                    <Select TValue="int" @bind-SelectedValue="patientId">
+                                    <SelectItem Value="0">Selecteer een patiënt</SelectItem>
+                                    @if(patients != null) {
+                                        @foreach (var patient in patients)
+                                        {
+                                            <SelectItem Value="@patient.Id">@patient.Name</SelectItem>
+                                        }
+                                    }
+                                    </Select>
+                            </FieldBody>
+                        </Field>
+                    </Validation>
+                    <Validation Validator="@ValidateReason">
+                        <Field>
+                            <FieldBody>
+                                <FieldLabel>Reden</FieldLabel>
+                                <TextEdit Placeholder="Reden" @bind-Text="reason" />
+                            </FieldBody>
+                        </Field>
+                    </Validation>
+                    <Validation Validator="@ValidateNote">
+                        <Field>
+                            <FieldBody>
+                                <FieldLabel>Opmerking</FieldLabel>
+                                <TextEdit Placeholder="Opmerking" @bind-Text="note" />
+                            </FieldBody>
+                        </Field>
+                    </Validation>
+                        <Field>
+                            <FieldBody>
+                                <FieldLabel>Type</FieldLabel>
+                                <Select TValue="Shared.Enums.AppointmentType" @bind-SelectedValue="type">
+                                    @foreach (Shared.Enums.AppointmentType type in Enum.GetValues(typeof(Shared.Enums.AppointmentType)))
+                                    {
+                                        <SelectItem Value="@type">@type</SelectItem>
+                                    }
+                                </Select>
+                            </FieldBody>
+                        </Field>
+                    </ModalBody>
+                    </Validations>
+                    <ModalFooter>
+                        <Button Color="Color.Danger" Clicked="@DeleteTimeSlot">Verwijder tijdsslot</Button>
+                        <Button Color="Color.Primary" Clicked="@CreateAppointment">Maak</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        }
+</div>
+
+@code {
+
+    [Parameter]
+    public TimeSlotDTO TimeSlot { get; set; }
+
+    [Parameter]
+    public int DoctorId { get; set; }
+
+    [Parameter]
+    public EventCallback OnRefresh { get; set; }
+
+    private Validations validations;
+    private Modal? modalRef;
+    private IEnumerable<PatientDTO> patients;
+
+    private int patientId;
+    private string reason;
+    private string note;
+    private Shared.Enums.AppointmentType type;
+
+    public Task? ShowModal()
+    {
+        if(modalRef == null)
+            return Task.CompletedTask;
+        return modalRef?.Show();
+    }
+
+    private async Task CreateAppointment()
+    {
+        if (await validations.ValidateAll()) {
+
+        TimeSlot.AppointmentType = type;
+
+        await appointmentService.CreateAppointment((int)TimeSlot.Id, patientId, reason, note);
+        await timeSlotService.UpdateTimeSlot(TimeSlot, DoctorId);
+        await OnRefresh.InvokeAsync();
+        await modalRef?.Hide();
+        }
+    }
+    
+    private async Task DeleteTimeSlot()
+    {
+        await timeSlotService.DeleteTimeSlot(TimeSlot, DoctorId);
+        await OnRefresh.InvokeAsync();
+        await modalRef?.Hide();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {   
+        TimeSlot = new TimeSlotDTO();
+        patients = await patientService.GetPatients();
+    }
+
+    void ValidatePatient(ValidatorEventArgs e) {
+        e.Status = patientId == 0 ? ValidationStatus.Error : ValidationStatus.None;
+    }
+
+    void ValidateReason(ValidatorEventArgs e) {
+        e.Status = string.IsNullOrEmpty(reason) ? ValidationStatus.Error : ValidationStatus.None;
+    }
+
+    void ValidateNote (ValidatorEventArgs e) {
+        e.Status = string.IsNullOrEmpty(note) ? ValidationStatus.Error : ValidationStatus.None;
+    }
+}
+
+<style>
+    .modal {
+        color: black;
+    }
+</style>

@@ -1,0 +1,88 @@
+﻿@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Microsoft.AspNetCore.Components
+
+<div class="control-section">
+    <div class="content-wrapper">
+        <div class="row material2">
+            <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+                <SfBreadcrumb EnableNavigation="true" @bind-ActiveItem="@ActiveItem" OnItemClick="BreadcrumbItemClickHandler" />
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .e-breadcrumb-text, .e-home, .e-breadcrumb-separator {
+        color: rgb(22, 44, 104) !important;
+        font-size: 16px !important;
+    }
+</style>
+@code {
+    private string ActiveItem = "";
+
+    // To refresh the Breadcrumb control state when the reset button is clicked
+    private void ResetBtnClickHandler()
+    {
+        ActiveItem = "";
+    }
+
+    // Handle the breadcrumb item click event
+    private void BreadcrumbItemClickHandler(BreadcrumbItemRenderingEventArgs args)
+    {
+        // Get the clicked item's text
+        var clickedItemText = args.Item.Text;
+
+        // Check if the clicked item is a number
+        if (int.TryParse(clickedItemText, out _))
+        {
+            // It's a number, replace it with "actua-detail"
+            ReplaceNumberWithActuaDetail(args);
+            return;
+        }
+
+
+        // Perform your navigation logic based on the clicked item
+        switch (clickedItemText)
+        {
+            case "Home":
+                // Navigate to the home page
+                NavigationManager.NavigateTo("/");
+                break;
+            case "Products":
+                // Navigate to the products page
+                NavigationManager.NavigateTo("/products");
+                break;
+            case "actua-detail":
+                // Navigate to the products page
+                NavigationManager.NavigateTo("/actua");
+                break;
+            // Add more cases as needed for other pages
+            default:
+                // Handle unknown pages or perform a default action
+                break;
+        }
+    }
+
+
+    private void ReplaceNumberWithActuaDetail(BreadcrumbItemRenderingEventArgs args)
+    {
+        // Get the path after the last "/"
+        var path = args.Item.Url;
+        var index = path.LastIndexOf("/");
+        if (index != -1)
+        {
+            // Extract the number
+            var number = path.Substring(index + 1);
+
+            // Replace the number with "actua-detail"
+            var newPath = path.Replace(number, "actua-detail");
+
+            // Update the BreadcrumbItem's URL
+            args.Item.Url = newPath;
+        }
+    }
+
+    // Inject NavigationManager
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+}

@@ -29,6 +29,17 @@
         <div class="add-button">
             <AddBlogPopUp />
         </div>
+        <div class="alert-container">
+            <Alert Color="Color.Danger" @bind-Visible="@visible">
+                <AlertDescription>
+                    @message
+                </AlertDescription>
+                <AlertMessage>
+                    @* Gebruiken we niet. *@
+                </AlertMessage>
+                <CloseButton />
+            </Alert>
+        </div>
         <div class="actua-box">
             @if (blogs != null)
             {
@@ -82,6 +93,12 @@
 
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private bool visible = false;
+    private string message = string.Empty;
+
     private IEnumerable<BlogDTO>? blogs;
     private BlogDTO clickedBlog;
 
@@ -134,21 +151,48 @@
 
     private async void UpdateBlog()
     {
-        savedContent = await richTextEditRef.GetHtmlAsync();
-        BlogDTO blog = new()
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
         {
-            Id = clickedBlog.Id,
-            Title = newTitle,
-            Text = savedContent,
-            ImageLink = newImageLink
-        };
-        await blogService.UpdateBlog(blog);
+            savedContent = await richTextEditRef.GetHtmlAsync();
+            BlogDTO blog = new()
+                {
+                    Id = clickedBlog.Id,
+                    Title = newTitle,
+                    Text = savedContent,
+                    ImageLink = newImageLink
+                };
+            await blogService.UpdateBlog(blog);
+        }
+        else
+        {
+            message = "U heeft geen toegang tot bewerken.";
+            visible = true;
+        }
+
         await HideModal();
     }
 
     private async void DeleteBlog(BlogDTO b)
     {
-        await blogService.DeleteBlog(b);
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
+        {
+            await blogService.DeleteBlog(b);
+        }
+        else
+        {
+            message = "U heeft geen toegang tot verwijderen.";
+            visible = true;
+        }
     }
 
 }
