@@ -43,6 +43,7 @@ builder.Services.AddScoped<PatientService>();
 builder.Services.AddScoped<FaqService>();
 builder.Services.AddScoped<TimeSlotService>();
 builder.Services.AddScoped<ScheduleTimeSlotService>();
+builder.Services.AddScoped<NoteService>();
 
 builder.Services.AddSyncfusionBlazor();
 

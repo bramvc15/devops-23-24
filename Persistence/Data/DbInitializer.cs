@@ -10,7 +10,7 @@ namespace Persistence.Data
 
         public static void Initialize(DatabaseContext context)
         {
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any() && context.Notes.Any())
             {
                 return;
             }
@@ -235,6 +235,13 @@ namespace Persistence.Data
             };
             #endregion
 
+            #region Notes
+            var notes = new Note[]
+            {
+                new Note("Note 1", "This is the first note")
+            };
+            #endregion
+
 
             // domain
             context.Doctors.AddRange(doctors);
@@ -247,6 +254,7 @@ namespace Persistence.Data
             context.Treatments.AddRange(treatments);
             context.ChatBotQuestions.AddRange(chatbotQuestions);
             context.Faqs.AddRange(faqs);
+            context.Notes.AddRange(notes);
             
             context.SaveChanges();
         }

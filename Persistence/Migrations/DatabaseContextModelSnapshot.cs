@@ -208,6 +208,27 @@ namespace Persistence.Migrations
                     b.ToTable("Locations");
                 });
 
+            modelBuilder.Entity("Domain.Note", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notes");
+                });
+
             modelBuilder.Entity("Domain.Patient", b =>
                 {
                     b.Property<int>("Id")

@@ -25,6 +25,7 @@ namespace Persistence.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<Treatment> Treatments { get; set; }
         public DbSet<Faq> Faqs { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         // ModelChanges on persist
         protected override void OnModelCreating(ModelBuilder modelBuilder)
