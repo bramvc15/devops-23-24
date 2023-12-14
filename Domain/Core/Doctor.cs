@@ -27,6 +27,7 @@ public class Doctor : Entity
     public string? Biograph { get; private set; }
     public bool IsAvailable { get; set; } = true;
     public string ImageLink { get; set; } = string.Empty;
+    public string Auth0Id { get; set; } = string.Empty;
     public List<ScheduleTimeSlot> ScheduleTimeSlots { get; set; }
     public List<TimeSlot> TimeSlots { get; set; }
     #endregion

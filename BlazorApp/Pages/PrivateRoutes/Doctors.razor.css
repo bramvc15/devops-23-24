@@ -12,6 +12,10 @@
     padding-bottom: 3%;
 }
 
+.alert-container {
+    margin: 50px 150px 0px 150px;
+}
+
 .add-button {
     margin-left: 5%;
     margin-right: 4%;

@@ -20,7 +20,9 @@ namespace Persistence.Data
             Doctor doctor1 = new("Dr. J. Van der Veken", "Eye Specialist", Gender.Female, 
                 "Dr. J. Van der Veken is een ervaren oogarts met een passie voor het verbeteren van het gezichtsvermogen van zijn patiënten. Met jarenlange ervaring in de oogheelkunde, is hij toegewijd aan het bieden van hoogwaardige oogzorg."
                 );
-            
+
+            Doctor admin = new("Admin", "Eye Specialist", Gender.Male);
+            Doctor employee = new("Employee", "Eye Specialist", Gender.Male);
             Doctor doctor2 = new("Dr. Smith", "Eye Specialist", Gender.Male);
             Doctor doctor3 = new("Dr. Johnson", "Eye Specialist", Gender.Female, "Dr. Johnson is gespecialiseerd in oogheelkunde en heeft uitgebreide kennis van oogaandoeningen. Ze streeft naar het verbeteren van het zicht en de ooggezondheid van haar patiënten.");
             Doctor doctor4 = new("Dr. Martinez", "Eye Specialist", Gender.Female, "Dr. Martinez is een ervaren oogarts met een warme benadering van kinderoogzorg. Ze zet zich in voor het bieden van zorg van hoge kwaliteit aan jonge patiënten en hun families.");
@@ -29,6 +31,8 @@ namespace Persistence.Data
             Doctor doctor7 = new("Dr. Garcia", "Eye Specialist", Gender.Male, "Dr. Garcia is een ervaren oogarts met expertise in de behandeling van netvliesaandoeningen. Hij is toegewijd aan het verbeteren van het zicht en de algehele ooggezondheid van zijn patiënten.");
             Doctor doctor8 = new("Dr. Patel", "Eye Specialist", Gender.Female, "Dr. Patel is gespecialiseerd in oogheelkunde en biedt uitgebreide oogzorg voor vrouwen. Ze is toegewijd aan het ondersteunen van vrouwen in elke fase van hun leven en het bevorderen van hun ooggezondheid.");
 
+            admin.Auth0Id = "auth0|6571dae55941b4686e3fd96a";
+            employee.Auth0Id = "auth0|6571db555941b4686e3fd9c2";
             doctor1.ImageLink = "https://images.healthshots.com/healthshots/en/uploads/2022/07/02195043/doctor-stress.jpg";
             doctor2.ImageLink = "https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*";
             doctor3.ImageLink = "https://t3.ftcdn.net/jpg/01/71/31/48/360_F_171314831_xyvTs2T9tWwSN3gO7wZUA08IqHR4Sc7G.jpg";
@@ -40,7 +44,7 @@ namespace Persistence.Data
 
             var doctors = new Doctor[]
             {
-                doctor1, doctor2,doctor3,doctor4,doctor5,doctor6,doctor7,doctor8
+                admin, employee, doctor1, doctor2, doctor3, doctor4, doctor5, doctor6, doctor7, doctor8
             };
             #endregion
 
