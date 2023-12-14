@@ -1,0 +1,85 @@
+@using Services.Core;
+@using Shared.DTO.Core;
+@using Shared.Enums;
+@using Persistence.Data;
+@inject DatabaseContext databaseContext
+@inject DoctorService doctorService
+
+<div>
+    <div class="buttons">
+        <button class="add-btn" onclick="@ShowModal">Voeg een dokter toe</button>
+    </div>
+    <Modal @ref="modalRef">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>Dokter toevoegen</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Naam</FieldLabel>
+                    <TextEdit Placeholder="Geef een naam" @bind-Text="newName" />
+                </Field>
+                <Field>
+                    <FieldLabel>Specialisatie</FieldLabel>
+                    <TextEdit Placeholder="Geef een specialisatie" @bind-Text="newSpecialization" />
+                </Field>
+                <Field>
+                    <FieldLabel>Geslacht</FieldLabel>
+                    <Select @bind-SelectedValue="@newGender">
+                        <SelectItem Value="Gender.Male">Man</SelectItem>
+                        <SelectItem Value="Gender.Female">Vrouw</SelectItem>
+                        <SelectItem Value="Gender.Other">Andere</SelectItem>
+                    </Select>
+                </Field>
+                <Field>
+                    <FieldLabel>Biografie</FieldLabel>
+                    <TextEdit Placeholder="Geef een biografie" @bind-Text="newBiograph" />
+                </Field>
+                <Field>
+                    <FieldLabel>Link naar profielfoto</FieldLabel>
+                    <TextEdit Placeholder="Geef link naar image van dokter" @bind-Text="newImageLink" />
+                </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                <Button Color="Color.Primary" Clicked="@CreateDoctor">Toevoegen</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+</div>
+
+@code {
+    string newName;
+    string newSpecialization;
+    Gender newGender;
+    string? newBiograph;
+    string? newImageLink;
+
+    private Modal? modalRef;
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async Task CreateDoctor()
+    {
+        Console.WriteLine(newGender.ToString());
+        DoctorDTO newDoctor = new()
+            {
+                Name = newName,
+                Specialization = newSpecialization,
+                Gender = newGender,
+                Biograph = newBiograph,
+                ImageLink = newImageLink,
+            };
+        await doctorService.CreateDoctor(newDoctor);
+        modalRef?.Hide();
+    }
+}

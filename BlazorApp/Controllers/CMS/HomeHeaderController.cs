@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.CMS;
 using Shared;
@@ -7,6 +8,7 @@ namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class HomeHeaderController : ControllerBase
 {
     private readonly HomeHeaderService _service;
@@ -23,6 +25,7 @@ public class HomeHeaderController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<HomeHeaderDTO> UpdateHomeHeader([FromBody] HomeHeaderDTO request)
     {
         return await _service.UpdateHomeHeader(request);

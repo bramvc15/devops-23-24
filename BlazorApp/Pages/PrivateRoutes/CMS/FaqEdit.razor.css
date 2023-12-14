@@ -37,6 +37,10 @@
     flex-direction: column;
 }
 
+.alert-container {
+    margin: 50px 150px 0px 150px;
+}
+
 /* .question-container {
     border: solid 1px rgb(22, 44, 104);
 } */

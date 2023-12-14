@@ -14,6 +14,17 @@
                 <ModalTitle>Blog toevoegen</ModalTitle>
                 <CloseButton />
             </ModalHeader>
+            <div class="alert-container">
+                <Alert Color="Color.Danger" @bind-Visible="@visible">
+                    <AlertDescription>
+                        @message
+                    </AlertDescription>
+                    <AlertMessage>
+                        @* Gebruiken we niet. *@
+                    </AlertMessage>
+                    <CloseButton />
+                </Alert>
+            </div>
             <ModalBody>
                 <Field>
                     <FieldLabel>Titel</FieldLabel>
@@ -31,13 +42,19 @@
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
+                <Button Color="Color.Primary" Clicked="@CreateBlog">Opslaan</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
 </div>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private bool visible = false;
+    private string message = string.Empty;
+
     protected RichTextEditor? richTextEditRef;
     protected string? content;
     string? newTitle;
@@ -56,17 +73,30 @@
         return modalRef?.Hide();
     }
 
-    private async Task UpdateTitle()
+    private async Task CreateBlog()
     {
-        plainTextContent = richTextEditRef?.contentAsText;
-        content = richTextEditRef?.contentAsHtml;
-        BlogDTO newBlog = new()
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
         {
-            Title = newTitle,
-            Text = content,
-            ImageLink = newImage
-        };
-        await blogService.CreateBlog(newBlog);
-        modalRef?.Hide();
+            plainTextContent = richTextEditRef?.contentAsText;
+            content = richTextEditRef?.contentAsHtml;
+            BlogDTO newBlog = new()
+                {
+                    Title = newTitle,
+                    Text = content,
+                    ImageLink = newImage
+                };
+            await blogService.CreateBlog(newBlog);
+            await HideModal();
+        }
+        else
+        {
+            message = "U heeft geen toegang tot creatie.";
+            visible = true;
+        }
     }
 }

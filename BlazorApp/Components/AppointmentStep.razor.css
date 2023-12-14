@@ -46,6 +46,7 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: left;
+    margin-bottom: 5%;
 }
 
 .timeslot {

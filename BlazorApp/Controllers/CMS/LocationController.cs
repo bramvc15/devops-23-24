@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.CMS;
 using Shared;
@@ -7,6 +8,7 @@ namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class LocationController : ControllerBase
 {
     private readonly LocationService _service;
@@ -23,6 +25,7 @@ public class LocationController : ControllerBase
     }
     
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public Task<LocationDTO> UpdateLocation([FromBody] LocationDTO request)
     {
         return _service.UpdateLocation(request);

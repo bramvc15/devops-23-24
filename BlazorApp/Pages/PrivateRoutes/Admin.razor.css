@@ -1,7 +1,7 @@
 .admin-container {
     background: rgb(165, 216, 201);
     background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(161, 228, 198, 0.36) 100%);
-    min-height: 76.3vh;
+    min-height: 90.3vh;
     display: flex;
     flex-direction: column;
     align-items: center;
