@@ -137,7 +137,8 @@ namespace Persistence.Data
             #endregion
 
             #region Location
-            Location location = new("Antwerpsesteenweg 1022", "9040 Gent", "België", "vision@mail.com", "09 89 78 78 11");
+            Location location = new("Antwerpsesteenweg 1022", "9040 Gent", "België", "vision@mail.com", "09 89 78 78 11", 
+                "Maandag - Vrijdag: 8:00 - 18:00", "Zaterdag - Zondag: Gesloten");
             #endregion
 
             #region Treatments

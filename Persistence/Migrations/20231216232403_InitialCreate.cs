@@ -103,7 +103,9 @@ namespace Persistence.Migrations
                     Stad = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Land = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Telefoon = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Telefoon = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Week = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Weekend = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

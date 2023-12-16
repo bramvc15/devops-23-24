@@ -11,6 +11,10 @@
 
 }
 
+.bolder {
+    font-weight: 700;
+
+}
 
 .title-layout {
 
@@ -147,7 +151,7 @@
 
 .loc-details {
     margin-left: 100px;
-    margin-top: 60px;
+    margin-top: 20px;
 }
 
 p {
@@ -158,13 +162,12 @@ p {
 
 .changeBtn {
     border-radius: 7px;
-    height: 50px;
-    width: 150px;
+    height: 30px;
+    width: 100px;
     border: none;
     background-color: rgb(55, 218, 33);
     color: azure;
     font-weight: bold;
-    margin-top: 20px;
     border: solid rgb(34, 151, 18);
     transition: 0.3s;
 }

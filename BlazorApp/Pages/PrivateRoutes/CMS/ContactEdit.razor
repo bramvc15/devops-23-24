@@ -91,6 +91,7 @@
                     <CloseButton />
                 </Alert>
             </div>
+            <button class="changeBtn" @onclick="( () => ShowModal() )">Wijzig</button>
             @if (location != null)
             {
                 <p>@((MarkupString)location.Straat!)</p>
@@ -100,10 +101,13 @@
                 <br />
                 <p>@((MarkupString)location.Email!)</p>
                 <p>@((MarkupString)location.Telefoon!)</p>
+                <br />
+                <p class="bolder">Openingsuren:</p>
+                <p>@((MarkupString)location.Week!)</p>
+                <p>@((MarkupString)location.Weekend!)</p>
             }
             <br />
             <br />
-            <button class="changeBtn" @onclick="( () => ShowModal() )">Wijzig</button>
         </div>
     </div>
 </div>
@@ -134,6 +138,14 @@
             <Field>
                 <FieldLabel>Telefoon</FieldLabel>
                 <TextEdit @bind-Text="newPhone" />
+            </Field>
+            <Field>
+                <FieldLabel>Weekdagen</FieldLabel>
+                <TextEdit @bind-Text="newWeek" />
+            </Field>
+            <Field>
+                <FieldLabel>Weekend</FieldLabel>
+                <TextEdit @bind-Text="newWeekend" />
             </Field>
         </ModalBody>
         <ModalFooter>
@@ -166,6 +178,8 @@
     string? newCountry;
     string? newEmail;
     string? newPhone;
+    string? newWeek;
+    string? newWeekend;
 
     private Modal? modalRef;
 
@@ -177,6 +191,8 @@
         newCountry = location.Land;
         newEmail = location.Email;
         newPhone = location.Telefoon;
+        newWeek = location.Week;
+        newWeekend = location.Weekend;
         return modalRef?.Show();
     }
 
@@ -201,7 +217,9 @@
                     Stad = newCity,
                     Land = newCountry,
                     Email = newEmail,
-                    Telefoon = newPhone
+                    Telefoon = newPhone,
+                    Week = newWeek,
+                    Weekend = newWeekend
                 };
             await locationService.UpdateLocation(loc);
         }

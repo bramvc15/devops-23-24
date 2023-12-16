@@ -12,7 +12,7 @@ using Persistence.Data;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231214142331_InitialCreate")]
+    [Migration("20231216232403_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -203,6 +203,14 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefoon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Week")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Weekend")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
