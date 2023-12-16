@@ -31,6 +31,18 @@
                 <Field>
                     <FieldLabel>Naam</FieldLabel>
                     <TextEdit Placeholder="Geef een naam" @bind-Text="newName" />
+                    @if (string.IsNullOrWhiteSpace(newName))
+                    {
+                        <p class="text-danger">Naam is verplicht</p>
+                    }
+                </Field>
+                <Field>
+                    <FieldLabel>Email</FieldLabel>
+                    <TextEdit Placeholder="Geef een email" @bind-Text="newEmail" />
+                </Field>
+                <Field>
+                    <FieldLabel>Wachtwoord</FieldLabel>
+                    <TextEdit Placeholder="Geef een wachtwoord" @bind-Text="newPassword" />
                 </Field>
                 <Field>
                     <FieldLabel>Email</FieldLabel>
@@ -43,6 +55,10 @@
                 <Field>
                     <FieldLabel>Specialisatie</FieldLabel>
                     <TextEdit Placeholder="Geef een specialisatie" @bind-Text="newSpecialization" />
+                    @if (string.IsNullOrWhiteSpace(newSpecialization))
+                    {
+                        <p class="text-danger">Specialisatie is verplicht</p>
+                    }
                 </Field>
                 <Field>
                     <FieldLabel>Geslacht</FieldLabel>
@@ -81,10 +97,24 @@
     Gender newGender;
     string? newBiograph;
     string? newImageLink;
+
+    private EditContext editContext;
     string newEmail;
     string newPassword;
 
     private Modal? modalRef;
+
+    protected override void OnInitialized()
+    {
+        DoctorDTO doctor = new();
+
+        editContext = new EditContext(doctor);
+        editContext.OnFieldChanged += (sender, eventArgs) =>
+        {
+            editContext.Validate();
+            StateHasChanged();
+        };
+    }
 
     private Task? ShowModal()
     {
