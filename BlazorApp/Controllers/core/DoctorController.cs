@@ -7,7 +7,7 @@ namespace BlazorApp.Controllers.core;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+// [Authorize]
 public class DoctorController : ControllerBase
 {
     private readonly DoctorService _service;

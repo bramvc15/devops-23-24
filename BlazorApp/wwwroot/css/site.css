@@ -6,6 +6,9 @@
 html, body {
     /* font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; */
     font-family: 'Montserrat', sans-serif !important;
+    background-color: rgb(194, 228, 218) !important ;
+    position: relative !important;
+    height: 100vh !important;
 }
 
 h1:focus {
