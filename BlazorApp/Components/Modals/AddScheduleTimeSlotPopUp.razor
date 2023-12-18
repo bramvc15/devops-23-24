@@ -58,6 +58,9 @@
     [Parameter]
     public EventCallback<ScheduleTimeSlotDTO> OnScheduleTimeSlotAdded { get; set; }
 
+    [Parameter]
+    public int DoctorId { get; set; }
+    
     private Validations validations;
     private string errorMessage = string.Empty;
     private string exceptionMessage = string.Empty;
@@ -139,7 +142,7 @@
                     DateTime = dateTime,
                     Duration = durationInMinutes
                 };
-                ScheduleTimeSlotDTO newSlot = await scheduleTimeSlotService.CreateScheduleTimeSlot(slot, 3);
+                ScheduleTimeSlotDTO newSlot = await scheduleTimeSlotService.CreateScheduleTimeSlot(slot, DoctorId);
                 await OnScheduleTimeSlotAdded.InvokeAsync(newSlot);
             }
             catch (InvalidOperationException ex)

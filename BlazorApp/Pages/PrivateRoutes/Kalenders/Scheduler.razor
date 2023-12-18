@@ -28,7 +28,7 @@
                 <SelectItem TValue="int?" Value="@doctor.Id">@doctor.Name</SelectItem>
             }
         </Select>
-        <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" />
+        <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" DoctorId="SelectedDoctor" />
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -66,14 +66,15 @@
                                     @if (i < list.Count)
                                     {
                                         var endTime = list[i].DateTime;
+                                        ScheduleTimeSlotDTO timeSlot = list[i];
                                         <div>
                                             <p>@($"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}")</p>
                                             <p>@($"{list[i].Duration} minutes")</p>
                                             <br />
-                                            <Button Color="Color.Primary" @onclick="() => EditScheduleTimeSlot(list[i].Id)">
+                                            <Button Color="Color.Primary" @onclick="() => EditScheduleTimeSlot(timeSlot)">
                                                 <Icon Name="IconName.Edit" />
                                             </Button>
-                                            <Button Color="Color.Danger" @onclick="() => DeleteScheduleTimeSlot(list[i].Id)">
+                                            <Button Color="Color.Danger" @onclick="() => DeleteScheduleTimeSlot(timeSlot)">
                                                 <Icon Name="IconName.Delete" />
                                             </Button>
                                         </div>
@@ -111,7 +112,7 @@
     {
         SelectedDoctor = (int)value;
         Console.WriteLine(SelectedDoctor);
-        RefreshScheduler();
+        await RefreshScheduler();
     }
 
     private async Task HandleScheduleTimeSlotAdded(ScheduleTimeSlotDTO newSlot)
@@ -146,18 +147,20 @@
         StateHasChanged();
     }
 
-    private async Task EditScheduleTimeSlot(int? id)
+    private async Task EditScheduleTimeSlot(ScheduleTimeSlotDTO timeSlot)
     {
-        Console.WriteLine($"Edit button clicked for ScheduleTimeSlot with Id: {id}");
+        Console.WriteLine($"Edit button clicked for ScheduleTimeSlot with Id: {timeSlot.Id}");
     }
 
-    private async Task DeleteScheduleTimeSlot(int? id)
+    private async Task DeleteScheduleTimeSlot(ScheduleTimeSlotDTO timeSlot)
     {
-        Console.WriteLine($"Delete button clicked for ScheduleTimeSlot with Id: {id}");
+        await scheduleTimeSlotService.DeleteScheduleTimeSlot(timeSlot, SelectedDoctor);
     }
 
     private async Task RefreshScheduler() {
         ListOfScheduleTimeSlots = await scheduleTimeSlotService.GetScheduleTimeSlots(SelectedDoctor);
+
+        ClearWeek();
 
         foreach (ScheduleTimeSlotDTO scheduleTimeSlot in ListOfScheduleTimeSlots)
         {
@@ -186,6 +189,16 @@
                     break;
             }
         }
+    }
+
+    private async Task ClearWeek() {
+        MondayList.Clear();
+        TuesdayList.Clear();
+        WednesdayList.Clear();
+        ThursdayList.Clear();
+        FridayList.Clear();
+        SaturdayList.Clear();
+        SundayList.Clear();
     }
 
     protected override async Task OnInitializedAsync()
