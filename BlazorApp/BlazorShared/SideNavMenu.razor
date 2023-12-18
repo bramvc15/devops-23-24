@@ -16,6 +16,7 @@
 
     @if (authenticationState.User.IsInRole("Admin"))
     {
+        <a class="sidebar-item" href="/admin/users"><p>Users</p> <i class="fa fa-fw fa-user"></i></a>
         <a class="sidebar-item" href="/admin/dokters"><p>Dokters</p> <i class="fa fa-fw fa-user"></i></a>
         <a class="sidebar-item" href="/admin/chatbot"><p>Chatbox</p> <i class="fa fa-fw fa-comments"></i></a>
 
