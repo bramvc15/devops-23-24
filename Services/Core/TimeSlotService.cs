@@ -28,6 +28,7 @@ namespace Services.Core
                 var timeSlotDTOs = doctorEntity.TimeSlots.Select(ts => new TimeSlotDTO
                 {
                     Id = ts.Id,
+                    DoctorId = docId,
                     AppointmentType = ts.AppointmentType,
                     DateTime = ts.DateTime,
                     Duration = ts.Duration,
@@ -47,7 +48,7 @@ namespace Services.Core
                             BloodType = ts.Appointment.Patient.BloodType,
                         }
                     } : null
-                });
+                }) ;
 
                 return timeSlotDTOs;
             }
