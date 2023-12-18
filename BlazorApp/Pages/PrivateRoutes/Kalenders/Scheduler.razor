@@ -20,6 +20,7 @@
         <br />
         <br />
         <h1>Scheduler</h1>
+        <Button Color="Color.Primary" Clicked="@ConvertToTimeSlots">Convert</Button>
         <p>Here you can view and edit your schedule.</p>
                 @if(Doctors != null) {
         <Select TValue="int?" SelectedValue="@SelectedDoctor" SelectedValueChanged="@OnSelectedValueChanged">
@@ -113,6 +114,14 @@
         SelectedDoctor = (int)value;
         Console.WriteLine(SelectedDoctor);
         await RefreshScheduler();
+    }
+
+    private async Task ConvertToTimeSlots() {
+        DateTime currentDate = DateTime.Now.AddDays(21);
+
+        //doctorService.ConvertScheduleToTimeSlots(nextMonday, 1);
+        await scheduleTimeSlotService.ConvertScheduleToTimeSlots(currentDate, 1, SelectedDoctor);
+
     }
 
     private async Task HandleScheduleTimeSlotAdded(ScheduleTimeSlotDTO newSlot)

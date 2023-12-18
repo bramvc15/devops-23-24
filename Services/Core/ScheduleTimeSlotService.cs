@@ -146,6 +146,21 @@ namespace Services.Core
                 Console.WriteLine("Can't delete a ScheduleTimeSlot of a Doctor that doesn't exist in the DB");
             }
         }
+
+        public async Task ConvertScheduleToTimeSlots(DateTime startOfWeek1, int amountOfWeeks, int docId) {
+            var doctorEntity = await _DBContext.Doctors
+                .FirstOrDefaultAsync(d => d.Id == docId);
+
+            if (doctorEntity != null)
+            {   
+                doctorEntity.ConvertScheduleToTimeSlots(startOfWeek1, amountOfWeeks);
+                await _DBContext.SaveChangesAsync();
+            }
+            else
+            {
+                Console.WriteLine("Can't delete a ScheduleTimeSlot of a Doctor that doesn't exist in the DB");
+            }
+        }
     }
 }
 
