@@ -145,7 +145,7 @@
             Name = "aa",
             Specialization = "aa"
         };
-        ListOfScheduleTimeSlots = await scheduleTimeSlotService.GetScheduleTimeSlots(doc.Id ?? 0);
+        ListOfScheduleTimeSlots = await scheduleTimeSlotService.GetScheduleTimeSlots(doc.Id ?? 3);
 
         // Add each time slot to the appropriate list
         foreach (ScheduleTimeSlotDTO scheduleTimeSlot in ListOfScheduleTimeSlots)

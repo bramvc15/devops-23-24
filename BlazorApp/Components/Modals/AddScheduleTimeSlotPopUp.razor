@@ -139,7 +139,7 @@
                     DateTime = dateTime,
                     Duration = durationInMinutes
                 };
-                ScheduleTimeSlotDTO newSlot = await scheduleTimeSlotService.CreateScheduleTimeSlot(slot, 0);
+                ScheduleTimeSlotDTO newSlot = await scheduleTimeSlotService.CreateScheduleTimeSlot(slot, 3);
                 await OnScheduleTimeSlotAdded.InvokeAsync(newSlot);
             }
             catch (InvalidOperationException ex)
