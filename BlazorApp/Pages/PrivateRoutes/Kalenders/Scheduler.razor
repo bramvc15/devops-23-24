@@ -72,9 +72,7 @@
                                             <p>@($"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}")</p>
                                             <p>@($"{list[i].Duration} minutes")</p>
                                             <br />
-                                            <Button Color="Color.Primary" @onclick="() => EditScheduleTimeSlot(timeSlot)">
-                                                <Icon Name="IconName.Edit" />
-                                            </Button>
+                                            <EditScheduleTimeSlotPopUp ScheduleTimeSlot="timeSlot" DoctorId=SelectedDoctor />
                                             <Button Color="Color.Danger" @onclick="() => DeleteScheduleTimeSlot(timeSlot)">
                                                 <Icon Name="IconName.Delete" />
                                             </Button>
