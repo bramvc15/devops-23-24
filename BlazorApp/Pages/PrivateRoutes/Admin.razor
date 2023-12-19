@@ -1,4 +1,5 @@
 @page "/admin"
+@inject TokenProvider tokenProvider
 @inject NavigationManager NavManager
 @using BlazorApp.BlazorShared;
 
@@ -23,24 +24,36 @@
 </div>
 
 @code {
-    private string Username = "Anonymous User";
-    private string Picture = "";
     [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+    private string Username = "";
+    private string Picture = "";
+    private string IdToken = "";
+    private string AccessToken = "";
 
     protected override async Task OnInitializedAsync()
     {
-        if (authenticationState is not null)
-        {
-            var state = await authenticationState;
+        var state = await AuthenticationStateTask;
 
-            Username = state?.User?.Identity?.Name ?? string.Empty;
+        Username = state.User.Identity.Name ?? string.Empty;
+        IdToken = tokenProvider.IdToken;
+        AccessToken = tokenProvider.AccessToken;
 
-            Picture = state?.User.Claims
-                        .Where(c => c.Type.Equals("picture"))
-                        .Select(c => c.Value)
-                        .FirstOrDefault() ?? string.Empty;
-        }
+        Picture = state.User.Claims
+            .Where(c => c.Type.Equals("picture"))
+            .Select(c => c.Value)
+            .FirstOrDefault() ?? string.Empty;
+
+        Console.WriteLine("========================================================");
+        Console.WriteLine($"Username : {Username}");
+        Console.WriteLine("========================================================");
+        Console.WriteLine($"Picture : {Picture}");
+        Console.WriteLine("========================================================");
+        Console.WriteLine($"IdToken : {IdToken}");
+        Console.WriteLine("========================================================");
+        Console.WriteLine($"AccessToken : {AccessToken}");
+        Console.WriteLine("========================================================");
+
         await base.OnInitializedAsync();
     }
 }

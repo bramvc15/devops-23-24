@@ -17,13 +17,10 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = builder.Configuration["Auth0:Domain"];
     options.ClientId = builder.Configuration["Auth0:ClientId"];
-});
-
-builder.Services.AddAuth0AuthenticationClient(config =>
-{
-    config.Domain = builder.Configuration["Auth0:Domain"];
-    config.ClientId = builder.Configuration["Auth0:ClientId"];
-    config.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
+    options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
+}).WithAccessToken(options => {
+    //options.Audience = builder.Configuration["Auth0:Audience"];
+    options.UseRefreshTokens = true;
 });
 
 builder.Services.AddAuth0ManagementClient().AddManagementAccessToken();
@@ -52,6 +49,7 @@ builder.Services.AddScoped<FaqService>();
 builder.Services.AddScoped<TimeSlotService>();
 builder.Services.AddScoped<ScheduleTimeSlotService>();
 builder.Services.AddScoped<NoteService>();
+builder.Services.AddScoped<TokenProvider>();
 
 builder.Services.AddSyncfusionBlazor();
 
