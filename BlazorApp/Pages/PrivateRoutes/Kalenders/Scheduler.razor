@@ -29,7 +29,9 @@
                 <SelectItem TValue="int?" Value="@doctor.Id">@doctor.Name</SelectItem>
             }
         </Select>
+        
         <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" DoctorId="SelectedDoctor" />
+        <Button Color="Color.Danger" @onclick="ClearSchedule">Schedule wissen</Button>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -120,6 +122,15 @@
         //doctorService.ConvertScheduleToTimeSlots(nextMonday, 1);
         await scheduleTimeSlotService.ConvertScheduleToTimeSlots(currentDate, 1, SelectedDoctor);
 
+    }
+
+    private async Task ClearSchedule() {
+        List<ScheduleTimeSlotDTO> scheduleTimeSlotsCopy = new List<ScheduleTimeSlotDTO>(ListOfScheduleTimeSlots);
+
+        foreach (ScheduleTimeSlotDTO scheduleTimeSlot in scheduleTimeSlotsCopy)
+        {
+            await scheduleTimeSlotService.DeleteScheduleTimeSlot(scheduleTimeSlot, SelectedDoctor);
+        }
     }
 
     private async Task HandleScheduleTimeSlotAdded(ScheduleTimeSlotDTO newSlot)
