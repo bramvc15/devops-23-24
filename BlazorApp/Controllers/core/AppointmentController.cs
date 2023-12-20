@@ -18,9 +18,9 @@ public class AppointmentController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    public Task<IEnumerable<AppointmentDTO>> GetAppointments([FromBody] PatientDTO pat)
+    public Task<IEnumerable<AppointmentDTO>> GetAppointments()
     {
-        return _service.GetAppointments(pat);
+        return _service.GetAppointments();
     }
 
     [HttpPost]

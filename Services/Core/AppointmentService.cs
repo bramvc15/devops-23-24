@@ -9,45 +9,45 @@ namespace Services.Core
     public class AppointmentService
     {
         private readonly DatabaseContext _DBContext;
+        private readonly DbSet<Appointment> _appointments;
 
         public AppointmentService(DatabaseContext databaseContext)
         {
             _DBContext = databaseContext;
+            _appointments = databaseContext.Appointments;
         }
 
-        public async Task<IEnumerable<AppointmentDTO>> GetAppointments(PatientDTO patient)
+        public async Task<IEnumerable<AppointmentDTO>> GetAppointments()
         {
-            var patientEntity = await _DBContext.Patients
-                .Include(p => p.Appointments)
-                .FirstOrDefaultAsync(p => p.Id == patient.Id);
+            var appointments = await _appointments
+                .Include(a => a.Patient)
+                .ToListAsync();
 
-            if (patientEntity != null)
+            List<AppointmentDTO> convertedAppointments = new();
+
+            foreach (var appointment in appointments)
             {
-                var appointmentDTOs = patientEntity.Appointments.Select(a => new AppointmentDTO
+                AppointmentDTO convertedAppointment = new()
                 {
-                    Id = a.Id,
-                    Reason = a.Reason,
-                    Note = a.Note,
+                    Id = appointment.Id,
+                    Reason = appointment.Reason,
+                    Note = appointment.Note,
                     PatientDTO = new PatientDTO
-                    {
-                        Id = a.Patient.Id,
-                        Name = a.Patient.Name,
-                        Email = a.Patient.Email,
-                        PhoneNumber = a.Patient.PhoneNumber,
-                        DateOfBirth = a.Patient.DateOfBirth,
-                        Gender = a.Patient.Gender,
-                        BloodType = a.Patient.BloodType,
-                    }
-                });
+                        {
+                            Id = appointment.Patient.Id,
+                            Name = appointment.Patient.Name,
+                            Email = appointment.Patient.Email,
+                            PhoneNumber = appointment.Patient.PhoneNumber,
+                            DateOfBirth = appointment.Patient.DateOfBirth,
+                            Gender = appointment.Patient.Gender,
+                            BloodType = appointment.Patient.BloodType,
+                        }
+                };
 
-                return appointmentDTOs;
-            }
-            else
-            {
-                Console.WriteLine("Can't get Appointments of a Patient that doesn't exist in the DB");
+                convertedAppointments.Add(convertedAppointment);
             }
 
-            return Enumerable.Empty<AppointmentDTO>();
+            return convertedAppointments;
         }
 
         public async Task<AppointmentDTO> CreateAppointment(int timeSlotId, int patientId, string reason, string note)
