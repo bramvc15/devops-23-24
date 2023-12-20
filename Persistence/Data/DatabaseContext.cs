@@ -17,6 +17,7 @@ namespace Persistence.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<TimeSlot> TimeSlots { get; set; }
         public DbSet<ScheduleTimeSlot> ScheduleTimeSlots { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         // CMS Tables
         public DbSet<Blog> Blogs { get; set; }
@@ -26,6 +27,7 @@ namespace Persistence.Data
         public DbSet<Treatment> Treatments { get; set; }
         public DbSet<Faq> Faqs { get; set; }
         public DbSet<Note> Notes { get; set; }
+        
 
         // ModelChanges on persist
         protected override void OnModelCreating(ModelBuilder modelBuilder)

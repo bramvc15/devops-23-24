@@ -10,7 +10,7 @@ namespace Persistence.Data
 
         public static void Initialize(DatabaseContext context)
         {
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any() && context.Notes.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any() && context.Notes.Any() && context.Messages.Any())
             {
                 return;
             }
@@ -243,10 +243,18 @@ namespace Persistence.Data
             };
             #endregion
 
+            #region Messages
+            var messages = new Message[]
+            {
+                new Message("John", "Doe", "john@mail.com", "0489481512", new DateTime(1990, 1, 1), "This is the first message!"),
+            };
+            #endregion
+
 
             // domain
             context.Doctors.AddRange(doctors);
             context.Patients.AddRange(patients);
+            context.Messages.AddRange(messages);
 
             // CMS
             context.HomeHeaders.Add(header);

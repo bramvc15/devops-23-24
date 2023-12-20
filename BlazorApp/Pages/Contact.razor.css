@@ -100,10 +100,17 @@
 
 .btn-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
     margin-top: 30px;
+}
+
+.success-message {
+    color: rgb(0, 190, 0);
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .sendBtn {
@@ -114,6 +121,7 @@
     background-color: rgb(22, 44, 104);
     color: azure;
     font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .sendBtn:hover {
