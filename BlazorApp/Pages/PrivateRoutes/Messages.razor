@@ -7,7 +7,6 @@
 @using Microsoft.AspNetCore.Components;
 @inject DatabaseContext databaseContext
 @inject NavigationManager NavManager
-@inject IJSRuntime JSRuntime
 
 <PageTitle>Admin - MESSAGES</PageTitle>
 
@@ -20,65 +19,75 @@
         <h1>Berichten</h1>
     </div>
     <div class="messages-container">
-        <div class="message-col">
-            @if (MessageObj != null)
+            @if (MessageObj != null && MessageObj.Any())
             {
-                @foreach (var m in MessageObj)
-                {
-                    @if (m != null)
+                <div class="message-col">
+                    @foreach (var m in MessageObj)
                     {
-                            <div class="mail" @onclick="() => ToggleMessage(m.Id)">@m.Name @m.LastName</div>
-                    }
-                }
-            }
-        </div>
-        <div class="message-content">
-             @if (ShowMessageId.HasValue)
-            {
-                <div class="selected-message">
-                    @if (MessageObj != null)
-                    {
-                        var selectedMessage = MessageObj.FirstOrDefault(m => m?.Id == ShowMessageId);
-                        if (selectedMessage != null)
+                        @if (m != null)
                         {
-                            <div class="top-con">
-                                <h2>@selectedMessage.Name @selectedMessage.LastName</h2>
-                                <button class="del-btn" @onclick="() => ShowDeleteConfirmationPopup(selectedMessage.Id)"><Icon Name="IconName.Delete" /></button>
-                                @if (ShowDeleteConfirmation)
-                                {
-                                    <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
-                                        <h3>Bent u zeker?</h3>
-                                        <div class="popup-buttons">
-                                            <button class="popDel" @onclick="DeleteMessage">Confirm</button>
-                                            <button class="popCan" @onclick="CancelDelete">Cancel</button>
-                                        </div>
-                                    </div>
-                                }                            
-                            </div>  
-                            <span class="line"></span>
-                            <div class="head-con">
-                                <div class="headers">
-                                    <p class="info"><strong>Email:</strong></p>
-                                    <p class="info"><strong>Telefoon:</strong></p>
+                                <div class="mail" @onclick="() => ToggleMessage(m.Id)">
+                                    <p>@m.Name @m.LastName</p>
+                                    <span class="read-marker" style="display: @(m.Read ? "none" : "inline-block")"></span>
                                 </div>
-                                <div class="values">
-                                    <p class="info">@selectedMessage.Email</p>
-                                    <p class="info">@selectedMessage.Phone</p>
-                                </div>
-                            </div>
-                            <span class="line"></span>
-                            <p class="msg">@selectedMessage.Note</p>
                         }
                     }
                 </div>
-            }
+                <div class="message-content">
+                @if (ShowMessageId.HasValue)
+                {
+                    <div class="selected-message">
+                        @if (MessageObj != null)
+                        {
+                            var selectedMessage = MessageObj.FirstOrDefault(m => m?.Id == ShowMessageId);
+                            if (selectedMessage != null)
+                            {
+                                <div class="top-con">
+                                    <h2>@selectedMessage.Name @selectedMessage.LastName</h2>
+                                    <button class="del-btn" @onclick="() => ShowDeleteConfirmationPopup(selectedMessage.Id)"><Icon Name="IconName.Delete" /></button>
+                                    @if (ShowDeleteConfirmation)
+                                    {
+                                        <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                                            <h3>Bent u zeker?</h3>
+                                            <div class="popup-buttons">
+                                                <button class="popDel" @onclick="DeleteMessage">Confirm</button>
+                                                <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                                            </div>
+                                        </div>
+                                    }                            
+                                </div>  
+                                <span class="line"></span>
+                                <div class="head-con">
+                                    <div class="headers">
+                                        <p class="info"><strong>Email:</strong></p>
+                                        <p class="info"><strong>Telefoon:</strong></p>
+                                    </div>
+                                    <div class="values">
+                                        <p class="info">@selectedMessage.Email</p>
+                                        <p class="info">@selectedMessage.Phone</p>
+                                    </div>
+                                </div>
+                                <span class="line"></span>
+                                <p class="msg">@selectedMessage.Note</p>
+                            }
+                        }
+                    </div>
+                }
+                else 
+                {
+                    <div class="empty-message">
+                        <p>Selecteer eerst een bericht!</p>
+                    </div>
+                }
+            </div>
+            } 
             else
             {
-                <div class="empty-message">
-                    <p>Selecteer eerst een bericht!</p>
+                <span></span>
+                <div class="no-message">
+                    <p>Er zijn geen berichten beschikbaar.</p>
                 </div>
             }
-        </div>
     </div>
 </div>
 
@@ -93,9 +102,18 @@
         MessageObj = await messageService.GetMessages();
     }
 
-    private void ToggleMessage(int? messageId)
+    private async void ToggleMessage(int? messageId)
     {
         ShowMessageId = ShowMessageId == messageId ? 0 : messageId;
+        if (ShowMessageId.HasValue)
+        {
+            var message = MessageObj.FirstOrDefault(m => m?.Id == ShowMessageId);
+            if (message != null && !message.Read)
+            {
+                message.Read = true;
+                await messageService.UpdateMessage(message);
+            }
+        }
     }
 
     private async Task ShowDeleteConfirmationPopup(int? messageId)

@@ -10,4 +10,6 @@ public class MessageDTO
     public string Phone { get; set; }
     public DateTime Birthdate { get; set; }
     public string Note { get; set; }
+
+    public bool Read { get; set; }
 }

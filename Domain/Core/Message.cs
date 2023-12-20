@@ -11,6 +11,7 @@ public class Message : Entity
     private string phone;
     private DateTime birthdate;
     private string note;
+    private bool read;
 
 
     public string Name
@@ -43,13 +44,14 @@ public class Message : Entity
         get => note;
         private set => note = Guard.Against.NullOrWhiteSpace(value, nameof(Note));
     }
+    public bool Read { get; set; } = false;
     #endregion
 
     #region Constructors
     // Database Constructor
     private Message() { }
 
-    public Message(string name, string lastname, string email, string phone, DateTime birthdate, string note)
+    public Message(string name, string lastname, string email, string phone, DateTime birthdate, string note, bool read)
     {
         Name = name;
         LastName = lastname;
@@ -57,6 +59,19 @@ public class Message : Entity
         Phone = phone;
         Birthdate = birthdate;
         Note = note;
+        Read = read;
+    }
+    #endregion
+    #region Methods
+    public void UpdateMessage(string name, string lastname, string email, string phone, DateTime birthdate, string note, bool read)
+    {
+        Name = name;
+        LastName = lastname;
+        Email = email;
+        Phone = phone;
+        Birthdate = birthdate;
+        Note = note;
+        Read = read;
     }
     #endregion
 }

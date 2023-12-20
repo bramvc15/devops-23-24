@@ -246,7 +246,7 @@ namespace Persistence.Data
             #region Messages
             var messages = new Message[]
             {
-                new Message("John", "Doe", "john@mail.com", "0489481512", new DateTime(1990, 1, 1), "This is the first message!"),
+                new Message("John", "Doe", "john@mail.com", "0489481512", new DateTime(1990, 1, 1), "This is the first message!", false),
             };
             #endregion
 

@@ -34,6 +34,7 @@ namespace Services.Core
                     Phone = message.Phone,
                     Birthdate = message.Birthdate,
                     Note = message.Note,
+                    Read = message.Read,
                 };
                 convertedMessages.Add(m);
             }
@@ -43,10 +44,20 @@ namespace Services.Core
 
         public async Task<MessageDTO> CreateMessage(MessageDTO newMessage)
         {
-            _messages.Add(new Message(newMessage.Name, newMessage.LastName, newMessage.Email, newMessage.Phone, newMessage.Birthdate, newMessage.Note));
+            _messages.Add(new Message(newMessage.Name, newMessage.LastName, newMessage.Email, newMessage.Phone, newMessage.Birthdate, newMessage.Note, newMessage.Read));
             await _ctx.SaveChangesAsync();
 
             return newMessage;
+        }
+
+        public async Task<MessageDTO> UpdateMessage(MessageDTO updatedMessage)
+        {
+            Message message = await _messages.FindAsync(updatedMessage.Id);
+            message.UpdateMessage(updatedMessage.Name, updatedMessage.LastName, updatedMessage.Email, updatedMessage.Phone, updatedMessage.Birthdate, updatedMessage.Note, updatedMessage.Read);
+            _messages.Update(message);
+            await _ctx.SaveChangesAsync();
+
+            return updatedMessage;
         }
 
         public async Task DeleteMessage(int? messageToDelete)

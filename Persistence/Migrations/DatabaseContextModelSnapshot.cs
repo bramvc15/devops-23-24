@@ -251,6 +251,9 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Messages");

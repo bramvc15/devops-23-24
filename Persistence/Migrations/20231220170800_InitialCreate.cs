@@ -124,7 +124,8 @@ namespace Persistence.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Birthdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Read = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

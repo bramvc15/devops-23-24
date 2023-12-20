@@ -12,7 +12,7 @@ using Persistence.Data;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231220132344_InitialCreate")]
+    [Migration("20231220170800_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -253,6 +253,9 @@ namespace Persistence.Migrations
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

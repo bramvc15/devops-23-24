@@ -127,6 +127,7 @@
         message.Phone = contactData.Phone;
         message.Birthdate = contactData.BirthDate;
         message.Note = contactData.Message;
+        message.Read = false;
 
         await messageService.CreateMessage(message);
         showSuccessMessage = true;
