@@ -47,8 +47,10 @@
                                 <ValidationMessage For="@(() => contactData.Phone)" />
                             </div>
                         </div>
-                        <label class='formLabel'>Geboortedatum</label>
-                        <InputDate @bind-Value="contactData.BirthDate" />
+                        <div class="box">
+                            <label class='formLabel'>Geboortedatum</label>
+                            <InputDate @bind-Value="contactData.BirthDate" />
+                        </div>
                     </div>
                     <div class="right">
                         <div class="leftie">
