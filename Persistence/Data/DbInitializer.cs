@@ -10,7 +10,7 @@ namespace Persistence.Data
 
         public static void Initialize(DatabaseContext context)
         {
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any() && context.Notes.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any() && context.Notes.Any() && context.Messages.Any())
             {
                 return;
             }
@@ -243,10 +243,22 @@ namespace Persistence.Data
             };
             #endregion
 
+            #region Messages
+            var messages = new Message[]
+            {
+                new Message("John", "Doe", "john@mail.com", "0489481512", new DateTime(1990, 1, 1), "This is the first message!", false),
+                new Message("Thommy", "Shelby", "thommy@mail.com", "0489481512", new DateTime(1990, 1, 1), "Ik hoop dat dit berichtje u bereikt te midden van uw drukke dagen. Terwijl de feestdagen dichterbij komen, vroeg ik me af of u een momentje tijd heeft om mijn wens te horen...", false),
+                new Message("Tow", "Mater", "tow@mail.com", "0489481512", new DateTime(1990, 1, 1), "Ik word steeds roestiger en roestiger. Voro deze reden kan ik ook niet zo goed meer autorijden. Kunt u me helpen?", false),
+                new Message("Buzz", "Lightyear", "buzz@mail.com", "0489481512", new DateTime(1990, 1, 1), "Naar de sterren, en er dan voorbij!", false),
+                new Message("Jack", "Sparrow", "jack@mail.com", "0489481512", new DateTime(1990, 1, 1), "The beste piraat deze wereld ooit gezien heeft! Ik hou van wiskey ook.", false),
+            };
+            #endregion
+
 
             // domain
             context.Doctors.AddRange(doctors);
             context.Patients.AddRange(patients);
+            context.Messages.AddRange(messages);
 
             // CMS
             context.HomeHeaders.Add(header);

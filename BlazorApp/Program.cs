@@ -44,6 +44,7 @@ builder.Services.AddScoped<FaqService>();
 builder.Services.AddScoped<TimeSlotService>();
 builder.Services.AddScoped<ScheduleTimeSlotService>();
 builder.Services.AddScoped<NoteService>();
+builder.Services.AddScoped<MessageService>();
 
 builder.Services.AddSyncfusionBlazor();
 
