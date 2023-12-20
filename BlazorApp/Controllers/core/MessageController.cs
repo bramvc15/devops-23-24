@@ -31,7 +31,7 @@ public class MessageController : ControllerBase
 
     [HttpDelete]
     [Authorize(Roles = "Admin")]
-    public Task DeleteMessage([FromBody] MessageDTO request)
+    public Task DeleteMessage([FromBody] int request)
     {
         return _service.DeleteMessage(request);
     }

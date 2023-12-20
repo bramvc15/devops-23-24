@@ -49,9 +49,9 @@ namespace Services.Core
             return newMessage;
         }
 
-        public async Task DeleteMessage(MessageDTO messageToDelete)
+        public async Task DeleteMessage(int? messageToDelete)
         {
-            Message message = await _messages.FindAsync(messageToDelete.Id);
+            Message message = await _messages.FindAsync(messageToDelete);
             _messages.Remove(message);
             await _ctx.SaveChangesAsync();
         }

@@ -1,0 +1,206 @@
+.message-page {
+    height: 100vh;
+    background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(9, 244, 138, 0.36) 100%);
+    padding-bottom: 70px;
+}
+
+.title-layout {
+
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: fit-content;
+    /*
+    background: rgb(194,228,218);
+    background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(9,246,140,0) 100%);
+    */
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+    color: rgb(22, 44, 104); /* Tekstkleur aanpassen naar wens */
+    padding-top: 100px;
+    padding-left: 120px;
+ 
+  
+}
+
+.messages-container {
+    margin-left: 120px;
+    width: 85%;
+    height: fit-content;
+    background-color: transparent;
+    display: grid;
+    grid-template-columns: 22% 78%;
+}
+
+.message {
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+}
+
+.mail {
+    height: 70px;
+    width: 100%;
+    display: flex;
+    text-align: left;
+    align-items: center;
+    padding-left: 20px;
+    color: rgb(22, 44, 104);
+    font-weight: 700;
+    font-size: 20px;
+    border-radius: 5%;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.mail:nth-of-type(odd) {
+    background-color: rgb(145, 216, 195);
+}
+
+.mail:nth-of-type(even) {
+    background-color: rgb(208, 224, 216);
+}
+
+.message-content {
+    height: 200%;
+    overflow: auto;
+    margin-left: 15px;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+.empty-message {
+    font-weight: 800;
+    font-size: 20px;
+    color: rgb(22, 44, 104);
+    text-align: center;
+    margin-top: 25px;
+}
+
+.head-con {
+    display: grid;
+    width: fit-content;
+    grid-template-columns: 50% 50%;
+}
+
+.selected-message {
+    background-color: rgb(146, 202, 183);
+    width: 100%;
+    height: 100%;
+    color: azure;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.info {
+    font-size: 1.4rem;
+}
+
+.line {
+    display: inline-block;
+    width: 100%;
+    height: 3px;
+    border-radius: 30px;
+    background-color: azure;
+    margin: 0;
+    padding: 0;
+}
+
+.msg {
+    font-size: 1.2rem;
+    margin-top: 10px !important;
+    padding: 0;
+}
+
+.top-con {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.del-btn {
+    background-color: rgb(216, 109, 109);
+    border: solid 2px rgb(206, 70, 70);
+    border-radius: 4px;
+    padding: 10px 25px;
+    color: azure;
+    transition: 0.3s;
+    margin-left: 2.5%;
+}
+
+.del-btn:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    border: azure solid 2px;
+}
+
+.confirmation-popup {
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    background-color: azure;
+    border: solid 3px rgb(206, 70, 70);
+    border-radius: 8px;
+    padding: 10px 25px;
+    color: azure;
+    transition: 0.3s;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+h3 {
+    text-align: center;
+    font-weight: 700;
+    color: rgb(206, 70, 70);
+}
+
+.popup-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.popDel {
+    background-color: rgb(216, 109, 109);
+    border: solid 2px rgb(206, 70, 70);
+    border-radius: 4px;
+    color: azure;
+    transition: 0.3s;
+    width: 40%;
+}
+
+.popCan {
+    background-color: rgb(146, 202, 183);
+    border: solid 2px rgb(109, 151, 137);
+    border-radius: 4px;
+    color: azure;
+    transition: 0.3s;
+    padding: 2% 0;
+    width: 40%;
+}
+
+.popDel:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: azure;
+    color: rgb(206, 70, 70);
+}
+
+.popCan:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: azure;
+    color: rgb(109, 151, 137);
+}
