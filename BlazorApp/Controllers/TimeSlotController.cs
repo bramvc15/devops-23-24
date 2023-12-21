@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.Core;
 using Shared.DTO.Core;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 
 namespace BlazorApp.Controllers;
 
@@ -17,18 +19,30 @@ public class TimeSlotController : ControllerBase
 
     [HttpGet]
     [Route("{docId}")]
-    public async Task<ActionResult<IEnumerable<TimeSlotDTO>>> GetTimeSlots(int docId)
+    public async Task<ActionResult<IEnumerable<TimeSlotDTO>>> GetTimeSlots(int docId, [FromHeader] string Authorization)
     {
         try
         {
-            var timeSlots = await _service.GetTimeSlots(docId);
-
-            if (timeSlots == null)
+            if (string.IsNullOrEmpty(Authorization))
             {
-                return NotFound();
+                return Unauthorized("JWT token is missing in Authorization header");
             }
 
-            return Ok(timeSlots);
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                var timeSlots = await _service.GetTimeSlots(docId);
+
+                if (timeSlots == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(timeSlots);
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
@@ -39,18 +53,30 @@ public class TimeSlotController : ControllerBase
 
     [HttpPost]
     [Route("{docId}")]
-    public async Task<ActionResult<TimeSlotDTO>> CreateTimeSlot([FromBody] TimeSlotDTO dto, int docId)
+    public async Task<ActionResult<TimeSlotDTO>> CreateTimeSlot([FromBody] TimeSlotDTO dto, int docId, [FromHeader] string Authorization)
     {
         try
         {
-            var timeSlot = await _service.CreateTimeSlot(dto, docId);
-
-            if (timeSlot == null)
+            if (string.IsNullOrEmpty(Authorization))
             {
-                return BadRequest();
+                return Unauthorized("JWT token is missing in Authorization header");
             }
 
-            return Ok(timeSlot);
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                var timeSlot = await _service.CreateTimeSlot(dto, docId);
+
+                if (timeSlot == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(timeSlot);
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
@@ -61,18 +87,30 @@ public class TimeSlotController : ControllerBase
 
     [HttpPut]
     [Route("{docId}")]
-    public async Task<ActionResult<TimeSlotDTO>> UpdateTimeSlot([FromBody] TimeSlotDTO dto, int docId)
+    public async Task<ActionResult<TimeSlotDTO>> UpdateTimeSlot([FromBody] TimeSlotDTO dto, int docId, [FromHeader] string Authorization)
     {
         try
         {
-            var timeSlot = await _service.UpdateTimeSlot(dto, docId);
-
-            if (timeSlot == null)
+            if (string.IsNullOrEmpty(Authorization))
             {
-                return BadRequest();
+                return Unauthorized("JWT token is missing in Authorization header");
             }
 
-            return Ok(timeSlot);
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                var timeSlot = await _service.UpdateTimeSlot(dto, docId);
+
+                if (timeSlot == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(timeSlot);
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
@@ -83,17 +121,55 @@ public class TimeSlotController : ControllerBase
 
     [HttpDelete]
     [Route("{docId}")]
-    public async Task<ActionResult> DeleteTimeSlot([FromBody] TimeSlotDTO dto, int docId)
+    public async Task<ActionResult> DeleteTimeSlot([FromBody] TimeSlotDTO dto, int docId, [FromHeader] string Authorization)
     {
         try
         {
-            await _service.DeleteTimeSlot(dto, docId);
-            return Ok();
+            if (string.IsNullOrEmpty(Authorization))
+            {
+                return Unauthorized("JWT token is missing in Authorization header");
+            }
+
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                await _service.DeleteTimeSlot(dto, docId);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
             return StatusCode(500, "Internal server error");
         }
+    }
+
+    private static bool IsAuthorized(string jwtToken, string checkRole)
+    {
+        try
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(jwtToken) as JwtSecurityToken;
+
+            if (jsonToken == null)
+            {
+                return false;
+            }
+
+            var roleClaims = jsonToken.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Select(c => c.Value);
+            var concatenatedRoles = string.Join(",", roleClaims);
+            if (roleClaims != null && concatenatedRoles.Contains(checkRole, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+        return false;
     }
 }

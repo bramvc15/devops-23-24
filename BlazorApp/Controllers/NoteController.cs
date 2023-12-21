@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.CMS;
 using Shared.DTO.CMS;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 
 namespace BlazorApp.Controllers;
 
@@ -16,18 +18,30 @@ public class NoteController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<NoteDTO>>> GetNotes()
+    public async Task<ActionResult<IEnumerable<NoteDTO>>> GetNotes([FromHeader] string Authorization)
     {
         try
         {
-            var notes = await _service.GetNotes();
-
-            if (notes == null)
+            if (string.IsNullOrEmpty(Authorization))
             {
-                return NotFound();
+                return Unauthorized("JWT token is missing in Authorization header");
             }
 
-            return Ok(notes);
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                var notes = await _service.GetNotes();
+
+                if (notes == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(notes);
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
@@ -37,19 +51,30 @@ public class NoteController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<NoteDTO>> CreateNote([FromBody] NoteDTO request)
+    public async Task<ActionResult<NoteDTO>> CreateNote([FromBody] NoteDTO request, [FromHeader] string Authorization)
     {
         try
         {
-            var note = await _service.CreateNote(request);
-
-            if (note == null)
+            if (string.IsNullOrEmpty(Authorization))
             {
-                return BadRequest();
+                return Unauthorized("JWT token is missing in Authorization header");
             }
 
-            return Ok(note);
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                var note = await _service.CreateNote(request);
 
+                if (note == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(note);
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
@@ -59,19 +84,30 @@ public class NoteController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult<NoteDTO>> UpdateNote([FromBody] NoteDTO request)
+    public async Task<ActionResult<NoteDTO>> UpdateNote([FromBody] NoteDTO request, [FromHeader] string Authorization)
     {
         try
         {
-            var note = await _service.UpdateNote(request);
-
-            if (note == null)
+            if (string.IsNullOrEmpty(Authorization))
             {
-                return BadRequest();
+                return Unauthorized("JWT token is missing in Authorization header");
             }
 
-            return Ok(note);
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                var note = await _service.UpdateNote(request);
 
+                if (note == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(note);
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
@@ -81,17 +117,55 @@ public class NoteController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> DeleteNote([FromBody] NoteDTO request)
+    public async Task<ActionResult> DeleteNote([FromBody] NoteDTO request, [FromHeader] string Authorization)
     {
         try
         {
-            await _service.DeleteNote(request);
-            return Ok();
+            if (string.IsNullOrEmpty(Authorization))
+            {
+                return Unauthorized("JWT token is missing in Authorization header");
+            }
+
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                await _service.DeleteNote(request);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
             return StatusCode(500, "Internal server error");
         }
+    }
+
+    private static bool IsAuthorized(string jwtToken, string checkRole)
+    {
+        try
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(jwtToken) as JwtSecurityToken;
+
+            if (jsonToken == null)
+            {
+                return false;
+            }
+
+            var roleClaims = jsonToken.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Select(c => c.Value);
+            var concatenatedRoles = string.Join(",", roleClaims);
+            if (roleClaims != null && concatenatedRoles.Contains(checkRole, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+        return false;
     }
 }
