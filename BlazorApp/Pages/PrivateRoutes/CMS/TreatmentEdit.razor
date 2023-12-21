@@ -63,7 +63,6 @@
             </Field>
             <Field>
                 <FieldLabel>Beschrijving</FieldLabel>
-                @*<RichTextEditor @ref="richTextEditRef" />*@
                 <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
                               PlaceHolder="Beschrijving van de behandeling..." ReadOnly="@readOnly" SubmitOnEnter="false"
                               EnterPressed="@OnSave" ToolbarPosition="Placement.Bottom">
@@ -109,8 +108,6 @@
 
 
  @code {
-    [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
 
     private bool visible = false;
     private string message = string.Empty;
@@ -167,13 +164,6 @@
 
     private async void UpdateTreatment()
     {
-        visible = false;
-        message = string.Empty;
-
-        var authenticationState = await authenticationStateTask;
-
-        if (authenticationState.User.IsInRole("Admin"))
-        {
             content = await richTextEditRef.GetHtmlAsync();
             TreatmentDTO treatment = new()
                 {
@@ -183,13 +173,6 @@
                     ImageLink = newImage
                 };
             await treatmentService.UpdateTreatment(treatment);
-        }
-        else
-        {
-            message = "U heeft geen toegang tot bewerken.";
-            visible = true;
-        }
-
-        await HideModal();
+            await HideModal();
     }
 }
