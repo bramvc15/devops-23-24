@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Core;
 using Services.Core;
-using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorApp.Controllers.core;
 
 [ApiController]
 [Route("api/[controller]")]
-// [Authorize]
 public class DoctorController : ControllerBase
 {
     private readonly DoctorService _service;
@@ -18,29 +16,81 @@ public class DoctorController : ControllerBase
     }
 
     [HttpGet]
-    public Task<IEnumerable<DoctorDTO>> GetDoctors()
+    public async Task<ActionResult<IEnumerable<DoctorDTO>>> GetDoctors()
     {
-        return _service.GetDoctors();
+        try
+        {
+            var doctors = await _service.GetDoctors();
+
+            if (doctors == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(doctors);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
-    public Task<DoctorDTO> CreateDoctor([FromBody] DoctorDTO newDoc)
+    public async Task<ActionResult<DoctorDTO>> CreateDoctor([FromBody] DoctorDTO newDoc)
     {
-        return _service.CreateDoctor(newDoc);
+        try
+        {
+            var doctor = await _service.CreateDoctor(newDoc);
+            
+            if (doctor == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(doctor);
+
+        } catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpPut]
-    [Authorize(Roles = "Admin")]
-    public Task<DoctorDTO> UpdateDoctor([FromBody] DoctorDTO newDoc)
+    public async Task<ActionResult<DoctorDTO>> UpdateDoctor([FromBody] DoctorDTO newDoc)
     {
-        return _service.UpdateDoctor(newDoc);
+        try
+        {
+            var doctor = await _service.UpdateDoctor(newDoc);
+
+            if (doctor == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(doctor);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpDelete]
-    [Authorize(Roles = "Admin")]
-    public Task DeleteDoctor([FromBody] DoctorDTO docToDelete) 
+    public async Task<ActionResult> DeleteDoctor([FromBody] DoctorDTO docToDelete) 
     {
-        return _service.DeleteDoctor(docToDelete);
+        try
+        {
+            await _service.DeleteDoctor(docToDelete);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 }
