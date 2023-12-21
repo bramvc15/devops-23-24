@@ -1,7 +1,7 @@
 .page-container {
     margin-top: 10vh;
-    min-height: fit-content;
-    height: 100vh;
+    min-height: 100vh;
+    height: fit-content;
 }
 
 .title-layout {

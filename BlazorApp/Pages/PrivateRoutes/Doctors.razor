@@ -77,7 +77,18 @@
                         }
                         <div class="doc-action-con">
                             <button class="edit-btn" @onclick="( () => ShowModal(doctor) )"><Icon Name="IconName.Edit" /></button>
-                            <button class="del-btn" @onclick="() => DeleteDoctor(doctor)"><Icon Name="IconName.Delete" /></button>
+                            @* <button class="del-btn" @onclick="() => DeleteDoctor(doctor)"><Icon Name="IconName.Delete" /></button> *@
+                            <button class="del-btn" @onclick="() => ShowDeleteConfirmationPopup()"><Icon Name="IconName.Delete" /></button>
+                            @if (ShowDeleteConfirmation)
+                                    {
+                                        <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                                            <h3>Bent u zeker?</h3>
+                                            <div class="popup-buttons">
+                                                <button class="popDel" @onclick="() => DeleteDoctor(doctor)">Confirm</button>
+                                                <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                                            </div>
+                                        </div>
+                                    }    
                         </div>
                     </div>
                     <span class="line"></span>
@@ -136,6 +147,7 @@
 
     private bool visible = false;
     private string message = string.Empty;
+    private bool ShowDeleteConfirmation = false;
 
     private int index = 0;
     private IEnumerable<DoctorDTO> doctors;
@@ -214,6 +226,11 @@
         await HideModal();
     }
 
+    private async Task ShowDeleteConfirmationPopup()
+    {
+        ShowDeleteConfirmation = true;
+    }
+
     private async void DeleteDoctor(DoctorDTO p)
     {
         visible = false;
@@ -224,6 +241,8 @@
         if (authenticationState.User.IsInRole("Admin"))
         {
             await doctorService.DeleteDoctor(p);
+            ShowDeleteConfirmation = false;
+            NavManager.NavigateTo("/admin/dokters", true);
         }
         else
         {
@@ -231,4 +250,11 @@
             visible = true;
         }
     }
+
+    private async Task CancelDelete()
+    {
+        ShowDeleteConfirmation = false;
+    }
+
+    
 }
