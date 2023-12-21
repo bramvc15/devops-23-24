@@ -95,7 +95,7 @@ public class AppointmentController : ControllerBase
 
             if (IsAuthorized(Authorization, "Employee"))
             {
-                var updatedAppointment = _service.UpdateAppointment(appointment);
+                var updatedAppointment = await _service.UpdateAppointment(appointment);
 
                 if (updatedAppointment == null)
                 {
