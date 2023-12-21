@@ -164,6 +164,7 @@
         };
         await patientService.UpdatePatient(patient);
         await HideModal();
+        NavManager.NavigateTo("/admin/clients", true);
     }
 
 }

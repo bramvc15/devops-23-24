@@ -219,6 +219,7 @@
                     Weekend = newWeekend
                 };
             await locationService.UpdateLocation(loc);
+            NavManager.NavigateTo("/admin/cms/contact", true);
         }
         else
         {

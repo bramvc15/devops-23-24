@@ -134,21 +134,23 @@
 
     private async void UpdateBlog()
     {
-            savedContent = await richTextEditRef.GetHtmlAsync();
-            BlogDTO blog = new()
-                {
-                    Id = clickedBlog.Id,
-                    Title = newTitle,
-                    Text = savedContent,
-                    ImageLink = newImageLink
-                };
-            await blogService.UpdateBlog(blog);
-            await HideModal();
+        savedContent = await richTextEditRef.GetHtmlAsync();
+        BlogDTO blog = new()
+            {
+                Id = clickedBlog.Id,
+                Title = newTitle,
+                Text = savedContent,
+                ImageLink = newImageLink
+            };
+        await blogService.UpdateBlog(blog);
+        await HideModal();
+        NavManager.NavigateTo("/admin/cms/actua", true);
     }
 
     private async void DeleteBlog(BlogDTO b)
     {
         await blogService.DeleteBlog(b);
+        NavManager.NavigateTo("/admin/cms/actua", true);
     }
 
 }

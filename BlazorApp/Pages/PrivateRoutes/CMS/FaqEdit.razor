@@ -137,6 +137,7 @@
                     Answer = newAnswer
                 };
             await faqService.UpdateFaq(faq);
+            NavManager.NavigateTo("/admin/cms/faq", true);
         }
         else
         {
@@ -157,6 +158,7 @@
         if (authenticationState.User.IsInRole("Admin"))
         {
             await faqService.DeleteFaq(f);
+            NavManager.NavigateTo("/admin/cms/faq", true);
         }
         else
         {

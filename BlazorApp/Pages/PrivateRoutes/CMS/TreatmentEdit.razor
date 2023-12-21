@@ -164,15 +164,16 @@
 
     private async void UpdateTreatment()
     {
-            content = await richTextEditRef.GetHtmlAsync();
-            TreatmentDTO treatment = new()
-                {
-                    Id = clickedTreatment.Id,
-                    Name = newName,
-                    Description = content,
-                    ImageLink = newImage
-                };
-            await treatmentService.UpdateTreatment(treatment);
-            await HideModal();
+        content = await richTextEditRef.GetHtmlAsync();
+        TreatmentDTO treatment = new()
+            {
+                Id = clickedTreatment.Id,
+                Name = newName,
+                Description = content,
+                ImageLink = newImage
+            };
+        await treatmentService.UpdateTreatment(treatment);
+        await HideModal();
+        NavManager.NavigateTo("/admin/cms/behandelingen", true);
     }
 }

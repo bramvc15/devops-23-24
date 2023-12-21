@@ -125,6 +125,7 @@
                     Content = newContent
                 };
             await noteService.UpdateNote(note);
+            NavManager.NavigateTo("/admin/notes", true);
         }
         else
         {
@@ -145,6 +146,7 @@
         if (authenticationState.User.IsInRole("Admin"))
         {
             await noteService.DeleteNote(clickedNote);
+            NavManager.NavigateTo("/admin/notes", true);
         }
         else
         {

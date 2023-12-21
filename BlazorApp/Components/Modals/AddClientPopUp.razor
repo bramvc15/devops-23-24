@@ -4,6 +4,7 @@
 @using Persistence.Data;
 @inject DatabaseContext databaseContext
 @inject PatientService patientService
+@inject NavigationManager NavManager
 
 <div>
     <div class="buttons">
@@ -95,5 +96,6 @@
             };
         await patientService.CreatePatient(newPatient);
         modalRef?.Hide();
+        NavManager.NavigateTo("/admin/clients", true);
     }
 }
