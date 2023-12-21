@@ -10,25 +10,15 @@ namespace Services.Core
     {
         private readonly DatabaseContext _DBContext;
         private readonly DbSet<Appointment> _appointments;
-        private readonly DbSet<Appointment> _appointments;
 
         public AppointmentService(DatabaseContext databaseContext)
         {
             _DBContext = databaseContext;
             _appointments = databaseContext.Appointments;
-            _appointments = databaseContext.Appointments;
         }
 
         public async Task<IEnumerable<AppointmentDTO>> GetAppointments()
-        public async Task<IEnumerable<AppointmentDTO>> GetAppointments()
         {
-            var appointments = await _appointments
-                .Include(a => a.Patient)
-                .ToListAsync();
-
-            List<AppointmentDTO> convertedAppointments = new();
-
-            foreach (var appointment in appointments)
             var appointments = await _appointments
                 .Include(a => a.Patient)
                 .ToListAsync();
@@ -38,11 +28,7 @@ namespace Services.Core
             foreach (var appointment in appointments)
             {
                 AppointmentDTO convertedAppointment = new()
-                AppointmentDTO convertedAppointment = new()
                 {
-                    Id = appointment.Id,
-                    Reason = appointment.Reason,
-                    Note = appointment.Note,
                     Id = appointment.Id,
                     Reason = appointment.Reason,
                     Note = appointment.Note,
@@ -61,7 +47,6 @@ namespace Services.Core
                 convertedAppointments.Add(convertedAppointment);
             }
 
-            return convertedAppointments;
             return convertedAppointments;
         }
 
