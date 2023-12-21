@@ -1,19 +1,23 @@
 using Microsoft.EntityFrameworkCore;
-using Shared.Enums;
 using Domain;
 using Shared.DTO.Core;
 using Persistence.Data;
+using Auth0.ManagementApi;
+using Auth0.ManagementApi.Models;
+using System.Diagnostics;
 
 namespace Services.Core
 {
     public class DoctorService
     {
         private readonly DatabaseContext _DBContext;
+        private readonly IManagementApiClient _managementApiClient;
 
-        public DoctorService(DatabaseContext databaseContext)
+        public DoctorService(DatabaseContext databaseContext, IManagementApiClient managementApiClient)
         {
             _DBContext = databaseContext;
             _doctors = databaseContext.Doctors;
+            _managementApiClient = managementApiClient;
         }
 
         private readonly DbSet<Doctor> _doctors;
@@ -63,6 +67,45 @@ namespace Services.Core
             return dto;
         }
 
+        public async Task<string> CreateDoctorInAuth0(string username, string email, string password)
+        {
+            try
+            {
+                var auth0Request = new UserCreateRequest
+                {
+                    UserName = username,
+                    Email = email,
+                    Password = password,
+                    Connection = "Username-Password-Authentication",
+                };
+
+                auth0Request.VerifyEmail = false;
+                var createdUser = await _managementApiClient.Users.CreateAsync(auth0Request);
+                Debug.WriteLine(createdUser);
+
+                var allRoles = await _managementApiClient.Roles.GetAllAsync(new GetRolesRequest());
+                var employeeRole = allRoles.First(x => x.Name == "Employee");
+
+                var assignRoleRequest = new AssignRolesRequest
+                {
+                    Roles = new string[] { employeeRole.Id }
+                };
+                await _managementApiClient.Users.AssignRolesAsync(createdUser?.UserId, assignRoleRequest);
+
+                Console.WriteLine(createdUser);
+
+                return createdUser.UserId;
+            } catch (Exception ex)
+            {
+                Console.WriteLine("===================================");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("===================================");
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine("===================================");
+                return null;
+            }
+        }
+
         public async Task<DoctorDTO> CreateDoctor(DoctorDTO newDoctor)
         {
             DoctorDTO response = new ();
@@ -93,7 +136,7 @@ namespace Services.Core
 
         public async Task<DoctorDTO> UpdateDoctor(DoctorDTO updatedDoctor)
         {
-            DoctorDTO response = new ();
+            DoctorDTO response = new();
 
             try
             {
@@ -129,7 +172,11 @@ namespace Services.Core
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine("===================================");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("===================================");
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine("===================================");
             }
             return response;
         }
@@ -138,6 +185,8 @@ namespace Services.Core
         {
             try
             {
+                await _managementApiClient.Users.DeleteAsync(doctorToDelete.Auth0Id);
+
                 var existingDoctor = await _doctors
                     .Include(d => d.TimeSlots)
                         .ThenInclude(t => t.Appointment)
