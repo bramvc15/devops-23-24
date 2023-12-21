@@ -1,7 +1,7 @@
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Services.Core;
 using Shared.DTO.Core;
-using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorApp.Controllers.core;
 
@@ -17,27 +17,80 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
-    public Task<IEnumerable<AppointmentDTO>> GetAppointments()
+    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments()
     {
-        return _service.GetAppointments();
+        try
+        {
+            var appointments = await _service.GetAppointments();
+
+            if (appointments == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(appointments);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpPost]
-    public Task<AppointmentDTO> CreateAppointment(int slotId, int patientId, string note, string reason)
+    public async Task<ActionResult<AppointmentDTO>> CreateAppointment(int slotId, int patientId, string note, string reason)
     {
-        return _service.CreateAppointment(slotId, patientId, note, reason);
+        try
+        {
+            var appointment = _service.CreateAppointment(slotId, patientId, note, reason);
+
+            if (appointment == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(appointment);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }  
     }
 
     [HttpPut]
-    public Task<AppointmentDTO> UpdateAppointment([FromBody] AppointmentDTO appointment) 
-    { 
-        return _service.UpdateAppointment(appointment);
+    public async Task<ActionResult<AppointmentDTO>> UpdateAppointment([FromBody] AppointmentDTO appointment) 
+    {
+        try
+        {
+            var updatedAppointment = _service.UpdateAppointment(appointment);
+
+            if (updatedAppointment == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(updatedAppointment);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpDelete]
-    public Task DeleteAppointment([FromBody] AppointmentDTO appointment) 
-    { 
-        return _service.DeleteAppointment(appointment);
+    public async Task<ActionResult> DeleteAppointment([FromBody] AppointmentDTO appointment)
+    {
+        try
+        {
+            await _service.DeleteAppointment(appointment);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 }
