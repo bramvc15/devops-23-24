@@ -1,33 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
-using Services.CMS;
-using Shared.DTO.CMS;
+using Services.Core;
+using Shared.DTO.Core;
 
-namespace BlazorApp.Controllers.CMS;
+namespace BlazorApp.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class NoteController : ControllerBase
+public class TimeSlotController : ControllerBase
 {
-    private readonly NoteService _service;
+    private readonly TimeSlotService _service;
 
-    public NoteController(NoteService service)
+    public TimeSlotController(TimeSlotService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<NoteDTO>>> GetNotes()
+    [Route("{docId}")]
+    public async Task<ActionResult<IEnumerable<TimeSlotDTO>>> GetTimeSlots(int docId)
     {
         try
         {
-            var notes = await _service.GetNotes();
+            var timeSlots = await _service.GetTimeSlots(docId);
 
-            if (notes == null)
+            if (timeSlots == null)
             {
                 return NotFound();
             }
 
-            return Ok(notes);
+            return Ok(timeSlots);
         }
         catch (Exception ex)
         {
@@ -37,19 +38,19 @@ public class NoteController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<NoteDTO>> CreateNote([FromBody] NoteDTO request)
+    [Route("{docId}")]
+    public async Task<ActionResult<TimeSlotDTO>> CreateTimeSlot([FromBody] TimeSlotDTO dto, int docId)
     {
         try
         {
-            var note = await _service.CreateNote(request);
+            var timeSlot = await _service.CreateTimeSlot(dto, docId);
 
-            if (note == null)
+            if (timeSlot == null)
             {
                 return BadRequest();
             }
 
-            return Ok(note);
-
+            return Ok(timeSlot);
         }
         catch (Exception ex)
         {
@@ -59,19 +60,19 @@ public class NoteController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult<NoteDTO>> UpdateNote([FromBody] NoteDTO request)
+    [Route("{docId}")]
+    public async Task<ActionResult<TimeSlotDTO>> UpdateTimeSlot([FromBody] TimeSlotDTO dto, int docId)
     {
         try
         {
-            var note = await _service.UpdateNote(request);
+            var timeSlot = await _service.UpdateTimeSlot(dto, docId);
 
-            if (note == null)
+            if (timeSlot == null)
             {
                 return BadRequest();
             }
 
-            return Ok(note);
-
+            return Ok(timeSlot);
         }
         catch (Exception ex)
         {
@@ -81,11 +82,12 @@ public class NoteController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> DeleteNote([FromBody] NoteDTO request)
+    [Route("{docId}")]
+    public async Task<ActionResult> DeleteTimeSlot([FromBody] TimeSlotDTO dto, int docId)
     {
         try
         {
-            await _service.DeleteNote(request);
+            await _service.DeleteTimeSlot(dto, docId);
             return Ok();
         }
         catch (Exception ex)

@@ -1,33 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
-using Shared.DTO.Core;
-using Services.Core;
+using Services.CMS;
+using Shared.DTO.CMS;
 
-namespace BlazorApp.Controllers.core;
+namespace BlazorApp.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class DoctorController : ControllerBase
+public class NoteController : ControllerBase
 {
-    private readonly DoctorService _service;
+    private readonly NoteService _service;
 
-    public DoctorController(DoctorService service)
+    public NoteController(NoteService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<DoctorDTO>>> GetDoctors()
+    public async Task<ActionResult<IEnumerable<NoteDTO>>> GetNotes()
     {
         try
         {
-            var doctors = await _service.GetDoctors();
+            var notes = await _service.GetNotes();
 
-            if (doctors == null)
+            if (notes == null)
             {
                 return NotFound();
             }
 
-            return Ok(doctors);
+            return Ok(notes);
         }
         catch (Exception ex)
         {
@@ -37,20 +37,21 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<DoctorDTO>> CreateDoctor([FromBody] DoctorDTO newDoc)
+    public async Task<ActionResult<NoteDTO>> CreateNote([FromBody] NoteDTO request)
     {
         try
         {
-            var doctor = await _service.CreateDoctor(newDoc);
-            
-            if (doctor == null)
+            var note = await _service.CreateNote(request);
+
+            if (note == null)
             {
                 return BadRequest();
             }
 
-            return Ok(doctor);
+            return Ok(note);
 
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Console.WriteLine(ex);
             return StatusCode(500, "Internal server error");
@@ -58,18 +59,18 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult<DoctorDTO>> UpdateDoctor([FromBody] DoctorDTO newDoc)
+    public async Task<ActionResult<NoteDTO>> UpdateNote([FromBody] NoteDTO request)
     {
         try
         {
-            var doctor = await _service.UpdateDoctor(newDoc);
+            var note = await _service.UpdateNote(request);
 
-            if (doctor == null)
+            if (note == null)
             {
                 return BadRequest();
             }
 
-            return Ok(doctor);
+            return Ok(note);
 
         }
         catch (Exception ex)
@@ -80,11 +81,11 @@ public class DoctorController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> DeleteDoctor([FromBody] DoctorDTO docToDelete) 
+    public async Task<ActionResult> DeleteNote([FromBody] NoteDTO request)
     {
         try
         {
-            await _service.DeleteDoctor(docToDelete);
+            await _service.DeleteNote(request);
             return Ok();
         }
         catch (Exception ex)

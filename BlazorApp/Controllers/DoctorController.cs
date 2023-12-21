@@ -1,34 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
-using Services.Core;
 using Shared.DTO.Core;
+using Services.Core;
 
-namespace BlazorApp.Controllers.core;
+namespace BlazorApp.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TimeSlotController : ControllerBase
+public class DoctorController : ControllerBase
 {
-    private readonly TimeSlotService _service;
+    private readonly DoctorService _service;
 
-    public TimeSlotController(TimeSlotService service)
+    public DoctorController(DoctorService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    [Route("{docId}")]
-    public async Task<ActionResult<IEnumerable<TimeSlotDTO>>> GetTimeSlots(int docId)
+    public async Task<ActionResult<IEnumerable<DoctorDTO>>> GetDoctors()
     {
         try
         {
-            var timeSlots = await _service.GetTimeSlots(docId);
+            var doctors = await _service.GetDoctors();
 
-            if (timeSlots == null)
+            if (doctors == null)
             {
                 return NotFound();
             }
 
-            return Ok(timeSlots);
+            return Ok(doctors);
         }
         catch (Exception ex)
         {
@@ -38,19 +37,19 @@ public class TimeSlotController : ControllerBase
     }
 
     [HttpPost]
-    [Route("{docId}")]
-    public async Task<ActionResult<TimeSlotDTO>> CreateTimeSlot([FromBody] TimeSlotDTO dto, int docId)
+    public async Task<ActionResult<DoctorDTO>> CreateDoctor([FromBody] DoctorDTO newDoc)
     {
         try
         {
-            var timeSlot = await _service.CreateTimeSlot(dto, docId);
+            var doctor = await _service.CreateDoctor(newDoc);
 
-            if (timeSlot == null)
+            if (doctor == null)
             {
                 return BadRequest();
             }
 
-            return Ok(timeSlot);
+            return Ok(doctor);
+
         }
         catch (Exception ex)
         {
@@ -58,21 +57,21 @@ public class TimeSlotController : ControllerBase
             return StatusCode(500, "Internal server error");
         }
     }
-    
+
     [HttpPut]
-    [Route("{docId}")]
-    public async Task<ActionResult<TimeSlotDTO>> UpdateTimeSlot([FromBody] TimeSlotDTO dto, int docId)
+    public async Task<ActionResult<DoctorDTO>> UpdateDoctor([FromBody] DoctorDTO newDoc)
     {
         try
         {
-            var timeSlot = await _service.UpdateTimeSlot(dto, docId);
+            var doctor = await _service.UpdateDoctor(newDoc);
 
-            if (timeSlot == null)
+            if (doctor == null)
             {
                 return BadRequest();
             }
 
-            return Ok(timeSlot);
+            return Ok(doctor);
+
         }
         catch (Exception ex)
         {
@@ -82,12 +81,11 @@ public class TimeSlotController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("{docId}")]
-    public async Task<ActionResult> DeleteTimeSlot([FromBody] TimeSlotDTO dto, int docId)
+    public async Task<ActionResult> DeleteDoctor([FromBody] DoctorDTO docToDelete)
     {
         try
         {
-            await _service.DeleteTimeSlot(dto, docId);
+            await _service.DeleteDoctor(docToDelete);
             return Ok();
         }
         catch (Exception ex)

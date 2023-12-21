@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Core;
 using Shared.DTO.Core;
 
-namespace BlazorApp.Controllers.core;
+namespace BlazorApp.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -54,11 +54,11 @@ public class AppointmentController : ControllerBase
         {
             Console.WriteLine(ex);
             return StatusCode(500, "Internal server error");
-        }  
+        }
     }
 
     [HttpPut]
-    public async Task<ActionResult<AppointmentDTO>> UpdateAppointment([FromBody] AppointmentDTO appointment) 
+    public async Task<ActionResult<AppointmentDTO>> UpdateAppointment([FromBody] AppointmentDTO appointment)
     {
         try
         {
