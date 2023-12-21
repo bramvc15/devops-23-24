@@ -1,17 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using BlazorApp.Pages;
-using Shared;
 using Services.CMS;
-using Microsoft.EntityFrameworkCore;
-using static System.Reflection.Metadata.BlobBuilder;
 using Shared.DTO.CMS;
-using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorApp.Controllers.CMS;
 
 [ApiController]
 [Route("api/[controller]")]
-// [Authorize]
 public class NoteController : ControllerBase
 {
     private readonly NoteService _service;
@@ -22,29 +16,82 @@ public class NoteController : ControllerBase
     }
 
     [HttpGet]
-    public Task<IEnumerable<NoteDTO>> GetNotes()
+    public async Task<ActionResult<IEnumerable<NoteDTO>>> GetNotes()
     {
-        return _service.GetNotes();
+        try
+        {
+            var notes = await _service.GetNotes();
+
+            if (notes == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(notes);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
-    public Task<NoteDTO> CreateNote([FromBody] NoteDTO request)
+    public async Task<ActionResult<NoteDTO>> CreateNote([FromBody] NoteDTO request)
     {
-        return _service.CreateNote(request);
+        try
+        {
+            var note = await _service.CreateNote(request);
+
+            if (note == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(note);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpPut]
-    [Authorize(Roles = "Admin")]
-    public Task<NoteDTO> UpdateNote([FromBody] NoteDTO request)
+    public async Task<ActionResult<NoteDTO>> UpdateNote([FromBody] NoteDTO request)
     {
-        return _service.UpdateNote(request);
+        try
+        {
+            var note = await _service.UpdateNote(request);
+
+            if (note == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(note);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpDelete]
-    [Authorize(Roles = "Admin")]
-    public Task DeleteNote([FromBody] NoteDTO request)
+    public async Task<ActionResult> DeleteNote([FromBody] NoteDTO request)
     {
-        return _service.DeleteNote(request);
+        try
+        {
+            await _service.DeleteNote(request);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
     }
 }
