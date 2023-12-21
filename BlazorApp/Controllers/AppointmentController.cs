@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.Core;
 using Shared.DTO.Core;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 
 namespace BlazorApp.Controllers;
 
@@ -16,18 +18,30 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments()
+    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments([FromHeader] string Authorization)
     {
         try
         {
-            var appointments = await _service.GetAppointments();
-
-            if (appointments == null)
+            if (string.IsNullOrEmpty(Authorization))
             {
-                return NotFound();
+                return Unauthorized("JWT token is missing in Authorization header");
             }
 
-            return Ok(appointments);
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                var appointments = await _service.GetAppointments();
+
+                if (appointments == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(appointments);
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
@@ -37,18 +51,30 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<AppointmentDTO>> CreateAppointment(int slotId, int patientId, string note, string reason)
+    public async Task<ActionResult<AppointmentDTO>> CreateAppointment(int slotId, int patientId, string note, string reason, [FromHeader] string Authorization)
     {
         try
         {
-            var appointment = _service.CreateAppointment(slotId, patientId, note, reason);
-
-            if (appointment == null)
+            if (string.IsNullOrEmpty(Authorization))
             {
-                return BadRequest();
+                return Unauthorized("JWT token is missing in Authorization header");
             }
 
-            return Ok(appointment);
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                var appointment = _service.CreateAppointment(slotId, patientId, note, reason);
+
+                if (appointment == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(appointment);
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
@@ -58,18 +84,30 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult<AppointmentDTO>> UpdateAppointment([FromBody] AppointmentDTO appointment)
+    public async Task<ActionResult<AppointmentDTO>> UpdateAppointment([FromBody] AppointmentDTO appointment, [FromHeader] string Authorization)
     {
         try
         {
-            var updatedAppointment = _service.UpdateAppointment(appointment);
-
-            if (updatedAppointment == null)
+            if (string.IsNullOrEmpty(Authorization))
             {
-                return BadRequest();
+                return Unauthorized("JWT token is missing in Authorization header");
             }
 
-            return Ok(updatedAppointment);
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                var updatedAppointment = _service.UpdateAppointment(appointment);
+
+                if (updatedAppointment == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(updatedAppointment);
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
@@ -79,17 +117,55 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> DeleteAppointment([FromBody] AppointmentDTO appointment)
+    public async Task<ActionResult> DeleteAppointment([FromBody] AppointmentDTO appointment, [FromHeader] string Authorization)
     {
         try
         {
-            await _service.DeleteAppointment(appointment);
-            return Ok();
+            if (string.IsNullOrEmpty(Authorization))
+            {
+                return Unauthorized("JWT token is missing in Authorization header");
+            }
+
+            if (IsAuthorized(Authorization, "Employee"))
+            {
+                await _service.DeleteAppointment(appointment);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized("User is not authorized to access this resource");
+            }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
             return StatusCode(500, "Internal server error");
         }
+    }
+
+    private static bool IsAuthorized(string jwtToken, string checkRole)
+    {
+        try
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(jwtToken) as JwtSecurityToken;
+
+            if (jsonToken == null)
+            {
+                return false;
+            }
+
+            var roleClaims = jsonToken.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Select(c => c.Value);
+            var concatenatedRoles = string.Join(",", roleClaims);
+            if (roleClaims != null && concatenatedRoles.Contains(checkRole, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+        return false;
     }
 }
