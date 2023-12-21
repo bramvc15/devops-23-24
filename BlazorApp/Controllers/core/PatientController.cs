@@ -7,7 +7,6 @@ namespace BlazorApp.Controllers.core;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
 public class PatientController : ControllerBase
 {
     private readonly PatientService _service;
@@ -18,20 +17,24 @@ public class PatientController : ControllerBase
     }
 
     [HttpGet]
-    public Task<IEnumerable<PatientDTO>> GetPatients()
+    public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
     {
-        return _service.GetPatients();
-    }
+        try
+        {
+            var patients = await _service.GetPatients();
 
-    [HttpPost]
-    public Task<PatientDTO> CreatePatient([FromBody] PatientDTO patient) 
-    { 
-        return _service.CreatePatient(patient);
-    }
+            if (patients == null)
+            {
+                return NotFound();
+            }
 
-    [HttpPut]
-    public Task<PatientDTO> UpdatePatient([FromBody] PatientDTO request)
-    {
-        return _service.UpdatePatient(request);
+            return Ok(patients);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal server error");
+        }
+
     }
 }
