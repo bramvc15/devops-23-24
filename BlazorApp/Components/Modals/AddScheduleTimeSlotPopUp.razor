@@ -6,7 +6,7 @@
 @inject DatabaseContext databaseContext
 
 <div>
-    <Button Color="Color.Primary" Clicked="@ShowModal">Voeg tijdslot toe</Button>
+    <button class="btn" @onclick="@(async () => await ShowModal())">Voeg tijdslot toe</button>
     <Modal @ref="modalRef">
         <ModalContent Centered>
             <ModalHeader>

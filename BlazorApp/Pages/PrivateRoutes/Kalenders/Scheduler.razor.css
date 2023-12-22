@@ -13,3 +13,39 @@
 .weekselector {
     display: flex;
 }
+
+th {
+    text-align: center;
+    background-color: #93C5BB;
+    color: white;
+}
+
+.table {
+    border: 2px solid #93C5BB;
+}
+
+.controls-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+input {
+    height: auto;
+    border-radius: 5px;
+    width: 70px;
+}
+
+.scheduler-controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    background-color: rgb(22, 44, 104);
+    color: white;
+}
+.btn:hover {
+    background-color: rgb(38, 64, 134);
+    color: white;
+}
