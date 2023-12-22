@@ -72,6 +72,16 @@
     margin-top: 5px;
 }
 
+.editFaqButton {
+    background-color: rgb(222, 225, 61);
+    border: solid 3px rgb(203, 206, 53);
+    border-radius: 5px;
+    padding: 5px;
+    color: azure;
+    width: 70px;
+
+}
+
 .deleteFaqButton {
     background-color: rgb(216, 109, 109);
     border: solid 3px rgb(206, 70, 70);

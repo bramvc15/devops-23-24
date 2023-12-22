@@ -45,20 +45,23 @@
                     @if (f != null)
                     {
                         <div class="mini-conatainer">
-                            <div class="qf" @onclick="( () => ShowModal(f) )">
+                            <div class="qf">
                                 <QuestionFAQ Question=@f.Question Answer=@f.Answer />
                             </div>
-                            <button class="deleteFaqButton" @onclick="() => ShowDeleteConfirmationPopup()"><Icon Name="IconName.Delete" /></button>
-                            @if (ShowDeleteConfirmation)
-                                    {
-                                        <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
-                                            <h3>Bent u zeker?</h3>
-                                            <div class="popup-buttons">
-                                                <button class="popDel" @onclick="() => DeleteFaq(f)">Confirm</button>
-                                                <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                            <div class="btns">
+                                <button class="editFaqButton" @onclick="( () => ShowModal(f) )"><Icon Name="IconName.Edit" /></button>
+                                <button class="deleteFaqButton" @onclick="() => ShowDeleteConfirmationPopup()"><Icon Name="IconName.Delete" /></button>
+                                @if (ShowDeleteConfirmation)
+                                        {
+                                            <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                                                <h3>Bent u zeker?</h3>
+                                                <div class="popup-buttons">
+                                                    <button class="popDel" @onclick="() => DeleteFaq(f)">Confirm</button>
+                                                    <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    }                          
+                                        }
+                            </div>                          
                         </div>
                         <span class="line"></span>
                     }
