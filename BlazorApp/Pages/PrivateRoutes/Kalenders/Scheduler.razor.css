@@ -49,3 +49,7 @@ input {
     background-color: rgb(38, 64, 134);
     color: white;
 }
+
+h1, p {
+    color: rgb(22, 44, 104);
+}
