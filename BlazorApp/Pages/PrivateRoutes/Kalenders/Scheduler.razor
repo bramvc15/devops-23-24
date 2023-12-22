@@ -5,6 +5,7 @@
 @using Shared.Enums;
 @inject NavigationManager NavManager
 @inject DoctorService doctorService
+@inject TimeSlotService timeSlotService
 @inject ScheduleTimeSlotService scheduleTimeSlotService
 
 @attribute [Authorize(Roles = "Admin, Employee")]
@@ -20,25 +21,36 @@
         <br />
         <br />
         <h1>Scheduler</h1>
-        <p>Here you can view and edit your schedule.</p>
-                @if(Doctors != null) {
+        <p>Hier kan je je weekplanning indelen, en deze als timeslots inplannen in je agenda.</p>
+        @if(Doctors != null) {
         <Select TValue="int?" SelectedValue="@SelectedDoctor" SelectedValueChanged="@OnSelectedValueChanged">
             @foreach (var doctor in Doctors)
             {
                 <SelectItem TValue="int?" Value="@doctor.Id">@doctor.Name</SelectItem>
             }
         </Select>
-        <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" DoctorId="SelectedDoctor" />
-        <table class="table table-bordered">
+        
+        <div class="scheduler-controls">
+            <div class="controls-left">
+                <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" DoctorId="SelectedDoctor" />
+                <Button Color="Color.Danger" @onclick="ClearSchedule">Schedule wissen</Button>
+            </div>
+            <div class="controls-right">
+                <label for="numberOfWeeks">Aantal weken</label>
+                <input type="number" id="numberOfWeeks" name="numberOfWeeks" min="1" max="52" @bind-value="NumberOfWeeks" />
+                <button class="btn" @onclick="ConvertToTimeSlots" disabled="@IsLoading">Genereer timeslots</button>
+            </div>
+        </div>
+        <table class="table">
             <thead>
                 <tr>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                    <th>Friday</th>
-                    <th>Saturday</th>
-                    <th>Sunday</th>
+                    <th>Maandag</th>
+                    <th>Dinsdag</th>
+                    <th>Woensdag</th>
+                    <th>Donderdag</th>
+                    <th>Vrijdag</th>
+                    <th>Zaterdag</th>
+                    <th>Zondag</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,21 +74,13 @@
                             @foreach (var day in listsByDay.Keys)
                             {
                                 var list = listsByDay[day];
-                                <td>
+                                <td style="padding: 3px">
                                     @if (i < list.Count)
                                     {
-                                        var endTime = list[i].DateTime;
+                                        var time = list[i].DateTime;
                                         ScheduleTimeSlotDTO timeSlot = list[i];
-                                        <div>
-                                            <p>@($"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}")</p>
-                                            <p>@($"{list[i].Duration} minutes")</p>
-                                            <br />
-                                            <Button Color="Color.Primary" @onclick="() => EditScheduleTimeSlot(timeSlot)">
-                                                <Icon Name="IconName.Edit" />
-                                            </Button>
-                                            <Button Color="Color.Danger" @onclick="() => DeleteScheduleTimeSlot(timeSlot)">
-                                                <Icon Name="IconName.Delete" />
-                                            </Button>
+                                        <div class="scheduletimeslot-content">
+                                            <EditScheduleTimeSlotPopUp ScheduleTimeSlot=timeSlot DoctorId=SelectedDoctor OnRefresh=HandleRefresh />
                                         </div>
                                     }
 
@@ -102,6 +106,8 @@
     private List<ScheduleTimeSlotDTO> SundayList = new List<ScheduleTimeSlotDTO>();
 
     private int SelectedDoctor { get; set; }
+    private int NumberOfWeeks { get; set; } = 1;
+    private bool IsLoading { get; set; } = false;
 
     private IEnumerable<DoctorDTO> Doctors { get; set; }
     
@@ -111,7 +117,38 @@
     private async Task OnSelectedValueChanged(int? value)
     {
         SelectedDoctor = (int)value;
-        Console.WriteLine(SelectedDoctor);
+        await RefreshScheduler();
+    }
+
+    private async Task ConvertToTimeSlots() {
+        try {
+            IsLoading = true;
+            IEnumerable<TimeSlotDTO> timeSlots = await timeSlotService.GetTimeSlots(SelectedDoctor);
+            var start = timeSlots.Max(t => t.DateTime).Date;
+
+            DayOfWeek currentDayOfWeek = start.DayOfWeek;
+            int daysUntilNextMonday = ((int)DayOfWeek.Monday - (int)currentDayOfWeek + 7) % 7;
+            start = start.AddDays(daysUntilNextMonday);
+            
+            if(NumberOfWeeks >= 1 && NumberOfWeeks <= 52) {
+                await scheduleTimeSlotService.ConvertScheduleToTimeSlots(start, NumberOfWeeks, SelectedDoctor);
+            }
+        } catch(Exception e) {
+            Console.WriteLine(e.Message);
+        } finally {
+            IsLoading = false;
+        }
+
+    }
+
+    private async Task ClearSchedule() {
+        List<ScheduleTimeSlotDTO> scheduleTimeSlotsCopy = new List<ScheduleTimeSlotDTO>(ListOfScheduleTimeSlots);
+
+        foreach (ScheduleTimeSlotDTO scheduleTimeSlot in scheduleTimeSlotsCopy)
+        {
+            await scheduleTimeSlotService.DeleteScheduleTimeSlot(scheduleTimeSlot, SelectedDoctor);
+        }
+
         await RefreshScheduler();
     }
 
@@ -191,6 +228,11 @@
         }
     }
 
+    private async Task HandleRefresh() {
+        await RefreshScheduler();
+        StateHasChanged();
+    }
+
     private async Task ClearWeek() {
         MondayList.Clear();
         TuesdayList.Clear();
@@ -204,6 +246,8 @@
     protected override async Task OnInitializedAsync()
     {
         Doctors = await doctorService.GetDoctors();
-        RefreshScheduler();
+        SelectedDoctor = Doctors.First().Id ?? 0;
+
+        await RefreshScheduler();
     }
 }

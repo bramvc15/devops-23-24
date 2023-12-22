@@ -1,0 +1,22 @@
+.schedule-time-slot {
+    background-color: rgb(77, 189, 152);
+    color: white;
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    margin: 0 3px;
+    cursor: pointer;
+    transition: 100ms ease-in-out;
+}
+
+.schedule-time-slot:hover {
+    background-color: rgb(51, 168, 129);
+    color: white;
+}
+
+.footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
