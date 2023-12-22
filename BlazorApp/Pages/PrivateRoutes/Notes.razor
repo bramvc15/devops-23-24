@@ -68,7 +68,17 @@
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Danger" Clicked="@DeleteNote">Verwijder</Button>
+            <Button Color="Color.Danger" Clicked="@ShowDeleteConfirmationPopup">Verwijder</Button>
+            @if (ShowDeleteConfirmation)
+                    {
+                        <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                            <h3>Bent u zeker?</h3>
+                            <div class="popup-buttons">
+                                <button class="popDel" @onclick="DeleteNote">Confirm</button>
+                                <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                            </div>
+                        </div>
+                    }  
             <Button Color="Color.Primary" Clicked="@UpdateNote">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
@@ -80,6 +90,7 @@
 
     private bool visible = false;
     private string message = string.Empty;
+    private bool ShowDeleteConfirmation = false;
 
     private IEnumerable<NoteDTO>? NoteObj;
     private NoteDTO clickedNote;
@@ -125,6 +136,7 @@
                     Content = newContent
                 };
             await noteService.UpdateNote(note);
+            NavManager.NavigateTo("/admin/notes", true);
         }
         else
         {
@@ -133,6 +145,11 @@
         }
 
         await HideModal();
+    }
+
+    private void ShowDeleteConfirmationPopup()
+    {
+        ShowDeleteConfirmation = true;
     }
 
     private async void DeleteNote()
@@ -145,12 +162,19 @@
         if (authenticationState.User.IsInRole("Admin"))
         {
             await noteService.DeleteNote(clickedNote);
+            ShowDeleteConfirmation = false;
+            NavManager.NavigateTo("/admin/notes", true);
         }
         else
         {
             message = "U heeft geen toegang tot verwijderen.";
             visible = true;
         }
+    }
+
+    private void CancelDelete()
+    {
+        ShowDeleteConfirmation = false;
     }
 }
 

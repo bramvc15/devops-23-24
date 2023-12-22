@@ -31,7 +31,14 @@
                     </div>
                     <div class="mini-con">
                         <h3 class="header">Biografie</h3>
-                        <p>@selectedDoctor.Biograph</p>
+                        @if (selectedDoctor.Biograph != null)
+                        {
+                            <p>@selectedDoctor.Biograph</p>
+                        }
+                        else
+                        {
+                            <p>Geen biografie beschikbaar</p>
+                        }
                     </div>
                 </div>
                 <div class="image-con">

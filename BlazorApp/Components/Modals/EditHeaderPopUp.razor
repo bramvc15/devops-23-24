@@ -6,6 +6,7 @@
 @using Persistence.Data; 
 @inject HomeHeaderService homeHeaderService
 @inject DatabaseContext databaseContext
+@inject NavigationManager NavManager
 
 <div>
     <div class="buttons">
@@ -148,6 +149,7 @@
                 };
             await homeHeaderService.UpdateHomeHeader(header);
             modalRef?.Hide();
+            NavManager.NavigateTo("/admin/cms/home", true);
         }
         else
         {

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authentication;
 using Auth0.AspNetCore.Authentication;
@@ -6,9 +7,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Pages
 {
+    [Authorize]
     public class LogoutModel : PageModel
     {
-        [Authorize]
         public async Task OnGet()
         {
             var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
