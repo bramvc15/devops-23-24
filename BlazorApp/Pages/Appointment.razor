@@ -136,7 +136,7 @@
 
         int patientId = createdPatient.Id ?? 0;
         
-        await appointmentService.CreateAppointment((int)SelectedTimeSlotId, patientId, Reason, "note");
+        await appointmentService.CreateAppointment((int)SelectedTimeSlotId, patientId, Reason, "Nog geen notitie toegevoegd");
     }
 
 }

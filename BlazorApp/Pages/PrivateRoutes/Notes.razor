@@ -23,15 +23,6 @@
         <AddNotePopUp />
     </div>
     <div class="alert-container">
-        <Alert Color="Color.Danger" @bind-Visible="@visible">
-            <AlertDescription>
-                @message
-            </AlertDescription>
-            <AlertMessage>
-                @* Gebruiken we niet. *@
-            </AlertMessage>
-            <CloseButton />
-        </Alert>
     </div>
 
     <div class="notes-container">
@@ -85,11 +76,6 @@
 </Modal>
 
 @code {
-    [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
-
-    private bool visible = false;
-    private string message = string.Empty;
     private bool ShowDeleteConfirmation = false;
 
     private IEnumerable<NoteDTO>? NoteObj;
@@ -122,13 +108,6 @@
 
     private async void UpdateNote()
     {
-        visible = false;
-        message = string.Empty;
-
-        var authenticationState = await authenticationStateTask;
-
-        if (authenticationState.User.IsInRole("Admin"))
-        {
             NoteDTO note = new()
                 {
                     Id = clickedNote.Id,
@@ -137,14 +116,7 @@
                 };
             await noteService.UpdateNote(note);
             NavManager.NavigateTo("/admin/notes", true);
-        }
-        else
-        {
-            message = "U heeft geen toegang tot bewerken.";
-            visible = true;
-        }
-
-        await HideModal();
+            await HideModal();
     }
 
     private void ShowDeleteConfirmationPopup()
@@ -154,22 +126,9 @@
 
     private async void DeleteNote()
     {
-        visible = false;
-        message = string.Empty;
-
-        var authenticationState = await authenticationStateTask;
-
-        if (authenticationState.User.IsInRole("Admin"))
-        {
             await noteService.DeleteNote(clickedNote);
             ShowDeleteConfirmation = false;
             NavManager.NavigateTo("/admin/notes", true);
-        }
-        else
-        {
-            message = "U heeft geen toegang tot verwijderen.";
-            visible = true;
-        }
     }
 
     private void CancelDelete()
