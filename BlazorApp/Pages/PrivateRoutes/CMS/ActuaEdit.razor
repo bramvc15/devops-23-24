@@ -41,7 +41,7 @@
                             <div class="btn-con">
                                 <button class="editBlogButton" @onclick="( () => ShowModal(b) )"><strong>Edit</strong></button>
                                 @* <button class="deleteBlogButton" @onclick="( () => DeleteBlog(b) )"><strong>X</strong></button> *@
-                                <button class="deleteBlogButton" @onclick="() => ShowDeleteConfirmationPopup()"><Icon Name="IconName.Delete" /></button>
+                                <button class="deleteBlogButton" @onclick="() => ShowDeleteConfirmationPopup(b.Id)"><Icon Name="IconName.Delete" /></button>
                                 @if (ShowDeleteConfirmation)
                                     {
                                         <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
@@ -96,6 +96,7 @@
     private IEnumerable<BlogDTO>? blogs;
     private BlogDTO clickedBlog;
     private bool ShowDeleteConfirmation = false;
+    private int? blogIdToDelete; 
 
     protected override async Task OnInitializedAsync()
     {
@@ -159,8 +160,9 @@
         NavManager.NavigateTo("/admin/cms/actua", true);
     }
 
-    private async Task ShowDeleteConfirmationPopup()
+    private async Task ShowDeleteConfirmationPopup(int? blogId)
     {
+        blogIdToDelete = blogId;
         ShowDeleteConfirmation = true;
     }
 
