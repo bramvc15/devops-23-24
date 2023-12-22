@@ -40,7 +40,18 @@
                             <ActuaField Title=@b.Title Text=@b.Text Image=@b.ImageLink Id=@b.Id />
                             <div class="btn-con">
                                 <button class="editBlogButton" @onclick="( () => ShowModal(b) )"><strong>Edit</strong></button>
-                                <button class="deleteBlogButton" @onclick="( () => DeleteBlog(b) )"><strong>X</strong></button>
+                                @* <button class="deleteBlogButton" @onclick="( () => DeleteBlog(b) )"><strong>X</strong></button> *@
+                                <button class="deleteBlogButton" @onclick="() => ShowDeleteConfirmationPopup()"><Icon Name="IconName.Delete" /></button>
+                                @if (ShowDeleteConfirmation)
+                                    {
+                                        <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                                            <h3>Bent u zeker?</h3>
+                                            <div class="popup-buttons">
+                                                <button class="popDel" @onclick="() => DeleteBlog(b)">Confirm</button>
+                                                <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                                            </div>
+                                        </div>
+                                    }  
                             </div>
                         </div>
 
@@ -84,6 +95,7 @@
 
     private IEnumerable<BlogDTO>? blogs;
     private BlogDTO clickedBlog;
+    private bool ShowDeleteConfirmation = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -147,10 +159,20 @@
         NavManager.NavigateTo("/admin/cms/actua", true);
     }
 
+    private async Task ShowDeleteConfirmationPopup()
+    {
+        ShowDeleteConfirmation = true;
+    }
+
     private async void DeleteBlog(BlogDTO b)
     {
         await blogService.DeleteBlog(b);
         NavManager.NavigateTo("/admin/cms/actua", true);
+    }
+
+    private void CancelDelete()
+    {
+        ShowDeleteConfirmation = false;
     }
 
 }
