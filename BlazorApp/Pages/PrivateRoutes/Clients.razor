@@ -20,12 +20,13 @@
 <SideNavMenu />
 <div class="content">
     <div class="info-container">
-        <h1>Clients in het systeem</h1>
+        <h1>Patiënten in het systeem</h1>
         <div class="add-button">
+            <input @bind="searchTerm" placeholder="Search by name" />
             <AddClientPopUp />
         </div>
         <div class="containerr">
-        @if (patients != null && patients.Count() > 0)
+        @if (filteredPatients != null && filteredPatients.Any())
         {
             <div class="headers">
                 <p>Id</p>
@@ -38,8 +39,8 @@
                 <p>Acties</p>
             </div>
             <span class="headLine"></span>
-                    @foreach (var patient in patients)
-                    {
+            @foreach (var patient in filteredPatients)
+                {
                         index++;
                         <div class="@((index % 2 == 0) ? "even" : "odd") doc-container">
                             <p>@patient.Id</p>
@@ -53,8 +54,10 @@
                                 <button class="edit-btn" @onclick="( () => ShowModal(patient) )"><Icon Name="IconName.Edit" /></button>
                             </div>
                         </div>
-                    }
                 }
+            } else {
+                <p>Zoeken op naam</p>
+            }
         </div>
     </div>
 </div>
@@ -114,7 +117,9 @@
 @code {
     private int index = 0;
     private IEnumerable<PatientDTO> patients;
+    private IEnumerable<PatientDTO> filteredPatients;
     private PatientDTO clickedPatient;
+    private string searchTerm = "";
 
     int? id;
     string? newName;
@@ -130,6 +135,26 @@
     protected override async Task OnInitializedAsync()
     {
         patients = await patientService.GetPatients();
+        filteredPatients = patients;
+    }
+
+    private void FilterPatients()
+    {
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredPatients = patients.Where(p =>
+                p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+            );
+        }
+        else
+        {
+            filteredPatients = patients;
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        FilterPatients();
     }
 
     private async Task<Task?> ShowModal(PatientDTO patient)

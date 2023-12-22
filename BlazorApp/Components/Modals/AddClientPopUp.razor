@@ -6,10 +6,8 @@
 @inject PatientService patientService
 @inject NavigationManager NavManager
 
-<div>
-    <div class="buttons">
-        <button class="add-btn" onclick="@ShowModal">Voeg een patiënt toe</button>
-    </div>
+
+    <button class="add-btn" onclick="@ShowModal">Voeg een patiënt toe</button>
     <Modal @ref="modalRef">
     <ModalContent Centered>
         <ModalHeader>
@@ -77,7 +75,6 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
-</div>
 
 @code {
     string? newName;
