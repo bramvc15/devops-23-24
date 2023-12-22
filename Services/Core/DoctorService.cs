@@ -102,7 +102,7 @@ namespace Services.Core
                 Console.WriteLine("===================================");
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine("===================================");
-                return null;
+                return "-1";
             }
         }
 

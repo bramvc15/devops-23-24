@@ -80,7 +80,7 @@
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@CreateDoctor">Toevoegen</Button>
+                <Button Color="Color.Primary" Clicked="@CreateDoctor" Disabled="@(!AreRequiredFieldsFilled())">Toevoegen</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
@@ -117,6 +117,14 @@
         };
     }
 
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newName)
+        && !string.IsNullOrWhiteSpace(newPassword)
+        && !string.IsNullOrWhiteSpace(newEmail)
+        && !string.IsNullOrWhiteSpace(newSpecialization);
+    }
+
     private Task? ShowModal()
     {
         return modalRef?.Show();
@@ -137,6 +145,13 @@
         if (authenticationState.User.IsInRole("Admin"))
         {
             var userId = await doctorService.CreateDoctorInAuth0(newName, newEmail, newPassword);
+
+            if (userId == "-1")
+            {
+                message = "Niet alle velden zijn correct ingevuld!";
+                visible = true;
+                return;
+            }
 
             DoctorDTO newDoctor = new()
             {

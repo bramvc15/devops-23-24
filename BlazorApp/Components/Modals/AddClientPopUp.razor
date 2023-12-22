@@ -20,6 +20,10 @@
             <Field>
                 <FieldLabel>Naam</FieldLabel>
                 <TextEdit Placeholder="Geef naam..." @bind-Text="newName" />
+                @if (string.IsNullOrWhiteSpace(newName))
+                    {
+                        <p class="text-danger">Naam is verplicht</p>
+                    }
             </Field>
             <Field>
                 <FieldLabel>Telefoon</FieldLabel>
@@ -29,6 +33,10 @@
                 <FieldLabel>Email</FieldLabel>
                 <TextEdit Placeholder="Geef mail..." @bind-Text="newEmail" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newEmail))
+                    {
+                        <p class="text-danger">Email is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Geboortedatum</FieldLabel>
                 <input type="datetime-local" @bind="newDateOfBirth"/>
@@ -57,7 +65,7 @@
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@CreatePatient">Opslaan</Button>
+            <Button Color="Color.Primary" Clicked="@CreatePatient" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -70,8 +78,27 @@
     DateTime newDateOfBirth;
     Gender newGender;
     BloodType newBloodType;
+    private EditContext editContext;
 
     private Modal? modalRef;
+
+    protected override void OnInitialized()
+    {
+        DoctorDTO client = new();
+
+        editContext = new EditContext(client);
+        editContext.OnFieldChanged += (sender, eventArgs) =>
+        {
+            editContext.Validate();
+            StateHasChanged();
+        };
+    }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newName)
+        && !string.IsNullOrWhiteSpace(newEmail);
+    }
 
     private Task? ShowModal()
     {
