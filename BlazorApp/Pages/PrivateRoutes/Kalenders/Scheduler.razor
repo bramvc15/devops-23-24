@@ -22,7 +22,7 @@
         <h1>Scheduler</h1>
         <Button Color="Color.Primary" Clicked="@ConvertToTimeSlots">Convert</Button>
         <p>Here you can view and edit your schedule.</p>
-                @if(Doctors != null) {
+        @if(Doctors != null) {
         <Select TValue="int?" SelectedValue="@SelectedDoctor" SelectedValueChanged="@OnSelectedValueChanged">
             @foreach (var doctor in Doctors)
             {
@@ -112,7 +112,7 @@
     private async Task OnSelectedValueChanged(int? value)
     {
         SelectedDoctor = (int)value;
-        Console.WriteLine(SelectedDoctor);
+        Console.WriteLine("OnSelectedValueChanged");
         await RefreshScheduler();
     }
 
@@ -222,6 +222,8 @@
     protected override async Task OnInitializedAsync()
     {
         Doctors = await doctorService.GetDoctors();
-        RefreshScheduler();
+        SelectedDoctor = Doctors.First().Id ?? 0;
+
+        await RefreshScheduler();
     }
 }
