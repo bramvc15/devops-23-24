@@ -6,16 +6,22 @@
 @inject PatientService patientService
 @inject NavigationManager NavManager
 
-<div>
-    <div class="buttons">
-        <button class="add-btn" onclick="@ShowModal">Voeg een patiënt toe</button>
-    </div>
+
+    <button class="add-btn" onclick="@ShowModal">Voeg een patiënt toe</button>
     <Modal @ref="modalRef">
     <ModalContent Centered>
         <ModalHeader>
             <ModalTitle>Patient updaten</ModalTitle>
             <CloseButton />
         </ModalHeader>
+            <div class="alert-container">
+                <Alert Color="Color.Danger" @bind-Visible="@visible">
+                    <AlertDescription>
+                        @message
+                    </AlertDescription>
+                    <CloseButton />
+                </Alert>
+            </div>
         <ModalBody>
             <Field>
                 <FieldLabel>Naam</FieldLabel>
@@ -69,7 +75,6 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
-</div>
 
 @code {
     string? newName;
@@ -79,6 +84,9 @@
     Gender newGender;
     BloodType newBloodType;
     private EditContext editContext;
+
+    private bool visible = false;
+    private string message = string.Empty;
 
     private Modal? modalRef;
 
@@ -121,7 +129,14 @@
                 Gender = newGender,
                 BloodType = newBloodType
             };
-        await patientService.CreatePatient(newPatient);
+        var response = await patientService.CreatePatient(newPatient);
+
+        if (response.Id == -1) {
+                message = "Niet alle velden zijn correct ingevuld!";
+                visible = true;
+                return;
+        }
+
         modalRef?.Hide();
         NavManager.NavigateTo("/admin/clients", true);
     }

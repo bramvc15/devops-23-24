@@ -104,14 +104,18 @@
 
     private async void ToggleMessage(int? messageId)
     {
-        ShowMessageId = ShowMessageId == messageId ? 0 : messageId;
-        if (ShowMessageId.HasValue)
+        if (ShowMessageId != messageId)
         {
-            var message = MessageObj.FirstOrDefault(m => m?.Id == ShowMessageId);
-            if (message != null && !message.Read)
+            ShowMessageId = messageId;
+
+            if (ShowMessageId.HasValue)
             {
-                message.Read = true;
-                await messageService.UpdateMessage(message);
+                var message = MessageObj.FirstOrDefault(m => m?.Id == ShowMessageId);
+                if (message != null && !message.Read)
+                {
+                    message.Read = true;
+                    await messageService.UpdateMessage(message);
+                }
             }
         }
     }

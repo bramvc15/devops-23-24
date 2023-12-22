@@ -61,6 +61,8 @@ namespace Services.Core
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                response.Id = -1;
+                return response;
             }
             return response;
         }
