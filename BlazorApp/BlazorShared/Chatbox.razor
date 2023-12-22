@@ -26,12 +26,6 @@
                     ↻
                 </div>
             }
-            @*@if (!string.IsNullOrEmpty(BlitzWareAuthService.AuthService.userData.Token))
-            {*@
-                <div class="gear ml-3" @onclick="NavigateToSettingsPage" @onclick:stopPropagation="true">
-                    ⛭
-                </div>
-            @*}*@
         </div>
     </div>
     <div data-test-id="chatbox-content" class="chatbox-content @(visible ? "visible" : "")">
