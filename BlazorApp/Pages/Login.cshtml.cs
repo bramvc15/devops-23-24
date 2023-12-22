@@ -9,7 +9,7 @@ namespace Pages
         public async Task OnGet(string redirectUri)
         {
             var authenticationProperties = new LoginAuthenticationPropertiesBuilder()
-                .WithRedirectUri(redirectUri)
+                .WithRedirectUri(redirectUri ?? "/admin")
                 .Build();
 
             await HttpContext.ChallengeAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
