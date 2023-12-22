@@ -5,6 +5,7 @@
 @using Shared.Enums;
 @inject NavigationManager NavManager
 @inject DoctorService doctorService
+@inject TimeSlotService timeSlotService
 @inject ScheduleTimeSlotService scheduleTimeSlotService
 
 @attribute [Authorize(Roles = "Admin, Employee")]
@@ -20,7 +21,6 @@
         <br />
         <br />
         <h1>Scheduler</h1>
-        <Button Color="Color.Primary" Clicked="@ConvertToTimeSlots">Convert</Button>
         <p>Here you can view and edit your schedule.</p>
         @if(Doctors != null) {
         <Select TValue="int?" SelectedValue="@SelectedDoctor" SelectedValueChanged="@OnSelectedValueChanged">
@@ -30,8 +30,11 @@
             }
         </Select>
         
-        <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" DoctorId="SelectedDoctor" />
-        <Button Color="Color.Danger" @onclick="ClearSchedule">Schedule wissen</Button>
+        <div class="scheduler-controls">
+            <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" DoctorId="SelectedDoctor" />
+            <Button Color="Color.Danger" @onclick="ClearSchedule">Schedule wissen</Button>
+            <Button Color="Color.Primary" Clicked="@ConvertToTimeSlots">Convert</Button>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -70,9 +73,8 @@
                                     {
                                         var endTime = list[i].DateTime;
                                         ScheduleTimeSlotDTO timeSlot = list[i];
-                                        <div>
+                                        <div class="scheduletimeslot-content">
                                             <p>@($"{list[i].DateTime.TimeOfDay.ToString("hh\\:mm")} - {endTime.AddMinutes(list[i].Duration).TimeOfDay.ToString("hh\\:mm")}")</p>
-                                            <p>@($"{list[i].Duration} minutes")</p>
                                             <br />
                                             <EditScheduleTimeSlotPopUp ScheduleTimeSlot="timeSlot" DoctorId=SelectedDoctor />
                                             <Button Color="Color.Danger" @onclick="() => DeleteScheduleTimeSlot(timeSlot)">
@@ -103,6 +105,7 @@
     private List<ScheduleTimeSlotDTO> SundayList = new List<ScheduleTimeSlotDTO>();
 
     private int SelectedDoctor { get; set; }
+    private int NumberOfWeeks { get; set; } = 1;
 
     private IEnumerable<DoctorDTO> Doctors { get; set; }
     
@@ -112,15 +115,18 @@
     private async Task OnSelectedValueChanged(int? value)
     {
         SelectedDoctor = (int)value;
-        Console.WriteLine("OnSelectedValueChanged");
         await RefreshScheduler();
     }
 
     private async Task ConvertToTimeSlots() {
-        DateTime currentDate = DateTime.Now.AddDays(21);
+        IEnumerable<TimeSlotDTO> timeSlots = await timeSlotService.GetTimeSlots(SelectedDoctor);
+        var start = timeSlots.Max(t => t.DateTime).Date;
 
-        //doctorService.ConvertScheduleToTimeSlots(nextMonday, 1);
-        await scheduleTimeSlotService.ConvertScheduleToTimeSlots(currentDate, 1, SelectedDoctor);
+        DayOfWeek currentDayOfWeek = start.DayOfWeek;
+        int daysUntilNextMonday = ((int)DayOfWeek.Monday - (int)currentDayOfWeek + 7) % 7;
+        start = start.AddDays(daysUntilNextMonday);
+        
+        await scheduleTimeSlotService.ConvertScheduleToTimeSlots(start, 2, SelectedDoctor);
 
     }
 
@@ -131,6 +137,8 @@
         {
             await scheduleTimeSlotService.DeleteScheduleTimeSlot(scheduleTimeSlot, SelectedDoctor);
         }
+
+        await RefreshScheduler();
     }
 
     private async Task HandleScheduleTimeSlotAdded(ScheduleTimeSlotDTO newSlot)

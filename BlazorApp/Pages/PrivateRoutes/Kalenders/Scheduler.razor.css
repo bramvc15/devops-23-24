@@ -1,0 +1,15 @@
+.scheduler-controls {
+    display: flex;
+    height: auto;
+    padding: 10px 0;
+    gap: 5px;
+}
+
+.scheduletimeslot-content {
+    display: flex;
+    align-items: center;
+}
+
+.weekselector {
+    display: flex;
+}

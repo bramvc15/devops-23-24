@@ -6,9 +6,7 @@
 @inject DatabaseContext databaseContext
 
 <div>
-    <div class="buttons">
-        <Button Color="Color.Primary" Clicked="@ShowModal">Voeg tijdslot toe</Button>
-    </div>
+    <Button Color="Color.Primary" Clicked="@ShowModal">Voeg tijdslot toe</Button>
     <Modal @ref="modalRef">
         <ModalContent Centered>
             <ModalHeader>

@@ -149,6 +149,8 @@ namespace Services.Core
 
         public async Task ConvertScheduleToTimeSlots(DateTime startOfWeek1, int amountOfWeeks, int docId) {
             var doctorEntity = await _DBContext.Doctors
+                .Include(d => d.ScheduleTimeSlots)
+                .Include(d => d.TimeSlots)
                 .FirstOrDefaultAsync(d => d.Id == docId);
 
             if (doctorEntity != null)
