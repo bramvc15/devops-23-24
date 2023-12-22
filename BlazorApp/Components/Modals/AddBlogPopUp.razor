@@ -3,8 +3,9 @@
 @using Persistence.Data; 
 @inject DatabaseContext databaseContext
 @inject BlogService blogService
+@inject NavigationManager NavManager
 
-<div>
+<div class="pl">
     <div class="buttons">
         <button class="add-btn" onclick="@ShowModal">Voeg blog toe</button>
     </div>
@@ -92,6 +93,7 @@
                 };
             await blogService.CreateBlog(newBlog);
             await HideModal();
+            NavManager.NavigateTo("/admin/cms/actua", true);
         }
         else
         {

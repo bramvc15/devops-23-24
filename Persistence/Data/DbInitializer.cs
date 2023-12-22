@@ -10,41 +10,31 @@ namespace Persistence.Data
 
         public static void Initialize(DatabaseContext context)
         {
-            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any() && context.Notes.Any())
+            if (context.Doctors.Any() && context.HomeHeaders.Any() && context.Blogs.Any() && context.Locations.Any() && context.Treatments.Any() && context.Patients.Any() && context.TimeSlots.Any() && context.ScheduleTimeSlots.Any() && context.Appointments.Any() && context.Faqs.Any() && context.Notes.Any() && context.Messages.Any())
             {
                 return;
             }
 
             // domain
             #region Doctors
-            Doctor doctor1 = new("Dr. J. Van der Veken", "Eye Specialist", Gender.Female, 
-                "Dr. J. Van der Veken is een ervaren oogarts met een passie voor het verbeteren van het gezichtsvermogen van zijn patiënten. Met jarenlange ervaring in de oogheelkunde, is hij toegewijd aan het bieden van hoogwaardige oogzorg."
-                );
+            
 
-            Doctor admin = new("Admin", "Eye Specialist", Gender.Male);
-            Doctor employee = new("Employee", "Eye Specialist", Gender.Male);
-            Doctor doctor2 = new("Dr. Smith", "Eye Specialist", Gender.Male);
-            Doctor doctor3 = new("Dr. Johnson", "Eye Specialist", Gender.Female, "Dr. Johnson is gespecialiseerd in oogheelkunde en heeft uitgebreide kennis van oogaandoeningen. Ze streeft naar het verbeteren van het zicht en de ooggezondheid van haar patiënten.");
-            Doctor doctor4 = new("Dr. Martinez", "Eye Specialist", Gender.Female, "Dr. Martinez is een ervaren oogarts met een warme benadering van kinderoogzorg. Ze zet zich in voor het bieden van zorg van hoge kwaliteit aan jonge patiënten en hun families.");
-            Doctor doctor5 = new("Dr. White", "Eye Specialist", Gender.Male, "Dr. White is een bekwame oogchirurg met expertise in het behandelen van diverse oogaandoeningen. Hij is vastbesloten om patiënten te helpen hun optimale gezichtsvermogen te bereiken.");
-            Doctor doctor6 = new("Dr. Kim", "Eye Specialist", Gender.Female, "Dr. Kim is een toegewijde oogarts met een passie voor het bevorderen van ooggezondheid. Ze biedt deskundige zorg voor een breed scala aan oogaandoeningen en streeft naar het optimaliseren van het zicht van haar patiënten.");
-            Doctor doctor7 = new("Dr. Garcia", "Eye Specialist", Gender.Male, "Dr. Garcia is een ervaren oogarts met expertise in de behandeling van netvliesaandoeningen. Hij is toegewijd aan het verbeteren van het zicht en de algehele ooggezondheid van zijn patiënten.");
-            Doctor doctor8 = new("Dr. Patel", "Eye Specialist", Gender.Female, "Dr. Patel is gespecialiseerd in oogheelkunde en biedt uitgebreide oogzorg voor vrouwen. Ze is toegewijd aan het ondersteunen van vrouwen in elke fase van hun leven en het bevorderen van hun ooggezondheid.");
+            Doctor admin = new("Ozlem Kose", "Oogarts - oogchirurg", Gender.Female, "Dokter Ozlem Kose behaalde haar diploma in de geneeskunde in 2013 aan de Vrije Universiteit Brussel. Na haar opleiding geneeskunde specialiseerde ze zich gedurende vier jaar in de oftalmologie aan de Université Libre de Bruxelles. Dr. Kose behaalde een bijkomende interuniversitaire diploma \"Inflammations et Infections oculaires\" aan de Universiteit Paris Diderot in Frankrijk. Verder is ze Fellow van de European Board of Ophthalmology. Na haar specialisatie trok ze in 2017 een maand naar India voor een fellowship in de cataract en refractieve chirurgie onder begeleiding van Prof. Dr. Agarwal. Vervolgens genoot ze gedurende 6 maanden van een bijkomende chirurgische vorming onder begeleiding van Dr. Gatinel in het Fondation Rothschild te Parijs. Verder sub specialiseerde ze zich in de orbito palpebrale chirurgie (oogleden, traanwegen en orbita) op de afdelingen oftalmologie van het CHU Brugmann ziekenhuis en het Sint-Pietersziekenhuis te Brussel. Ten slotte volgde ze gedurende één haar een fellowship in het Oogziekenhuis van Rotterdam om zich verder te bekwamen in de oculoplastische chirurgie. Actueel is ze sinds 2019 verbonden aan het AZ Sint Lucas Ziekenhuis in Gent waar ze haar vooral toespitst op chirurgie van de oogleden, traanwegen, cataract, maar ook op algemene oogheelkundige aandoeningen." );
+            Doctor employee = new("Eline De Pauw", "Optometrist", Gender.Female);
+            Doctor employee2 = new("Diete Paternoster", "Orthoptist", Gender.Female);
+
 
             admin.Auth0Id = "auth0|6571dae55941b4686e3fd96a";
             employee.Auth0Id = "auth0|6571db555941b4686e3fd9c2";
-            doctor1.ImageLink = "https://images.healthshots.com/healthshots/en/uploads/2022/07/02195043/doctor-stress.jpg";
-            doctor2.ImageLink = "https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*";
-            doctor3.ImageLink = "https://t3.ftcdn.net/jpg/01/71/31/48/360_F_171314831_xyvTs2T9tWwSN3gO7wZUA08IqHR4Sc7G.jpg";
-            doctor4.ImageLink = "https://t4.ftcdn.net/jpg/03/33/23/89/360_F_333238965_w3D7wxozBonxsxO4VzAxXWAhv2CabaIO.jpg";
-            doctor5.ImageLink = "https://www.shutterstock.com/image-photo/healthcare-medical-staff-concept-portrait-600nw-2281024823.jpg";
-            doctor6.ImageLink = "https://t4.ftcdn.net/jpg/01/46/39/07/360_F_146390715_PlS9g09rPR8BvioEKiDq7Y8WDt2eWRdl.jpg";
-            doctor7.ImageLink = "https://tejedd76pluu.merlincdn.net/resize/700x932//Programlar/Mucize-Doktor/Oyuncular/Mucize-Doktor-act-image-81b7de06-af33-437a-8370-456e0590011f.jpg";
-            doctor8.ImageLink = "https://images.ctfassets.net/szez98lehkfm/7hzmXzE4dz7ybJ7qNm3RHi/7a01a58af9fda017915011dffc8f43ea/MyIC_Article119312?fm=webp";
+            employee2.Auth0Id = "auth0|65846e3e61f1db9d400564f8";
+            
+            admin.ImageLink = "https://blitzware-files.s3.eu-central-1.amazonaws.com/a358792c-a244-46c4-a49a-d3d37dfeb11c-kose.jpg";
+            employee.ImageLink = "https://blitzware-files.s3.eu-central-1.amazonaws.com/2d16503a-d4b7-485b-90f2-51aa91e9010e-Foto Eline De Pauw.jpeg";
+            employee2.ImageLink = "https://blitzware-files.s3.eu-central-1.amazonaws.com/b53abad5-80ec-44ac-86f8-f0db2c17709a-Foto Diete Paternoster .png";
 
             var doctors = new Doctor[]
             {
-                admin, employee, doctor1, doctor2, doctor3, doctor4, doctor5, doctor6, doctor7, doctor8
+                admin, employee, employee2,
             };
             #endregion
 
@@ -61,6 +51,7 @@ namespace Persistence.Data
             #region ScheduleTimeSlots
             var scheduleTimeSlotsDoctor1 = new List<ScheduleTimeSlot>();
             var scheduleTimeSlotsDoctor2 = new List<ScheduleTimeSlot>();
+            var scheduleTimeSlotsDoctor3 = new List<ScheduleTimeSlot>();
 
             // monday
             var dateMonday = new DateTime(1, 1, 1, 8, 0, 0);
@@ -68,6 +59,7 @@ namespace Persistence.Data
             {
                 scheduleTimeSlotsDoctor1.Add(new ScheduleTimeSlot(dateMonday, 15, DayOfWeek.Monday));
                 scheduleTimeSlotsDoctor2.Add(new ScheduleTimeSlot(dateMonday, 15, DayOfWeek.Monday));
+                scheduleTimeSlotsDoctor3.Add(new ScheduleTimeSlot(dateMonday, 15, DayOfWeek.Monday));
                 dateMonday = dateMonday.AddMinutes(15);
             }
 
@@ -77,6 +69,7 @@ namespace Persistence.Data
             {
                 scheduleTimeSlotsDoctor1.Add(new ScheduleTimeSlot(dateTuesday, 15, DayOfWeek.Tuesday));
                 scheduleTimeSlotsDoctor2.Add(new ScheduleTimeSlot(dateTuesday, 15, DayOfWeek.Tuesday));
+                scheduleTimeSlotsDoctor3.Add(new ScheduleTimeSlot(dateTuesday, 15, DayOfWeek.Tuesday));
                 dateTuesday = dateTuesday.AddMinutes(15);
             }
 
@@ -86,6 +79,7 @@ namespace Persistence.Data
             {
                 scheduleTimeSlotsDoctor1.Add(new ScheduleTimeSlot(dateWednesday, 15, DayOfWeek.Wednesday));
                 scheduleTimeSlotsDoctor2.Add(new ScheduleTimeSlot(dateWednesday, 15, DayOfWeek.Wednesday));
+                scheduleTimeSlotsDoctor3.Add(new ScheduleTimeSlot(dateWednesday, 15, DayOfWeek.Wednesday));
                 dateWednesday = dateWednesday.AddMinutes(15);
             }
 
@@ -95,6 +89,7 @@ namespace Persistence.Data
             {
                 scheduleTimeSlotsDoctor1.Add(new ScheduleTimeSlot(dateThursday, 15, DayOfWeek.Thursday));
                 scheduleTimeSlotsDoctor2.Add(new ScheduleTimeSlot(dateThursday, 15, DayOfWeek.Thursday));
+                scheduleTimeSlotsDoctor3.Add(new ScheduleTimeSlot(dateThursday, 15, DayOfWeek.Thursday));
                 dateThursday = dateThursday.AddMinutes(15);
             }
 
@@ -104,31 +99,40 @@ namespace Persistence.Data
             {
                 scheduleTimeSlotsDoctor1.Add(new ScheduleTimeSlot(dateFriday, 15, DayOfWeek.Friday));
                 scheduleTimeSlotsDoctor2.Add(new ScheduleTimeSlot(dateFriday, 15, DayOfWeek.Friday));
+                scheduleTimeSlotsDoctor3.Add(new ScheduleTimeSlot(dateFriday, 15, DayOfWeek.Friday));
                 dateFriday = dateFriday.AddMinutes(15);
             }
 
             foreach (var scheduleTimeSlot in scheduleTimeSlotsDoctor1)
             {
-                doctor1.AddScheduleTimeSlot(scheduleTimeSlot);
+                admin.AddScheduleTimeSlot(scheduleTimeSlot);
             }
 
             foreach (var scheduleTimeSlot in scheduleTimeSlotsDoctor2)
             {
-                doctor2.AddScheduleTimeSlot(scheduleTimeSlot);
+                employee.AddScheduleTimeSlot(scheduleTimeSlot);
+            }
+
+            foreach (var scheduleTimeSlot in scheduleTimeSlotsDoctor3)
+            {
+                employee2.AddScheduleTimeSlot(scheduleTimeSlot);
             }
             #endregion
 
             #region TimeSlots
-            doctor1.ConvertScheduleToTimeSlots(new DateTime(2024, 1, 1, 0, 0, 0), 2);
-            doctor2.ConvertScheduleToTimeSlots(new DateTime(2024, 1, 1, 0, 0, 0), 2);
+            admin.ConvertScheduleToTimeSlots(new DateTime(2024, 1, 1, 0, 0, 0), 2);
+            employee.ConvertScheduleToTimeSlots(new DateTime(2024, 1, 1, 0, 0, 0), 2);
+            employee2.ConvertScheduleToTimeSlots(new DateTime(2024, 1, 1, 0, 0, 0), 2);
             #endregion
 
             #region Appointments
-            var timeSlot1 = doctor1.TimeSlots[0];
-            var timeSlot2 = doctor2.TimeSlots[0];
+            var timeSlot1 = admin.TimeSlots[0];
+            var timeSlot2 = employee.TimeSlots[0];
+            var timeSlot3 = employee2.TimeSlots[0];
             
-            doctor1.CreateAppointment(patient2, timeSlot1, "Reason: Normal Consultation", "");
-            doctor2.CreateAppointment(patient2, timeSlot2, "Reason: Normal Operation", "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren.");
+            admin.CreateAppointment(patient2, timeSlot1, "Reason: Normal Consultation", "");
+            employee.CreateAppointment(patient2, timeSlot2, "Reason: Normal Operation", "Ik heb last van hangende oogleden en wil graag een ooglidcorrectie laten uitvoeren.");
+            employee2.CreateAppointment(patient2, timeSlot3, "Reason: Normal Consultation", "Last van bolle ogen.");
             #endregion
 
             // CMS
@@ -243,10 +247,22 @@ namespace Persistence.Data
             };
             #endregion
 
+            #region Messages
+            var messages = new Message[]
+            {
+                new Message("John", "Doe", "john@mail.com", "0489481512", new DateTime(1990, 1, 1), "This is the first message!", false),
+                new Message("Thommy", "Shelby", "thommy@mail.com", "0489481512", new DateTime(1990, 1, 1), "Ik hoop dat dit berichtje u bereikt te midden van uw drukke dagen. Terwijl de feestdagen dichterbij komen, vroeg ik me af of u een momentje tijd heeft om mijn wens te horen...", false),
+                new Message("Tow", "Mater", "tow@mail.com", "0489481512", new DateTime(1990, 1, 1), "Ik word steeds roestiger en roestiger. Voro deze reden kan ik ook niet zo goed meer autorijden. Kunt u me helpen?", false),
+                new Message("Buzz", "Lightyear", "buzz@mail.com", "0489481512", new DateTime(1990, 1, 1), "Naar de sterren, en er dan voorbij!", false),
+                new Message("Jack", "Sparrow", "jack@mail.com", "0489481512", new DateTime(1990, 1, 1), "The beste piraat deze wereld ooit gezien heeft! Ik hou van wiskey ook.", false),
+            };
+            #endregion
+
 
             // domain
             context.Doctors.AddRange(doctors);
             context.Patients.AddRange(patients);
+            context.Messages.AddRange(messages);
 
             // CMS
             context.HomeHeaders.Add(header);

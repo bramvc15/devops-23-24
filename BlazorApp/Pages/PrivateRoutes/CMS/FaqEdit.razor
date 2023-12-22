@@ -48,7 +48,17 @@
                             <div class="qf" @onclick="( () => ShowModal(f) )">
                                 <QuestionFAQ Question=@f.Question Answer=@f.Answer />
                             </div>
-                            <button class="deleteFaqButton" @onclick="( () => DeleteFaq(f) )"><strong>X</strong></button>
+                            <button class="deleteFaqButton" @onclick="() => ShowDeleteConfirmationPopup()"><Icon Name="IconName.Delete" /></button>
+                            @if (ShowDeleteConfirmation)
+                                    {
+                                        <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                                            <h3>Bent u zeker?</h3>
+                                            <div class="popup-buttons">
+                                                <button class="popDel" @onclick="() => DeleteFaq(f)">Confirm</button>
+                                                <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                                            </div>
+                                        </div>
+                                    }                          
                         </div>
                         <span class="line"></span>
                     }
@@ -92,6 +102,7 @@
 
     private bool visible = false;
     private string message = string.Empty;
+    private bool ShowDeleteConfirmation = false;
 
     private IEnumerable<FaqDTO>? FaqObj;
     private FaqDTO clickedFaq;
@@ -137,6 +148,7 @@
                     Answer = newAnswer
                 };
             await faqService.UpdateFaq(faq);
+            NavManager.NavigateTo("/admin/cms/faq", true);
         }
         else
         {
@@ -145,6 +157,11 @@
         }
 
         await HideModal();
+    }
+
+    private async Task ShowDeleteConfirmationPopup()
+    {
+        ShowDeleteConfirmation = true;
     }
 
     private async void DeleteFaq(FaqDTO f)
@@ -157,12 +174,18 @@
         if (authenticationState.User.IsInRole("Admin"))
         {
             await faqService.DeleteFaq(f);
+            NavManager.NavigateTo("/admin/cms/faq", true);
         }
         else
         {
             message = "U heeft geen toegang tot verwijderen.";
             visible = true;
         }
+    }
+
+    private void CancelDelete()
+    {
+        ShowDeleteConfirmation = false;
     }
 
 

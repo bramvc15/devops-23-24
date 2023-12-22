@@ -3,6 +3,7 @@
 @using Persistence.Data; 
 @inject DatabaseContext databaseContext
 @inject NoteService noteService
+@inject NavigationManager NavManager
 
 <button class="addFaqButton" onclick="@ShowModal">Nieuwe note</button>
 
@@ -79,6 +80,7 @@
                 };
             await noteService.CreateNote(newNote);
             await HideModal();
+            NavManager.NavigateTo("/admin/notes", true);
         }
         else
         {

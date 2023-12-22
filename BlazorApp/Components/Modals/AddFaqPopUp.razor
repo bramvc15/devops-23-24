@@ -3,6 +3,7 @@
 @using Persistence.Data; 
 @inject DatabaseContext databaseContext
 @inject FaqService faqService
+@inject NavigationManager NavManager
 
 <button class="addFaqButton" onclick="@ShowModal">Nieuwe FAQ</button>
 
@@ -79,6 +80,7 @@
                 };
             await faqService.CreateFaq(newFaq);
             await HideModal();
+            NavManager.NavigateTo("/admin/cms/faq", true);
         }
         else
         {
