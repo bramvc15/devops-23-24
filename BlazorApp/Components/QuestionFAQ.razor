@@ -1,7 +1,7 @@
-<div class="question" @onclick="() => ToggleAnswer()">> @Question</div>
+<div class="question" data-test-id="faq-question" @onclick="() => ToggleAnswer()">> @Question</div>
 @if (ShowAnswer)
         {
-            <div class="answer">@Answer</div>
+            <div class="answer" data-test-id="faq-answer">@Answer</div>
         }
 
 
