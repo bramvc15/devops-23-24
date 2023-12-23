@@ -37,7 +37,7 @@
             @foreach (var timeSlot in FilteredTimeSlots)
             {
                 <div class="card">
-                    <button class="timeslot" @onclick="() => ChooseDate(timeSlot.Id)">@timeSlot.DateTime.ToString("HH:mm") ➜  @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")</button>
+                    <button class="timeslot" data-test-id="timeslot" @onclick="() => ChooseDate(timeSlot.Id)">@timeSlot.DateTime.ToString("HH:mm") ➜  @timeSlot.DateTime.AddMinutes(timeSlot.Duration).ToString("HH:mm")</button>
                 </div>
             }
         } else {
