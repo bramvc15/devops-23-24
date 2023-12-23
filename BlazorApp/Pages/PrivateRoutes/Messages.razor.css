@@ -137,6 +137,22 @@ h2 {
     align-items: center;
 }
 
+.unread-btn {
+    background-color: rgb(136, 164, 154);
+    border: solid 2px rgb(82, 114, 104);
+    border-radius: 4px;
+    padding: 10px 25px;
+    color: azure;
+    transition: 0.3s;
+    margin-right: 2.5%;
+}
+
+.unread-btn:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    border: azure solid 2px;
+}
+
 .del-btn {
     background-color: rgb(216, 109, 109);
     border: solid 2px rgb(206, 70, 70);
@@ -229,6 +245,14 @@ h3 {
     color: rgb(22, 44, 104);
     width: 100%;
     margin-top: 40px;
+}
+
+.row-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
 }
 
 @media (max-width: 950px) {
