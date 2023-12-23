@@ -4,10 +4,19 @@
     transition: box-shadow 0.3s ease, background-color 0.3s ease;
     cursor: pointer;
     margin: 2px;
+    width: 344px;
+    height: 168px;
+    margin-top: 20px;
 }
 
 .card:hover {
     box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
     background-color: #f0f0f0; /* Change the background color on hover */
     color: rgb(44, 68, 136);
+}
+
+.imp {
+    height: 75.5px !important;
+    width: 75.5px !important;
+    object-fit: cover !important;
 }

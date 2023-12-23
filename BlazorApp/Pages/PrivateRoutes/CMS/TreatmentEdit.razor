@@ -1,5 +1,4 @@
 @page "/admin/cms/behandelingen"
-@inherits EditHeaderPopUp
 @using Services.CMS;
 @using Shared.DTO.CMS;
 @using Persistence.Data;
@@ -17,28 +16,21 @@
     <SideNavMenu />
 </div>
 
-<div class="background-div">
     <div class="overlay">
         <h1>Behandelingen</h1>
         <span class="breadcrumbs">
             Klik op een behandeling om ze te bewerken.
         </span>
-        <div class="alert-container">
-            <Alert Color="Color.Danger" @bind-Visible="@visible">
-                <AlertDescription>
-                    @message
-                </AlertDescription>
-                <AlertMessage>
-                    @* Gebruiken we niet. *@
-                </AlertMessage>
-                <CloseButton />
-            </Alert>
+        <div class="top-bar">
+            <input type="text" @bind-value="searchQuery" placeholder="Zoek behandelingen" />
+            <AddTreatmentPopUp />
         </div>
-        <div class="container mt-40">
+        <div class="container mt-40 resp">
             <div class="row ">
-                @if (treatments != null)
+                @if (GetFilteredTreatments() != null)
                 {
-                    foreach (var treatment in treatments)
+                    var filteredTreatments = GetFilteredTreatments();
+                    foreach (var treatment in filteredTreatments)
                     {
                         <div class="col-md-4 d-flex flex-fill">
                             <TreatmentCard ImageSrc=@treatment.ImageLink Title=@treatment.Name
@@ -49,7 +41,6 @@
             </div>
         </div>
     </div>
-</div>
 <Modal @ref="modalRef">
     <ModalContent Centered>
         <ModalHeader>
@@ -60,46 +51,32 @@
             <Field>
                 <FieldLabel>Naam</FieldLabel>
                 <TextEdit Placeholder="Naam behandeling..." @bind-Text="newName" />
+                @if (string.IsNullOrWhiteSpace(newName))
+                    {
+                        <p class="text-danger">Naam is verplicht</p>
+                    }
             </Field>
             <Field>
                 <FieldLabel>Beschrijving</FieldLabel>
-                <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
-                              PlaceHolder="Beschrijving van de behandeling..." ReadOnly="@readOnly" SubmitOnEnter="false"
-                              EnterPressed="@OnSave" ToolbarPosition="Placement.Bottom">
-                    <Editor>@newDescription</Editor>
-                    <Toolbar>
-                        <RichTextEditToolbarGroup>
-                            <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
-                            <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
-                            <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
-                                <RichTextEditToolbarSelectItem Value="small" />
-                                <RichTextEditToolbarSelectItem Selected />
-                                <RichTextEditToolbarSelectItem Value="large" />
-                                <RichTextEditToolbarSelectItem Value="huge">Very Big</RichTextEditToolbarSelectItem>
-                            </RichTextEditToolbarSelect>
-                            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
-                            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
-                        </RichTextEditToolbarGroup>
-                        <!-- Custom toolbar content -->
-                        <RichTextEditToolbarGroup Float="Float.End">
-                            <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
-                                <Icon Name="IconName.InfoCircle" />
-                            </Button>
-                            <Button Clicked="@OnSave">
-                                <Icon Name="IconName.Save" />
-                            </Button>
-                        </RichTextEditToolbarGroup>
-                    </Toolbar>
-                </RichTextEdit>
+                <TextEdit Placeholder="Naam behandeling..." @bind-Text="newDescription" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newDescription))
+                    {
+                        <p class="text-danger">Beschrijving is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Afbeelding</FieldLabel>
                 <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImage" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newImage))
+                    {
+                        <p class="text-danger">Afbeelding is verplicht</p>
+                    }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@UpdateTreatment">Opslaan</Button>
+            <Button Color="Color.Danger" Clicked="@(() => DeleteTreatment(clickedTreatment))">Verwijder</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateTreatment" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -108,41 +85,30 @@
 
 
  @code {
-
-    private bool visible = false;
-    private string message = string.Empty;
+    private string searchQuery = "";
 
     private IEnumerable<TreatmentDTO> treatments;
     private TreatmentDTO clickedTreatment;
+    private EditContext editContext;
 
     protected override async Task OnInitializedAsync()
     {
         treatments = await treatmentService.GetTreatments();
+
+        var treatment = new TreatmentDTO();
+
+        editContext = new EditContext(treatment);
+        editContext.OnFieldChanged += (sender, eventArgs) =>
+        {
+            editContext.Validate();
+            StateHasChanged();
+        };
     }
 
     int? id;
     string? newName;
     string? newDescription;
     string? newImage;
-    protected new RichTextEdit richTextEditRef;
-    protected bool readOnly;
-    protected string contentAsHtml;
-    protected string contentAsDeltaJson;
-    protected string contentAsText;
-    protected string savedContent;
-
-    public async Task OnContentChanged()
-    {
-        contentAsHtml = await richTextEditRef.GetHtmlAsync();
-        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
-        contentAsText = await richTextEditRef.GetTextAsync();
-    }
-
-    public async Task OnSave()
-    {
-        savedContent = await richTextEditRef.GetHtmlAsync();
-        await richTextEditRef.ClearAsync();
-    }
 
     private Modal? modalRef;
 
@@ -153,7 +119,6 @@
         newName = treatment.Name;
         newDescription = treatment.Description;
         newImage = treatment.ImageLink;
-        await richTextEditRef.SetHtmlAsync(newDescription);
         return modalRef?.Show();
     }
 
@@ -164,16 +129,43 @@
 
     private async void UpdateTreatment()
     {
-        content = await richTextEditRef.GetHtmlAsync();
         TreatmentDTO treatment = new()
             {
                 Id = clickedTreatment.Id,
                 Name = newName,
-                Description = content,
+                Description = newDescription,
                 ImageLink = newImage
             };
         await treatmentService.UpdateTreatment(treatment);
         await HideModal();
         NavManager.NavigateTo("/admin/cms/behandelingen", true);
     }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newName)
+        && !string.IsNullOrWhiteSpace(newDescription)
+        && !string.IsNullOrWhiteSpace(newImage);
+    }
+
+    IEnumerable<TreatmentDTO>? GetFilteredTreatments()
+    {
+        if (treatments != null && !string.IsNullOrEmpty(searchQuery))
+        {
+            return treatments.Where(t => t.Name.ToLower().Contains(searchQuery.ToLower()));
+        }
+        return treatments;
+    }
+
+    void Search()
+    {
+        StateHasChanged();
+    }
+
+    private async void DeleteTreatment(TreatmentDTO t)
+    {
+            await treatmentService.DeleteTreatment(t);
+            NavManager.NavigateTo("/admin/cms/behandelingen", true);
+    }
+
 }

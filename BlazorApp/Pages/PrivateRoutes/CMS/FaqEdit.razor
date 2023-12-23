@@ -23,23 +23,26 @@
         <a><u>Home</u> > FAQ </a>
     </div>
     <div class="addFaq">
-        <AddFaqPopUp />
+        <div class="search-bar">
+            <input type="text" @bind-value="searchQuery" placeholder="Zoek FAQ" />
+        </div>
+        <div class="center">
+            <AddFaqPopUp />
+        </div>
     </div>
     <div class="alert-container">
         <Alert Color="Color.Danger" @bind-Visible="@visible">
             <AlertDescription>
                 @message
             </AlertDescription>
-            <AlertMessage>
-                @* Gebruiken we niet. *@
-            </AlertMessage>
             <CloseButton />
         </Alert>
     </div>
     <div class="faq-container">
-        @if (FaqObj != null)
+        @if (GetFilteredFaqs() != null)
         {
-            @foreach (var f in FaqObj)
+            var filteredFaqs = GetFilteredFaqs();
+            @foreach (var f in filteredFaqs)
             {
                 <div class="question-container">
                     @if (f != null)
@@ -86,14 +89,22 @@
                 <FieldLabel>Vraag</FieldLabel>
                 <TextEdit Placeholder="Wat is een..." @bind-Text="newQuestion" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newQuestion))
+                    {
+                        <p class="text-danger">Vraag is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Antwoord</FieldLabel>
                 <TextEdit Placeholder="Dit is een..." @bind-Text="newAnswer" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newAnswer))
+                    {
+                        <p class="text-danger">Antwoord is verplicht</p>
+                    }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@UpdateFaq">Opslaan</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateFaq" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -107,12 +118,34 @@
     private string message = string.Empty;
     private bool ShowDeleteConfirmation = false;
 
+    string searchQuery = "";
+
     private IEnumerable<FaqDTO>? FaqObj;
     private FaqDTO clickedFaq;
 
     protected override async Task OnInitializedAsync()
     {
         FaqObj = await faqService.GetFaqs();
+    }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newQuestion)
+        && !string.IsNullOrWhiteSpace(newAnswer);
+    }
+
+    IEnumerable<FaqDTO>? GetFilteredFaqs()
+    {
+        if (FaqObj != null && !string.IsNullOrEmpty(searchQuery))
+        {
+            return FaqObj.Where(f => f.Question.ToLower().Contains(searchQuery.ToLower()));
+        }
+        return FaqObj;
+    }
+
+    void Search()
+    {
+        StateHasChanged();
     }
 
     int? id;

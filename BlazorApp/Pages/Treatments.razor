@@ -11,12 +11,13 @@
         <span class="breadcrumbs" data-test-id="behandelingen-home-breadcrumb">
             <BindToLocation />
         </span>
-
+        <input type="text" @bind-value="searchQuery" placeholder="Zoek behandelingen" />
         <div class="container mt-40">
             <div class="row ">
-                @if (treatments != null)
+                @if (GetFilteredTreatments() != null)
                 {
-                    foreach (var treatment in treatments)
+                    var filteredTreatments = GetFilteredTreatments();
+                    foreach (var treatment in filteredTreatments)
                     {
                         <div class="col-md-4 d-flex flex-fill">
                             <TreatmentCard ImageSrc=@treatment.ImageLink Title=@treatment.Name
@@ -32,6 +33,9 @@
 @code {
     [Inject] NavigationManager NavigationManager { get; set; }
     private string currentPage = "/behandelingen";
+
+    private string searchQuery = "";
+
     private void NavigateDetailTreatment(string page)
     {
         NavigationManager.NavigateTo(@currentPage + $"/{page}");
@@ -42,5 +46,19 @@
     protected override async Task OnInitializedAsync()
     {
         treatments = await treatmentService.GetTreatments();
+    }
+
+    IEnumerable<TreatmentDTO>? GetFilteredTreatments()
+    {
+        if (treatments != null && !string.IsNullOrEmpty(searchQuery))
+        {
+            return treatments.Where(t => t.Name.ToLower().Contains(searchQuery.ToLower()));
+        }
+        return treatments;
+    }
+
+    void Search()
+    {
+        StateHasChanged();
     }
 }

@@ -1,4 +1,4 @@
-.addFaqButton {
+.addTreatmentButton {
     background-color: rgb(22, 44, 104);
     color: white;
     border: none;
@@ -11,7 +11,7 @@
     height: 60%;
 }
 
-.addFaqButton:hover {
+.addTreatmentButton:hover {
     background-color: white;
     color: rgb(22, 44, 104);
     border: solid 1px rgb(22, 44, 104);
@@ -19,7 +19,7 @@
 }
 
 @media screen and (max-width: 1050px) {
-    .addFaqButton {
+    .addTreatmentButton {
         margin-left: 0px;
     }
 }

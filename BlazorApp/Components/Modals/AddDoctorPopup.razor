@@ -7,10 +7,7 @@
 @inject DoctorService doctorService
 @inject NavigationManager NavManager
 
-<div>
-    <div class="buttons">
-        <button class="add-btn" onclick="@ShowModal">Voeg een dokter toe</button>
-    </div>
+    <button class="add-btn" onclick="@ShowModal">Voeg een dokter toe</button>
     <Modal @ref="modalRef">
         <ModalContent Centered>
             <ModalHeader>
@@ -84,7 +81,7 @@
             </ModalFooter>
         </ModalContent>
     </Modal>
-</div>
+
 
 @code {
     [CascadingParameter]
@@ -98,24 +95,11 @@
     Gender newGender;
     string? newBiograph;
     string? newImageLink;
-
-    private EditContext editContext;
     string newEmail;
     string newPassword;
 
     private Modal? modalRef;
 
-    protected override void OnInitialized()
-    {
-        DoctorDTO doctor = new();
-
-        editContext = new EditContext(doctor);
-        editContext.OnFieldChanged += (sender, eventArgs) =>
-        {
-            editContext.Validate();
-            StateHasChanged();
-        };
-    }
 
     private bool AreRequiredFieldsFilled()
     {

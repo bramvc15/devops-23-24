@@ -10,9 +10,8 @@
     border-radius: 5px;
     padding: 10px;
     color: azure;
-    margin-left: 10px;
-    margin-top: 10px;
     transition: 0.3s;
+    height: 90%;
 }
 
 .add-btn:hover {

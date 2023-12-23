@@ -22,6 +22,7 @@
     <div class="info-container">
         <h1>Dokters in het systeem</h1>
         <div class="add-button">
+             <input @bind="searchTerm" @onkeyup="FilterDoctorsOnEnter" placeholder="Zoek op naam" />
             <AddDoctorPopup />
         </div>
         <div class="alert-container">
@@ -29,13 +30,12 @@
                 <AlertDescription>
                     @message
                 </AlertDescription>
-                <AlertMessage>
-                    @* Gebruiken we niet. *@
-                </AlertMessage>
                 <CloseButton />
             </Alert>
         </div>
         <div class="containerr">
+        @if (filteredDoctors != null && filteredDoctors.Any())
+        {
             @if (doctors != null && doctors.Count() > 0)
             {
                 <div class="headers">
@@ -48,10 +48,9 @@
                     <p>Acties</p>
                 </div>
                 <span class="headLine"></span>
-                @foreach (var doctor in doctors)
+                @foreach (var doctor in filteredDoctors)
                 {
-                    index++;
-                    <div class="@((index % 2 == 0) ? "even" : "odd") doc-container">
+                    <div class="doc-container">
                         <p>@doctor.Id</p>
                         <p>@doctor.Name</p>
                         <p>@doctor.Specialization</p>
@@ -94,6 +93,10 @@
                     <span class="line"></span>
                 }
             }
+        } else 
+        {
+            <p>Geen dokters gevonden</p>
+        }
         </div>
     </div>
 </div>
@@ -149,13 +152,16 @@
     private string message = string.Empty;
     private bool ShowDeleteConfirmation = false;
 
-    private int index = 0;
+    private string searchTerm = "";
+
     private IEnumerable<DoctorDTO> doctors;
+    private IEnumerable<DoctorDTO> filteredDoctors;
     private DoctorDTO clickedDoctor;
 
     protected override async Task OnInitializedAsync()
     {
         doctors = await doctorService.GetDoctors();
+        FilterDoctors();
     }
 
     int? id;
@@ -169,6 +175,28 @@
     protected bool readOnly;
 
     private Modal? modalRef;
+
+    private void FilterDoctors()
+    {
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredDoctors = doctors.Where(d =>
+                d.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) 
+            );
+        }
+        else
+        {
+            filteredDoctors = doctors;
+        }
+    }
+
+    private async Task FilterDoctorsOnEnter(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            FilterDoctors();
+        }
+    }
 
     private async Task<Task?> ShowModal(DoctorDTO doctor)
     {

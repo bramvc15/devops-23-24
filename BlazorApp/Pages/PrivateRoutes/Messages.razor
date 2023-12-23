@@ -18,11 +18,12 @@
     <div class="title-layout">
         <h1>Berichten</h1>
     </div>
+    <input @bind="searchTerm" @onkeyup="FilterMessagesOnEnter" placeholder="Zoek op naam" />
     <div class="messages-container">
-            @if (MessageObj != null && MessageObj.Any())
+            @if (filteredMessages != null)
             {
                 <div class="message-col">
-                    @foreach (var m in MessageObj)
+                    @foreach (var m in filteredMessages)
                     {
                         @if (m != null)
                         {
@@ -83,7 +84,6 @@
             } 
             else
             {
-                <span></span>
                 <div class="no-message">
                     <p>Er zijn geen berichten beschikbaar.</p>
                 </div>
@@ -93,6 +93,8 @@
 
 @code {
     private IEnumerable<MessageDTO>? MessageObj;
+    private string searchTerm = "";
+    private IEnumerable<MessageDTO>? filteredMessages;
     private int? ShowMessageId;
     private bool ShowDeleteConfirmation = false;
     private int? MessageIdToDelete;    
@@ -100,6 +102,30 @@
     protected override async Task OnInitializedAsync()
     {
         MessageObj = await messageService.GetMessages();
+        FilterMessages();
+    }
+
+    private void FilterMessages()
+    {
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredMessages = MessageObj.Where(m =>
+                m.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) 
+                || m.LastName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+            );
+        }
+        else
+        {
+            filteredMessages = MessageObj;
+        }
+    }
+
+    private async Task FilterMessagesOnEnter(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            FilterMessages();
+        }
     }
 
     private async void ToggleMessage(int? messageId)
