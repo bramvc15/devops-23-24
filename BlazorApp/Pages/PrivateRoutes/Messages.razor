@@ -45,17 +45,20 @@
                             {
                                 <div class="top-con">
                                     <h2>@selectedMessage.Name @selectedMessage.LastName</h2>
-                                    <button class="del-btn" @onclick="() => ShowDeleteConfirmationPopup(selectedMessage.Id)"><Icon Name="IconName.Delete" /></button>
-                                    @if (ShowDeleteConfirmation)
-                                    {
-                                        <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
-                                            <h3>Bent u zeker?</h3>
-                                            <div class="popup-buttons">
-                                                <button class="popDel" @onclick="DeleteMessage">Confirm</button>
-                                                <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                                    <div class="row-btn">
+                                        <button class="unread-btn" @onclick="() => MarkAsUnread(selectedMessage.Id)"><Icon Name="IconName.EyeSlash"/></button>
+                                        <button class="del-btn" @onclick="() => ShowDeleteConfirmationPopup(selectedMessage.Id)"><Icon Name="IconName.Delete" /></button>
+                                        @if (ShowDeleteConfirmation)
+                                        {
+                                            <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                                                <h3>Bent u zeker?</h3>
+                                                <div class="popup-buttons">
+                                                    <button class="popDel" @onclick="DeleteMessage">Confirm</button>
+                                                    <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    }                            
+                                        }
+                                    </div>                            
                                 </div>  
                                 <span class="line"></span>
                                 <div class="head-con">
@@ -165,5 +168,18 @@
     private async Task CancelDelete()
     {
         ShowDeleteConfirmation = false;
+    }
+
+    private async Task MarkAsUnread(int? messageId)
+    {
+        if (messageId.HasValue)
+        {
+            var message = MessageObj.FirstOrDefault(m => m?.Id == messageId);
+            if (message != null && message.Read)
+            {
+                message.Read = false;
+                await messageService.UpdateMessage(message);
+            }
+        }
     }
 }
