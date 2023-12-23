@@ -100,7 +100,6 @@
     protected string contentAsDeltaJson;
     protected string contentAsText;
     protected string savedContent;
-    private EditContext editContext;
 
     protected string? content;
     private HomeHeaderDTO homeHeader;
@@ -175,14 +174,5 @@
         newTitle = homeHeader.Title;
         newDescription = homeHeader.Context;
         await richTextEditRef.SetHtmlAsync(newDescription);
-
-        var h = new HomeHeaderDTO();
-
-        editContext = new EditContext(h);
-        editContext.OnFieldChanged += (sender, eventArgs) =>
-        {
-            editContext.Validate();
-            StateHasChanged();
-        };
     }
 }

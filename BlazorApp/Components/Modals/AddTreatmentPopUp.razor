@@ -61,19 +61,6 @@
     string? newImage;
 
     private Modal? modalRef;
-    private EditContext editContext;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var treatment = new TreatmentDTO();
-
-        editContext = new EditContext(treatment);
-        editContext.OnFieldChanged += (sender, eventArgs) =>
-        {
-            editContext.Validate();
-            StateHasChanged();
-        };
-    }
 
     private async Task<Task?> ShowModal()
     {

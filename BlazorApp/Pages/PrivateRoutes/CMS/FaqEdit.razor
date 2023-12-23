@@ -126,9 +126,6 @@
     protected override async Task OnInitializedAsync()
     {
         FaqObj = await faqService.GetFaqs();
-
-        var faq = new FaqDTO();
-
     }
 
     private bool AreRequiredFieldsFilled()

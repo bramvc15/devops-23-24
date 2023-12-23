@@ -95,24 +95,11 @@
     Gender newGender;
     string? newBiograph;
     string? newImageLink;
-
-    private EditContext editContext;
     string newEmail;
     string newPassword;
 
     private Modal? modalRef;
 
-    protected override void OnInitialized()
-    {
-        DoctorDTO doctor = new();
-
-        editContext = new EditContext(doctor);
-        editContext.OnFieldChanged += (sender, eventArgs) =>
-        {
-            editContext.Validate();
-            StateHasChanged();
-        };
-    }
 
     private bool AreRequiredFieldsFilled()
     {

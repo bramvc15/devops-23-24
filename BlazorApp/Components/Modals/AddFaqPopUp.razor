@@ -61,20 +61,6 @@
     string? newAnswer;
 
     private Modal? modalRef;
-    private EditContext editContext;
-
-    protected override async Task OnInitializedAsync()
-    {
-
-        var faq = new FaqDTO();
-
-        editContext = new EditContext(faq);
-        editContext.OnFieldChanged += (sender, eventArgs) =>
-        {
-            editContext.Validate();
-            StateHasChanged();
-        };
-    }
 
     private bool AreRequiredFieldsFilled()
     {

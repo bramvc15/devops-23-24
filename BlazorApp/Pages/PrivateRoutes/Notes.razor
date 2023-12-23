@@ -20,15 +20,16 @@
         <h1>Notes</h1>
     </div>
     <div class="addNote">
+        <input @bind="searchTerm" @onkeyup="FilterNotesOnEnter" placeholder="Zoek op titel" />
         <AddNotePopUp />
     </div>
     <div class="alert-container">
     </div>
 
     <div class="notes-container">
-        @if (NoteObj != null)
+        @if (filteredNotes != null)
         {
-            @foreach (var n in NoteObj)
+            @foreach (var n in filteredNotes)
             {
                     @if (n != null)
                     {
@@ -37,6 +38,8 @@
                         </div>
                     }
             }
+        } else {
+            <p>Geen notities gevonden</p>
         }
     </div>
 </div>
@@ -87,6 +90,8 @@
     private bool ShowDeleteConfirmation = false;
 
     private IEnumerable<NoteDTO>? NoteObj;
+    private string searchTerm = "";
+    private IEnumerable<NoteDTO>? filteredNotes;
     private NoteDTO clickedNote;
 
     int? id;
@@ -96,6 +101,29 @@
     protected override async Task OnInitializedAsync()
     {
         NoteObj = await noteService.GetNotes();
+        FilterNotes();
+    }
+
+    private void FilterNotes()
+    {
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredNotes = NoteObj.Where(d =>
+                d.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) 
+            );
+        }
+        else
+        {
+            filteredNotes = NoteObj;
+        }
+    }
+
+    private async Task FilterNotesOnEnter(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            FilterNotes();
+        }
     }
 
     private bool AreRequiredFieldsFilled()

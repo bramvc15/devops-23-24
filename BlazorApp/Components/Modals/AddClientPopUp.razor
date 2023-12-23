@@ -83,24 +83,11 @@
     DateTime newDateOfBirth;
     Gender newGender;
     BloodType newBloodType;
-    private EditContext editContext;
 
     private bool visible = false;
     private string message = string.Empty;
 
     private Modal? modalRef;
-
-    protected override void OnInitialized()
-    {
-        DoctorDTO client = new();
-
-        editContext = new EditContext(client);
-        editContext.OnFieldChanged += (sender, eventArgs) =>
-        {
-            editContext.Validate();
-            StateHasChanged();
-        };
-    }
 
     private bool AreRequiredFieldsFilled()
     {
