@@ -54,14 +54,25 @@
 
 .addFaq {
     padding-top: 30px;
-    padding-left: 120px;
+    padding-left: 30px;
+    padding-right: 150px;
     width: 100%;
     height: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .qf {
     width: fit-content;
     height: fit-content;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .mini-conatainer {
@@ -152,6 +163,11 @@ h3 {
     color: rgb(109, 151, 137);
 }
 
+.search-bar {
+    margin-top: 20px;
+    margin-left: 120px;
+}
+
 @media screen and (max-width: 1050px) {
     .title-layout {
         padding-left: 60px;
@@ -159,7 +175,8 @@ h3 {
     }
 
     .addFaq {
-        padding-left: 60px;
+        padding-left: 0px;
+        flex-direction: column;
     }
 
     .faq-container {
@@ -171,4 +188,11 @@ h3 {
         display: flex;
         flex-direction: column;
     }
+
+    .search-bar {
+        margin-top: 20px;
+        margin-left: 60px;
+    }
+
+    
 }
