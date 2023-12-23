@@ -130,7 +130,7 @@
 
     private void FirstAvailableDate()
     {
-        if(TimeSlotObj.Count() > 0)
+        if(TimeSlotObj != null && TimeSlotObj.Count() > 0)
             SelectedDate = TimeSlotObj.Min(x => x.DateTime);
     }
 
