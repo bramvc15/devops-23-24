@@ -18,9 +18,6 @@
                 <AlertDescription>
                     @message
                 </AlertDescription>
-                <AlertMessage>
-                    @* Gebruiken we niet. *@
-                </AlertMessage>
                 <CloseButton />
             </Alert>
         </div>
@@ -29,14 +26,22 @@
                 <FieldLabel>Nieuwe title</FieldLabel>
                 <TextEdit Placeholder="Wat is een..." @bind-Text="newTitle" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newTitle))
+                    {
+                        <p class="text-danger">Titel is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Nieuw content</FieldLabel>
                 <TextEdit Placeholder="Dit is een..." @bind-Text="newContent" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newContent))
+                    {
+                        <p class="text-danger">Content is verplicht</p>
+                    }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@CreateNote">Opslaan</Button>
+            <Button Color="Color.Primary" Clicked="@CreateNote" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -53,6 +58,12 @@
     string? newContent;
 
     private Modal? modalRef;
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newTitle)
+        && !string.IsNullOrWhiteSpace(newContent);
+    }
 
     private Task? ShowModal()
     {

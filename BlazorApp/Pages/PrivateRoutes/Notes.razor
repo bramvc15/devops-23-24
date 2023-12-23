@@ -52,10 +52,18 @@
                 <FieldLabel>Titel</FieldLabel>
                 <TextEdit Placeholder="Wat is een..." @bind-Text="newTitle" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newTitle))
+                    {
+                        <p class="text-danger">Titel is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Content</FieldLabel>
                 <TextEdit Placeholder="Dit is een..." @bind-Text="newContent" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newContent))
+                    {
+                        <p class="text-danger">Content is verplicht</p>
+                    }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
@@ -70,7 +78,7 @@
                             </div>
                         </div>
                     }  
-            <Button Color="Color.Primary" Clicked="@UpdateNote">Opslaan</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateNote" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -88,6 +96,12 @@
     protected override async Task OnInitializedAsync()
     {
         NoteObj = await noteService.GetNotes();
+    }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newTitle)
+        && !string.IsNullOrWhiteSpace(newContent);
     }
 
      private Modal? modalRef;

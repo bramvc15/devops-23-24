@@ -117,7 +117,6 @@
     private bool visible = false;
     private string message = string.Empty;
     private bool ShowDeleteConfirmation = false;
-    private EditContext editContext;
 
     string searchQuery = "";
 
@@ -130,12 +129,6 @@
 
         var faq = new FaqDTO();
 
-        editContext = new EditContext(faq);
-        editContext.OnFieldChanged += (sender, eventArgs) =>
-        {
-            editContext.Validate();
-            StateHasChanged();
-        };
     }
 
     private bool AreRequiredFieldsFilled()
