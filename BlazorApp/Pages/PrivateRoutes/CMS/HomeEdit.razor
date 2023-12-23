@@ -1,5 +1,4 @@
 @page "/admin/cms/home"
-@inherits EditHeaderPopUp
 @using Services.CMS;
 @using Shared.DTO.CMS;
 @using Persistence.Data;
@@ -8,7 +7,7 @@
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @inject DatabaseContext databaseContext
-@inject BlogService blogService;
+@inject HomeHeaderService homeHeaderService;
 @inject NavigationManager NavManager
 @using Newtonsoft.Json;
 
@@ -20,15 +19,94 @@
     <SideNavMenu />
 </div>
 
-<div class="mains">
-    <div class="background-div">
-        <div class="overlay">
-            <EditHeaderPopUp />
-            <div class="buttons">
-                <button class="btn btn-light">Maak een afspraak <span class="oi oi-calendar"></span></button>
-                <button class="btn btn-light">Contacteer ons <span class="oi oi-envelope-closed"></span></button>
-            </div>
+<div class="background-div">
+        <div class="overlay" @onclick="( () => ShowModal(homeHeader) )">
+            @if(homeHeader != null){
+                <h1><strong>@homeHeader.Title</strong></h1>
+                <p class="header-text">@((MarkupString)homeHeader.Context)</p>
+            }
+            else
+            {
+                <p> Loading</p>
+            }
         </div>
-    </div>
 </div>
+
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Notitie wijzigen</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Titel</FieldLabel>
+                <TextEdit Placeholder="Wat is een..." @bind-Text="newTitle" />
+            </Field>
+            @if (string.IsNullOrWhiteSpace(newTitle))
+                    {
+                        <p class="text-danger">Titel is verplicht</p>
+                    }
+            <Field>
+                <FieldLabel>Context</FieldLabel>
+                <TextEdit Placeholder="Dit is een..." @bind-Text="newContext" />
+            </Field>
+            @if (string.IsNullOrWhiteSpace(newContext))
+                    {
+                        <p class="text-danger">Context is verplicht</p>
+                    }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateHomeHeader" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code {
+    private Modal? modalRef;
+    private HomeHeaderDTO? homeHeader;
+    private string newTitle;
+    private string newContext;
+
+    protected override async Task OnInitializedAsync()
+    {
+        homeHeader = await homeHeaderService.GetHomeHeader();
+    }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newTitle)
+        && !string.IsNullOrWhiteSpace(newContext);
+    }
+
+    private async Task<Task?> ShowModal(HomeHeaderDTO homeHeader)
+    {
+        newTitle = homeHeader.Title;
+        newContext = homeHeader.Context;
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async void UpdateHomeHeader()
+    {
+            HomeHeaderDTO homeHeader = new()
+                {
+                    Id = 1,
+                    Title = newTitle,
+                    Context = newContext
+                };
+            await homeHeaderService.UpdateHomeHeader(homeHeader);
+            NavManager.NavigateTo("/admin/cms/home", true);
+            await HideModal();
+    }
+
+
+
+}
 

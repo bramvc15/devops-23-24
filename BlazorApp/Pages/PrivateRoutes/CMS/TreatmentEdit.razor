@@ -1,5 +1,4 @@
 @page "/admin/cms/behandelingen"
-@inherits EditHeaderPopUp
 @using Services.CMS;
 @using Shared.DTO.CMS;
 @using Persistence.Data;
@@ -59,34 +58,7 @@
             </Field>
             <Field>
                 <FieldLabel>Beschrijving</FieldLabel>
-                <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
-                              PlaceHolder="Beschrijving van de behandeling..." ReadOnly="@readOnly" SubmitOnEnter="false"
-                              EnterPressed="@OnSave" ToolbarPosition="Placement.Bottom">
-                    <Editor>@newDescription</Editor>
-                    <Toolbar>
-                        <RichTextEditToolbarGroup>
-                            <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
-                            <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
-                            <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
-                                <RichTextEditToolbarSelectItem Value="small" />
-                                <RichTextEditToolbarSelectItem Selected />
-                                <RichTextEditToolbarSelectItem Value="large" />
-                                <RichTextEditToolbarSelectItem Value="huge">Very Big</RichTextEditToolbarSelectItem>
-                            </RichTextEditToolbarSelect>
-                            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
-                            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
-                        </RichTextEditToolbarGroup>
-                        <!-- Custom toolbar content -->
-                        <RichTextEditToolbarGroup Float="Float.End">
-                            <Button onClick="window.open('https://www.quilljs.com/','quilljs')">
-                                <Icon Name="IconName.InfoCircle" />
-                            </Button>
-                            <Button Clicked="@OnSave">
-                                <Icon Name="IconName.Save" />
-                            </Button>
-                        </RichTextEditToolbarGroup>
-                    </Toolbar>
-                </RichTextEdit>
+                <TextEdit Placeholder="Naam behandeling..." @bind-Text="newDescription" />
             </Field>
             @if (string.IsNullOrWhiteSpace(newDescription))
                     {
@@ -137,25 +109,6 @@
     string? newName;
     string? newDescription;
     string? newImage;
-    protected new RichTextEdit richTextEditRef;
-    protected bool readOnly;
-    protected string contentAsHtml;
-    protected string contentAsDeltaJson;
-    protected string contentAsText;
-    protected string savedContent;
-
-    public async Task OnContentChanged()
-    {
-        contentAsHtml = await richTextEditRef.GetHtmlAsync();
-        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
-        contentAsText = await richTextEditRef.GetTextAsync();
-    }
-
-    public async Task OnSave()
-    {
-        savedContent = await richTextEditRef.GetHtmlAsync();
-        await richTextEditRef.ClearAsync();
-    }
 
     private Modal? modalRef;
 
@@ -166,7 +119,6 @@
         newName = treatment.Name;
         newDescription = treatment.Description;
         newImage = treatment.ImageLink;
-        await richTextEditRef.SetHtmlAsync(newDescription);
         return modalRef?.Show();
     }
 
@@ -177,12 +129,11 @@
 
     private async void UpdateTreatment()
     {
-        content = await richTextEditRef.GetHtmlAsync();
         TreatmentDTO treatment = new()
             {
                 Id = clickedTreatment.Id,
                 Name = newName,
-                Description = content,
+                Description = newDescription,
                 ImageLink = newImage
             };
         await treatmentService.UpdateTreatment(treatment);
