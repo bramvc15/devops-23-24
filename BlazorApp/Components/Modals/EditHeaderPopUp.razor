@@ -43,6 +43,10 @@
                     <FieldLabel>Titel</FieldLabel>
                     <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
                 </Field>
+                @if (string.IsNullOrWhiteSpace(newTitle))
+                    {
+                        <p class="text-danger">Titel is verplicht</p>
+                    }
                 <Field>
                     <RichTextEdit @ref="richTextEditRef" Theme="RichTextEditTheme.Snow" ContentChanged="@OnContentChanged"
                                   PlaceHolder="Beschrijving..." ReadOnly="@readOnly" SubmitOnEnter="false"
@@ -76,7 +80,7 @@
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@UpdateTitle">Opslaan</Button>
+                <Button Color="Color.Primary" Clicked="@UpdateTitle" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
@@ -96,6 +100,7 @@
     protected string contentAsDeltaJson;
     protected string contentAsText;
     protected string savedContent;
+    private EditContext editContext;
 
     protected string? content;
     private HomeHeaderDTO homeHeader;
@@ -107,6 +112,12 @@
     string? context;
 
     private Modal? modalRef;
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newTitle)
+        && !string.IsNullOrWhiteSpace(newDescription);
+    }
 
     private Task? ShowModal()
     {
@@ -164,5 +175,14 @@
         newTitle = homeHeader.Title;
         newDescription = homeHeader.Context;
         await richTextEditRef.SetHtmlAsync(newDescription);
+
+        var h = new HomeHeaderDTO();
+
+        editContext = new EditContext(h);
+        editContext.OnFieldChanged += (sender, eventArgs) =>
+        {
+            editContext.Validate();
+            StateHasChanged();
+        };
     }
 }
