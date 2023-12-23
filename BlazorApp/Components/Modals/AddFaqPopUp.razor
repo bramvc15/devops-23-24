@@ -29,14 +29,22 @@
                 <FieldLabel>Nieuwe vraag</FieldLabel>
                 <TextEdit Placeholder="Wat is een..." @bind-Text="newQuestion" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newQuestion))
+                    {
+                        <p class="text-danger">Vraag is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Nieuw antwoord</FieldLabel>
                 <TextEdit Placeholder="Dit is een..." @bind-Text="newAnswer" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newAnswer))
+                    {
+                        <p class="text-danger">Antwoord is verplicht</p>
+                    }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@CreateFaq">Opslaan</Button>
+            <Button Color="Color.Primary" Clicked="@CreateFaq" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -53,6 +61,26 @@
     string? newAnswer;
 
     private Modal? modalRef;
+    private EditContext editContext;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var faq = new FaqDTO();
+
+        editContext = new EditContext(faq);
+        editContext.OnFieldChanged += (sender, eventArgs) =>
+        {
+            editContext.Validate();
+            StateHasChanged();
+        };
+    }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newQuestion)
+        && !string.IsNullOrWhiteSpace(newAnswer);
+    }
 
     private Task? ShowModal()
     {
