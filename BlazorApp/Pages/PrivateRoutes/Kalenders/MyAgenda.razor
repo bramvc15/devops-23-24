@@ -29,8 +29,8 @@
                 }
             }
             </Select>
-            <SfSchedule TValue="AppointmentData" @ref="@ScheduleRef" @bind-SelectedDate="@CurrentDate" >
-                <ScheduleEvents TValue="AppointmentData" OnActionBegin="OnActionBegin" OnPopupOpen="OnPopupOpen"></ScheduleEvents>
+            <SfSchedule TValue="AppointmentData" @ref="@ScheduleRef" @bind-SelectedDate="@CurrentDate" AllowDragAndDrop="false" AllowResizing="false">
+                <ScheduleEvents TValue="AppointmentData" OnActionBegin="OnActionBegin" OnPopupOpen="OnPopupOpen" OnCellClick="OnCellClick"></ScheduleEvents>
                     <ScheduleTemplates>
                         <EditorTemplate>
                             <table class="custom-event-editor" width="100%" cellpadding="5">
@@ -106,6 +106,7 @@
                 </ScheduleViews>
             </SfSchedule>
             <AppointmentPopup @ref="@AppointmentPopupRef" TimeSlot="SelectedTimeslot" DoctorId="SelectedDoctor" OnRefresh="LoadTimeSlots"/>
+            <AddTimeSlotPopUp @ref="@AddTimeSlotPopupRef" DoctorId="SelectedDoctor" OnTimeSlotCreated="LoadTimeSlots"/>
     </div>
 </div>
 
@@ -118,10 +119,12 @@
     private IEnumerable<TimeSlotDTO> TimeSlotsByWeek { get; set; }
 
     private AppointmentPopup AppointmentPopupRef;
+    private AddTimeSlotPopUp AddTimeSlotPopupRef;
 
     private DateTime CurrentDate = DateTime.Now;
     private List<AppointmentData> DataSource { get; set; }
     private IEnumerable<DoctorDTO> Doctors { get; set; }
+        
     private int SelectedDoctor { get; set; }
     View CurrentView = View.Week;
 
@@ -193,6 +196,14 @@
 
             await LoadTimeSlots();
         }
+    }
+
+    public async Task OnCellClick(CellClickEventArgs args)
+    {
+        args.Cancel = true;
+
+        AddTimeSlotPopupRef.ShowModal(args.StartTime, args.EndTime);
+        
     }
 
     public async Task OnPopupOpen(PopupOpenEventArgs<AppointmentData> args)
