@@ -20,7 +20,13 @@
 </div>
 <div class="content">
     <div class="agenda-container">
+        <div class="agenda-header">
             <h1>Agenda</h1>
+            <div class="agenda-header-buttons">
+                <button class="btn" @onclick="ExportToIcs">Exporteer naar ICS</button>
+                <button class="btn" @onclick="ExportToExcel">Exporteer naar Excel</button>
+            </div>
+        </div>
             <Select TValue="int?" SelectedValue="@SelectedDoctor" SelectedValueChanged="@OnSelectedValueChanged">
             @if(Doctors != null) {
                 @foreach (var doctor in Doctors)
@@ -223,6 +229,16 @@
     {
         TimeSlotDTO timeSlot = TimeSlots.FirstOrDefault(ts => ts.Id == id);
         await appointmentService.DeleteAppointment(timeSlot.AppointmentDTO);
+    }
+
+    private async Task ExportToIcs()
+    {
+        await ScheduleRef.ExportToICalendarAsync();
+    }
+
+    private async Task ExportToExcel()
+    {
+        await ScheduleRef.ExportToExcelAsync();
     }
 }
 
