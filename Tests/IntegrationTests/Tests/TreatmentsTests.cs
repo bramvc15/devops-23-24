@@ -53,4 +53,13 @@ public class TreatmentTests : PageTest
         await Page.ClickAsync("data-test-id=faq-item");
         Assert.IsFalse(await Page.IsVisibleAsync("data-test-id=faq-content"));
     }
+
+    [Test]
+    public async Task SearchTreatment_TreatmentFound()
+    {
+        await Page.GetByPlaceholder("Zoek behandelingen").FillAsync("straal");
+        await Page.GetByPlaceholder("Zoek behandelingen").PressAsync("Enter");
+        Assert.AreEqual(1, await Page.Locator("[data-test-id=\"treatmentcard-button\"]").CountAsync());
+        Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Straaloperatie" })).ToBeVisibleAsync();
+    }
 }

@@ -11,7 +11,7 @@
         <div class="content">
             @if (ChatbotQuestionsList == null || visible)
             {
-                <span class="message">
+                <span class="message" data-test-id="message">
                      @((MarkupString)Message)
                 </span>
                 if (Image != null)
@@ -23,7 +23,7 @@
             {
                 @foreach (var question in ChatbotQuestionsList)
                 {
-                    <button class="question" @onclick="() => DisplayQuestion(question)">
+                    <button class="question" data-test-id="question" @onclick="() => DisplayQuestion(question)">
                         @question.Question
                     </button>
                 }

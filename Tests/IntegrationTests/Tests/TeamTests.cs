@@ -26,23 +26,23 @@ public class TeamTests : PageTest
     [Test]
     public async Task Team_BreadCrumbRedirectsToHomePage()
     {
-        await Page.ClickAsync("data-test-id=team-home-breadcrumb");
-        await Expect(Page).ToHaveURLAsync($"{TestHelper.BaseUrl}/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "" }).ClickAsync();
+        await Expect(Page).ToHaveURLAsync($"{TestHelper.BaseUrl}");
     }
 
     [Test]
-    public async Task Team_DoctorLeesMeerRedirectsToDoctorDetailPage()
+    public async Task Team_DoctorCardRedirectsToDoctorDetailPage()
     {
-        await Page.ClickAsync("data-test-id=team-doctor-details-button");
-        Assert.IsTrue(Page.Url.Contains($"{TestHelper.BaseUrl}/docter-info/"));
+        await Page.ClickAsync("data-test-id=doctorcard");
+        await Expect(Page).ToHaveURLAsync(new Regex(".*/ons-team/\\d+"));
     }
 
     [Test]
-    public async Task Team_DoctorDetailBackButtonRedirectsToOnsTeamPage()
+    public async Task Team_DoctorDetailOnsTeamBreadCrumbRedirectsToOnsTeamPage()
     {
-        await Page.ClickAsync("data-test-id=team-doctor-details-button");
-        Assert.IsTrue(Page.Url.Contains($"{TestHelper.BaseUrl}/docter-info/"));
-        await Page.ClickAsync("data-test-id=doctordetail-back-button", new PageClickOptions { Force = true });
-        Assert.AreEqual($"{TestHelper.BaseUrl}/ons-team", Page.Url);
+        await Page.ClickAsync("data-test-id=doctorcard");
+        await Expect(Page).ToHaveURLAsync(new Regex(".*/ons-team/\\d+"));
+        await Page.GetByRole(AriaRole.Link, new() { Name = "ons-team" }).ClickAsync();
+        Assert.AreEqual($"{TestHelper.BaseUrl}ons-team", Page.Url);
     }
 }
