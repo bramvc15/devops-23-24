@@ -1,7 +1,8 @@
 .page-container {
-    background: rgb(194, 228, 218);
+    background: #c2e4da;
     background: linear-gradient(41deg, rgba(194, 228, 218, 1) 0%, rgba(167, 222, 195, 1) 52%, rgba(9, 244, 138, 0.36) 100%);
     min-height: 100vh;
+    height: fit-content;
     padding-bottom: 50px;
 }
 
@@ -12,7 +13,6 @@
     margin-left: 7%;  
     margin-top: 2%;
 }
-
 
 
 .title-layout {
@@ -29,6 +29,10 @@
     color: rgb(22, 44, 104);
     padding-top: 100px;
     padding-left: 120px;
+}
+
+p {
+    overflow: auto;
 }
 
 @media (max-width: 1400px) {

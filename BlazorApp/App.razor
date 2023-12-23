@@ -9,11 +9,11 @@
                     <div class="not-auth">
                         @* <div class="not-auth-container"> *@
                             <div class="not-auth-info">
-                                <h1><strong>Sorry!</strong></h1>
-                                <p class="na-p">You're not authorized to reach this page. You need to log in.</p>
+                                <h1><strong>Opgelet!</strong></h1>
+                                <p class="na-p">Je bent niet gemachtigd om deze pagina te bezoeken. Log in!</p>
                             </div>
                             <div class="not-auth-button">
-                                <a class="na-button" href="login?redirectUri=/">Log in</a>
+                                <a class="na-button" href="login?redirectUri=/admin">Log in</a>
                             </div>
                         @* </div> *@
                     </div>
@@ -29,19 +29,3 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
-
-
-
-
-@*<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <NotFound />
-        </LayoutView>
-    </NotFound>
-</Router>*@

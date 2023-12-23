@@ -1,0 +1,181 @@
+@page "/admin/notes"
+@inherits ComponentBase
+@using Shared.DTO.CMS;
+@using Services.CMS;
+@using Persistence.Data;
+@inject NoteService noteService
+@using BlazorApp.Components.Modals;
+@using Microsoft.AspNetCore.Components;
+@inject DatabaseContext databaseContext
+@inject NavigationManager NavManager
+
+<PageTitle>Admin - NOTES</PageTitle>
+
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+
+<div class="note-page">
+    <div class="title-layout">
+        <h1>Notes</h1>
+    </div>
+    <div class="addNote">
+        <input @bind="searchTerm" @onkeyup="FilterNotesOnEnter" placeholder="Zoek op titel" />
+        <AddNotePopUp />
+    </div>
+    <div class="alert-container">
+    </div>
+
+    <div class="notes-container">
+        @if (filteredNotes != null)
+        {
+            @foreach (var n in filteredNotes)
+            {
+                    @if (n != null)
+                    {
+                        <div class="qf" @onclick="( () => ShowModal(n) )">
+                                <Note Title="@n.Title" Content="@n.Content"/>
+                        </div>
+                    }
+            }
+        } else {
+            <p>Geen notities gevonden</p>
+        }
+    </div>
+</div>
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Notitie wijzigen</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Titel</FieldLabel>
+                <TextEdit Placeholder="Wat is een..." @bind-Text="newTitle" />
+            </Field>
+            @if (string.IsNullOrWhiteSpace(newTitle))
+                    {
+                        <p class="text-danger">Titel is verplicht</p>
+                    }
+            <Field>
+                <FieldLabel>Content</FieldLabel>
+                <TextEdit Placeholder="Dit is een..." @bind-Text="newContent" />
+            </Field>
+            @if (string.IsNullOrWhiteSpace(newContent))
+                    {
+                        <p class="text-danger">Content is verplicht</p>
+                    }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Danger" Clicked="@ShowDeleteConfirmationPopup">Verwijder</Button>
+            @if (ShowDeleteConfirmation)
+                    {
+                        <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                            <h3>Bent u zeker?</h3>
+                            <div class="popup-buttons">
+                                <button class="popDel" @onclick="DeleteNote">Confirm</button>
+                                <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                            </div>
+                        </div>
+                    }  
+            <Button Color="Color.Primary" Clicked="@UpdateNote" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code {
+    private bool ShowDeleteConfirmation = false;
+
+    private IEnumerable<NoteDTO>? NoteObj;
+    private string searchTerm = "";
+    private IEnumerable<NoteDTO>? filteredNotes;
+    private NoteDTO clickedNote;
+
+    int? id;
+    string? newTitle;
+    string? newContent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        NoteObj = await noteService.GetNotes();
+        FilterNotes();
+    }
+
+    private void FilterNotes()
+    {
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredNotes = NoteObj.Where(d =>
+                d.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) 
+            );
+        }
+        else
+        {
+            filteredNotes = NoteObj;
+        }
+    }
+
+    private async Task FilterNotesOnEnter(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            FilterNotes();
+        }
+    }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newTitle)
+        && !string.IsNullOrWhiteSpace(newContent);
+    }
+
+     private Modal? modalRef;
+
+    private async Task<Task?> ShowModal(NoteDTO Note)
+    {
+        clickedNote = Note;
+        id = Note.Id;
+        newTitle = Note.Title;
+        newContent = Note.Content;
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async void UpdateNote()
+    {
+            NoteDTO note = new()
+                {
+                    Id = clickedNote.Id,
+                    Title = newTitle,
+                    Content = newContent
+                };
+            await noteService.UpdateNote(note);
+            NavManager.NavigateTo("/admin/notes", true);
+            await HideModal();
+    }
+
+    private void ShowDeleteConfirmationPopup()
+    {
+        ShowDeleteConfirmation = true;
+    }
+
+    private async void DeleteNote()
+    {
+            await noteService.DeleteNote(clickedNote);
+            ShowDeleteConfirmation = false;
+            NavManager.NavigateTo("/admin/notes", true);
+    }
+
+    private void CancelDelete()
+    {
+        ShowDeleteConfirmation = false;
+    }
+}
+

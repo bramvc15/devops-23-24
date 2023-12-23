@@ -1,0 +1,64 @@
+@page "/ons-team/{Id:int}"
+@using Services.Core;
+@using Shared.DTO.Core;
+@inject DoctorService doctorService
+
+<PageTitle>Ons team</PageTitle>
+
+<div class="page-container">
+    @if (selectedDoctor != null)
+        {
+            <h1 class="title-layout">@selectedDoctor.Name</h1>
+            <div class="breadcrumbs text-capitalize">
+                <BindToLocation />
+            </div>
+            <div class="info-container">
+                <div class="detail-con">
+                    <div class="mini-con">
+                        <h3 class="header">Specialisatie</h3>
+                        <p>@selectedDoctor.Specialization</p>
+                    </div>
+                    <div class="mini-con">
+                        <h3 class="header">Beschikbaar?</h3>
+                        @if (selectedDoctor.IsAvailable)
+                        {
+                            <p class="text-success">Ja</p>
+                        }
+                        else
+                        {
+                            <p class="text-danger">Nee</p>
+                        }
+                    </div>
+                    <div class="mini-con">
+                        <h3 class="header">Biografie</h3>
+                        @if (selectedDoctor.Biograph != null)
+                        {
+                            <p>@selectedDoctor.Biograph</p>
+                        }
+                        else
+                        {
+                            <p>Geen biografie beschikbaar</p>
+                        }
+                    </div>
+                </div>
+                <div class="image-con">
+                    <img src="@selectedDoctor.ImageLink" alt="@selectedDoctor.Name" class="doc-img"/>
+                </div>
+            </div>
+
+
+
+        }
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private IEnumerable<DoctorDTO> doctor;
+    private DoctorDTO selectedDoctor;
+
+    protected override async Task OnInitializedAsync()
+    {
+        doctor = await doctorService.GetDoctors();
+        selectedDoctor = doctor?.FirstOrDefault(d => d.Id == Id);
+    }
+}

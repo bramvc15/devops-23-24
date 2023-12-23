@@ -19,7 +19,9 @@
                     <div class="col-md-6 col-lg-4">
                         @if (doc != null)
                         {
-                            <TeamCard ImageSrc=@doc.ImageLink Name=@doc.Name Specialization="@doc.Specialization" DoctorId=@doc.Id />
+                            <a class="card" href="/ons-team/@doc.Id">
+                                <TeamCard ImageSrc=@doc.ImageLink Name=@doc.Name Specialization="@doc.Specialization" DoctorId=@doc.Id />
+                            </a> 
                         }
                     </div>
                 }

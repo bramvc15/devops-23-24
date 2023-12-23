@@ -1,0 +1,140 @@
+.note-page {
+    min-height: 100vh;
+    height: fit-content;
+    background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(9, 244, 138, 0.36) 100%);
+    padding-bottom: 70px;
+}
+
+.title-layout {
+
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: fit-content;
+    /*
+    background: rgb(194,228,218);
+    background: linear-gradient(41deg, rgba(194,228,218,1) 0%, rgba(167,222,195,1) 52%, rgba(9,246,140,0) 100%);
+    */
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+    color: rgb(22, 44, 104); /* Tekstkleur aanpassen naar wens */
+    padding-top: 100px;
+    padding-left: 120px;
+ 
+  
+}
+
+.notes-container, .addNote {
+    margin-left: 120px;
+    margin-top: 20px;
+}
+
+.notes-container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.qf {
+    padding: 20px;
+}
+
+.confirmation-popup {
+    position: absolute;
+    /* top: 50%;
+    left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    background-color: azure;
+    border: solid 3px rgb(206, 70, 70);
+    border-radius: 8px;
+    padding: 10px 25px;
+    color: azure;
+    transition: 0.3s;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+h3 {
+    text-align: center;
+    font-weight: 700;
+    color: rgb(206, 70, 70);
+}
+
+.popup-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.popDel {
+    background-color: rgb(216, 109, 109);
+    border: solid 2px rgb(206, 70, 70);
+    border-radius: 4px;
+    color: azure;
+    transition: 0.3s;
+    width: 40%;
+}
+
+.popCan {
+    background-color: rgb(146, 202, 183);
+    border: solid 2px rgb(109, 151, 137);
+    border-radius: 4px;
+    color: azure;
+    transition: 0.3s;
+    padding: 2% 0;
+    width: 40%;
+}
+
+.popDel:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: azure;
+    color: rgb(206, 70, 70);
+}
+
+.popCan:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: azure;
+    color: rgb(109, 151, 137);
+}
+
+.addNote {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 100px;
+}
+
+@media only screen and (max-width: 600px) {
+    .title-layout {
+        padding-left: 30px;
+        padding-top: 20px;
+        margin-left: 8%;
+    }
+
+    .addNote {
+        margin-left: 15% !important;
+    }
+
+    .notes-container, .addNote {
+        margin-left: 70px;
+        margin-top: 20px;
+    }
+
+    .addNote {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin-right: 100px;
+    }
+}

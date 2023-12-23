@@ -1,7 +1,10 @@
 @page "/contact"
 @inject LocationService locationService
+@inject MessageService messageService
 @using Services.CMS;
+@using Services.Core;
 @using Shared.DTO.CMS;
+@using Shared.DTO.Core;
 @using BlazorApp.Models;
 @using BlazorApp.Controllers;
 @using System.ComponentModel.DataAnnotations;
@@ -16,82 +19,52 @@
     <div class="container mt-4 mp">
         <div class="form-container">
             <h1 class="header1">Stel ons een vraag</h1>
-
-
-            @* <EditForm Model="@Model" OnValidSubmit="@SubmitForm" FormName="ContactForm">
-            <DataAnnotationsValidator />
-            <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <InputText @bind-Value="Model.Name" placeholder="Naam"  class="form-control" id="box" />
-                </div>
-                <div class="form-group col-md-6">
-                    <InputText @bind-Value="Model.FirstName" placeholder="Voornaam" class="form-control" id="box" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <InputText @bind-Value="Model.Email" placeholder="E-mail" class="form-control" id="box" />
-            </div>
-
-            <div class="form-group">
-                <InputDate @bind-Value="Model.DateOfBirth" placeholder="Geboortedatum" class="form-control" id="box" />
-            </div>
-
-            <div class="form-group">
-                <InputText @bind-Value="Model.PhoneNumber" placeholder="Telefoonnummer" class="form-control" id="box" />
-            </div>
-
-            <div class="form-group">
-                <InputTextArea rows="4" @bind-Value="Model.Message" placeholder="Bericht of vraag" class="form-control" id="box" />
-            </div>
-
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" data-test-id="contact-submit-button">verstuur</button>
-            </div>
-        </EditForm> *@
-
             <EditForm Model="@contactData" OnValidSubmit="@SubmitForm">
-                @* <DataAnnotationsValidator /> *@
+                <DataAnnotationsValidator />
                 <div class="divide-container">
                     <div class="left">
                         <div class="name-container">
                             <div class="box">
                                 <label class='formLabel'>Voornaam</label>
                                 <InputText @bind-Value="contactData.Name" placeholder="Naam" type='text' />
-                                @* <ValidationMessage For="@(() => contactData.Name)" /> *@
+                                <ValidationMessage For="@(() => contactData.Name)" />
                             </div>
                             <div class="box">
                                 <label class='formLabel'>Naam</label>
                                 <InputText @bind-Value="contactData.LastName" placeholder="Achternaam" type='text' />
-                                @* <ValidationMessage For="@(() => contactData.LastName)" /> *@
+                                <ValidationMessage For="@(() => contactData.LastName)" />
                             </div>
                         </div>
                         <div class="name-container">
                             <div class="box">
                                 <label class='formLabel'>E-mail</label>
                                 <InputText @bind-Value="contactData.Email" type='text' placeholder='naam@mail.com' />
-                                @* <ValidationMessage For="@(() => contactData.Email)" /> *@
+                                <ValidationMessage For="@(() => contactData.Email)" />
                             </div>
                             <div class="box">
                                 <label class='formLabel'>GSM</label>
                                 <InputText @bind-Value="contactData.Phone" type='text' placeholder='0489561475' />
-                                @* <ValidationMessage For="@(() => contactData.Phone)" /> *@
+                                <ValidationMessage For="@(() => contactData.Phone)" />
                             </div>
                         </div>
                         <label class='formLabel'>Geboortedatum</label>
                         <InputDate @bind-Value="contactData.BirthDate" />
+
                     </div>
                     <div class="right">
                         <div class="leftie">
                             <label class='formLabel'>Bericht of vraag</label>
                         </div>
                         <InputTextArea @bind-Value="contactData.Message" rows="10" placeholder=". . ." />
-                        @* <ValidationMessage For="@(() => contactData.Message)" /> *@
+                        <ValidationMessage For="@(() => contactData.Message)" />
                     </div>
                 </div>
                 <div class="btn-container">
                     <button type="submit" class="sendBtn">Verstuur</button>
+                    @if (showSuccessMessage)
+                    {
+                        <p class="success-message">Bericht verzonden!</p>
+                    }
                 </div>
             </EditForm>
         </div>
@@ -112,7 +85,11 @@
                     <br />
                     <br />
                     <p>@((MarkupString)location.Email!)</p>
-                    <p>@((MarkupString)location.Telefoon!)</p>   
+                    <p>@((MarkupString)location.Telefoon!)</p>
+                    <br />
+                    <p class="bolder">Openingsuren:</p>
+                    <p>@((MarkupString)location.Week!)</p>
+                    <p>@((MarkupString)location.Weekend!)</p>
                 }
             </div>
         </div>
@@ -126,23 +103,38 @@
 
 @code {
     private LocationDTO location;
+    private MessageDTO message;
+    private bool showSuccessMessage = false;
 
     private ContactData contactData = new ContactData();
 
     protected override async Task OnInitializedAsync()
     {
         location = await locationService.GetLocation();
+        message = new MessageDTO();
+    }
+
+    private void resetForm()
+    {
+        contactData = new ContactData();
     }
 
     private async Task SubmitForm()
     {
-        Console.WriteLine("test");
+
+        message.Name = contactData.Name;
+        message.LastName = contactData.LastName;
+        message.Email = contactData.Email;
+        message.Phone = contactData.Phone;
+        message.Birthdate = contactData.BirthDate;
+        message.Note = contactData.Message;
+        message.Read = false;
+
+        await messageService.CreateMessage(message);
+        showSuccessMessage = true;
+        resetForm();
     }
 
 }
 
-@* TO DO
-smpt client?
-mail service aanmaken & injecten
-form linken met service *@
 

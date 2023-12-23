@@ -20,7 +20,13 @@
 </div>
 <div class="content">
     <div class="agenda-container">
+        <div class="agenda-header">
             <h1>Agenda</h1>
+            <div class="agenda-header-buttons">
+                <button class="btn" @onclick="ExportToIcs">Exporteer naar ICS</button>
+                <button class="btn" @onclick="ExportToExcel">Exporteer naar Excel</button>
+            </div>
+        </div>
             <Select TValue="int?" SelectedValue="@SelectedDoctor" SelectedValueChanged="@OnSelectedValueChanged">
             @if(Doctors != null) {
                 @foreach (var doctor in Doctors)
@@ -29,8 +35,8 @@
                 }
             }
             </Select>
-            <SfSchedule TValue="AppointmentData" @ref="@ScheduleRef" @bind-SelectedDate="@CurrentDate" >
-                <ScheduleEvents TValue="AppointmentData" OnActionBegin="OnActionBegin" OnPopupOpen="OnPopupOpen"></ScheduleEvents>
+            <SfSchedule TValue="AppointmentData" @ref="@ScheduleRef" @bind-SelectedDate="@CurrentDate" AllowDragAndDrop="false" AllowResizing="false">
+                <ScheduleEvents TValue="AppointmentData" OnActionBegin="OnActionBegin" OnPopupOpen="OnPopupOpen" OnCellClick="OnCellClick"></ScheduleEvents>
                     <ScheduleTemplates>
                         <EditorTemplate>
                             <table class="custom-event-editor" width="100%" cellpadding="5">
@@ -106,6 +112,7 @@
                 </ScheduleViews>
             </SfSchedule>
             <AppointmentPopup @ref="@AppointmentPopupRef" TimeSlot="SelectedTimeslot" DoctorId="SelectedDoctor" OnRefresh="LoadTimeSlots"/>
+            <AddTimeSlotPopUp @ref="@AddTimeSlotPopupRef" DoctorId="SelectedDoctor" OnTimeSlotCreated="LoadTimeSlots"/>
     </div>
 </div>
 
@@ -118,10 +125,12 @@
     private IEnumerable<TimeSlotDTO> TimeSlotsByWeek { get; set; }
 
     private AppointmentPopup AppointmentPopupRef;
+    private AddTimeSlotPopUp AddTimeSlotPopupRef;
 
     private DateTime CurrentDate = DateTime.Now;
     private List<AppointmentData> DataSource { get; set; }
     private IEnumerable<DoctorDTO> Doctors { get; set; }
+        
     private int SelectedDoctor { get; set; }
     View CurrentView = View.Week;
 
@@ -195,6 +204,14 @@
         }
     }
 
+    public async Task OnCellClick(CellClickEventArgs args)
+    {
+        args.Cancel = true;
+
+        AddTimeSlotPopupRef.ShowModal(args.StartTime, args.EndTime);
+        
+    }
+
     public async Task OnPopupOpen(PopupOpenEventArgs<AppointmentData> args)
     {
         if (args.Type == PopupType.QuickInfo)
@@ -212,6 +229,16 @@
     {
         TimeSlotDTO timeSlot = TimeSlots.FirstOrDefault(ts => ts.Id == id);
         await appointmentService.DeleteAppointment(timeSlot.AppointmentDTO);
+    }
+
+    private async Task ExportToIcs()
+    {
+        await ScheduleRef.ExportToICalendarAsync();
+    }
+
+    private async Task ExportToExcel()
+    {
+        await ScheduleRef.ExportToExcelAsync();
     }
 }
 

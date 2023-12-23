@@ -8,6 +8,7 @@
     cursor: pointer;
     border: solid 1px rgb(22, 44, 104);
     transition: 0.3s;
+    height: 60%;
 }
 
 .addFaqButton:hover {
@@ -15,4 +16,10 @@
     color: rgb(22, 44, 104);
     border: solid 1px rgb(22, 44, 104);
     transition: 0.3s;
+}
+
+@media screen and (max-width: 1050px) {
+    .addFaqButton {
+        margin-left: 0px;
+    }
 }

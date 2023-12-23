@@ -1,0 +1,102 @@
+@using Services.CMS;
+@using Shared.DTO.CMS;
+@using Persistence.Data; 
+@inject DatabaseContext databaseContext
+@inject NoteService noteService
+@inject NavigationManager NavManager
+
+<button class="addFaqButton" onclick="@ShowModal">Nieuwe note</button>
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Note aanmaken</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <div class="alert-container">
+            <Alert Color="Color.Danger" @bind-Visible="@visible">
+                <AlertDescription>
+                    @message
+                </AlertDescription>
+                <CloseButton />
+            </Alert>
+        </div>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Nieuwe title</FieldLabel>
+                <TextEdit Placeholder="Wat is een..." @bind-Text="newTitle" />
+            </Field>
+            @if (string.IsNullOrWhiteSpace(newTitle))
+                    {
+                        <p class="text-danger">Titel is verplicht</p>
+                    }
+            <Field>
+                <FieldLabel>Nieuw content</FieldLabel>
+                <TextEdit Placeholder="Dit is een..." @bind-Text="newContent" />
+            </Field>
+            @if (string.IsNullOrWhiteSpace(newContent))
+                    {
+                        <p class="text-danger">Content is verplicht</p>
+                    }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+            <Button Color="Color.Primary" Clicked="@CreateNote" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private bool visible = false;
+    private string message = string.Empty;
+
+    string? newTitle;
+    string? newContent;
+
+    private Modal? modalRef;
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newTitle)
+        && !string.IsNullOrWhiteSpace(newContent);
+    }
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async Task CreateNote()
+    {
+        visible = false;
+        message = string.Empty;
+
+        var authenticationState = await authenticationStateTask;
+
+        if (authenticationState.User.IsInRole("Admin"))
+        {
+            NoteDTO newNote = new()
+                {
+                    Title = newTitle,
+                    Content = newContent
+                };
+            await noteService.CreateNote(newNote);
+            await HideModal();
+            NavManager.NavigateTo("/admin/notes", true);
+        }
+        else
+        {
+            message = "U heeft geen toegang tot creatie.";
+            visible = true;
+        }
+    }
+}

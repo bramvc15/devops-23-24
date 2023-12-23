@@ -54,14 +54,25 @@
 
 .addFaq {
     padding-top: 30px;
-    padding-left: 120px;
+    padding-left: 30px;
+    padding-right: 150px;
     width: 100%;
     height: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .qf {
     width: fit-content;
     height: fit-content;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .mini-conatainer {
@@ -72,6 +83,16 @@
     margin-top: 5px;
 }
 
+.editFaqButton {
+    background-color: rgb(222, 225, 61);
+    border: solid 3px rgb(203, 206, 53);
+    border-radius: 5px;
+    padding: 5px;
+    color: azure;
+    width: 70px;
+
+}
+
 .deleteFaqButton {
     background-color: rgb(216, 109, 109);
     border: solid 3px rgb(206, 70, 70);
@@ -79,4 +100,99 @@
     padding: 5px;
     color: azure;
     width: 70px;
+}
+
+.confirmation-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: azure;
+    border: solid 3px rgb(206, 70, 70);
+    border-radius: 8px;
+    padding: 10px 25px;
+    color: azure;
+    transition: 0.3s;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+h3 {
+    text-align: center;
+    font-weight: 700;
+    color: rgb(206, 70, 70);
+}
+
+.popup-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.popDel {
+    background-color: rgb(216, 109, 109);
+    border: solid 2px rgb(206, 70, 70);
+    border-radius: 4px;
+    color: azure;
+    transition: 0.3s;
+    width: 40%;
+}
+
+.popCan {
+    background-color: rgb(146, 202, 183);
+    border: solid 2px rgb(109, 151, 137);
+    border-radius: 4px;
+    color: azure;
+    transition: 0.3s;
+    padding: 2% 0;
+    width: 40%;
+}
+
+.popDel:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: azure;
+    color: rgb(206, 70, 70);
+}
+
+.popCan:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: azure;
+    color: rgb(109, 151, 137);
+}
+
+.search-bar {
+    margin-top: 20px;
+    margin-left: 120px;
+}
+
+@media screen and (max-width: 1050px) {
+    .title-layout {
+        padding-left: 60px;
+        padding-top: 20px;
+    }
+
+    .addFaq {
+        padding-left: 0px;
+        flex-direction: column;
+    }
+
+    .faq-container {
+        margin: 60px 60px;
+        height: fit-content;
+        background-color: rgba(255, 255, 255, 0.4);
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-bar {
+        margin-top: 20px;
+        margin-left: 60px;
+    }
+
+    
 }

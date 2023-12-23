@@ -10,10 +10,13 @@
             {
                 @if (doc != null)
                 {
-                                    <button class="click" @onclick="(e) => SelectDoctor(doc.Id)" >
-                                        @* <DoctorCard ImageSrc=@doc.ImageLink Name=@doc.Name Specialization=@doc.Specialization /> *@
-                                        <TeamCard ImageSrc=@doc.ImageLink Name=@doc.Name Specialization="@doc.Specialization" DoctorId=@doc.Id />
-                                    </button>
+                    @if (doc.IsAvailable == true) {
+                        <button class="click" @onclick="(e) => SelectDoctor(doc.Id)" >
+                            @* <DoctorCard ImageSrc=@doc.ImageLink Name=@doc.Name Specialization=@doc.Specialization /> *@
+                            <TeamCard ImageSrc=@doc.ImageLink Name=@doc.Name Specialization="@doc.Specialization" DoctorId=@doc.Id />
+                        </button>
+                    }
+                                    
                 }
             }
         }

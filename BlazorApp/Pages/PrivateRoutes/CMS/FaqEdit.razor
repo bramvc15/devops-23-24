@@ -23,32 +23,48 @@
         <a><u>Home</u> > FAQ </a>
     </div>
     <div class="addFaq">
-        <AddFaqPopUp />
+        <div class="search-bar">
+            <input type="text" @bind-value="searchQuery" placeholder="Zoek FAQ" />
+        </div>
+        <div class="center">
+            <AddFaqPopUp />
+        </div>
     </div>
     <div class="alert-container">
         <Alert Color="Color.Danger" @bind-Visible="@visible">
             <AlertDescription>
                 @message
             </AlertDescription>
-            <AlertMessage>
-                @* Gebruiken we niet. *@
-            </AlertMessage>
             <CloseButton />
         </Alert>
     </div>
     <div class="faq-container">
-        @if (FaqObj != null)
+        @if (GetFilteredFaqs() != null)
         {
-            @foreach (var f in FaqObj)
+            var filteredFaqs = GetFilteredFaqs();
+            @foreach (var f in filteredFaqs)
             {
                 <div class="question-container">
                     @if (f != null)
                     {
                         <div class="mini-conatainer">
-                            <div class="qf" @onclick="( () => ShowModal(f) )">
+                            <div class="qf">
                                 <QuestionFAQ Question=@f.Question Answer=@f.Answer />
                             </div>
-                            <button class="deleteFaqButton" @onclick="( () => DeleteFaq(f) )"><strong>X</strong></button>
+                            <div class="btns">
+                                <button class="editFaqButton" @onclick="( () => ShowModal(f) )"><Icon Name="IconName.Edit" /></button>
+                                <button class="deleteFaqButton" @onclick="() => ShowDeleteConfirmationPopup()"><Icon Name="IconName.Delete" /></button>
+                                @if (ShowDeleteConfirmation)
+                                        {
+                                            <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                                                <h3>Bent u zeker?</h3>
+                                                <div class="popup-buttons">
+                                                    <button class="popDel" @onclick="() => DeleteFaq(f)">Confirm</button>
+                                                    <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                                                </div>
+                                            </div>
+                                        }
+                            </div>                          
                         </div>
                         <span class="line"></span>
                     }
@@ -73,14 +89,22 @@
                 <FieldLabel>Vraag</FieldLabel>
                 <TextEdit Placeholder="Wat is een..." @bind-Text="newQuestion" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newQuestion))
+                    {
+                        <p class="text-danger">Vraag is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Antwoord</FieldLabel>
                 <TextEdit Placeholder="Dit is een..." @bind-Text="newAnswer" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newAnswer))
+                    {
+                        <p class="text-danger">Antwoord is verplicht</p>
+                    }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@UpdateFaq">Opslaan</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateFaq" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -92,6 +116,9 @@
 
     private bool visible = false;
     private string message = string.Empty;
+    private bool ShowDeleteConfirmation = false;
+
+    string searchQuery = "";
 
     private IEnumerable<FaqDTO>? FaqObj;
     private FaqDTO clickedFaq;
@@ -99,6 +126,26 @@
     protected override async Task OnInitializedAsync()
     {
         FaqObj = await faqService.GetFaqs();
+    }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newQuestion)
+        && !string.IsNullOrWhiteSpace(newAnswer);
+    }
+
+    IEnumerable<FaqDTO>? GetFilteredFaqs()
+    {
+        if (FaqObj != null && !string.IsNullOrEmpty(searchQuery))
+        {
+            return FaqObj.Where(f => f.Question.ToLower().Contains(searchQuery.ToLower()));
+        }
+        return FaqObj;
+    }
+
+    void Search()
+    {
+        StateHasChanged();
     }
 
     int? id;
@@ -137,6 +184,7 @@
                     Answer = newAnswer
                 };
             await faqService.UpdateFaq(faq);
+            NavManager.NavigateTo("/admin/cms/faq", true);
         }
         else
         {
@@ -145,6 +193,11 @@
         }
 
         await HideModal();
+    }
+
+    private async Task ShowDeleteConfirmationPopup()
+    {
+        ShowDeleteConfirmation = true;
     }
 
     private async void DeleteFaq(FaqDTO f)
@@ -157,12 +210,18 @@
         if (authenticationState.User.IsInRole("Admin"))
         {
             await faqService.DeleteFaq(f);
+            NavManager.NavigateTo("/admin/cms/faq", true);
         }
         else
         {
             message = "U heeft geen toegang tot verwijderen.";
             visible = true;
         }
+    }
+
+    private void CancelDelete()
+    {
+        ShowDeleteConfirmation = false;
     }
 
 

@@ -6,9 +6,7 @@
 @inject DatabaseContext databaseContext
 
 <div>
-    <div class="buttons">
-        <Button Color="Color.Primary" Clicked="@ShowModal">Voeg tijdslot toe</Button>
-    </div>
+    <button class="btn" @onclick="@(async () => await ShowModal())">Voeg tijdslot toe</button>
     <Modal @ref="modalRef">
         <ModalContent Centered>
             <ModalHeader>
@@ -58,6 +56,9 @@
     [Parameter]
     public EventCallback<ScheduleTimeSlotDTO> OnScheduleTimeSlotAdded { get; set; }
 
+    [Parameter]
+    public int DoctorId { get; set; }
+    
     private Validations validations;
     private string errorMessage = string.Empty;
     private string exceptionMessage = string.Empty;
@@ -139,7 +140,7 @@
                     DateTime = dateTime,
                     Duration = durationInMinutes
                 };
-                ScheduleTimeSlotDTO newSlot = await scheduleTimeSlotService.CreateScheduleTimeSlot(slot, 0);
+                ScheduleTimeSlotDTO newSlot = await scheduleTimeSlotService.CreateScheduleTimeSlot(slot, DoctorId);
                 await OnScheduleTimeSlotAdded.InvokeAsync(newSlot);
             }
             catch (InvalidOperationException ex)

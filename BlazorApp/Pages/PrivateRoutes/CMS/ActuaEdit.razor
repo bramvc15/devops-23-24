@@ -1,5 +1,4 @@
 @page "/admin/cms/actua"
-@inherits EditHeaderPopUp
 @using Services.CMS;
 @using Shared.DTO.CMS;
 @using Persistence.Data;
@@ -29,17 +28,6 @@
         <div class="add-button">
             <AddBlogPopUp />
         </div>
-        <div class="alert-container">
-            <Alert Color="Color.Danger" @bind-Visible="@visible">
-                <AlertDescription>
-                    @message
-                </AlertDescription>
-                <AlertMessage>
-                    @* Gebruiken we niet. *@
-                </AlertMessage>
-                <CloseButton />
-            </Alert>
-        </div>
         <div class="actua-box">
             @if (blogs != null)
             {
@@ -51,7 +39,18 @@
                             <ActuaField Title=@b.Title Text=@b.Text Image=@b.ImageLink Id=@b.Id />
                             <div class="btn-con">
                                 <button class="editBlogButton" @onclick="( () => ShowModal(b) )"><strong>Edit</strong></button>
-                                <button class="deleteBlogButton" @onclick="( () => DeleteBlog(b) )"><strong>X</strong></button>
+                                @* <button class="deleteBlogButton" @onclick="( () => DeleteBlog(b) )"><strong>X</strong></button> *@
+                                <button class="deleteBlogButton" @onclick="() => ShowDeleteConfirmationPopup(b.Id)"><Icon Name="IconName.Delete" /></button>
+                                @if (ShowDeleteConfirmation)
+                                    {
+                                        <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                                            <h3>Bent u zeker?</h3>
+                                            <div class="popup-buttons">
+                                                <button class="popDel" @onclick="() => DeleteBlog(b)">Confirm</button>
+                                                <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                                            </div>
+                                        </div>
+                                    }  
                             </div>
                         </div>
 
@@ -73,19 +72,30 @@
                 <FieldLabel>Titel</FieldLabel>
                 <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newTitle))
+                    {
+                        <p class="text-danger">Titel is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Text</FieldLabel>
-                @* rich *@
                 <RichTextEdit @ref="richTextEditRef" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(savedContent))
+                    {
+                        <p class="text-danger">Text is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Afbeelding</FieldLabel>
                 <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImageLink" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newImageLink))
+                    {
+                        <p class="text-danger">Afbeelding is verplicht</p>
+                    }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@UpdateBlog">Opslaan</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateBlog" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -93,18 +103,25 @@
 
 
 @code {
-    [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
-
-    private bool visible = false;
-    private string message = string.Empty;
 
     private IEnumerable<BlogDTO>? blogs;
     private BlogDTO clickedBlog;
+    private bool ShowDeleteConfirmation = false;
+    private int? blogIdToDelete;
+    private EditContext editContext;
 
     protected override async Task OnInitializedAsync()
     {
         blogs = await blogService.GetBlogs();
+
+        var b = new BlogDTO();
+
+        editContext = new EditContext(b);
+        editContext.OnFieldChanged += (sender, eventArgs) =>
+        {
+            editContext.Validate();
+            StateHasChanged();
+        };
     }
 
     int? id;
@@ -123,6 +140,13 @@
         contentAsHtml = await richTextEditRef.GetHtmlAsync();
         contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
         contentAsText = await richTextEditRef.GetTextAsync();
+    }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newTitle)
+        && !string.IsNullOrWhiteSpace(newText)
+        && !string.IsNullOrWhiteSpace(newImageLink);
     }
 
     public async Task OnSave()
@@ -151,48 +175,34 @@
 
     private async void UpdateBlog()
     {
-        visible = false;
-        message = string.Empty;
-
-        var authenticationState = await authenticationStateTask;
-
-        if (authenticationState.User.IsInRole("Admin"))
-        {
-            savedContent = await richTextEditRef.GetHtmlAsync();
-            BlogDTO blog = new()
-                {
-                    Id = clickedBlog.Id,
-                    Title = newTitle,
-                    Text = savedContent,
-                    ImageLink = newImageLink
-                };
-            await blogService.UpdateBlog(blog);
-        }
-        else
-        {
-            message = "U heeft geen toegang tot bewerken.";
-            visible = true;
-        }
-
+        savedContent = await richTextEditRef.GetHtmlAsync();
+        BlogDTO blog = new()
+            {
+                Id = clickedBlog.Id,
+                Title = newTitle,
+                Text = savedContent,
+                ImageLink = newImageLink
+            };
+        await blogService.UpdateBlog(blog);
         await HideModal();
+        NavManager.NavigateTo("/admin/cms/actua", true);
+    }
+
+    private async Task ShowDeleteConfirmationPopup(int? blogId)
+    {
+        blogIdToDelete = blogId;
+        ShowDeleteConfirmation = true;
     }
 
     private async void DeleteBlog(BlogDTO b)
     {
-        visible = false;
-        message = string.Empty;
+        await blogService.DeleteBlog(b);
+        NavManager.NavigateTo("/admin/cms/actua", true);
+    }
 
-        var authenticationState = await authenticationStateTask;
-
-        if (authenticationState.User.IsInRole("Admin"))
-        {
-            await blogService.DeleteBlog(b);
-        }
-        else
-        {
-            message = "U heeft geen toegang tot verwijderen.";
-            visible = true;
-        }
+    private void CancelDelete()
+    {
+        ShowDeleteConfirmation = false;
     }
 
 }

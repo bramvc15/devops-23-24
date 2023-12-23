@@ -6,6 +6,7 @@
     bottom: 0px; /* Adjust this value to control the vertical position */
     right: 10%; /* Adjust this value to control the horizontal position */
     background-color: rgb(253, 253, 253);
+    z-index: 100;
 }
 
 .chatbox-div .visible {

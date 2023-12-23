@@ -1,0 +1,137 @@
+@using Services.Core;
+@using Shared.DTO.Core;
+@using Shared.Enums; 
+@using Persistence.Data; 
+@inject ScheduleTimeSlotService scheduleTimeSlotService
+@inject DatabaseContext databaseContext
+
+<div @onclick="@ShowModal" class="schedule-time-slot">
+    <span>@selectedStartTime.Value.ToString("hh\\:mm") - @selectedEndTime.Value.ToString("hh\\:mm")</span>
+</div>
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Tijdslot aanpassen</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <h6 style="color:red">@exceptionMessage</h6>
+        <Validations @ref="validations" Mode="ValidationMode.Auto">
+            <ModalBody>
+                <Validation Validator="ValidateStartEndTime">
+                    <Field>
+                        <FieldLabel>Start uur</FieldLabel>
+                        <TimeEdit TValue="TimeSpan?" @bind-Time="@newStartTime" />
+                    </Field>
+                    <Field>
+                        <FieldLabel>Eind uur</FieldLabel>
+                        <TimeEdit TValue="TimeSpan?" @bind-Time="@newEndTime" />
+                    </Field>
+                    <h6 style="color:red">@errorMessage</h6>
+                </Validation>
+            </ModalBody>
+            <ModalFooter>
+                <div class="footer">
+                    <div class="footer-left">
+                        <Button Color="Color.Danger" Clicked="@DeleteScheduleTimeSlot">Verwijder</Button>
+                    </div>
+                    <div class="footer-right">
+                        <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                        <Button Color="Color.Primary" Clicked="@UpdateScheduleTimeSlot">Opslaan</Button>
+                    </div>
+                </div>
+            </ModalFooter>
+        </Validations>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public int DoctorId { get; set; }
+
+    [Parameter]
+    public ScheduleTimeSlotDTO ScheduleTimeSlot { get; set; }
+
+    [Parameter]
+    public EventCallback OnRefresh { get; set; }
+
+    private Validations validations;
+    private string errorMessage = string.Empty;
+    private string exceptionMessage = string.Empty;
+
+    private TimeSpan? selectedStartTime;
+    private TimeSpan? selectedEndTime;
+
+    private TimeSpan? newStartTime;
+    private TimeSpan? newEndTime;
+
+    private int selectedDayOfWeek;
+
+    private Modal? modalRef;
+
+    private Task? ShowModal()
+    {
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        selectedStartTime = ScheduleTimeSlot.DateTime.TimeOfDay;
+        selectedEndTime = ScheduleTimeSlot.DateTime.AddMinutes(ScheduleTimeSlot.Duration).TimeOfDay;
+        newStartTime = selectedStartTime;
+        newEndTime = selectedEndTime;
+    }
+
+    private async Task UpdateScheduleTimeSlot() {
+        var duration = newEndTime!.Value - newStartTime!.Value;
+        int durationInMinutes = (int)duration.TotalMinutes;
+
+        ScheduleTimeSlotDTO updatedScheduleTimeSlot = new ScheduleTimeSlotDTO() {
+            Id = ScheduleTimeSlot.Id,
+            DateTime = DateTime.MinValue + (newStartTime ?? TimeSpan.Zero),
+            Duration = durationInMinutes,
+            DayOfWeek = ScheduleTimeSlot.DayOfWeek
+        };
+
+        await scheduleTimeSlotService.UpdateScheduleTimeSlot(updatedScheduleTimeSlot, DoctorId);
+
+        modalRef?.Hide();
+    }
+
+    private async Task DeleteScheduleTimeSlot() {
+        await scheduleTimeSlotService.DeleteScheduleTimeSlot(ScheduleTimeSlot, DoctorId);
+        await OnRefresh.InvokeAsync();
+        modalRef?.Hide();
+    }
+
+    private void resetValues() {
+        newStartTime = selectedStartTime;
+        newEndTime = selectedEndTime;
+    }
+
+    void ValidateStartEndTime(ValidatorEventArgs e)
+    {
+        if (newEndTime < newStartTime)
+        {
+            e.Status = ValidationStatus.Error;
+            errorMessage = "Het eind uur kan niet voor het begin uur liggen!";
+            resetValues();
+        }
+        else if (newEndTime == newStartTime)
+        {
+            e.Status = ValidationStatus.Error;
+            errorMessage = "Het eind uur kan niet gelijk zijn aan het begin uur!";
+            resetValues();
+        }
+        else
+        {
+            e.Status = ValidationStatus.Success;
+            errorMessage = string.Empty;
+        }
+    }
+
+}

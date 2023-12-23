@@ -20,12 +20,13 @@
 <SideNavMenu />
 <div class="content">
     <div class="info-container">
-        <h1>Clients in het systeem</h1>
+        <h1>Patiënten in het systeem</h1>
         <div class="add-button">
+            <input @bind="searchTerm" @onkeyup="FilterPatientsOnEnter" placeholder="Zoeken op naam" />
             <AddClientPopUp />
         </div>
         <div class="containerr">
-        @if (patients != null && patients.Count() > 0)
+        @if (filteredPatients != null && filteredPatients.Any())
         {
             <div class="headers">
                 <p>Id</p>
@@ -38,10 +39,9 @@
                 <p>Acties</p>
             </div>
             <span class="headLine"></span>
-                    @foreach (var patient in patients)
-                    {
-                        index++;
-                        <div class="@((index % 2 == 0) ? "even" : "odd") doc-container">
+            @foreach (var patient in filteredPatients)
+                {
+                        <div class="doc-container">
                             <p>@patient.Id</p>
                             <p>@patient.Name</p>
                             <p>@patient.PhoneNumber</p>
@@ -53,8 +53,10 @@
                                 <button class="edit-btn" @onclick="( () => ShowModal(patient) )"><Icon Name="IconName.Edit" /></button>
                             </div>
                         </div>
-                    }
                 }
+            } else {
+                <p>Geen patienten gevonden</p>
+            }
         </div>
     </div>
 </div>
@@ -112,9 +114,10 @@
 </Modal>
 
 @code {
-    private int index = 0;
     private IEnumerable<PatientDTO> patients;
+    private IEnumerable<PatientDTO> filteredPatients;
     private PatientDTO clickedPatient;
+    private string searchTerm = "";
 
     int? id;
     string? newName;
@@ -130,6 +133,29 @@
     protected override async Task OnInitializedAsync()
     {
         patients = await patientService.GetPatients();
+        filteredPatients = patients;
+    }
+
+    private void FilterPatients()
+    {
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredPatients = patients.Where(p =>
+                p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+            );
+        }
+        else
+        {
+            filteredPatients = patients;
+        }
+    }
+
+    private void FilterPatientsOnEnter(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            FilterPatients();
+        }
     }
 
     private async Task<Task?> ShowModal(PatientDTO patient)
@@ -164,6 +190,7 @@
         };
         await patientService.UpdatePatient(patient);
         await HideModal();
+        NavManager.NavigateTo("/admin/clients", true);
     }
 
 }

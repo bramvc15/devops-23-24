@@ -1,0 +1,169 @@
+@page "/admin/messages"
+@inherits ComponentBase
+@using Shared.DTO.Core;
+@using Services.Core;
+@using Persistence.Data;
+@inject MessageService messageService
+@using Microsoft.AspNetCore.Components;
+@inject DatabaseContext databaseContext
+@inject NavigationManager NavManager
+
+<PageTitle>Admin - MESSAGES</PageTitle>
+
+<div class="sidebar">
+    <SideNavMenu />
+</div>
+
+<div class="message-page">
+    <div class="title-layout">
+        <h1>Berichten</h1>
+    </div>
+    <input @bind="searchTerm" @onkeyup="FilterMessagesOnEnter" placeholder="Zoek op naam" />
+    <div class="messages-container">
+            @if (filteredMessages != null)
+            {
+                <div class="message-col">
+                    @foreach (var m in filteredMessages)
+                    {
+                        @if (m != null)
+                        {
+                                <div class="mail" @onclick="() => ToggleMessage(m.Id)">
+                                    <p>@m.Name @m.LastName</p>
+                                    <span class="read-marker" style="display: @(m.Read ? "none" : "inline-block")"></span>
+                                </div>
+                        }
+                    }
+                </div>
+                <div class="message-content">
+                @if (ShowMessageId.HasValue)
+                {
+                    <div class="selected-message">
+                        @if (MessageObj != null)
+                        {
+                            var selectedMessage = MessageObj.FirstOrDefault(m => m?.Id == ShowMessageId);
+                            if (selectedMessage != null)
+                            {
+                                <div class="top-con">
+                                    <h2>@selectedMessage.Name @selectedMessage.LastName</h2>
+                                    <button class="del-btn" @onclick="() => ShowDeleteConfirmationPopup(selectedMessage.Id)"><Icon Name="IconName.Delete" /></button>
+                                    @if (ShowDeleteConfirmation)
+                                    {
+                                        <div class="confirmation-popup" style="display: @(ShowDeleteConfirmation ? "flex" : "none")">
+                                            <h3>Bent u zeker?</h3>
+                                            <div class="popup-buttons">
+                                                <button class="popDel" @onclick="DeleteMessage">Confirm</button>
+                                                <button class="popCan" @onclick="CancelDelete">Cancel</button>
+                                            </div>
+                                        </div>
+                                    }                            
+                                </div>  
+                                <span class="line"></span>
+                                <div class="head-con">
+                                    <div class="headers">
+                                        <p class="info"><strong>Email:</strong></p>
+                                        <p class="info"><strong>Telefoon:</strong></p>
+                                    </div>
+                                    <div class="values">
+                                        <p class="info">@selectedMessage.Email</p>
+                                        <p class="info">@selectedMessage.Phone</p>
+                                    </div>
+                                </div>
+                                <span class="line"></span>
+                                <p class="msg">@selectedMessage.Note</p>
+                            }
+                        }
+                    </div>
+                }
+                else 
+                {
+                    <div class="empty-message">
+                        <p>Selecteer eerst een bericht!</p>
+                    </div>
+                }
+            </div>
+            } 
+            else
+            {
+                <div class="no-message">
+                    <p>Er zijn geen berichten beschikbaar.</p>
+                </div>
+            }
+    </div>
+</div>
+
+@code {
+    private IEnumerable<MessageDTO>? MessageObj;
+    private string searchTerm = "";
+    private IEnumerable<MessageDTO>? filteredMessages;
+    private int? ShowMessageId;
+    private bool ShowDeleteConfirmation = false;
+    private int? MessageIdToDelete;    
+
+    protected override async Task OnInitializedAsync()
+    {
+        MessageObj = await messageService.GetMessages();
+        FilterMessages();
+    }
+
+    private void FilterMessages()
+    {
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredMessages = MessageObj.Where(m =>
+                m.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) 
+                || m.LastName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+            );
+        }
+        else
+        {
+            filteredMessages = MessageObj;
+        }
+    }
+
+    private async Task FilterMessagesOnEnter(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            FilterMessages();
+        }
+    }
+
+    private async void ToggleMessage(int? messageId)
+    {
+        if (ShowMessageId != messageId)
+        {
+            ShowMessageId = messageId;
+
+            if (ShowMessageId.HasValue)
+            {
+                var message = MessageObj.FirstOrDefault(m => m?.Id == ShowMessageId);
+                if (message != null && !message.Read)
+                {
+                    message.Read = true;
+                    await messageService.UpdateMessage(message);
+                }
+            }
+        }
+    }
+
+    private async Task ShowDeleteConfirmationPopup(int? messageId)
+    {
+        MessageIdToDelete = messageId;
+        ShowDeleteConfirmation = true;
+    }
+
+    private async Task DeleteMessage()
+    {
+        if (MessageIdToDelete.HasValue)
+        {
+            await messageService.DeleteMessage(MessageIdToDelete.Value);
+            ShowDeleteConfirmation = false;
+            NavManager.NavigateTo("/admin/messages", true);
+        }
+    }
+
+    private async Task CancelDelete()
+    {
+        ShowDeleteConfirmation = false;
+    }
+}

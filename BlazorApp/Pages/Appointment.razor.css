@@ -4,6 +4,7 @@
   width: 100%;
   background: rgb(194, 228, 218);
   background: linear-gradient(41deg, rgba(194, 228, 218, 1) 0%, rgba(167, 222, 195, 1) 52%, rgba(9, 244, 138, 0.36) 100%);
+  padding-bottom: 50px;
 }
 #AfspraakComponent {
   display: flex;
@@ -37,7 +38,11 @@
 }
 
 .succes {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  margin-top: 30px;
 }
 
 .succes-card {
@@ -46,6 +51,26 @@
   color: white;
   padding: 30px;
   text-align: center;
+}
+
+.meebrengen {
+  display: flex;
+  align-items: left !important;
+  justify-content: left !important;
+  text-align: left;
+  width: fit-content;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.leftt {
+  text-align: left;
+}
+
+.bck {
+  margin-top: 20px !important;
 }
 
 @media (max-width: 1400px) {

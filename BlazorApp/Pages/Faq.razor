@@ -11,33 +11,52 @@
         <h1>FAQ</h1>
         <BindToLocation />
     </div>
+    <div class="search-bar">
+        <input type="text" @bind-value="searchQuery" placeholder="Zoek FAQ" />
+    </div>
     <div class="faq-container">
-        @if (FaqObj != null)
+        @if (GetFilteredFaqs() != null)
+        {
+            var filteredFaqs = GetFilteredFaqs();
+            @foreach (var f in filteredFaqs)
             {
-                @foreach (var f in FaqObj)
-                {
-                    <div class="question-container">
-                        @if (f != null)
-                        {
-                            <QuestionFAQ Question=@f.Question Answer=@f.Answer/>
-                            <span class="line"></span>
-                        }
-                    </div>
-                }
+                <div class="question-container">
+                    @if (f != null)
+                    {
+                        <QuestionFAQ Question=@f.Question Answer=@f.Answer/>
+                        <span class="line"></span>
+                    }
+                </div>
             }
-            else
-            {
-                <p>FaqObj is null.</p>
-            }
+        }
+        else
+        {
+            <p>FaqObj is null.</p>
+        }
     </div>
 </div>
 
 
 @code {
     IEnumerable<FaqDTO>? FaqObj;
+    string searchQuery = "";
 
     protected override async Task OnInitializedAsync()
     {
         FaqObj = await faqService.GetFaqs();
+    }
+
+    IEnumerable<FaqDTO>? GetFilteredFaqs()
+    {
+        if (FaqObj != null && !string.IsNullOrEmpty(searchQuery))
+        {
+            return FaqObj.Where(f => f.Question.ToLower().Contains(searchQuery.ToLower()));
+        }
+        return FaqObj;
+    }
+
+    void Search()
+    {
+        StateHasChanged();
     }
 }

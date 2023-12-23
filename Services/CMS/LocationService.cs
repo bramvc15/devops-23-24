@@ -28,7 +28,9 @@ namespace Services.CMS
                 Stad = location.Stad,
                 Land = location.Land,
                 Email = location.Email,
-                Telefoon = location.Telefoon
+                Telefoon = location.Telefoon,
+                Week = location.Week,
+                Weekend = location.Weekend,
             };
 
             return locationDTO;
@@ -37,7 +39,7 @@ namespace Services.CMS
         public async Task<LocationDTO> UpdateLocation(LocationDTO updatedLocation)
         {
             Location loc = await _locations.FindAsync(updatedLocation.Id);
-            loc.UpdateLocation(updatedLocation.Straat, updatedLocation.Stad, updatedLocation.Land, updatedLocation.Email, updatedLocation.Telefoon);
+            loc.UpdateLocation(updatedLocation.Straat, updatedLocation.Stad, updatedLocation.Land, updatedLocation.Email, updatedLocation.Telefoon, updatedLocation.Week, updatedLocation.Weekend);
             _locations.Update(loc);
             await _ctx.SaveChangesAsync();
 

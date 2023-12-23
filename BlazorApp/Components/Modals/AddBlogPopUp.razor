@@ -3,8 +3,9 @@
 @using Persistence.Data; 
 @inject DatabaseContext databaseContext
 @inject BlogService blogService
+@inject NavigationManager NavManager
 
-<div>
+<div class="pl">
     <div class="buttons">
         <button class="add-btn" onclick="@ShowModal">Voeg blog toe</button>
     </div>
@@ -19,9 +20,6 @@
                     <AlertDescription>
                         @message
                     </AlertDescription>
-                    <AlertMessage>
-                        @* Gebruiken we niet. *@
-                    </AlertMessage>
                     <CloseButton />
                 </Alert>
             </div>
@@ -30,19 +28,26 @@
                     <FieldLabel>Titel</FieldLabel>
                     <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
                 </Field>
+                @if (string.IsNullOrWhiteSpace(newTitle))
+                    {
+                        <p class="text-danger">Titel is verplicht</p>
+                    }
                 <Field>
                     <FieldLabel>Text</FieldLabel>
-                    @* rich *@
                     <RichTextEditor @ref="richTextEditRef" />
                 </Field>
                 <Field>
                     <FieldLabel>Afbeelding</FieldLabel>
                     <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImage" />
                 </Field>
+                @if (string.IsNullOrWhiteSpace(newImage))
+                    {
+                        <p class="text-danger">Afbeelding is verplicht</p>
+                    }
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-                <Button Color="Color.Primary" Clicked="@CreateBlog">Opslaan</Button>
+                <Button Color="Color.Primary" Clicked="@CreateBlog" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
@@ -62,6 +67,12 @@
     string? plainTextContent;
 
     private Modal? modalRef;
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newTitle)
+        && !string.IsNullOrWhiteSpace(newImage);
+    }
 
     private Task? ShowModal()
     {
@@ -84,6 +95,14 @@
         {
             plainTextContent = richTextEditRef?.contentAsText;
             content = richTextEditRef?.contentAsHtml;
+
+            if (content == null)
+            {
+                message = "Er is geen content ingevuld.";
+                visible = true;
+                return;
+            }
+
             BlogDTO newBlog = new()
                 {
                     Title = newTitle,
@@ -92,6 +111,7 @@
                 };
             await blogService.CreateBlog(newBlog);
             await HideModal();
+            NavManager.NavigateTo("/admin/cms/actua", true);
         }
         else
         {

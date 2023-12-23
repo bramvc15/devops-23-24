@@ -4,21 +4,32 @@
 @using Persistence.Data;
 @inject DatabaseContext databaseContext
 @inject PatientService patientService
+@inject NavigationManager NavManager
 
-<div>
-    <div class="buttons">
-        <button class="add-btn" onclick="@ShowModal">Voeg een patiënt toe</button>
-    </div>
+
+    <button class="add-btn" onclick="@ShowModal">Voeg een patiënt toe</button>
     <Modal @ref="modalRef">
     <ModalContent Centered>
         <ModalHeader>
             <ModalTitle>Patient updaten</ModalTitle>
             <CloseButton />
         </ModalHeader>
+            <div class="alert-container">
+                <Alert Color="Color.Danger" @bind-Visible="@visible">
+                    <AlertDescription>
+                        @message
+                    </AlertDescription>
+                    <CloseButton />
+                </Alert>
+            </div>
         <ModalBody>
             <Field>
                 <FieldLabel>Naam</FieldLabel>
                 <TextEdit Placeholder="Geef naam..." @bind-Text="newName" />
+                @if (string.IsNullOrWhiteSpace(newName))
+                    {
+                        <p class="text-danger">Naam is verplicht</p>
+                    }
             </Field>
             <Field>
                 <FieldLabel>Telefoon</FieldLabel>
@@ -28,6 +39,10 @@
                 <FieldLabel>Email</FieldLabel>
                 <TextEdit Placeholder="Geef mail..." @bind-Text="newEmail" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newEmail))
+                    {
+                        <p class="text-danger">Email is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Geboortedatum</FieldLabel>
                 <input type="datetime-local" @bind="newDateOfBirth"/>
@@ -56,11 +71,10 @@
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@CreatePatient">Opslaan</Button>
+            <Button Color="Color.Primary" Clicked="@CreatePatient" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
-</div>
 
 @code {
     string? newName;
@@ -70,7 +84,16 @@
     Gender newGender;
     BloodType newBloodType;
 
+    private bool visible = false;
+    private string message = string.Empty;
+
     private Modal? modalRef;
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newName)
+        && !string.IsNullOrWhiteSpace(newEmail);
+    }
 
     private Task? ShowModal()
     {
@@ -93,7 +116,15 @@
                 Gender = newGender,
                 BloodType = newBloodType
             };
-        await patientService.CreatePatient(newPatient);
+        var response = await patientService.CreatePatient(newPatient);
+
+        if (response.Id == -1) {
+                message = "Niet alle velden zijn correct ingevuld!";
+                visible = true;
+                return;
+        }
+
         modalRef?.Hide();
+        NavManager.NavigateTo("/admin/clients", true);
     }
 }

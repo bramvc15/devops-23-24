@@ -10,6 +10,8 @@ public class Location : Entity
     private string land;
     private string email;
     private string telefoon;
+    private string week;
+    private string weekend;
 
     public string Straat
     {
@@ -40,30 +42,46 @@ public class Location : Entity
         get => telefoon;
         private set => telefoon = Guard.Against.NullOrWhiteSpace(value, nameof(Telefoon));
     }
+
+    public string Week
+    {
+        get => week;
+        private set => week = Guard.Against.NullOrWhiteSpace(value, nameof(Week));
+    }
+
+    public string Weekend
+    {
+        get => weekend;
+        private set => weekend = Guard.Against.NullOrWhiteSpace(value, nameof(Weekend));
+    }
     #endregion
 
     #region Constructors
     // Database Constructor
     private Location() { }
 
-    public Location(string straat, string stad, string land, string email, string telefoon)
+    public Location(string straat, string stad, string land, string email, string telefoon, string week, string weekend)
     {
         Straat = straat;
         Stad = stad;
         Land = land;
         Email = email;
         Telefoon = telefoon;
+        Week = week;
+        Weekend = weekend;
     }
     #endregion
 
     #region Methods
-    public void UpdateLocation(string straat, string stad, string land, string email, string telefoon)
+    public void UpdateLocation(string straat, string stad, string land, string email, string telefoon, string week, string weekend)
     {
         Straat = straat;
         Stad = stad;
         Land = land;
         Email = email;
         Telefoon = telefoon;
+        Week = week;
+        Weekend = weekend;
     }
     #endregion
 }

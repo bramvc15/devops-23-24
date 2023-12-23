@@ -1,0 +1,120 @@
+@using Services.Core;
+@using Shared.DTO.Core;
+@using Shared.Enums; 
+@using Persistence.Data; 
+@inject TimeSlotService timeSlotService
+@inject DatabaseContext databaseContext
+
+<div>
+    <Modal @ref="modalRef">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>Tijdslot toevoegen</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <h6 style="color:red" class="errormessage">@errorMessage</h6>
+            <Validations @ref="validations" Mode="ValidationMode.Auto">
+                <ModalBody>
+                    @if(StartDate != null && EndDate != null) {
+                        <Validation Validator="ValidateStartEndTime">
+                            <Field>
+                                <FieldLabel>Start uur</FieldLabel>
+                                <TimeEdit TValue="TimeSpan?" @bind-Time="StartTime" />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Eind uur</FieldLabel>
+                                <TimeEdit TValue="TimeSpan?" @bind-Time="EndTime" />
+                            </Field>
+                        </Validation>
+                    }
+                </ModalBody>
+            </Validations>
+                <ModalFooter>
+                    <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
+                    <Button Color="Color.Primary" Clicked="@CreateTimeSlot">Voeg toe</Button>
+                </ModalFooter>
+        </ModalContent>
+    </Modal>
+</div>
+
+@code {
+
+    [Parameter]
+    public int DoctorId { get; set; }
+
+    [Parameter]
+    public EventCallback OnTimeSlotCreated { get; set; }
+    
+    private DateTime StartDate { get; set; }
+    private DateTime EndDate { get; set; }
+
+    private TimeSpan? StartTime { get; set; }
+    private TimeSpan? EndTime { get; set; }
+
+    private string errorMessage = string.Empty;
+    private Validations validations;
+
+    private Modal? modalRef;
+
+    public Task? ShowModal(DateTime startDate, DateTime endDate)
+    {
+        StartDate = startDate;
+        EndDate = endDate;
+
+        StartTime = startDate.TimeOfDay;
+        EndTime = endDate.TimeOfDay;
+
+        StateHasChanged();
+        return modalRef?.Show();
+    }
+
+    private Task? HideModal()
+    {
+        return modalRef?.Hide();
+    }
+
+    private async Task CreateTimeSlot()
+    {
+        if (StartTime > EndTime) return;
+
+
+        if(await validations.ValidateAll()) {
+        try {
+                var timeSlot = new TimeSlotDTO
+                {
+                    DoctorId = DoctorId,
+                    AppointmentType = 0,
+                    DateTime = StartDate.Date.Add((TimeSpan)StartTime),
+                    Duration = (int)((TimeSpan)EndTime - (TimeSpan)StartTime).TotalMinutes,
+                    AppointmentDTO = null
+                };
+
+                await timeSlotService.CreateTimeSlot(timeSlot, DoctorId);
+                await HideModal();
+                await OnTimeSlotCreated.InvokeAsync();
+            } catch (Exception e) {
+                errorMessage = e.Message;
+            }
+        }
+    }
+
+    void ValidateStartEndTime(ValidatorEventArgs e)
+    {
+        if (EndTime < StartTime)
+        {
+            e.Status = ValidationStatus.Error;
+            errorMessage = "Het eind uur kan niet voor het begin uur liggen!";
+        }
+        else if (EndTime == StartTime)
+        {
+            e.Status = ValidationStatus.Error;
+            errorMessage = "Het eind uur kan niet gelijk zijn aan het begin uur!";
+        }
+        else
+        {
+            e.Status = ValidationStatus.Success;
+            errorMessage = string.Empty;
+        }
+    }
+
+}
