@@ -65,34 +65,62 @@
                 <FieldLabel>Straat</FieldLabel>
                 <TextEdit @bind-Text="newStreet" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newStreet))
+                    {
+                        <p class="text-danger">Straat is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Stad</FieldLabel>
                 <TextEdit @bind-Text="newCity" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newCity))
+                    {
+                        <p class="text-danger">Stad/gemeente is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Land</FieldLabel>
                 <TextEdit @bind-Text="newCountry" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newCountry))
+                    {
+                        <p class="text-danger">Land is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Email</FieldLabel>
                 <TextEdit @bind-Text="newEmail" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newEmail))
+                    {
+                        <p class="text-danger">Email is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Telefoon</FieldLabel>
                 <TextEdit @bind-Text="newPhone" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newPhone))
+                    {
+                        <p class="text-danger">Telefoon is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Weekdagen</FieldLabel>
                 <TextEdit @bind-Text="newWeek" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newWeek))
+                    {
+                        <p class="text-danger">Weekdagen is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Weekend</FieldLabel>
                 <TextEdit @bind-Text="newWeekend" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newWeekend))
+                    {
+                        <p class="text-danger">Weekend is verplicht</p>
+                    }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@UpdateLocation">Opslaan</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateLocation" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -104,6 +132,7 @@
 
     private bool visible = false;
     private string message = string.Empty;
+    private EditContext editContext;
 
     private LocationDTO location;
 
@@ -112,6 +141,26 @@
     protected override async Task OnInitializedAsync()
     {
         location = await locationService.GetLocation();
+
+        var l = new LocationDTO();
+
+        editContext = new EditContext(l);
+        editContext.OnFieldChanged += (sender, eventArgs) =>
+        {
+            editContext.Validate();
+            StateHasChanged();
+        };
+    }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newStreet)
+        && !string.IsNullOrWhiteSpace(newCity)
+        && !string.IsNullOrWhiteSpace(newCountry)
+        && !string.IsNullOrWhiteSpace(newEmail)
+        && !string.IsNullOrWhiteSpace(newPhone)
+        && !string.IsNullOrWhiteSpace(newWeek)
+        && !string.IsNullOrWhiteSpace(newWeekend);
     }
 
     int? id;
