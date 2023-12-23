@@ -73,18 +73,30 @@
                 <FieldLabel>Titel</FieldLabel>
                 <TextEdit Placeholder="Geef titel..." @bind-Text="newTitle" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newTitle))
+                    {
+                        <p class="text-danger">Titel is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Text</FieldLabel>
                 <RichTextEdit @ref="richTextEditRef" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(savedContent))
+                    {
+                        <p class="text-danger">Text is verplicht</p>
+                    }
             <Field>
                 <FieldLabel>Afbeelding</FieldLabel>
                 <TextEdit Placeholder="Geef afbeelding link..." @bind-Text="newImageLink" />
             </Field>
+            @if (string.IsNullOrWhiteSpace(newImageLink))
+                    {
+                        <p class="text-danger">Afbeelding is verplicht</p>
+                    }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Sluit</Button>
-            <Button Color="Color.Primary" Clicked="@UpdateBlog">Opslaan</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateBlog" Disabled="@(!AreRequiredFieldsFilled())">Opslaan</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -96,11 +108,21 @@
     private IEnumerable<BlogDTO>? blogs;
     private BlogDTO clickedBlog;
     private bool ShowDeleteConfirmation = false;
-    private int? blogIdToDelete; 
+    private int? blogIdToDelete;
+    private EditContext editContext;
 
     protected override async Task OnInitializedAsync()
     {
         blogs = await blogService.GetBlogs();
+
+        var b = new BlogDTO();
+
+        editContext = new EditContext(b);
+        editContext.OnFieldChanged += (sender, eventArgs) =>
+        {
+            editContext.Validate();
+            StateHasChanged();
+        };
     }
 
     int? id;
@@ -119,6 +141,13 @@
         contentAsHtml = await richTextEditRef.GetHtmlAsync();
         contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
         contentAsText = await richTextEditRef.GetTextAsync();
+    }
+
+    private bool AreRequiredFieldsFilled()
+    {
+        return !string.IsNullOrWhiteSpace(newTitle)
+        && !string.IsNullOrWhiteSpace(newText)
+        && !string.IsNullOrWhiteSpace(newImageLink);
     }
 
     public async Task OnSave()
