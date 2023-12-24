@@ -45,9 +45,9 @@ public class TimeSlotTest
     }
 
     [Fact]
-    public void TimeSlot_Constructor_DateTimeInPast_ThrowsException()
+    public void TimeSlot_Constructor_DateTimeInPast_ThrowsNoException()
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => new TimeSlot(AppointmentType.Consultation, new DateTime(2020, 2, 17, 12, 0, 0), 60));
+        new TimeSlot(AppointmentType.Consultation, new DateTime(2020, 2, 17, 12, 0, 0), 15);
     }
     #endregion
 
