@@ -87,7 +87,6 @@
 
     protected async Task GetFollowUpQuestions(ChatBotQuestionDTO question)
     {
-        //IEnumerable<ChatBotQuestion>? followUpObj = await Task.Run(() => ChatbotService.GetFollowUpQuestions(question.FollowUpQuestion));
         List<ChatBotQuestionDTO> followUpQuestions = question.FollowUpQuestions;
         await ShowQuestions(followUpQuestions);
     }
@@ -113,7 +112,7 @@
         await GetChatbotQuestions();
         chatMessages.Clear();
         chatMessages.Add(new ChatMessage { Message = "Welkom, hoe kan ik u helpen?", Type = "bot" });
-        StateHasChanged(); // Maybe deleting?
+        StateHasChanged();
         await ShowQuestions(ChatbotQuestionsList);
     }
 
@@ -170,8 +169,6 @@
             restartable = true;
         }
         StateHasChanged();
-        // do no call this but
-        // await JSRuntime.InvokeVoidAsync("scrollToBottom");
     }
 
     private void NavigateToSettingsPage()
