@@ -15,40 +15,39 @@ public class ContactTest : PageTest
 
     [Test]
     public async Task Validation_RequiredFields() {
-        await Page.ClickAsync("data-test-id=contact-submit-button");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Verstuur" }).ClickAsync();
 
-        await Expect(Page.GetByText("Naam is verplicht.", new() { Exact = true })).ToBeVisibleAsync();
-        await Expect(Page.GetByText("Voornaam is verplicht.", new() { Exact = true })).ToBeVisibleAsync();
-        await Expect(Page.GetByText("Email is verplicht.", new() { Exact = true })).ToBeVisibleAsync();
-        await Expect(Page.GetByText("Telefoonnummer is verplicht.", new() { Exact = true })).ToBeVisibleAsync();
-        await Expect(Page.GetByText("Een bericht is verplicht.", new() { Exact = true })).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Naam is verplicht").First).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Naam is verplicht").Nth(1)).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Telefoon is verplicht", new() { Exact = true })).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Bericht is verplicht", new() { Exact = true })).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Validation_ValidEmail() {
-        Page.GetByPlaceholder("E-mail").FillAsync("test");
-        await Page.ClickAsync("data-test-id=contact-submit-button");
+        Page.GetByPlaceholder("naam@mail.com").FillAsync("test");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Verstuur" }).ClickAsync();
 
-        await Expect(Page.GetByText("Voer een geldig emailadres in.", new() { Exact = true })).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Email is niet geldig")).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Validation_ValidPhone() {
-        Page.GetByPlaceholder("Telefoonnummer").FillAsync("test");
-        await Page.ClickAsync("data-test-id=contact-submit-button");
+        Page.GetByPlaceholder("0489561475").FillAsync("test");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Verstuur" }).ClickAsync();
 
-        await Expect(Page.GetByText("Voer een geldig telefoonnummer in.", new() { Exact = true })).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Incorrect telefoonnummer formaat.")).ToBeVisibleAsync();
     }
 
-    // [Test]
-    // public async Task ContactForm_SendsEmail() {
-    //     await Page.FillAsync("data-test-id=contact-name", "TestNaam");
-    //     await Page.FillAsync("data-test-id=contact-firstname", "TestFirstName");
-    //     await Page.FillAsync("data-test-id=contact-email", "test@email.com");
-    //     await Page.FillAsync("data-test-id=contact-date", "22/11/2023");
-    //     await Page.FillAsync("data-test-id=contact-phone", "0414251470");
-    //     await Page.FillAsync("data-test-id=contact-message", "TestMessage");
-    //     await Page.ClickAsync("data-test-id=contact-submit-button");
-    //     //Assert.AreEqual($"{TestHelper.BaseUrl}/submit_form.php", Page.Url);
-    // }
+    [Test]
+    public async Task ContactForm_SendsMessage() {
+        await Page.GetByPlaceholder("Naam", new() { Exact = true }).FillAsync("TestName");
+        await Page.GetByPlaceholder("Achternaam").FillAsync("TestLastName");
+        await Page.GetByPlaceholder("naam@mail.com").FillAsync("test@gmail.com");
+        await Page.GetByPlaceholder("0489561475").FillAsync("0414251470");
+        await Page.Locator("input[type=\"date\"]").FillAsync("2002-04-15");
+        await Page.GetByPlaceholder(". . .").FillAsync("testbericht");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Verstuur" }).ClickAsync();
+        await Expect(Page.GetByText("Bericht verzonden!")).ToBeVisibleAsync();
+    }
 }

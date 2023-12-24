@@ -137,7 +137,7 @@ namespace Persistence.Data
 
             // CMS
             #region Header
-            HomeHeader header = new("Vision Oogcentrum Gent", "Van harte welkom bij Vision Oogcenter Gent, waar we met liefde en zorg voor uw ogen zorgen. Onze toegewijde oogartsen zijn hier om uw visuele behoeften te vervullen en uw gezichtsvermogen te optimaliseren. Bij ons vindt u de perfecte combinatie van expertise, geavanceerde technologie en persoonlijke aandacht. Stap binnen in een wereld waar dromen van helder zicht werkelijkheid worden. We kijken ernaar uit u te verwelkomen en samen te werken aan een scherpere toekomst.");
+            HomeHeader header = new("Oogcentrum Vision Gent", "Van harte welkom bij Oogcentrum Vision Gent, waar we met liefde en zorg voor uw ogen zorgen. Onze toegewijde oogartsen zijn hier om uw visuele behoeften te vervullen en uw gezichtsvermogen te optimaliseren. Bij ons vindt u de perfecte combinatie van expertise, geavanceerde technologie en persoonlijke aandacht. Stap binnen in een wereld waar dromen van helder zicht werkelijkheid worden. We kijken ernaar uit u te verwelkomen en samen te werken aan een scherpere toekomst.");
             #endregion
 
             #region Location
@@ -162,8 +162,8 @@ namespace Persistence.Data
                     "refractieafwijking, wat betekent dat het oog niet in staat is om lichtstralen op de juiste manier te breken. Hierdoor ontstaat een wazig beeld. Bijziendheid kan worden gecorrigeerd met een bril of contactlenzen, "+
                     "maar ook met een laseroperatie. In dit artikel lees je meer over de voor- en nadelen van een laseroperatie voor bijziendheid.", 
                     "https://img.noordhollandsdagblad.nl/0C2g51q-JZ9mGU4zOu75QV09s_I=/731x411/smart/https://cdn-kiosk-api.telegraaf.nl/6e4b1200-ac99-11e7-9e19-111553951722.jpg"),
-                new Blog("Vision Oogcentrum",
-                    "Een nieuwe oogarts in het Vision Oogcentrum Gent: Dr. J. Van der Veken. "+
+                new Blog("Oogcentrum Vision",
+                    "Een nieuwe oogarts in het Oogcentrum Vision Gent: Dr. J. Van der Veken. "+
                     "Dr. J. Van der Veken is een oogarts met een bijzondere interesse in de behandeling van glaucoom en cataract. "+
                     "Hij is een ervaren cataractchirurg en voert ook laserbehandelingen uit voor glaucoom. "+
                     "Daarnaast is hij ook gespecialiseerd in de behandeling van droge ogen. ",
