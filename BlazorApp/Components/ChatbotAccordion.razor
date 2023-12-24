@@ -67,7 +67,7 @@
         if (FollowUpQuestions.Contains(question))
         {
             FollowUpQuestions = FollowUpQuestions.Where(x => x != Question);
-        }
+        } 
     }
 
     protected async Task HandleRefresh()
@@ -82,8 +82,14 @@
 
     private async Task DeleteQuestion()
     {
-        await DeleteChatBotQuestion(Question);
-        await chatbotService.DeleteById(Question.Id);
+        try {
+            await DeleteChatBotQuestion(Question);
+            await chatbotService.DeleteById(Question.Id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
 
     public void Collapse()
