@@ -53,3 +53,22 @@ input {
 h1, p {
     color: rgb(22, 44, 104);
 }
+
+.confirmationdialog {
+    color: rgb(22, 44, 104);
+    border: 2px solid rgb(22, 44, 104);
+    padding: 20px;
+    border-radius: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: azure;
+}
+
+.confirmationdialog-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding-top: 10px;
+}

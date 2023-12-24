@@ -33,7 +33,7 @@
         <div class="scheduler-controls">
             <div class="controls-left">
                 <AddScheduleTimeSlotPopUp OnScheduleTimeSlotAdded="HandleScheduleTimeSlotAdded" DoctorId="SelectedDoctor" />
-                <Button Color="Color.Danger" @onclick="ClearSchedule">Schedule wissen</Button>
+                <Button Color="Color.Danger" @onclick="ToggleConfirmationDialog">Schedule wissen</Button>
             </div>
             <div class="controls-right">
                 <label for="numberOfWeeks">Aantal weken</label>
@@ -67,6 +67,17 @@
                     };
 
                     int maxCount = listsByDay.Values.Max(list => list.Count);
+
+                    @if(ShowConfirmation) {
+                        <div class="confirmationdialog">
+                            <h6>Weet u zeker dat u uw schedule wilt wissen?</h6>
+                            <div class="confirmationdialog-buttons">
+                                <Button Color="Color.Danger" Clicked="ClearSchedule">Bevestig</Button>
+                                <Button Color="Color.Secondary" Clicked="ToggleConfirmationDialog" >Annuleer</Button>
+                            </div>
+                        </div>
+                    }
+
 
                     for (int i = 0; i < maxCount; i++)
                     {
@@ -108,6 +119,7 @@
     private int SelectedDoctor { get; set; }
     private int NumberOfWeeks { get; set; } = 1;
     private bool IsLoading { get; set; } = false;
+    private bool ShowConfirmation { get; set; } = false;
 
     private IEnumerable<DoctorDTO> Doctors { get; set; }
     
@@ -141,6 +153,10 @@
 
     }
 
+    private async Task ToggleConfirmationDialog() {
+        ShowConfirmation = !ShowConfirmation;
+    }
+
     private async Task ClearSchedule() {
         List<ScheduleTimeSlotDTO> scheduleTimeSlotsCopy = new List<ScheduleTimeSlotDTO>(ListOfScheduleTimeSlots);
 
@@ -148,7 +164,7 @@
         {
             await scheduleTimeSlotService.DeleteScheduleTimeSlot(scheduleTimeSlot, SelectedDoctor);
         }
-
+        ToggleConfirmationDialog();
         await RefreshScheduler();
     }
 
