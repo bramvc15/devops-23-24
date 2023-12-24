@@ -20,8 +20,4 @@
     <PackageReference Include="shouldly" Version="4.2.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\BlazorApp\BlazorApp.csproj" />
-  </ItemGroup>
-
 </Project>
