@@ -27,9 +27,12 @@ List of team members responsible for operations:
 - Thibo Haezaert        | @ThiboHaezaert
 
 ## Technologies & Packages
+Blazor Server application for "Oogcentrum vision Gent"
 
 List of technologies and packages used in this project:
 
-- Database: ...
-- ...
-- ...
+- Database: Sql Server
+- Auth0
+- Syncfusion
+- Blazorise
+- Microsoft EntityFrameworkCore
